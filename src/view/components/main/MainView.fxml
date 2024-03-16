@@ -15,12 +15,11 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<StackPane fx:id="mainLayout" minHeight="360.0" minWidth="640.0" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #F8F0E5;" stylesheets="@Main.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane fx:controller="view.components.main.MainController" fx:id="mainLayout" minHeight="360.0" minWidth="640.0" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #F8F0E5;" stylesheets="@Main.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <StackPane fx:id="secondaryLayout" disable="true" minHeight="360.0" minWidth="640.0" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #121212;" visible="false" />
       <VBox alignment="TOP_CENTER" prefHeight="720.0" prefWidth="1280.0">
          <children>
-            <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="1280.0" style="-fx-background-color: #EADBC8;">
+            <HBox fx:id="navigation" alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="1280.0" style="-fx-background-color: #EADBC8;">
                <children>
                   <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="70.0" prefWidth="120.0" style="-fx-background-color: #DAC0A3;" text="EventHub" textFill="#102c57">
                      <font>
@@ -35,6 +34,7 @@
                         <Font name="Arial Bold" size="18.0" />
                      </font>
                   </MFXButton>
+
                   <MFXButton alignment="CENTER" prefHeight="60.0" prefWidth="120.0" rippleColor="#102c57" style="-fx-background-color: #DAC0A3;" text="Selling" textFill="#102c57">
                      <font>
                         <Font size="18.0" />
@@ -101,5 +101,13 @@
             <Insets />
          </StackPane.margin>
       </VBox>
+      <StackPane fx:id="secondaryLayout" minHeight="360.0" minWidth="640.0" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #121212;" visible="false">
+         <children>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <Button fx:id="closeSecondaryLayout" mnemonicParsing="false" onAction="#closeWindow" text="Close" />
+               </children>
+            </VBox>
+         </children></StackPane>
    </children>
 </StackPane>
