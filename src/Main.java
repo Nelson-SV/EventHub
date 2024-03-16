@@ -21,6 +21,10 @@ public class Main extends Application {
         primaryStage.setTitle("EventHub");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
+        /***
+         *  The following 3 lines are for testing only
+         */
+
         EventException eventException = new EventException("Test",null,null, Level.SEVERE);
         IData teste= new DataManager();
         teste.test();
