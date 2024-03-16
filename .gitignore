@@ -8,7 +8,6 @@ out/
 # EventHub
 src/resources/DbLogin.txt
 
-
 ### Eclipse ###
 .apt_generated
 .classpath
