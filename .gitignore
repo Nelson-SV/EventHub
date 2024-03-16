@@ -5,7 +5,8 @@ out/
 
 ### EventHub ###
 
-!**/src/resources/
+# EventHub
+src/resources/DbLogin.txt
 
 ### Eclipse ###
 .apt_generated
