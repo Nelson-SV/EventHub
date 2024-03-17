@@ -4,6 +4,10 @@ import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXScrollPane;
 import io.github.palexdev.materialfx.controls.MFXTextField;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
@@ -27,9 +31,24 @@ public class TicketsGeneration {
         this.mainController = controller;
     }
 
+    public void initialize() {
+        updateEventName();
+    }
+
     public void addTickets(ActionEvent actionEvent) {
     }
 
-    public void generateData(){
+    public void updateEventName(){
+            ObservableList<String> list = FXCollections.observableArrayList();
+            list.add("Test");
+            list.add("Test2");
+            eventNameCombo.setItems(list);
+
+            // Add a listener to the selected Name of eventNameCombo
+            eventNameCombo.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+                // Update the label with the new selected Name
+                eventNameLB.setText((String) newValue);
+            });
     }
+
 }
