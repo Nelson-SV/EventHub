@@ -31,30 +31,30 @@
                                 <Insets />
                             </HBox.margin>
                         </Label>
-                        <MFXButton alignment="CENTER" prefHeight="60.0" prefWidth="120.0" rippleColor="#102c57" styleClass="controlNav" text="Events">
+                        <MFXButton fx:id="eventsNavButton" alignment="CENTER" prefHeight="60.0" prefWidth="120.0" rippleColor="#102c57" styleClass="controlNav" text="Events">
                             <font>
                                 <Font name="Arial Bold" size="18.0" />
                             </font>
                         </MFXButton>
 
-                              <MFXButton alignment="CENTER" prefHeight="60.0" prefWidth="120.0" rippleColor="#102c57" styleClass="controlNav" text="Selling">
+                              <MFXButton  fx:id="sellingNavButton" alignment="CENTER" prefHeight="60.0" prefWidth="120.0" rippleColor="#102c57" styleClass="controlNav" text="Selling">
                             <font>
                                 <Font size="18.0" />
                             </font>
                         </MFXButton>
-                        <MFXButton alignment="CENTER" prefHeight="60.0" prefWidth="120.0" rippleColor="#102c57" styleClass="controlNav" text="Ticketing">
+                        <MFXButton  fx:id="ticketingNavButton" alignment="CENTER" prefHeight="60.0" prefWidth="120.0" rippleColor="#102c57" styleClass="controlNav" text="Ticketing">
                             <font>
                                 <Font size="18.0" />
                             </font>
                         </MFXButton>
                     </children>
                 </HBox>
-                <HBox prefHeight="5.0" prefWidth="1280.0" styleClass="transitionBar" VBox.vgrow="NEVER">
+                <HBox prefHeight="10.0" prefWidth="1280.0" styleClass="transitionBar" VBox.vgrow="NEVER">
                     <children>
-                        <Rectangle arcHeight="5.0" arcWidth="5.0" height="5.0" strokeType="INSIDE" styleClass="eventBar" width="120.0" />
-                        <Rectangle arcHeight="5.0" arcWidth="5.0" height="5.0" strokeType="INSIDE" styleClass="eventBar" width="120.0" />
-                        <Rectangle arcHeight="5.0" arcWidth="5.0" height="5.0" strokeType="INSIDE" styleClass="eventBar" width="120.0" />
-                        <Rectangle arcHeight="5.0" arcWidth="5.0" height="5.0" strokeType="INSIDE" styleClass="eventBar" width="120.0" />
+                        <Rectangle arcHeight="5.0" arcWidth="5.0" height="10.0" smooth="false" strokeType="INSIDE" styleClass="eventBar" width="120.0" />
+                        <Rectangle fx:id="eventsLine" arcHeight="5.0" arcWidth="5.0" height="10.0" smooth="false" strokeType="INSIDE" styleClass="eventBar" width="120.0" />
+                        <Rectangle fx:id="sellingLine" arcHeight="5.0" arcWidth="5.0" height="10.0" smooth="false" strokeType="INSIDE" styleClass="eventBar" width="120.0" />
+                        <Rectangle fx:id="ticketingLine" arcHeight="5.0" arcWidth="5.0" height="10.0" smooth="false" strokeType="INSIDE" styleClass="eventBar" width="120.0" />
                     </children>
                 </HBox>
                 <GridPane alignment="CENTER" maxHeight="80.0" maxWidth="1072.0" prefHeight="80.0" prefWidth="1072.0">
@@ -74,7 +74,7 @@
                                 <Insets />
                             </GridPane.margin>
                         </Label>
-                        <Button alignment="CENTER" contentDisplay="CENTER" maxHeight="30.0" maxWidth="156.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="156.0" style="-fx-border-color: #102C57; -fx-border-radius: 50; -fx-background-color: #E5EDF8; -fx-background-radius: 50; -fx-border-width: 2;" text="Create event" textFill="#102c57" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.valignment="BOTTOM">
+                        <Button alignment="CENTER" contentDisplay="CENTER" maxHeight="30.0" maxWidth="156.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="156.0" styleClass="createEvent" text="Create event" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.valignment="BOTTOM">
                             <font>
                                 <Font name="System Bold" size="16.0" />
                             </font>

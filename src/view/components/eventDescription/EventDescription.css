@@ -2,6 +2,25 @@
     -fx-background-color: #E5EDF8;
 }
 
+.label {
+    -fx-text-fill: #102c57;
+    -fx-font-size: 12;
+}
+
+
+/*Create the red color for the ended events*/
+/*this color will be used for the ended events*/
+/*-fx-background-color: #E77565;*/
+#eventStatus {
+    -fx-text-fill: #102c57;
+    /*-fx-background-color: #A5F1AB;*/
+    -fx-background-radius: 2;
+    -fx-font-size: 14;
+    -fx-effect: dropshadow(gaussian, rgba(63, 226, 76, 1), 15, 0.8, 0, 0);
+}
+
+
+
 .eventComponentContainer {
     -fx-background-radius: 10;
     -fx-border-color: #102c57;
@@ -23,6 +42,9 @@
     -fx-background-radius: 0 10 10 0;
     -fx-alignment: bottom-center;
 }
+
+
+
 
 
 
