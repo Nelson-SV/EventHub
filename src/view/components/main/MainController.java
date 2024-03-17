@@ -3,12 +3,14 @@ import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import view.components.eventDescription.EventComponenet;
+import view.components.events.CreateEventController;
 import view.components.manageButton.ManageAction;
 import view.utility.NavigationHoverControl;
 

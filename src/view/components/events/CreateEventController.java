@@ -5,15 +5,17 @@ import be.Location;
 import exceptions.EventException;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXDatePicker;
+import io.github.palexdev.materialfx.controls.MFXScrollPane;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
+import javafx.scene.layout.StackPane;
 import view.components.Model;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -21,6 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CreateEventController {
+    @FXML
+    private MFXScrollPane editScrolPane;
     @FXML
     public TextField eventName;
     @FXML
@@ -46,11 +50,26 @@ public class CreateEventController {
 
     private Model model;
 
+    private final StackPane stackPane;
+
     @FXML
     public void initialize() {
         startTime.setItems(FXCollections.observableArrayList(generateTimeOptions()));
         endTime.setItems(FXCollections.observableArrayList(generateTimeOptions()));
         model = Model.getInstance();
+
+    }
+
+    public CreateEventController(StackPane stackPane) {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("CreateEventView.fxml"));
+        loader.setController(this);
+        try {
+            editScrolPane=loader.load();
+            this.stackPane= stackPane;
+         } catch (IOException e) {
+//            To be handled
+            throw new RuntimeException(e);
+        }
     }
 
     private List<LocalTime> generateTimeOptions() {
@@ -78,16 +97,28 @@ public class CreateEventController {
         String streetE = street.getText();
         String additionalE = additional.getText();
         String postalCodeE = postalCode.getText();
-
         Event event = new Event(name, description, startD, endD, startT, endT, new Location(streetE,additionalE, postalCodeE, countryE, cityE));
         try {
             model.addEvent(event);
+         //the close method needs to be moved here after a cancel button is included
         } catch (EventException e){
             Alert a = new Alert(Alert.AlertType.ERROR, e.getMessage());
             e.printStackTrace();
             a.show();
         }
-        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-        stage.close();
+        closeWindow(actionEvent);
+//        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+//        stage.close();
     }
+
+
+    private void closeWindow(ActionEvent event) {
+        this.stackPane.setDisable(true);
+        this.stackPane.setVisible(false);
+    }
+
+public MFXScrollPane getRoot(){
+        return editScrolPane;
+}
+
 }

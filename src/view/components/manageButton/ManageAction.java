@@ -1,11 +1,12 @@
 package view.components.manageButton;
 
+import exceptions.ErrorCode;
+import exceptions.EventException;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import view.components.manageButton.ManageController;
-
 import java.io.IOException;
 
 public class ManageAction extends VBox {
@@ -18,11 +19,11 @@ public class ManageAction extends VBox {
             manageControl= loader.load();
             this.getChildren().add(manageControl);
         } catch (IOException e) {
-            System.out.println(e.getMessage());
-            // throw new EventException(e.getMessage(), e.getCause(), ErrorCode.OPERATION_FAILED, Level.SEVERE);
+            System.out.println(e.getStackTrace());
+            throw new RuntimeException();
+            //needs to be handled
+           // throw new EventException(e.getMessage(), e.getCause(), ErrorCode.OPERATION_FAILED,Level.SEVERE);
         }
     }
-    public VBox getManageControl() {
-        return manageControl;
-    }
+
 }
