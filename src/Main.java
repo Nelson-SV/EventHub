@@ -16,7 +16,8 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("view/components/events/CreateEventView.fxml"));
+        //"view/components/events/CreateEventView.fxml"
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("view/components/main/MainView.fxml"));
         Parent root = loader.load();
         primaryStage.setTitle("EventHub");
         primaryStage.setScene(new Scene(root));

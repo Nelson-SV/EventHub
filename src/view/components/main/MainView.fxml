@@ -5,8 +5,6 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -121,21 +119,13 @@
         </VBox>
         <StackPane fx:id="secondaryLayout" minHeight="360.0" minWidth="640.0" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: rgba(0, 0, 0, 0.5);" visible="false">
             <children>
-                <TableView fx:id="eventTable" maxHeight="485.0" maxWidth="1072.0" prefHeight="485.0" prefWidth="1072.0" styleClass="tableHeader">
-                    <columns>
-                        <TableColumn fx:id="description" maxWidth="520.0" minWidth="208.0" prefWidth="520.0" styleClass="column,eventColumn" text="Event" />
-                        <TableColumn fx:id="status" editable="false" maxWidth="112.0" minWidth="60.0" prefWidth="112.0" sortable="false" styleClass="column" text="Status" />
-                        <TableColumn fx:id="tickets" editable="false" maxWidth="112.0" minWidth="60.0" prefWidth="112.0" sortable="false" styleClass="column" text="Tickets" />
-                        <TableColumn fx:id="revenue" editable="false" maxWidth="112.0" minWidth="60.0" prefWidth="112.0" sortable="false" styleClass="column" text="Revenue" />
-<!--                        <TableColumn  fx:id="actionsColumn" editable="false" maxWidth="212.0" minWidth="120.0" prefWidth="212.0"-->
-<!--                                     sortable="false" styleClass="actionColumn,column" text="Actions"/>-->
-                    </columns>
-                </TableView>
+
                 <VBox alignment="BOTTOM_CENTER" prefHeight="200.0" prefWidth="100.0">
                     <children>
                         <Button fx:id="closeSecondaryLayout" mnemonicParsing="false" onAction="#closeWindow" text="Close" />
                     </children>
                 </VBox>
+                <fx:include source="../events/CreateEventView.fxml" fx:id="editView"></fx:include>
             </children>
         </StackPane>
     </children>

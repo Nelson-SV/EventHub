@@ -89,8 +89,5 @@ public class CreateEventController {
         }
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         stage.close();
-
-
-
     }
 }
