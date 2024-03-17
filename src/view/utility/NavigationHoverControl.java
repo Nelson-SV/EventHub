@@ -11,17 +11,17 @@ import java.util.Map;
 
 public class NavigationHoverControl {
 
-    private Rectangle sellingLine;
+    private final Rectangle sellingLine;
 
-    private Rectangle ticketsLine;
+    private  final Rectangle ticketsLine;
 
-    private Rectangle eventsLine;
+    private final Rectangle eventsLine;
 
-    private MFXButton eventsNavButton;
+    private final MFXButton eventsNavButton;
 
-    private MFXButton sellingNavButton;
+    private final MFXButton sellingNavButton;
 
-    private MFXButton ticketingNavButton;
+    private final MFXButton ticketingNavButton;
 
     private final static Color INITIAL_COLOR = Color.web("#DAC0A3");
     private final static Color HOVER_COLOR = Color.web("#102C57");
