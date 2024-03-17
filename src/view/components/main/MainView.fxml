@@ -35,12 +35,12 @@
                             </font>
                         </MFXButton>
 
-                              <MFXButton  fx:id="sellingNavButton" alignment="CENTER" prefHeight="60.0" prefWidth="120.0" rippleColor="#102c57" styleClass="controlNav" text="Selling">
+                              <MFXButton fx:id="sellingNavButton" alignment="CENTER" prefHeight="60.0" prefWidth="120.0" rippleColor="#102c57" styleClass="controlNav" text="Selling">
                             <font>
                                 <Font size="18.0" />
                             </font>
                         </MFXButton>
-                        <MFXButton  fx:id="ticketingNavButton" alignment="CENTER" prefHeight="60.0" prefWidth="120.0" rippleColor="#102c57" styleClass="controlNav" text="Ticketing">
+                        <MFXButton fx:id="ticketingNavButton" alignment="CENTER" onAction="#createTicket" prefHeight="60.0" prefWidth="120.0" rippleColor="#102c57" styleClass="controlNav" text="Ticketing">
                             <font>
                                 <Font size="18.0" />
                             </font>
@@ -125,7 +125,7 @@
                         <Button fx:id="closeSecondaryLayout" mnemonicParsing="false" onAction="#closeWindow" text="Close" />
                     </children>
                 </VBox>
-                <fx:include source="../events/CreateEventView.fxml" fx:id="editView"></fx:include>
+                <fx:include fx:id="editView" source="../events/CreateEventView.fxml" />
             </children>
         </StackPane>
     </children>
