@@ -42,7 +42,7 @@
                                 <Font size="18.0" />
                             </font>
                         </MFXButton>
-                        <MFXButton alignment="CENTER" prefHeight="60.0" prefWidth="120.0" rippleColor="#102c57" styleClass="controlNav" text="Ticketing">
+                        <MFXButton alignment="CENTER" onAction="#createTicket" prefHeight="60.0" prefWidth="120.0" rippleColor="#102c57" styleClass="controlNav" text="Ticketing">
                             <font>
                                 <Font size="18.0" />
                             </font>

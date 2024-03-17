@@ -7,16 +7,20 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import view.components.eventDescription.ActionCell;
 import view.components.eventDescription.EventComponenet;
 import view.components.manageButton.ManageAction;
 import view.components.manageButton.ManageController;
+import view.components.ticketsGeneration.TicketsGeneration;
 
 import java.io.IOException;
 import java.net.URL;
@@ -68,5 +72,19 @@ public class MainController implements Initializable {
     private void closeWindow(ActionEvent event) {
         this.secondaryLayout.setDisable(true);
         this.secondaryLayout.setVisible(false);
+    }
+
+    public void createTicket(ActionEvent actionEvent) throws Exception {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/components/ticketsGeneration/TicketsGeneration.fxml"));
+        Parent root = loader.load();
+
+        //TicketsGeneration ticketController = loader.getController();
+        //ticketController.setMainController(this);
+
+        Stage stage = new Stage();
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setTitle("Create Ticket");
+        stage.setScene(new Scene(root));
+        stage.show();
     }
 }
