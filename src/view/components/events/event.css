@@ -1,0 +1,25 @@
+/* event.css */
+
+
+VBox, HBox {
+    -fx-background-radius: 10px; /* Set corner radius */
+    -fx-padding: 10px; /* Add padding to create space between content and border */
+}
+
+
+TextField, MFXComboBox {
+    -fx-background-radius: 5px; /* Set corner radius */
+    -fx-border-radius: 5px; /* Set border radius */
+}
+
+Button {
+    -fx-background-radius: 5px; /* Set corner radius */
+}
+
+Label {
+    -fx-background-radius: 5px; /* Set corner radius */
+
+}
+.bold-label {
+    -fx-font-weight: bold; /* Make text bold */
+}

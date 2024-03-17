@@ -14,7 +14,7 @@ public class ConnectionManager {
         public ConnectionManager() throws EventException {
             ds = new SQLServerDataSource();
             this.getCredentials();
-            ds.setDatabaseName("MovieDatabase");
+            ds.setDatabaseName("CSe2023b_e_10_Event_App");
             ds.setUser(user);
             ds.setPassword(password);
             ds.setServerName("EASV-DB4");

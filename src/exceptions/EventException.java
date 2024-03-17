@@ -50,4 +50,8 @@ public class EventException extends Exception {
     public ErrorCode getErrorCode() {
         return errorCode;
     }
+
+    public EventException(String message) {
+        super(message);
+    }
 }
