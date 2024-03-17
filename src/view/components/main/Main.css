@@ -2,12 +2,26 @@
 .mainParent {
     -fx-background-color: #F8F0E5;
 }
-.mainColor{
+
+.mainColor {
     -fx-background-color: #F8F0E5;
 }
 
 .mainNavigation {
-    -fx-background-color: #EADBC8;
+    /*-fx-background-color: #EADBC8;*/
+-fx-background-color: #DAC0A3;
+}
+
+.createEvent {
+    -fx-border-color: #102C57;
+    -fx-border-radius: 50;
+    -fx-background-color: #E5EDF8;
+    -fx-background-radius: 50;
+    -fx-border-width: 2;
+    -fx-text-fill: #102c57;
+}
+.createEvent:hover{
+    -fx-background-color:#ED8BE6 ;
 }
 
 .eventLogo {
@@ -32,7 +46,8 @@
 /*}*/
 
 .transitionBar {
-    -fx-background-color: #EADBC8;
+    /*-fx-background-color: #EADBC8;*/
+    -fx-background-color: #DAC0A3;
 }
 
 .searchBox {
@@ -42,57 +57,76 @@
     -fx-background-radius: 10;
 }
 
-.eventsView > .viewport{
+.eventsView > .scroll-bar:vertical {
+    -fx-background-color: #102c57;
+    -fx-background-radius: 0 0 10 0;
+    -fx-border-radius: 0 0 10 0;
+}
+
+.eventsView > .scroll-bar:vertical > .thumb {
+    -fx-background-color: #F8F0E5;
+}
+
+.eventsView > .viewport {
     -fx-background-color: #F8F0E5;
     -fx-background-radius: 10;
     -fx-border-radius: 10;
 }
-.eventsView{
+
+.eventsView {
     -fx-background-color: #F8F0E5;
     -fx-border-color: #102c57;
     -fx-background-radius: 0 0 10 10;
     -fx-border-radius: 0 0 10 10;
 }
 
-.eventsContainer{
+.eventsContainer {
     -fx-background-color: #F8F0E5;
     -fx-border-color: #102c57;
-    -fx-background-radius: 0 0 10 10 ;
-    -fx-border-radius: 0 0 10 10 ;
+    -fx-background-radius: 0 0 10 10;
+    -fx-border-radius: 0 0 10 10;
 }
-.eventsHeader{
+
+.eventsHeader {
     -fx-background-color: #EADBC8;
     -fx-border-color: #102c57;
     -fx-background-radius: 10 10 0 0;
     -fx-border-radius: 10 10 0 0;
 }
-.eventsHeader>.label{
+
+.eventsHeader > .label {
     -fx-text-fill: #102c57;
     -fx-font-weight: 800;
     -fx-font-size: 20;
 
 }
+
 .tableHeader {
     -fx-background-color: #F8F0E5;
     -fx-background-radius: 10;
     -fx-border-color: #102c57;
     -fx-border-radius: 10;
 }
-.column{
+
+.column {
     -fx-background-color: #f1e9da;
 }
+
 .eventColumn {
     -fx-background-radius: 10 0.0 0 0.0;
     -fx-border-radius: 10 0.0 0 0.0;
 }
-.actionColumn{
+
+.actionColumn {
     -fx-background-radius: 0 10 0 0.0;
     -fx-border-radius: 0 10 0 0.0;
 }
+
 .table-view .column-header-background {
     -fx-background-radius: 10 10 0 0.0;
 }
+
 .eventBar {
     -fx-fill: #dac0a3;
-    -fx-stroke:  #dac0a3;
+    -fx-stroke: #dac0a3;
 }

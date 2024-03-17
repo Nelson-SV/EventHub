@@ -19,7 +19,7 @@
       </VBox>
       <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="30.0" minWidth="60.0" prefHeight="120.0" prefWidth="112.0" styleClass="componentBackgroundColor" stylesheets="@EventDescription.css">
          <children>
-            <Label fx:id="eventStatus" alignment="BOTTOM_RIGHT" text="Live" />
+            <Label fx:id="eventStatus" alignment="BOTTOM_RIGHT" text="Live"  />
          </children>
       </VBox>
       <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="60.0" minWidth="60.0" prefHeight="120.0" prefWidth="112.0" styleClass="componentBackgroundColor" stylesheets="@EventDescription.css">
