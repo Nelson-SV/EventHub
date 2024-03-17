@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXComboBox?>
+<?import io.github.palexdev.materialfx.controls.MFXDatePicker?>
+<?import io.github.palexdev.materialfx.controls.MFXScrollPane?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<MFXScrollPane fitToHeight="true" fitToWidth="true" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="1249.0" style="-fx-background-color: EADBC8FF;" stylesheets="@event.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.components.events.CreateEventController">
+   <content>
+      <VBox prefHeight="1000.0" prefWidth="1247.0" spacing="30.0">
+         <children>
+            <HBox prefHeight="38.0" prefWidth="927.0">
+               <VBox.margin>
+                  <Insets left="150.0" right="150.0" />
+               </VBox.margin>
+               <children>
+                  <Label text="Add new event">
+                     <font>
+                        <Font name="Arial" size="19.0" />
+                     </font>
+                     <padding>
+                        <Insets top="10.0" />
+                     </padding>
+                  </Label>
+               </children></HBox>
+            <VBox prefHeight="315.0" prefWidth="927.0" style="-fx-background-color: white; -fx-border-radius: 50;" VBox.vgrow="ALWAYS">
+               <VBox.margin>
+                  <Insets left="150.0" right="150.0" />
+               </VBox.margin>
+               <children>
+                  <Label style="-fx-font-style: bold;" text="General info" textFill="#5585b5">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font></Label>
+                  <HBox prefHeight="71.0" prefWidth="947.0" style="-fx-background-radius: 20;">
+                     <children>
+                        <VBox prefHeight="71.0" prefWidth="219.0">
+                           <children>
+                              <Label text="Name" />
+                              <TextField fx:id="eventName" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="79.0" prefWidth="947.0">
+                     <children>
+                        <VBox prefHeight="50.0" prefWidth="100.0">
+                           <children>
+                              <Label text="Starts" />
+                              <MFXDatePicker fx:id="startDate" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="120.0" styleClass="date-picker" />
+                           </children>
+                        </VBox>
+                        <VBox prefHeight="200.0" prefWidth="100.0">
+                           <children>
+                              <Label text="Label" />
+                              <MFXComboBox fx:id="startTime" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="120.0" />
+                           </children>
+                        </VBox>
+                        <VBox prefHeight="200.0" prefWidth="100.0">
+                           <children>
+                              <Label text="Ends" />
+                              <MFXDatePicker fx:id="endDate" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="129.0" />
+                           </children>
+                        </VBox>
+                        <VBox prefHeight="200.0" prefWidth="100.0">
+                           <children>
+                              <Label text="Starts" />
+                              <MFXComboBox fx:id="endTime" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="120.0" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="111.0" prefWidth="834.0">
+                     <children>
+                        <VBox prefHeight="91.0" prefWidth="455.0">
+                           <children>
+                              <Label text="Description" />
+                              <TextField fx:id="eventDescription" prefHeight="54.0" prefWidth="464.0" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+            <VBox prefHeight="83.0" prefWidth="927.0" style="-fx-background-color: white;" VBox.vgrow="ALWAYS">
+               <VBox.margin>
+                  <Insets left="150.0" right="150.0" />
+               </VBox.margin>
+               <children>
+                  <Label styleClass="bold-label" text="Location" textFill="#5585b5" />
+                  <HBox prefHeight="60.0" prefWidth="947.0">
+                     <children>
+                        <VBox prefHeight="78.0" prefWidth="127.0">
+                           <children>
+                              <Label text="Country" />
+                              <TextField fx:id="country" />
+                           </children>
+                        </VBox>
+                        <VBox layoutX="10.0" layoutY="10.0" prefHeight="78.0" prefWidth="127.0">
+                           <children>
+                              <Label text="City " />
+                              <TextField fx:id="city" />
+                           </children>
+                        </VBox>
+                        <VBox layoutX="137.0" layoutY="10.0" prefHeight="78.0" prefWidth="127.0">
+                           <children>
+                              <Label text="Street" />
+                              <TextField fx:id="street" prefHeight="27.0" prefWidth="127.0" />
+                           </children>
+                        </VBox>
+                        <VBox prefHeight="200.0" prefWidth="100.0">
+                           <children>
+                              <Label text="Additional" />
+                              <TextField fx:id="additional" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="49.0" prefWidth="907.0">
+                     <children>
+                        <VBox prefHeight="78.0" prefWidth="127.0">
+                           <children>
+                              <Label text="PostalCode" />
+                              <TextField fx:id="postalCode" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+            <VBox prefHeight="47.0" prefWidth="927.0" style="-fx-background-color: white;" VBox.vgrow="ALWAYS">
+               <VBox.margin>
+                  <Insets left="150.0" right="150.0" />
+               </VBox.margin>
+               <children>
+                  <Label styleClass="bold-label" text="Tickets" textFill="#5585b5" />
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <VBox prefHeight="87.0" prefWidth="239.0">
+                           <children>
+                              <Button mnemonicParsing="false" onAction="#addTicket" prefHeight="37.0" prefWidth="145.0" style="-fx-background-color: #5585b5; -fx-background-radius: 20;" text="Add ticket" textFill="WHITE" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+            <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#saveEvent" prefHeight="39.0" prefWidth="166.0" style="-fx-background-radius: 20; -fx-background-color: #42b883;" text="Save Event" textFill="#fff8f8" />
+               </children>
+               <VBox.margin>
+                  <Insets left="150.0" right="150.0" />
+               </VBox.margin>
+            </HBox>
+         </children>
+      </VBox>
+   </content>
+</MFXScrollPane>
