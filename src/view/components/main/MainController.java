@@ -10,6 +10,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import view.components.eventDescription.EventComponenet;
 import view.components.manageButton.ManageAction;
+import view.utility.NavigationHoverControl;
+
 import java.net.URL;
 import java.util.ResourceBundle;
 

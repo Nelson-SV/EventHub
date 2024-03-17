@@ -1,4 +1,4 @@
-package view.components.main;
+package view.utility;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.animation.PauseTransition;
 import javafx.beans.property.SimpleObjectProperty;

@@ -8,7 +8,8 @@
 }
 
 .mainNavigation {
-    -fx-background-color: #EADBC8;
+    /*-fx-background-color: #EADBC8;*/
+-fx-background-color: #DAC0A3;
 }
 
 .createEvent {
@@ -45,7 +46,8 @@
 /*}*/
 
 .transitionBar {
-    -fx-background-color: #EADBC8;
+    /*-fx-background-color: #EADBC8;*/
+    -fx-background-color: #DAC0A3;
 }
 
 .searchBox {
