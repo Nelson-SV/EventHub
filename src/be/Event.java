@@ -15,6 +15,31 @@ public class Event {
     private int id;
     private Location location;
 
+    @Override
+    public String toString() {
+        return "Event{" +
+                "name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
+                ", id=" + id +
+                ", location=" + location.toString() +
+                ", availableTickets=" + availableTickets +
+                '}';
+    }
+
+    private int availableTickets;
+
+    public int getAvailableTickets() {
+        return availableTickets;
+    }
+
+    public void setAvailableTickets(int availableTickets) {
+        this.availableTickets = availableTickets;
+    }
+
     public Event(String name, String description, LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime, Location location) {
         this.name = name;
         this.description = description;

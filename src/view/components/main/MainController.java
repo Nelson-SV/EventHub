@@ -1,4 +1,5 @@
 package view.components.main;
+
 import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -18,6 +19,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
+    private Model model;
     @FXML
     private MFXButton eventsNavButton;
     @FXML
@@ -40,26 +42,35 @@ public class MainController implements Initializable {
     private StackPane secondaryLayout;
 
 
-    private  static ObservableList<String[]> strings = FXCollections.observableArrayList();
+    private static ObservableList<String[]> strings = FXCollections.observableArrayList();
+
     static {
-        strings.add(new  String[]{"TestName 1","Lorem ipsum donor,43","24/03/2024", "Live" , "23/450", "$4500" }   );
-        strings.add(new  String[]{"TestName 2","Lorem ipsum donor,56","30/03/2024", "Live" , "23/450", "$5000" });
-        strings.add(new  String[]{"TestName 3","Lorem ipsum donor,46","22/02/2024", "Ended" , "0/450", "$50000" });
-        strings.add(new  String[]{"TestName 4","Lorem ipsum donor,45","01/04/2024", "Live" , "23/450", "$4500" });
-        strings.add(new  String[]{"TestName 10","Lorem ipsum donor,56","01/04/2024", "Live" , "23/450", "$4500" });
+        strings.add(new String[]{"TestName 1", "Lorem ipsum donor,43", "24/03/2024", "Live", "23/450", "$4500"});
+        strings.add(new String[]{"TestName 2", "Lorem ipsum donor,56", "30/03/2024", "Live", "23/450", "$5000"});
+        strings.add(new String[]{"TestName 3", "Lorem ipsum donor,46", "22/02/2024", "Ended", "0/450", "$50000"});
+        strings.add(new String[]{"TestName 4", "Lorem ipsum donor,45", "01/04/2024", "Live", "23/450", "$4500"});
+        strings.add(new String[]{"TestName 10", "Lorem ipsum donor,56", "01/04/2024", "Live", "23/450", "$4500"});
 
     }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        NavigationHoverControl navigationHoverControl =  new NavigationHoverControl(eventsLine,sellingLine, ticketingLine,eventsNavButton,sellingNavButton,ticketingNavButton);
+        model = Model.getInstance();
+        NavigationHoverControl navigationHoverControl = new NavigationHoverControl(eventsLine, sellingLine, ticketingLine, eventsNavButton, sellingNavButton, ticketingNavButton);
         navigationHoverControl.initializeNavButtons();
-        for(String [] test : strings ){
-            mainEventContainer.getChildren().add(new EventComponenet(test,new ManageAction(this.secondaryLayout)));
-        }
+        displayEvents();
     }
+
     @FXML
     private void closeWindow(ActionEvent event) {
         this.secondaryLayout.setDisable(true);
         this.secondaryLayout.setVisible(false);
+    }
+
+//TODO
+    // observe the size off the list, if is changing update the UI (Observable design pattern)
+
+    private void displayEvents() {
+        model.getEvents().forEach(e -> mainEventContainer.getChildren().add(new EventComponenet(e, new ManageAction(this.secondaryLayout))));
     }
 }

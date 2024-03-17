@@ -1,5 +1,4 @@
 package view.components.events;
-
 import be.Event;
 import be.Location;
 import exceptions.EventException;
@@ -13,8 +12,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
-import view.components.Model;
-
+import view.components.main.Model;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;

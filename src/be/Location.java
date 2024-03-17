@@ -1,9 +1,23 @@
 package be;
 
 public class Location {
+    private int id;
     private String street;
     private String additional;
     private String postalCode;
+
+    @Override
+    public String toString() {
+        return "Location{" +
+                "id=" + id +
+                ", street='" + street + '\'' +
+                ", additional='" + additional + '\'' +
+                ", postalCode='" + postalCode + '\'' +
+                ", country='" + country + '\'' +
+                ", city='" + city + '\'' +
+                '}';
+    }
+
     private String country;
     private String city;
 
@@ -15,6 +29,14 @@ public class Location {
         this.country = country;
         this.city = city;
 
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getStreet() {

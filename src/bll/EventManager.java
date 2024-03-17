@@ -1,17 +1,16 @@
 package bll;
 
 import be.Event;
-import be.Location;
-import dal.eventDAO;
+import dal.EventDAO;
 import exceptions.EventException;
 
 import java.sql.SQLException;
 
-public class eventManager {
+public class EventManager {
 
-    eventDAO eventD  = new eventDAO();
+    EventDAO eventD  = new EventDAO();
 
-    public eventManager() throws SQLException, EventException {
+    public EventManager() throws SQLException, EventException {
 
     }
 

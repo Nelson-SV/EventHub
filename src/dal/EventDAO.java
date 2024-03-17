@@ -8,16 +8,22 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
-public class eventDAO {
+public class EventDAO {
    private final ConnectionManager connectionManager;
 
-   public eventDAO() throws SQLException, EventException {
+   public EventDAO() throws SQLException, EventException {
         this.connectionManager = new ConnectionManager();
        // Location loc = event.getLocation();
 
     }
 
+//TODO
+    // change to use transaction when  new event is inserted into the database in order to avoid data loss
     public void insertEvent(Event event) throws SQLException {
         int locationID = insertLocation(event.getLocation());
         try (Connection connection = connectionManager.getConnection()) {
@@ -66,4 +72,52 @@ public class eventDAO {
             throw new RuntimeException(e);
         }
 
-    }}
+    }
+
+public List<Event> getEvents(){
+       return retrieveEvents();
+}
+
+//TODO
+    //needs to be modified to accept an user
+    //needs to be modified to handle the errors
+private List<Event> retrieveEvents() {
+       List<Event> events = new ArrayList<>();
+       String sql ="SELECT * FROM Event AS e JOIN Location AS l ON e.LocationId=l.LocationId";
+       try(Connection conn= connectionManager.getConnection()) {
+           try(PreparedStatement psmt =conn.prepareStatement(sql)){
+               ResultSet res = psmt.executeQuery();
+               while(res.next()){
+               int id =res.getInt(1);
+               LocalDate startDate= res.getDate(2).toLocalDate();
+               String name = res.getString(3);
+               String description = res.getString(5);
+               int avTickets = res.getInt(6);
+               LocalDate endDate = res.getDate(7).toLocalDate();
+               LocalTime startTime = res.getTime(8).toLocalTime();
+               LocalTime endTime =  res.getTime(9).toLocalTime();
+               int locId= res.getInt(10);
+               String street = res.getString(11);
+               String additional = res.getString(12);
+               String country = res.getString(13);
+               String city =  res.getString(14);
+               String postalCode= res.getString(15);
+               Location location = new Location(street,additional,postalCode,country,city);
+               location.setId(locId);
+                   //String name, String description, LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime, Location location
+                Event event = new Event(name,description,startDate,endDate,startTime,endTime,location);
+                event.setId(id);
+                event.setAvailableTickets(avTickets);
+                events.add(event);
+                   System.out.println(event);
+               }
+           }
+
+       }catch (EventException | SQLException e){
+           System.out.println(e.getCause().getMessage());
+       }
+return events;
+}
+
+
+}
