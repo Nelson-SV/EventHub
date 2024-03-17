@@ -4,6 +4,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
@@ -13,101 +14,129 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<StackPane fx:controller="view.components.main.MainController" fx:id="mainLayout" minHeight="360.0" minWidth="640.0" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #F8F0E5;" stylesheets="@Main.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
-   <children>
-      <VBox alignment="TOP_CENTER" prefHeight="720.0" prefWidth="1280.0">
-         <children>
-            <HBox fx:id="navigation" alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="1280.0" style="-fx-background-color: #EADBC8;">
-               <children>
-                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="70.0" prefWidth="120.0" style="-fx-background-color: #DAC0A3;" text="EventHub" textFill="#102c57">
-                     <font>
-                        <Font name="System Bold Italic" size="24.0" />
-                     </font>
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin>
-                  </Label>
-                  <MFXButton alignment="CENTER" prefHeight="60.0" prefWidth="120.0" rippleColor="#102c57" style="-fx-background-color: #DAC0A3;" text="Events" textFill="#102c57">
-                     <font>
-                        <Font name="Arial Bold" size="18.0" />
-                     </font>
-                  </MFXButton>
+<StackPane fx:id="mainLayout" minHeight="360.0" minWidth="640.0" prefHeight="720.0" prefWidth="1280.0" styleClass="mainParent" stylesheets="@Main.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.components.main.MainController">
+    <children>
+        <VBox alignment="TOP_CENTER" prefHeight="720.0" prefWidth="1280.0">
+            <children>
+                <HBox fx:id="navigation" alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="1280.0" styleClass="mainNavigation">
+                    <children>
+                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="70.0" prefWidth="120.0" styleClass="eventLogo" text="EventHub">
+                            <font>
+                                <Font name="System Bold Italic" size="24.0" />
+                            </font>
+                            <HBox.margin>
+                                <Insets />
+                            </HBox.margin>
+                        </Label>
+                        <MFXButton alignment="CENTER" prefHeight="60.0" prefWidth="120.0" rippleColor="#102c57" styleClass="controlNav" text="Events">
+                            <font>
+                                <Font name="Arial Bold" size="18.0" />
+                            </font>
+                        </MFXButton>
 
-                  <MFXButton alignment="CENTER" prefHeight="60.0" prefWidth="120.0" rippleColor="#102c57" style="-fx-background-color: #DAC0A3;" text="Selling" textFill="#102c57">
+                              <MFXButton alignment="CENTER" prefHeight="60.0" prefWidth="120.0" rippleColor="#102c57" styleClass="controlNav" text="Selling">
+                            <font>
+                                <Font size="18.0" />
+                            </font>
+                        </MFXButton>
+                        <MFXButton alignment="CENTER" prefHeight="60.0" prefWidth="120.0" rippleColor="#102c57" styleClass="controlNav" text="Ticketing">
+                            <font>
+                                <Font size="18.0" />
+                            </font>
+                        </MFXButton>
+                    </children>
+                </HBox>
+                <HBox prefHeight="5.0" prefWidth="1280.0" styleClass="transitionBar" VBox.vgrow="NEVER">
+                    <children>
+                        <Rectangle arcHeight="5.0" arcWidth="5.0" height="5.0" strokeType="INSIDE" styleClass="eventBar" width="120.0" />
+                        <Rectangle arcHeight="5.0" arcWidth="5.0" height="5.0" strokeType="INSIDE" styleClass="eventBar" width="120.0" />
+                        <Rectangle arcHeight="5.0" arcWidth="5.0" height="5.0" strokeType="INSIDE" styleClass="eventBar" width="120.0" />
+                        <Rectangle arcHeight="5.0" arcWidth="5.0" height="5.0" strokeType="INSIDE" styleClass="eventBar" width="120.0" />
+                    </children>
+                </HBox>
+                <GridPane alignment="CENTER" maxHeight="80.0" maxWidth="1072.0" prefHeight="80.0" prefWidth="1072.0">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                    <children>
+                        <Label contentDisplay="CENTER" maxHeight="30.0" maxWidth="104.0" prefHeight="30.0" prefWidth="104.0" text="Events" textFill="#102c57" GridPane.halignment="LEFT" GridPane.valignment="BOTTOM">
+                            <font>
+                                <Font name="System Bold" size="29.0" />
+                            </font>
+                            <GridPane.margin>
+                                <Insets />
+                            </GridPane.margin>
+                        </Label>
+                        <Button alignment="CENTER" contentDisplay="CENTER" maxHeight="30.0" maxWidth="156.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="156.0" style="-fx-border-color: #102C57; -fx-border-radius: 50; -fx-background-color: #E5EDF8; -fx-background-radius: 50; -fx-border-width: 2;" text="Create event" textFill="#102c57" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.valignment="BOTTOM">
+                            <font>
+                                <Font name="System Bold" size="16.0" />
+                            </font>
+                        </Button>
+                    </children>
+                </GridPane>
+                <GridPane maxHeight="30.0" maxWidth="1072.0" prefHeight="30.0" prefWidth="1072.0">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                    <children>
+                        <TextField maxHeight="30.0" maxWidth="312.0" prefHeight="30.0" prefWidth="312.0" promptText="Search events..." styleClass="searchBox" />
+                    </children>
+                    <VBox.margin>
+                        <Insets bottom="5.0" />
+                    </VBox.margin>
+                </GridPane>
+            <HBox fillHeight="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="30.0" minWidth="536.0" prefHeight="30.0" prefWidth="1076.0" styleClass="eventsHeader">
+               <children>
+                  <Label alignment="CENTER" maxHeight="30.0" maxWidth="520.0" minHeight="30.0" minWidth="280.0" prefHeight="30.0" prefWidth="520.0" text="Event">
                      <font>
-                        <Font size="18.0" />
+                        <Font size="16.0" />
                      </font>
-                  </MFXButton>
-                  <MFXButton alignment="CENTER" prefHeight="60.0" prefWidth="120.0" rippleColor="#102c57" style="-fx-background-color: #DAC0A3; -fx-border-radius: 0%;" text="Ticketing" textFill="#102c57">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </MFXButton>
+                  </Label>
+                  <Label alignment="CENTER" maxHeight="30.0" maxWidth="112.0" minHeight="30.0" minWidth="60.0" prefHeight="30.0" prefWidth="112.0" text="Status" />
+                  <Label alignment="CENTER" maxHeight="30.0" maxWidth="112.0" minHeight="30.0" minWidth="60.0" prefHeight="30.0" prefWidth="112.0" text="Tickets" />
+                  <Label alignment="CENTER" maxHeight="30.0" maxWidth="112.0" minHeight="30.0" minWidth="60.0" prefHeight="30.0" prefWidth="112.0" text="Revenue" />
+                  <Label alignment="CENTER" maxHeight="30.0" maxWidth="212.0" minHeight="30.0" minWidth="106.0" prefHeight="30.0" prefWidth="212.0" text="Actions" />
                </children>
             </HBox>
-            <HBox prefHeight="5.0" prefWidth="1280.0" style="-fx-background-color: #EADBC8;" VBox.vgrow="NEVER" />
-            <GridPane alignment="CENTER" maxHeight="80.0" maxWidth="1072.0" prefHeight="80.0" prefWidth="1072.0">
-              <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-              </rowConstraints>
-               <children>
-                  <Label contentDisplay="CENTER" maxHeight="30.0" maxWidth="104.0" prefHeight="30.0" prefWidth="104.0" text="Events" textFill="#102c57" GridPane.halignment="LEFT" GridPane.valignment="BOTTOM">
-                     <font>
-                        <Font name="System Bold" size="29.0" />
-                     </font>
-                     <GridPane.margin>
-                        <Insets />
-                     </GridPane.margin>
-                  </Label>
-                  <Button alignment="CENTER" contentDisplay="CENTER" maxHeight="30.0" maxWidth="156.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="156.0" style="-fx-border-color: #102C57; -fx-border-radius: 50; -fx-background-color: #E5EDF8; -fx-background-radius: 50; -fx-border-width: 2;" text="Create event" textFill="#102c57" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.valignment="BOTTOM">
-                     <font>
-                        <Font name="System Bold" size="16.0" />
-                     </font>
-                  </Button>
-               </children>
-            </GridPane>
-            <GridPane maxHeight="30.0" maxWidth="1072.0" prefHeight="30.0" prefWidth="1072.0">
-              <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-              </rowConstraints>
-               <children>
-                  <TextField maxHeight="30.0" maxWidth="312.0" prefHeight="30.0" prefWidth="312.0" promptText="Search events..." style="-fx-border-color: #102C57; -fx-border-width: 2; -fx-border-radius: 10; -fx-background-radius: 10;" />
-               </children>
-            </GridPane>
-            <TableView maxHeight="485.0" maxWidth="1072.0" prefHeight="485.0" prefWidth="1072.0" style="-fx-background-color: #F8F0E5; -fx-background-radius: 10; -fx-border-color: #102c57; -fx-border-radius: 10;">
-              <columns>
-                <TableColumn maxWidth="520.0" minWidth="208.0" prefWidth="520.0" style="-fx-background-color: #f1e9da; -fx-background-radius: 10 0.0 10 0.0; -fx-border-radius: 10 0.0 10 0.0;" text="Event" />
-                <TableColumn editable="false" maxWidth="112.0" minWidth="60.0" prefWidth="112.0" sortable="false" style="-fx-background-color: #f1e9da;" text="Status" />
-                  <TableColumn editable="false" maxWidth="112.0" minWidth="60.0" prefWidth="112.0" sortable="false" style="-fx-background-color: #f1e9da;" text="Tickets" />
-                  <TableColumn editable="false" maxWidth="112.0" minWidth="60.0" prefWidth="112.0" sortable="false" style="-fx-background-color: #f1e9da;" text="Revenue" />
-                  <TableColumn editable="false" maxWidth="212.0" minWidth="120.0" prefWidth="212.0" sortable="false" style="-fx-background-color: #f1e9da;" text="Actions" />
-              </columns>
-               <VBox.margin>
-                  <Insets left="104.0" right="104.0" />
-               </VBox.margin>
-            </TableView>
-         </children>
-         <StackPane.margin>
-            <Insets />
-         </StackPane.margin>
-      </VBox>
-      <StackPane fx:id="secondaryLayout" minHeight="360.0" minWidth="640.0" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #121212;" visible="false">
-         <children>
-            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
-               <children>
-                  <Button fx:id="closeSecondaryLayout" mnemonicParsing="false" onAction="#closeWindow" text="Close" />
-               </children>
-            </VBox>
-         </children></StackPane>
-   </children>
+            <ScrollPane fx:id="eventsView" hbarPolicy="NEVER" maxHeight="485.0" maxWidth="1076.0" minHeight="242.0" minWidth="536.0" prefHeight="485.0" prefWidth="1076.0" styleClass="eventsView" VBox.vgrow="NEVER">
+               <content>
+                  <VBox fx:id="mainEventContainer" alignment="TOP_CENTER" fillWidth="false" spacing="5.0" />
+               </content>
+            </ScrollPane>
+            </children>
+            <StackPane.margin>
+                <Insets />
+            </StackPane.margin>
+        </VBox>
+        <StackPane fx:id="secondaryLayout" minHeight="360.0" minWidth="640.0" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: rgba(0, 0, 0, 0.5);" visible="false">
+            <children>
+                <TableView fx:id="eventTable" maxHeight="485.0" maxWidth="1072.0" prefHeight="485.0" prefWidth="1072.0" styleClass="tableHeader">
+                    <columns>
+                        <TableColumn fx:id="description" maxWidth="520.0" minWidth="208.0" prefWidth="520.0" styleClass="column,eventColumn" text="Event" />
+                        <TableColumn fx:id="status" editable="false" maxWidth="112.0" minWidth="60.0" prefWidth="112.0" sortable="false" styleClass="column" text="Status" />
+                        <TableColumn fx:id="tickets" editable="false" maxWidth="112.0" minWidth="60.0" prefWidth="112.0" sortable="false" styleClass="column" text="Tickets" />
+                        <TableColumn fx:id="revenue" editable="false" maxWidth="112.0" minWidth="60.0" prefWidth="112.0" sortable="false" styleClass="column" text="Revenue" />
+<!--                        <TableColumn  fx:id="actionsColumn" editable="false" maxWidth="212.0" minWidth="120.0" prefWidth="212.0"-->
+<!--                                     sortable="false" styleClass="actionColumn,column" text="Actions"/>-->
+                    </columns>
+                </TableView>
+                <VBox alignment="BOTTOM_CENTER" prefHeight="200.0" prefWidth="100.0">
+                    <children>
+                        <Button fx:id="closeSecondaryLayout" mnemonicParsing="false" onAction="#closeWindow" text="Close" />
+                    </children>
+                </VBox>
+            </children>
+        </StackPane>
+    </children>
 </StackPane>

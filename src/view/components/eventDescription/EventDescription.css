@@ -1,0 +1,30 @@
+.componentBackgroundColor {
+    -fx-background-color: #E5EDF8;
+}
+
+.eventComponentContainer {
+    -fx-background-radius: 10;
+    -fx-border-color: #102c57;
+    -fx-border-width: 2;
+    -fx-border-radius: 10;
+}
+
+.eventComponentContainer.label {
+    -fx-text-fill: #102c57;
+    -fx-font-weight: 400;
+    -fx-font-size: 14;
+}
+
+.eventName {
+    -fx-background-radius: 10 0 0 10;
+}
+
+.eventAction {
+    -fx-background-radius: 0 10 10 0;
+    -fx-alignment: bottom-center;
+}
+
+
+
+
+

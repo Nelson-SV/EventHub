@@ -1,14 +1,12 @@
 
 .manage_parent{
-    -fx-background-color: #F8F0E5;
-    -fx-border-color: #102c57;
-    -fx-background-radius: 10;
-    -fx-border-radius: 10;
-    -fx-border-width: 2
+    /*-fx-background-radius: 10;*/
+    /*-fx-border-radius: 10;*/
+    /*-fx-border-width: 2;*/
 }
 .manage_label{
-    -fx-text-fill:--text-fill-color;
-}
-.manage_label:hover{
 
+}
+.manage_parent:hover{
+-fx-background-color:#DAC0A3 ;
 }
