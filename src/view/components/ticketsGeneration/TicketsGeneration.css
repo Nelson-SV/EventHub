@@ -1,0 +1,35 @@
+.flowPane {
+    -fx-border-color: BLACK;
+}
+.mfx-text-field .floating-text{
+    -fx-background-color: #DAC0A3;
+    /*-fx-text-fill: #102c57;*/
+    /*-fx-font-weight: bold;*/
+    -fx-text-fill: BLACK;
+}
+
+.comboGroup {
+    -fx-border-color: BLACK;
+    -fx-background-color: #DAC0A3;
+    -fx-border-radius: 10;
+}
+
+.textFieldGroup {
+    -fx-border-color: BLACK;
+    -fx-background-color: #DAC0A3;
+    -fx-border-radius: 10;
+}
+
+.buttonGroup {
+    -fx-border-color: BLACK;
+    -fx-border-radius: 10;
+    -fx-background-color: #DAC0A3;
+}
+
+.vHBoxGroup {
+    -fx-background-color: #DAC0A3;
+}
+
+.scrollPane {
+    -fx-background-color: #DAC0A3;
+}
