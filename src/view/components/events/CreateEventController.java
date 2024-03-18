@@ -121,14 +121,6 @@ public class CreateEventController {
 
 public MFXScrollPane getRoot(){
         return editScrolPane;
-}
-
-<<<<<<< HEAD
+}}
 
 
-
-
-}
-=======
-} //hhhhhhhgit
->>>>>>> 32616cdf32149b2a7dc20ec46df8081972a68ee7
