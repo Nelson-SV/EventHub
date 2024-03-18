@@ -25,6 +25,7 @@ public class EventDAO {
 //TODO
     // change to use transaction when  new event is inserted into the database in order to avoid data loss
     public void insertEvent(Event event) throws SQLException {
+
         int locationID = insertLocation(event.getLocation());
         try (Connection connection = connectionManager.getConnection()) {
             String sql = "INSERT INTO Event (Start_date, Name, LocationId, Description, AvTickets, End_Date, Start_Time, End_Time) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
