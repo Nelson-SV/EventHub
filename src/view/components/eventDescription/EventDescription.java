@@ -56,67 +56,35 @@ public class EventDescription implements Initializable {
         this.initializeStatus(event.getStartDate(), event.getEndDate(), eventStatus);
         this.eventTickets.setText(event.getAvailableTickets() + "");
         this.eventStart.setText(START_DATE + event.getStartDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-
+        initializeEndDate(event.getEndDate(), eventEnd);
     }
 
- private void initializeEndDate(LocalDate endDate ,Label label){
-        if(endDate!=null){
+    private void initializeEndDate(LocalDate endDate, Label label) {
+        if (endDate != null) {
             label.setText(END_DATE + event.getEndDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-        }else{
-            label.setText(END_DATE +"NA");
+        } else {
+            label.setText(END_DATE + "NA");
         }
+    }
 
- }
     private void initializeStatus(LocalDate startDate, LocalDate endDate, Label label) {
         LocalDate today = LocalDate.now();
 
         if (today.isBefore(startDate)) {
-            label.setText("UPCOMING"); // Changed from ACTIVE for clarity.
+            label.setText("UPCOMING");
             label.getStyleClass().clear();
             label.getStyleClass().addAll("eventStatus", "active");
-            return;
-        }
-        if (endDate != null) {
-            if ((today.isEqual(startDate) || today.isAfter(startDate)) && today.isBefore(endDate)) {
-                label.setText("ONGOING");
-                label.getStyleClass().clear();
-                label.getStyleClass().addAll("eventStatus", "ongoing");
-                return;
-            }
-        }
-        if (today.isEqual(startDate)) {
+        } else if ((today.isEqual(startDate) || today.isAfter(startDate)) && (endDate == null || today.isBefore(endDate))) {
             label.setText("ONGOING");
             label.getStyleClass().clear();
             label.getStyleClass().addAll("eventStatus", "ongoing");
-            return;
-        }
-
-        if (endDate != null) {
-            if (today.isEqual(endDate) || today.isAfter(endDate)) {
-                label.setText("FINALIZED");
-                label.getStyleClass().clear();
-                label.getStyleClass().addAll("eventStatus", "ended");
-                return;
-            }
-        }
-        if (today.isAfter(startDate)) {
+        } else {
             label.setText("FINALIZED");
             label.getStyleClass().clear();
             label.getStyleClass().addAll("eventStatus", "ended");
         }
     }
 
-    private boolean isCurrentDay(LocalDate date) {
-        return date.equals(LocalDate.now());
-    }
-
-    private boolean isBefore(LocalDate date) {
-        return date.isBefore(LocalDate.now());
-    }
-
-    private boolean isAfter(LocalDate date) {
-        return date.isAfter(LocalDate.now());
-    }
 
 
 }

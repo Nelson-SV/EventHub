@@ -14,8 +14,9 @@ import java.sql.SQLException;
 
 public class Model {
 //TODO
-// when an event is deleted if succesful from the db remove it from the list
-// maybe we use a map instead of a list where the eventId will be the key;
+// 1.when an event is deleted if succesful from the db remove it from the list
+// 2.maybe we use a map instead of a list where the eventId will be the key;
+// 3.add an observable object that will hold the current selected event to be managed
 
     private Displayable eventsDisplayer;
     private EventManager manager;
