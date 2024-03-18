@@ -13,6 +13,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
 import view.components.main.Model;
+import view.components.ticketsGeneration.TicketsGeneration;
+
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -81,6 +83,8 @@ public class CreateEventController {
     }
 
     public void addTicket(ActionEvent actionEvent) {
+        TicketsGeneration ticketsGeneration = new TicketsGeneration(stackPane);
+        stackPane.getChildren().add(ticketsGeneration.getRoot());
     }
 
     public void saveEvent(ActionEvent actionEvent) throws SQLException, EventException {
@@ -118,5 +122,9 @@ public class CreateEventController {
 public MFXScrollPane getRoot(){
         return editScrolPane;
 }
+
+
+
+
 
 }

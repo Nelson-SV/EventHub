@@ -7,10 +7,14 @@ import io.github.palexdev.materialfx.controls.MFXTextField;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.StackPane;
 import view.components.main.MainController;
+
+import java.io.IOException;
 
 public class TicketsGeneration {
 
@@ -26,6 +30,23 @@ public class TicketsGeneration {
     public MFXScrollPane scrollPane;
 
     public MainController mainController;
+    private StackPane secondaryLayout;
+
+    public MFXScrollPane getRoot() {
+        return scrollPane;
+    }
+
+
+    public TicketsGeneration(StackPane secondaryLayout) {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("TicketsGeneration.fxml"));
+        loader.setController(this);
+        try {
+            scrollPane=loader.load();
+            this.secondaryLayout=secondaryLayout;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public void setMainController(MainController controller){
         this.mainController = controller;
@@ -35,9 +56,11 @@ public class TicketsGeneration {
         updateEventInformation();
         updateTicketInformation();
         updateExtraLines();
+
     }
 
     public void addTickets(ActionEvent actionEvent) {
+        secondaryLayout.getChildren().remove(this.getRoot());
     }
 
     public void updateEventInformation(){

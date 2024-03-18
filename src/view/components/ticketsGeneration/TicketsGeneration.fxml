@@ -12,8 +12,8 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-
-<MFXScrollPane fx:id="scrollPane" maxHeight="720.0" maxWidth="600.0" minHeight="720.0" minWidth="600.0" prefHeight="720.0" prefWidth="600.0" styleClass="scrollPane" stylesheets="TicketsGeneration.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.components.ticketsGeneration.TicketsGeneration">
+<!--        fx:controller="view.components.ticketsGeneration.TicketsGeneration"-->
+<MFXScrollPane fx:id="scrollPane" maxHeight="720.0" maxWidth="600.0" minHeight="720.0" minWidth="600.0" prefHeight="720.0" prefWidth="600.0" styleClass="scrollPane" stylesheets="TicketsGeneration.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" >
    <content>
       <VBox maxHeight="718.0" maxWidth="598.0" minHeight="718.0" minWidth="598.0" prefHeight="718.0" prefWidth="598.0" styleClass="vHBoxGroup" stylesheets="@TicketsGeneration.css">
          <children>

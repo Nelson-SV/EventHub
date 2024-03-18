@@ -5,9 +5,9 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<HBox fx:id="eventContainer" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="120.0" prefWidth="1072.0" styleClass="componentBackgroundColor, eventComponentContainer" stylesheets="@EventDescription.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<HBox fx:id="eventContainer" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="60.0" minWidth="536.0" prefHeight="120.0" prefWidth="1072.0" styleClass="componentBackgroundColor, eventComponentContainer" stylesheets="@EventDescription.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <VBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="60.0" minWidth="260.0" prefHeight="120.0" prefWidth="520.0" styleClass="componentBackgroundColor,eventName" stylesheets="@EventDescription.css">
+      <VBox alignment="CENTER_LEFT" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="60.0" minWidth="260.0" prefHeight="120.0" prefWidth="520.0" styleClass="componentBackgroundColor,eventName" stylesheets="@EventDescription.css" HBox.hgrow="ALWAYS">
          <children>
             <Label fx:id="eventName" text="Beer Tasting" />
             <Label fx:id="eventLocation" text="Spangsberg Mollevej, 36 D" />
@@ -17,24 +17,24 @@
             <Insets bottom="5.0" left="15.0" right="5.0" top="5.0" />
          </padding>
       </VBox>
-      <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="30.0" minWidth="60.0" prefHeight="120.0" prefWidth="112.0" styleClass="componentBackgroundColor" stylesheets="@EventDescription.css">
+      <VBox alignment="CENTER" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="30.0" minWidth="60.0" prefHeight="120.0" prefWidth="112.0" styleClass="componentBackgroundColor" stylesheets="@EventDescription.css" HBox.hgrow="ALWAYS">
          <children>
-            <Label fx:id="eventStatus" alignment="BOTTOM_RIGHT" text="Live"  />
+            <Label fx:id="eventStatus" alignment="BOTTOM_RIGHT" text="Live" />
          </children>
       </VBox>
-      <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="60.0" minWidth="60.0" prefHeight="120.0" prefWidth="112.0" styleClass="componentBackgroundColor" stylesheets="@EventDescription.css">
+      <VBox alignment="CENTER" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="60.0" minWidth="60.0" prefHeight="120.0" prefWidth="112.0" styleClass="componentBackgroundColor" stylesheets="@EventDescription.css" HBox.hgrow="ALWAYS">
          <children>
             <Label fx:id="eventTickets" text="25/125" />
          </children>
       </VBox>
-      <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="60.0" minWidth="60.0" prefHeight="120.0" prefWidth="112.0" styleClass="componentBackgroundColor" stylesheets="@EventDescription.css">
+      <VBox alignment="CENTER" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="60.0" minWidth="60.0" prefHeight="120.0" prefWidth="112.0" styleClass="componentBackgroundColor" stylesheets="@EventDescription.css" HBox.hgrow="ALWAYS">
          <children>
             <Label fx:id="eventRevenue" text="\$4500" />
          </children>
       </VBox>
       <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="60.0" minWidth="106.0" prefHeight="120.0" prefWidth="212.0">
          <children>
-            <HBox fx:id="eventActions" alignment="BOTTOM_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="60.0" minWidth="106.0" prefHeight="60.0" prefWidth="212.0" styleClass="componentBackgroundColor,eventAction" stylesheets="@EventDescription.css">
+            <HBox fx:id="eventActions" alignment="BOTTOM_CENTER" fillHeight="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="60.0" minWidth="106.0" prefHeight="60.0" prefWidth="212.0" styleClass="componentBackgroundColor,eventAction" stylesheets="@EventDescription.css" VBox.vgrow="ALWAYS">
                <VBox.margin>
                   <Insets />
                </VBox.margin>

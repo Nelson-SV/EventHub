@@ -18,6 +18,7 @@ import javafx.stage.Stage;
 import view.components.eventDescription.EventComponenet;
 import view.components.events.CreateEventController;
 import view.components.manageButton.ManageAction;
+import view.components.ticketsGeneration.TicketsGeneration;
 import view.utility.NavigationHoverControl;
 
 import java.io.IOException;
@@ -82,8 +83,7 @@ public class MainController implements Initializable {
 
 
     public void createTicket(ActionEvent actionEvent) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/components/ticketsGeneration/TicketsGeneration.fxml"));
-        Parent root = loader.load();
+
 
         //TicketsGeneration ticketController = loader.getController();
         //ticketController.setMainController(this);
@@ -91,7 +91,7 @@ public class MainController implements Initializable {
         Stage stage = new Stage();
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setTitle("Create Ticket");
-        stage.setScene(new Scene(root));
+        stage.setScene(new Scene(new TicketsGeneration(secondaryLayout).getRoot()));
         stage.show();
     }
 }

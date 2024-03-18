@@ -39,13 +39,10 @@ public class EventDAO {
                 statement.setTime(7, java.sql.Time.valueOf(event.getStartTime()));
                 statement.setTime(8, java.sql.Time.valueOf(event.getEndTime()));
                 statement.executeUpdate();
-
-
             }
         } catch (EventException e) {
             throw new RuntimeException(e);
         }
-
     }
 
 
