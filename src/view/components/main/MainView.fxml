@@ -17,11 +17,11 @@
 
 <StackPane fx:id="mainLayout" minHeight="360.0" minWidth="640.0" prefHeight="720.0" prefWidth="1280.0" styleClass="mainParent" stylesheets="@Main.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.components.main.MainController">
     <children>
-        <VBox alignment="TOP_CENTER" prefHeight="720.0" prefWidth="1280.0">
+        <VBox alignment="TOP_CENTER" minHeight="360.0" minWidth="640.0" prefHeight="720.0" prefWidth="1280.0">
             <children>
-                <HBox fx:id="navigation" alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="1280.0" styleClass="mainNavigation">
+                <HBox fx:id="navigation" alignment="CENTER_LEFT" maxHeight="-Infinity" minHeight="30.0" minWidth="640.0" prefHeight="60.0" prefWidth="1280.0" styleClass="mainNavigation" VBox.vgrow="ALWAYS">
                     <children>
-                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="70.0" prefWidth="120.0" styleClass="eventLogo" text="EventHub">
+                        <Label alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="35.0" minWidth="60.0" prefHeight="70.0" prefWidth="120.0" styleClass="eventLogo" text="EventHub" HBox.hgrow="ALWAYS">
                             <font>
                                 <Font name="System Bold Italic" size="24.0" />
                             </font>
@@ -29,30 +29,30 @@
                                 <Insets />
                             </HBox.margin>
                         </Label>
-                        <MFXButton fx:id="eventsNavButton" alignment="CENTER" prefHeight="60.0" prefWidth="120.0" rippleColor="#102c57" styleClass="controlNav" text="Events">
+                        <MFXButton fx:id="eventsNavButton" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="30.0" minWidth="60.0" prefHeight="60.0" prefWidth="120.0" rippleColor="#102c57" styleClass="controlNav" text="Events" HBox.hgrow="ALWAYS">
                             <font>
                                 <Font name="Arial Bold" size="18.0" />
                             </font>
                         </MFXButton>
 
-                              <MFXButton fx:id="sellingNavButton" alignment="CENTER" prefHeight="60.0" prefWidth="120.0" rippleColor="#102c57" styleClass="controlNav" text="Selling">
+                              <MFXButton fx:id="sellingNavButton" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="30.0" minWidth="60.0" prefHeight="60.0" prefWidth="120.0" rippleColor="#102c57" styleClass="controlNav" text="Selling">
                             <font>
                                 <Font size="18.0" />
                             </font>
                         </MFXButton>
-                        <MFXButton fx:id="ticketingNavButton" alignment="CENTER" onAction="#createTicket" prefHeight="60.0" prefWidth="120.0" rippleColor="#102c57" styleClass="controlNav" text="Ticketing">
+                        <MFXButton fx:id="ticketingNavButton" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="30.0" minWidth="60.0" onAction="#createTicket" prefHeight="60.0" prefWidth="120.0" rippleColor="#102c57" styleClass="controlNav" text="Ticketing">
                             <font>
                                 <Font size="18.0" />
                             </font>
                         </MFXButton>
                     </children>
                 </HBox>
-                <HBox prefHeight="10.0" prefWidth="1280.0" styleClass="transitionBar" VBox.vgrow="NEVER">
+                <HBox maxHeight="-Infinity" minHeight="-Infinity" minWidth="640.0" prefHeight="10.0" prefWidth="1280.0" styleClass="transitionBar" VBox.vgrow="ALWAYS">
                     <children>
-                        <Rectangle arcHeight="5.0" arcWidth="5.0" height="10.0" smooth="false" strokeType="INSIDE" styleClass="eventBar" width="120.0" />
-                        <Rectangle fx:id="eventsLine" arcHeight="5.0" arcWidth="5.0" height="10.0" smooth="false" strokeType="INSIDE" styleClass="eventBar" width="120.0" />
-                        <Rectangle fx:id="sellingLine" arcHeight="5.0" arcWidth="5.0" height="10.0" smooth="false" strokeType="INSIDE" styleClass="eventBar" width="120.0" />
-                        <Rectangle fx:id="ticketingLine" arcHeight="5.0" arcWidth="5.0" height="10.0" smooth="false" strokeType="INSIDE" styleClass="eventBar" width="120.0" />
+                        <Rectangle arcHeight="5.0" arcWidth="5.0" height="10.0" smooth="false" strokeType="INSIDE" styleClass="eventBar" width="120.0" HBox.hgrow="ALWAYS" />
+                        <Rectangle fx:id="eventsLine" arcHeight="5.0" arcWidth="5.0" height="10.0" smooth="false" strokeType="INSIDE" styleClass="eventBar" width="120.0" HBox.hgrow="ALWAYS" />
+                        <Rectangle fx:id="sellingLine" arcHeight="5.0" arcWidth="5.0" height="10.0" smooth="false" strokeType="INSIDE" styleClass="eventBar" width="120.0" HBox.hgrow="ALWAYS" />
+                        <Rectangle fx:id="ticketingLine" arcHeight="5.0" arcWidth="5.0" height="10.0" smooth="false" strokeType="INSIDE" styleClass="eventBar" width="120.0" HBox.hgrow="ALWAYS" />
                     </children>
                 </HBox>
                 <GridPane alignment="CENTER" maxHeight="80.0" maxWidth="1072.0" prefHeight="80.0" prefWidth="1072.0">
@@ -94,22 +94,25 @@
                         <Insets bottom="5.0" />
                     </VBox.margin>
                 </GridPane>
-            <HBox fillHeight="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="30.0" minWidth="536.0" prefHeight="30.0" prefWidth="1076.0" styleClass="eventsHeader">
+            <HBox fillHeight="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="30.0" minWidth="536.0" prefHeight="30.0" prefWidth="1076.0" styleClass="eventsHeader" VBox.vgrow="ALWAYS">
                <children>
-                  <Label alignment="CENTER" maxHeight="30.0" maxWidth="520.0" minHeight="30.0" minWidth="280.0" prefHeight="30.0" prefWidth="520.0" text="Event">
+                  <Label alignment="CENTER" maxHeight="30.0" maxWidth="520.0" minHeight="30.0" minWidth="280.0" prefHeight="30.0" prefWidth="520.0" text="Event" HBox.hgrow="ALWAYS">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <Label alignment="CENTER" maxHeight="30.0" maxWidth="112.0" minHeight="30.0" minWidth="60.0" prefHeight="30.0" prefWidth="112.0" text="Status" />
-                  <Label alignment="CENTER" maxHeight="30.0" maxWidth="112.0" minHeight="30.0" minWidth="60.0" prefHeight="30.0" prefWidth="112.0" text="Tickets" />
-                  <Label alignment="CENTER" maxHeight="30.0" maxWidth="112.0" minHeight="30.0" minWidth="60.0" prefHeight="30.0" prefWidth="112.0" text="Start Date" />
-                  <Label alignment="CENTER" maxHeight="30.0" maxWidth="212.0" minHeight="30.0" minWidth="106.0" prefHeight="30.0" prefWidth="212.0" text="Actions" />
+                  <Label alignment="CENTER" maxHeight="30.0" maxWidth="112.0" minHeight="30.0" minWidth="60.0" prefHeight="30.0" prefWidth="112.0" text="Status" HBox.hgrow="ALWAYS" />
+                  <Label alignment="CENTER" maxHeight="30.0" maxWidth="112.0" minHeight="30.0" minWidth="60.0" prefHeight="30.0" prefWidth="112.0" text="Tickets" HBox.hgrow="ALWAYS" />
+                  <Label alignment="CENTER" maxHeight="30.0" maxWidth="112.0" minHeight="30.0" minWidth="60.0" prefHeight="30.0" prefWidth="112.0" text="Start Date" HBox.hgrow="ALWAYS" />
+                  <Label alignment="CENTER" maxHeight="30.0" maxWidth="212.0" minHeight="30.0" minWidth="106.0" prefHeight="30.0" prefWidth="212.0" text="Actions" HBox.hgrow="ALWAYS" />
                </children>
             </HBox>
-            <ScrollPane fx:id="eventsView" hbarPolicy="NEVER" maxHeight="485.0" maxWidth="1076.0" minHeight="242.0" minWidth="536.0" prefHeight="485.0" prefWidth="1076.0" styleClass="eventsView" VBox.vgrow="NEVER">
+            <ScrollPane fx:id="eventsView" hbarPolicy="NEVER" maxHeight="485.0" maxWidth="1076.0" minHeight="242.0" minWidth="536.0" prefHeight="485.0" prefWidth="1076.0" styleClass="eventsView" vbarPolicy="ALWAYS" VBox.vgrow="NEVER">
                <content>
-                  <VBox fx:id="mainEventContainer" alignment="TOP_CENTER" fillWidth="false" spacing="5.0" />
+                  <VBox fx:id="mainEventContainer" alignment="TOP_CENTER" fillWidth="false" spacing="5.0">
+                     <padding>
+                        <Insets right="10.0" />
+                     </padding></VBox>
                </content>
             </ScrollPane>
             </children>
