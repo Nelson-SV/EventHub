@@ -22,55 +22,77 @@ public class EventDAO {
 
     }
 
+
 //TODO
-    // change to use transaction when  new event is inserted into the database in order to avoid data loss
-    public void insertEvent(Event event) throws SQLException {
+// Exception to be handled
+public boolean insertEvent(Event event){
+       boolean success = false;
+       Connection conn = null;
+       try {
+           conn=connectionManager.getConnection();
+            conn.setAutoCommit(false);
+           int locationId= insertLocation(event.getLocation(),conn);
+           if(locationId<1){
+               conn.rollback();
+               return false;
+           }
 
-        int locationID = insertLocation(event.getLocation());
-        try (Connection connection = connectionManager.getConnection()) {
-            String sql = "INSERT INTO Event (Start_date, Name, LocationId, Description, AvTickets, End_Date, Start_Time, End_Time) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-            try (PreparedStatement statement = connection.prepareStatement(sql)) {
-                statement.setDate(1, java.sql.Date.valueOf(event.getStartDate()));
-                statement.setString(2, event.getName());
-                statement.setInt(3, locationID);
-                statement.setString(4, event.getDescription());
-                statement.setInt(5, 0);
-                statement.setDate(6, java.sql.Date.valueOf(event.getEndDate()));
-                statement.setTime(7, java.sql.Time.valueOf(event.getStartTime()));
-                statement.setTime(8, java.sql.Time.valueOf(event.getEndTime()));
-                statement.executeUpdate();
-            }
-        } catch (EventException e) {
-            throw new RuntimeException(e);
-        }
-    }
+           String sql = "INSERT INTO Event (Start_date, Name, LocationId, Description, AvTickets, End_Date, Start_Time, End_Time) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
+           try(PreparedStatement statement = conn.prepareStatement(sql)){
+               statement.setDate(1, java.sql.Date.valueOf(event.getStartDate()));
+               statement.setString(2, event.getName());
+               statement.setInt(3, locationId);
+               statement.setString(4, event.getDescription());
+               statement.setInt(5, 0);
+               statement.setDate(6, java.sql.Date.valueOf(event.getEndDate()));
+               statement.setTime(7, java.sql.Time.valueOf(event.getStartTime()));
+               statement.setTime(8, java.sql.Time.valueOf(event.getEndTime()));
+               statement.executeUpdate();
+           }
+conn.commit();
+success= true;
+       }
+       catch (EventException|SQLException  e) {
+           if(conn!=null){
+               try {
+                   conn.rollback();
+               } catch (SQLException ex) {
+                   throw new RuntimeException(ex);
+               }
+           }
+           throw new RuntimeException(e);
+       }finally {
+           try {
+               conn.close();
+           } catch (SQLException e) {
+               throw new RuntimeException(e);
+           }
+       }
+       return success;
+}
 
-    public int insertLocation(Location location) throws SQLException {
-        try (Connection connection = connectionManager.getConnection()) {
-            String sql = "INSERT INTO Location (street, additional, country, City, Postal_Code) VALUES (?, ?, ?, ?, ?)";
-            try (PreparedStatement statement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
-                statement.setString(1, location.getStreet());
-                statement.setString(2, location.getAdditional());
-                statement.setString(3, location.getCountry());
-                statement.setString(4, location.getCity());
-                statement.setString(5, location.getPostalCode());
-                statement.executeUpdate();
+    public int insertLocation(Location location, Connection connection) throws SQLException {
+        String sql = "INSERT INTO Location (street, additional, country, City, Postal_Code) VALUES (?, ?, ?, ?, ?)";
+        try (PreparedStatement statement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
+            statement.setString(1, location.getStreet());
+            statement.setString(2, location.getAdditional());
+            statement.setString(3, location.getCountry());
+            statement.setString(4, location.getCity());
+            statement.setString(5, location.getPostalCode());
+            statement.executeUpdate();
 
-                // Get the auto-generated key (location_id)
-                try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
-                    if (generatedKeys.next()) {
-                        return generatedKeys.getInt(1);
-                    } else {
-                        throw new SQLException("Failed to insert location, no keys generated.");
-                    }
+            try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    return generatedKeys.getInt(1); // Return generated location ID
+                } else {
+                    throw new SQLException("Failed to insert location, no keys generated.");
                 }
             }
-        } catch (EventException e) {
-            throw new RuntimeException(e);
         }
-
     }
+
+
 
 public List<Event> getEvents(){
        return retrieveEvents();
@@ -102,12 +124,10 @@ private List<Event> retrieveEvents() {
                String postalCode= res.getString(15);
                Location location = new Location(street,additional,postalCode,country,city);
                location.setId(locId);
-                   //String name, String description, LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime, Location location
                 Event event = new Event(name,description,startDate,endDate,startTime,endTime,location);
                 event.setId(id);
                 event.setAvailableTickets(avTickets);
                 events.add(event);
-                   System.out.println(event);
                }
            }
 
