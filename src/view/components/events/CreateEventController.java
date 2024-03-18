@@ -9,7 +9,6 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
 import view.components.main.Model;
@@ -189,7 +188,6 @@ public MFXScrollPane getRoot(){
         } else {
             markFieldAsValid(street);
         }
-
         return isValid;
     }
 

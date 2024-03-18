@@ -11,9 +11,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<MFXScrollPane fx:id="editScrolPane" fitToHeight="true" fitToWidth="true" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="833.0" prefWidth="1000.0" style="-fx-background-color: EADBC8FF;" stylesheets="@event.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" >
+<MFXScrollPane fx:id="editScrolPane" fitToHeight="true" fitToWidth="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720" prefWidth="1000.0" style="-fx-background-color: EADBC8FF;" stylesheets="@event.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <content>
-      <VBox prefHeight="853.0" prefWidth="985.0" spacing="30.0">
+      <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="853.0" prefWidth="985.0" spacing="30.0">
          <children>
             <HBox prefHeight="38.0" prefWidth="927.0">
                <VBox.margin>
