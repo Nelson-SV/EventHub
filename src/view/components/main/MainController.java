@@ -1,21 +1,16 @@
 package view.components.main;
 
 import io.github.palexdev.materialfx.controls.MFXButton;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import view.components.eventDescription.EventComponenet;
+import view.components.eventDescription.EventComponent;
 import view.components.events.CreateEventController;
 import view.components.listeners.Displayable;
 import view.components.manageButton.ManageAction;
@@ -74,7 +69,7 @@ public class MainController implements Initializable, Displayable {
     @Override
     public void displayEvents() {
         mainEventContainer.getChildren().clear();
-        model.getEvents().forEach(e -> mainEventContainer.getChildren().add(new EventComponenet(e, new ManageAction(this.secondaryLayout))));
+        model.getEvents().forEach(e -> mainEventContainer.getChildren().add(new EventComponent(e, new ManageAction(this.secondaryLayout,e.getId()))));
     }
 
 

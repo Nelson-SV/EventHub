@@ -11,14 +11,12 @@
 /*Create the red color for the ended events*/
 /*this color will be used for the ended events*/
 /*-fx-background-color: #E77565;*/
-#eventStatus {
+.eventStatus {
     -fx-text-fill: #102c57;
-    /*-fx-background-color: #A5F1AB;*/
     -fx-background-radius: 2;
     -fx-font-size: 14;
-    -fx-effect: dropshadow(gaussian, rgba(63, 226, 76, 1), 15, 0.8, 0, 0);
+    /*-fx-font-size: 14;-fx-effect: dropshadow(gaussian, rgba(63, 226, 76, 1), 15, 0.8, 0, 0);*/
 }
-
 
 
 .eventComponentContainer {
@@ -28,19 +26,44 @@
     -fx-border-radius: 10;
 }
 
-.eventComponentContainer.label {
+.eventName > .label {
     -fx-text-fill: #102c57;
-    -fx-font-weight: 400;
-    -fx-font-size: 14;
+    -fx-font-weight: 600;
+    -fx-font-size: 16;
 }
 
 .eventName {
     -fx-background-radius: 10 0 0 10;
 }
 
+.dates > .label {
+    -fx-text-fill: #102c57;
+    -fx-font-weight: 600;
+    -fx-font-size: 14;
+}
+
+.avTickets {
+    -fx-text-fill: #102c57;
+    -fx-font-weight: 600;
+    -fx-font-size: 14;
+}
+
+
 .eventAction {
     -fx-background-radius: 0 10 10 0;
     -fx-alignment: bottom-center;
+}
+
+.active {
+    -fx-effect: dropshadow(gaussian, rgba(63, 226, 76, 1), 15, 0.8, 0, 0);
+}
+
+.ongoing {
+    -fx-effect: dropshadow(gaussian, rgba(231, 101, 215, 1), 15, 0.8, 0, 0);
+}
+
+.ended {
+    -fx-effect: dropshadow(gaussian, rgba(231, 117, 101, 1), 15, 0.8, 0, 0);
 }
 
 

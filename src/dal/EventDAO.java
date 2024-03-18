@@ -121,6 +121,7 @@ private List<Event> retrieveEvents() {
                String name = res.getString(3);
                String description = res.getString(5);
                int avTickets = res.getInt(6);
+
                LocalDate endDate = null;
                if(res.getDate(7) != null) {
                    endDate = res.getDate(7).toLocalDate();
@@ -130,6 +131,7 @@ private List<Event> retrieveEvents() {
                if(res.getTime(9) !=null) {
                    endTime = res.getTime(9).toLocalTime();
                }
+
                int locId= res.getInt(10);
                String street = res.getString(11);
                String additional = res.getString(12);

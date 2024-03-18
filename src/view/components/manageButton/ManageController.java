@@ -14,7 +14,7 @@ import java.util.ResourceBundle;
 public class ManageController implements Initializable {
     @FXML
     private VBox manageControl;
-    @FXML
+
     private StackPane editWindow;
     private CreateEventController createEventController;
 
@@ -32,6 +32,5 @@ public class ManageController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         manageControl.addEventHandler(MouseEvent.MOUSE_CLICKED, this::openEditWindow);
-
     }
 }

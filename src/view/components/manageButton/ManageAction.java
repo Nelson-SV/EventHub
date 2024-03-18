@@ -10,14 +10,15 @@ import javafx.scene.layout.VBox;
 import java.io.IOException;
 
 public class ManageAction extends VBox {
-    @FXML
+//TODO Exception Handling
     private VBox manageControl;
-    public ManageAction(StackPane editWindow) {
+    public ManageAction(StackPane editWindow,int eventId) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("ManageButton.fxml"));
         loader.setController(new ManageController(editWindow));
         try {
             manageControl= loader.load();
             this.getChildren().add(manageControl);
+            this.setId(eventId+"");
         } catch (IOException e) {
             System.out.println(e.getStackTrace());
             throw new RuntimeException();
