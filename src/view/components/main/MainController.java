@@ -17,6 +17,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import view.components.eventDescription.EventComponenet;
 import view.components.events.CreateEventController;
+import view.components.listeners.Displayable;
 import view.components.manageButton.ManageAction;
 import view.components.ticketsGeneration.TicketsGeneration;
 import view.utility.NavigationHoverControl;
@@ -25,7 +26,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class MainController implements Initializable {
+public class MainController implements Initializable, Displayable {
     private Model model;
     @FXML
     private MFXButton eventsNavButton;
@@ -48,21 +49,11 @@ public class MainController implements Initializable {
     @FXML
     private StackPane secondaryLayout;
 
-
-    private static ObservableList<String[]> strings = FXCollections.observableArrayList();
-
-    static {
-        strings.add(new String[]{"TestName 1", "Lorem ipsum donor,43", "24/03/2024", "Live", "23/450", "$4500"});
-        strings.add(new String[]{"TestName 2", "Lorem ipsum donor,56", "30/03/2024", "Live", "23/450", "$5000"});
-        strings.add(new String[]{"TestName 3", "Lorem ipsum donor,46", "22/02/2024", "Ended", "0/450", "$50000"});
-        strings.add(new String[]{"TestName 4", "Lorem ipsum donor,45", "01/04/2024", "Live", "23/450", "$4500"});
-        strings.add(new String[]{"TestName 10", "Lorem ipsum donor,56", "01/04/2024", "Live", "23/450", "$4500"});
-
-    }
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         model = Model.getInstance();
+        model.setEventsDisplayer(this);
+
         NavigationHoverControl navigationHoverControl = new NavigationHoverControl(eventsLine, sellingLine, ticketingLine, eventsNavButton, sellingNavButton, ticketingNavButton);
         navigationHoverControl.initializeNavButtons();
         displayEvents();
@@ -74,10 +65,13 @@ public class MainController implements Initializable {
         this.secondaryLayout.setVisible(false);
     }
 
-//TODO
+
     // observe the size off the list, if is changing update the UI (Observable design pattern)
 
-    private void displayEvents() {
+    /**Updates the events off the user based on the user interaction*/
+    @Override
+    public void displayEvents() {
+        mainEventContainer.getChildren().clear();
         model.getEvents().forEach(e -> mainEventContainer.getChildren().add(new EventComponenet(e, new ManageAction(this.secondaryLayout))));
     }
 

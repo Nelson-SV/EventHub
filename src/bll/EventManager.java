@@ -14,11 +14,11 @@ public class EventManager {
 
     }
 
-
-    public void addEvent(Event event) throws SQLException, EventException {
+/** Exception handling */
+    public boolean addEvent(Event event) throws SQLException, EventException {
         if (!isEventValid(event))
             throw new EventException("Movie is incomplete");
-        eventD.insertEvent(event);
+       return  eventD.insertEvent(event);
     }
     private boolean isEventValid (Event event){
         return event != null && !event.getName().isEmpty() &&

@@ -14,7 +14,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
 import view.components.main.Model;
 import view.components.ticketsGeneration.TicketsGeneration;
-
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
