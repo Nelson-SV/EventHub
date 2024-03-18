@@ -11,16 +11,16 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<MFXScrollPane fx:id="editScrolPane" fitToHeight="true" fitToWidth="true" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="920.0" style="-fx-background-color: EADBC8FF;" stylesheets="@event.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<MFXScrollPane fx:id="editScrolPane" fitToHeight="true" fitToWidth="true" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="833.0" prefWidth="1000.0" style="-fx-background-color: EADBC8FF;" stylesheets="@event.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" >
    <content>
-      <VBox prefHeight="1000.0" prefWidth="1247.0" spacing="30.0">
+      <VBox prefHeight="853.0" prefWidth="985.0" spacing="30.0">
          <children>
             <HBox prefHeight="38.0" prefWidth="927.0">
                <VBox.margin>
                   <Insets left="150.0" right="150.0" />
                </VBox.margin>
                <children>
-                  <Label text="Add new event">
+                  <Label text="New event">
                      <font>
                         <Font name="Arial" size="19.0" />
                      </font>
@@ -29,7 +29,7 @@
                      </padding>
                   </Label>
                </children></HBox>
-            <VBox prefHeight="315.0" prefWidth="927.0" style="-fx-background-color: white; -fx-border-radius: 50;" VBox.vgrow="ALWAYS">
+            <VBox prefHeight="333.0" prefWidth="665.0" style="-fx-background-color: white; -fx-border-radius: 50;" VBox.vgrow="ALWAYS">
                <VBox.margin>
                   <Insets left="150.0" right="150.0" />
                </VBox.margin>
@@ -42,7 +42,7 @@
                      <children>
                         <VBox prefHeight="71.0" prefWidth="219.0">
                            <children>
-                              <Label text="Name" />
+                              <Label text="Name  *" />
                               <TextField fx:id="eventName" />
                            </children>
                         </VBox>
@@ -52,36 +52,36 @@
                      <children>
                         <VBox prefHeight="50.0" prefWidth="100.0">
                            <children>
-                              <Label text="Starts" />
+                              <Label text="Start date  *" />
                               <MFXDatePicker fx:id="startDate" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="120.0" styleClass="date-picker" />
                            </children>
                         </VBox>
                         <VBox prefHeight="200.0" prefWidth="100.0">
                            <children>
-                              <Label text="Label" />
+                              <Label text="Start  time  *" />
                               <MFXComboBox fx:id="startTime" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="120.0" />
                            </children>
                         </VBox>
                         <VBox prefHeight="200.0" prefWidth="100.0">
                            <children>
-                              <Label text="Ends" />
+                              <Label text="End date  " />
                               <MFXDatePicker fx:id="endDate" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="129.0" />
                            </children>
                         </VBox>
                         <VBox prefHeight="200.0" prefWidth="100.0">
                            <children>
-                              <Label text="Starts" />
+                              <Label text="End time" />
                               <MFXComboBox fx:id="endTime" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="120.0" />
                            </children>
                         </VBox>
                      </children>
                   </HBox>
-                  <HBox prefHeight="111.0" prefWidth="834.0">
+                  <HBox prefHeight="115.0" prefWidth="645.0">
                      <children>
                         <VBox prefHeight="91.0" prefWidth="455.0">
                            <children>
                               <Label text="Description" />
-                              <TextField fx:id="eventDescription" prefHeight="54.0" prefWidth="464.0" />
+                              <TextField fx:id="eventDescription" prefHeight="150.0" prefWidth="435.0" />
                            </children>
                         </VBox>
                      </children>
@@ -98,19 +98,19 @@
                      <children>
                         <VBox prefHeight="78.0" prefWidth="127.0">
                            <children>
-                              <Label text="Country" />
+                              <Label text="Country  *" />
                               <TextField fx:id="country" />
                            </children>
                         </VBox>
                         <VBox layoutX="10.0" layoutY="10.0" prefHeight="78.0" prefWidth="127.0">
                            <children>
-                              <Label text="City " />
+                              <Label text="City   *" />
                               <TextField fx:id="city" />
                            </children>
                         </VBox>
                         <VBox layoutX="137.0" layoutY="10.0" prefHeight="78.0" prefWidth="127.0">
                            <children>
-                              <Label text="Street" />
+                              <Label text="Street  *" />
                               <TextField fx:id="street" prefHeight="27.0" prefWidth="127.0" />
                            </children>
                         </VBox>
@@ -126,7 +126,7 @@
                      <children>
                         <VBox prefHeight="78.0" prefWidth="127.0">
                            <children>
-                              <Label text="PostalCode" />
+                              <Label text="PostalCode  *" />
                               <TextField fx:id="postalCode" />
                            </children>
                         </VBox>
@@ -151,9 +151,10 @@
                   </HBox>
                </children>
             </VBox>
-            <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0">
+            <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="30.0">
                <children>
-                  <Button mnemonicParsing="false" onAction="#saveEvent" prefHeight="39.0" prefWidth="166.0" style="-fx-background-radius: 20; -fx-background-color: #42b883;" text="Save Event" textFill="#fff8f8" />
+                  <Button mnemonicParsing="false" onAction="#cancel" prefHeight="25.0" prefWidth="119.0" style="-fx-background-radius: 20; -fx-background-color: #5585b5;" text="Cancel" textFill="WHITE" />
+                  <Button mnemonicParsing="false" onAction="#saveEvent" prefHeight="25.0" prefWidth="130.0" style="-fx-background-radius: 20; -fx-background-color: #42b883;" text="Save Event" textFill="#fff8f8" />
                </children>
                <VBox.margin>
                   <Insets left="150.0" right="150.0" />

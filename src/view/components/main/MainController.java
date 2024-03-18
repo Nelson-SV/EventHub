@@ -94,4 +94,9 @@ public class MainController implements Initializable {
         stage.setScene(new Scene(new TicketsGeneration(secondaryLayout).getRoot()));
         stage.show();
     }
+
+    public void createEvent(ActionEvent actionEvent) {
+
+
+    }
 }

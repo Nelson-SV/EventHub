@@ -22,7 +22,7 @@ public class EventManager {
     }
     private boolean isEventValid (Event event){
         return event != null && !event.getName().isEmpty() &&
-                event.getStartDate() != null && event.getEndDate() != null && event.getStartTime() != null && event.getEndTime() != null &&
+                event.getStartDate() != null && event.getStartTime() != null &&
                 event.getLocation() != null && event.getLocation().getCity() != null && event.getLocation().getCountry() != null&& event.getLocation().getPostalCode() != null&& event.getLocation().getStreet() != null;
     }
 }

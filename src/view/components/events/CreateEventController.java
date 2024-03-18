@@ -121,7 +121,11 @@ public class CreateEventController {
 
 public MFXScrollPane getRoot(){
         return editScrolPane;
-}}
+}
+
+    public void cancel(ActionEvent actionEvent) {
+    }
+}
 
 
 
