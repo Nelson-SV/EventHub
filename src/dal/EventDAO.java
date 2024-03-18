@@ -45,9 +45,17 @@ public boolean insertEvent(Event event){
                statement.setInt(3, locationId);
                statement.setString(4, event.getDescription());
                statement.setInt(5, 0);
+               if(event.getEndDate() != null){
                statement.setDate(6, java.sql.Date.valueOf(event.getEndDate()));
+               } else{
+                   statement.setDate(6, null);
+               }
                statement.setTime(7, java.sql.Time.valueOf(event.getStartTime()));
+               if(event.getEndTime() != null){
                statement.setTime(8, java.sql.Time.valueOf(event.getEndTime()));
+               } else{
+                   statement.setTime(8,null);
+               }
                statement.executeUpdate();
            }
 conn.commit();
@@ -113,9 +121,15 @@ private List<Event> retrieveEvents() {
                String name = res.getString(3);
                String description = res.getString(5);
                int avTickets = res.getInt(6);
-               LocalDate endDate = res.getDate(7).toLocalDate();
+               LocalDate endDate = null;
+               if(res.getDate(7) != null) {
+                   endDate = res.getDate(7).toLocalDate();
+               }
                LocalTime startTime = res.getTime(8).toLocalTime();
-               LocalTime endTime =  res.getTime(9).toLocalTime();
+               LocalTime endTime = null;
+               if(res.getTime(9) !=null) {
+                   endTime = res.getTime(9).toLocalTime();
+               }
                int locId= res.getInt(10);
                String street = res.getString(11);
                String additional = res.getString(12);

@@ -87,30 +87,33 @@ public class CreateEventController {
     }
 
     public void saveEvent(ActionEvent actionEvent) throws SQLException, EventException {
-        String name = eventName.getText();
-        LocalDate startD = startDate.getValue();
-        LocalTime startT = startTime.getValue();
-        LocalDate endD = endDate.getValue();
-        LocalTime endT = endTime.getValue();
-        String description = eventDescription.getText();
-        String countryE = country.getText();
-        String cityE = city.getText();
-        String streetE = street.getText();
-        String additionalE = additional.getText();
-        String postalCodeE = postalCode.getText();
-        Event event = new Event(name, description, startD, endD, startT, endT, new Location(streetE,additionalE, postalCodeE, countryE, cityE));
-        try {
-            model.addEvent(event);
-         //the close method needs to be moved here after a cancel button is included
-        } catch (EventException e){
-            Alert a = new Alert(Alert.AlertType.ERROR, e.getMessage());
-            e.printStackTrace();
-            a.show();
+        if (isEventValid()) {
+            String name = eventName.getText();
+            LocalDate startD = startDate.getValue();
+            LocalTime startT = startTime.getValue();
+            LocalDate endD = endDate.getValue();
+            LocalTime endT = endTime.getValue();
+            String description = eventDescription.getText();
+            String countryE = country.getText();
+            String cityE = city.getText();
+            String streetE = street.getText();
+            String additionalE = additional.getText();
+            String postalCodeE = postalCode.getText();
+            Event event = new Event(name, description, startD, endD, startT, endT, new Location(streetE, additionalE, postalCodeE, countryE, cityE));
+            //try {
+                model.addEvent(event);
+
+                //the close method needs to be moved here after a cancel button is included
+            /*} catch (EventException e) {
+                Alert a = new Alert(Alert.AlertType.ERROR, e.getMessage());
+                e.printStackTrace();
+                a.show();
+            }*/
+            closeWindow(actionEvent);
+//
         }
-        closeWindow(actionEvent);
-//        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-//        stage.close();
     }
+
 
 
     private void closeWindow(ActionEvent event) {
@@ -123,7 +126,74 @@ public MFXScrollPane getRoot(){
 }
 
     public void cancel(ActionEvent actionEvent) {
+        closeWindow(actionEvent);
     }
+
+
+    private void markFieldAsInvalid(TextField field) {
+        field.getStyleClass().add("invalid-field");
+    }
+
+    private void markFieldAsValid(TextField field) {
+        field.getStyleClass().add("valid-field");
+    }
+
+
+    private boolean isEventValid() {
+        boolean isValid = true;
+
+        // Check each required field and mark them as invalid if they are empty
+        if (eventName.getText().isEmpty()) {
+            markFieldAsInvalid(eventName);
+            isValid = false;
+        } else {
+            markFieldAsValid(eventName);
+        }
+
+        LocalDate startDateValue = startDate.getValue();
+        LocalTime startTimeValue = startTime.getValue();
+
+        if (startDateValue == null || startTimeValue == null) {
+            markFieldAsInvalid(startDate);
+            markFieldAsInvalid(startTime);
+            isValid = false;
+        } else {
+            markFieldAsValid(startDate);
+            markFieldAsValid(startTime);
+        }
+
+        if (city.getText().isEmpty()) {
+            markFieldAsInvalid(city);
+            isValid = false;
+        } else {
+            markFieldAsValid(city);
+        }
+
+        if (country.getText().isEmpty()) {
+            markFieldAsInvalid(country);
+            isValid = false;
+        } else {
+            markFieldAsValid(country);
+        }
+
+        if (postalCode.getText().isEmpty()) {
+            markFieldAsInvalid(postalCode);
+            isValid = false;
+        } else {
+            markFieldAsValid(postalCode);
+        }
+
+        if (street.getText().isEmpty()) {
+            markFieldAsInvalid(street);
+            isValid = false;
+        } else {
+            markFieldAsValid(street);
+        }
+
+        return isValid;
+    }
+
+
 }
 
 

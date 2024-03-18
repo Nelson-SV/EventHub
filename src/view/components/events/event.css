@@ -23,3 +23,10 @@ Label {
 .bold-label {
     -fx-font-weight: bold; /* Make text bold */
 }
+.invalid-field {
+    -fx-border-color: red;
+}
+
+.valid-field {
+    -fx-border-color: transparent;
+}

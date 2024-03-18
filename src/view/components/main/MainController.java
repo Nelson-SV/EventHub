@@ -48,6 +48,8 @@ public class MainController implements Initializable, Displayable {
     private StackPane mainLayout;
     @FXML
     private StackPane secondaryLayout;
+    @FXML private StackPane event;
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -90,6 +92,10 @@ public class MainController implements Initializable, Displayable {
     }
 
     public void createEvent(ActionEvent actionEvent) {
+        this.secondaryLayout.setVisible(true);
+        this.secondaryLayout.setDisable(false);
+        CreateEventController createEventController = new CreateEventController(secondaryLayout);
+        secondaryLayout.getChildren().add(createEventController.getRoot());
 
 
     }
