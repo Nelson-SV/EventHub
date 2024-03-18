@@ -113,9 +113,9 @@ private List<Event> retrieveEvents() {
                String name = res.getString(3);
                String description = res.getString(5);
                int avTickets = res.getInt(6);
-               LocalDate endDate = res.getDate(7).toLocalDate();
+               LocalDate endDate = (res.getDate(7)!=null)?res.getDate(7).toLocalDate():null;
                LocalTime startTime = res.getTime(8).toLocalTime();
-               LocalTime endTime =  res.getTime(9).toLocalTime();
+               LocalTime endTime =  (res.getTime(9)!=null)?res.getTime(9).toLocalTime():null;
                int locId= res.getInt(10);
                String street = res.getString(11);
                String additional = res.getString(12);

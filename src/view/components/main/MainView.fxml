@@ -103,7 +103,7 @@
                   </Label>
                   <Label alignment="CENTER" maxHeight="30.0" maxWidth="112.0" minHeight="30.0" minWidth="60.0" prefHeight="30.0" prefWidth="112.0" text="Status" />
                   <Label alignment="CENTER" maxHeight="30.0" maxWidth="112.0" minHeight="30.0" minWidth="60.0" prefHeight="30.0" prefWidth="112.0" text="Tickets" />
-                  <Label alignment="CENTER" maxHeight="30.0" maxWidth="112.0" minHeight="30.0" minWidth="60.0" prefHeight="30.0" prefWidth="112.0" text="Revenue" />
+                  <Label alignment="CENTER" maxHeight="30.0" maxWidth="112.0" minHeight="30.0" minWidth="60.0" prefHeight="30.0" prefWidth="112.0" text="Start Date" />
                   <Label alignment="CENTER" maxHeight="30.0" maxWidth="212.0" minHeight="30.0" minWidth="106.0" prefHeight="30.0" prefWidth="212.0" text="Actions" />
                </children>
             </HBox>
