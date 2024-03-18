@@ -6,15 +6,21 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import view.components.eventDescription.EventComponenet;
 import view.components.events.CreateEventController;
 import view.components.manageButton.ManageAction;
 import view.utility.NavigationHoverControl;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -72,5 +78,20 @@ public class MainController implements Initializable {
 
     private void displayEvents() {
         model.getEvents().forEach(e -> mainEventContainer.getChildren().add(new EventComponenet(e, new ManageAction(this.secondaryLayout))));
+    }
+
+
+    public void createTicket(ActionEvent actionEvent) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/components/ticketsGeneration/TicketsGeneration.fxml"));
+        Parent root = loader.load();
+
+        //TicketsGeneration ticketController = loader.getController();
+        //ticketController.setMainController(this);
+
+        Stage stage = new Stage();
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setTitle("Create Ticket");
+        stage.setScene(new Scene(root));
+        stage.show();
     }
 }
