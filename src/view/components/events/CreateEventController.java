@@ -11,7 +11,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import view.components.main.Model;
 import view.components.ticketsGeneration.TicketsGeneration;
 import java.io.IOException;
@@ -46,6 +48,8 @@ public class CreateEventController {
    public TextField additional;
     @FXML
     public TextField postalCode;
+    @FXML
+    public HBox hBoxTickets;
 
     private Model model;
 
@@ -82,7 +86,7 @@ public class CreateEventController {
     }
 
     public void addTicket(ActionEvent actionEvent) {
-        TicketsGeneration ticketsGeneration = new TicketsGeneration(stackPane);
+        TicketsGeneration ticketsGeneration = new TicketsGeneration(stackPane, this);
         stackPane.getChildren().add(ticketsGeneration.getRoot());
     }
 

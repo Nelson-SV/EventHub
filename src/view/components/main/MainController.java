@@ -78,7 +78,7 @@ public class MainController implements Initializable, Displayable {
 
     public void createTicket(ActionEvent actionEvent) throws IOException {
 
-
+        /*
         //TicketsGeneration ticketController = loader.getController();
         //ticketController.setMainController(this);
 
@@ -87,5 +87,6 @@ public class MainController implements Initializable, Displayable {
         stage.setTitle("Create Ticket");
         stage.setScene(new Scene(new TicketsGeneration(secondaryLayout).getRoot()));
         stage.show();
+         */
     }
 }

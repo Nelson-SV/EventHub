@@ -12,7 +12,9 @@ public class Ticket {
     private String customerEmail;
     private String UUID;
 
-    public Ticket(String eventName, String ticketType, String ticketPrice, String[] included, Location address, String startDate, String customerName, String customerEmail, String UUID) {
+    private String quantity;
+
+    public Ticket(String eventName, String ticketType, String ticketPrice, String[] included, Location address, String startDate, String customerName, String customerEmail, String UUID, String quantity) {
         this.eventName = eventName;
         this.ticketType = ticketType;
         this.ticketPrice = ticketPrice;
@@ -22,6 +24,7 @@ public class Ticket {
         this.customerName = customerName;
         this.customerEmail = customerEmail;
         this.UUID = UUID;
+        this.quantity = quantity;
     }
 
     public Ticket (String nameEvent, String ticketType, Location location, String startDate, String price){
@@ -30,6 +33,19 @@ public class Ticket {
         this.address = location;
         this.startDate = startDate;
         this.ticketPrice = price;
+    }
+
+    public Ticket (String ticketType, String quantity) {
+        this.ticketType = ticketType;
+        this.quantity = quantity;
+    }
+
+    public String getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(String quantity) {
+        this.quantity = quantity;
     }
 
     public String getEventName() {
