@@ -96,12 +96,12 @@
                 </GridPane>
             <HBox fillHeight="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="30.0" minWidth="536.0" prefHeight="30.0" prefWidth="1076.0" styleClass="eventsHeader" VBox.vgrow="ALWAYS">
                <children>
-                  <Label alignment="CENTER" maxHeight="30.0" maxWidth="520.0" minHeight="30.0" minWidth="280.0" prefHeight="30.0" prefWidth="520.0" text="Event" HBox.hgrow="ALWAYS">
+                  <Label alignment="CENTER" maxHeight="30.0" maxWidth="480.0" minHeight="30.0" minWidth="280.0" prefHeight="30.0" prefWidth="480.0" text="Event" HBox.hgrow="ALWAYS">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <Label alignment="CENTER" maxHeight="30.0" maxWidth="112.0" minHeight="30.0" minWidth="60.0" prefHeight="30.0" prefWidth="112.0" text="Status" HBox.hgrow="ALWAYS" />
+                  <Label alignment="CENTER" maxHeight="30.0" maxWidth="152.0" minHeight="30.0" minWidth="60.0" prefHeight="30.0" prefWidth="152.0" text="Status" HBox.hgrow="ALWAYS" />
                   <Label alignment="CENTER" maxHeight="30.0" maxWidth="112.0" minHeight="30.0" minWidth="60.0" prefHeight="30.0" prefWidth="112.0" text="Tickets" HBox.hgrow="ALWAYS" />
                   <Label alignment="CENTER" maxHeight="30.0" maxWidth="112.0" minHeight="30.0" minWidth="60.0" prefHeight="30.0" prefWidth="112.0" text="Start Date" HBox.hgrow="ALWAYS" />
                   <Label alignment="CENTER" maxHeight="30.0" maxWidth="212.0" minHeight="30.0" minWidth="106.0" prefHeight="30.0" prefWidth="212.0" text="Actions" HBox.hgrow="ALWAYS" />

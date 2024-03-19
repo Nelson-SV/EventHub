@@ -8,7 +8,7 @@
 
 <HBox fx:id="eventContainer" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="60.0" minWidth="536.0" prefHeight="120.0" prefWidth="1072.0" styleClass="componentBackgroundColor, eventComponentContainer" stylesheets="@EventDescription.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <VBox alignment="CENTER_LEFT" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="60.0" minWidth="260.0" prefHeight="120.0" prefWidth="520.0" styleClass="componentBackgroundColor,eventName" stylesheets="@EventDescription.css" HBox.hgrow="ALWAYS">
+      <VBox alignment="CENTER_LEFT" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="60.0" minWidth="260.0" prefHeight="120.0" prefWidth="480.0" styleClass="componentBackgroundColor,eventName" stylesheets="@EventDescription.css" HBox.hgrow="ALWAYS">
          <children>
             <Label fx:id="eventName" text="Beer Tasting" VBox.vgrow="ALWAYS">
                <font>
@@ -23,7 +23,7 @@
             <Insets bottom="5.0" left="25.0" right="5.0" top="5.0" />
          </padding>
       </VBox>
-      <VBox alignment="CENTER" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="30.0" minWidth="60.0" prefHeight="120.0" prefWidth="112.0" styleClass="componentBackgroundColor" stylesheets="@EventDescription.css" HBox.hgrow="ALWAYS">
+      <VBox alignment="CENTER" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="30.0" minWidth="60.0" prefHeight="120.0" prefWidth="152.0" styleClass="componentBackgroundColor" stylesheets="@EventDescription.css" HBox.hgrow="ALWAYS">
          <children>
             <Label fx:id="eventStatus" alignment="BOTTOM_RIGHT" styleClass="eventStatus" VBox.vgrow="ALWAYS" />
          </children>
