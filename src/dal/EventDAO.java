@@ -20,8 +20,6 @@ public class EventDAO {
         this.connectionManager = new ConnectionManager();
 
     }
-
-
     //TODO
 // Exception to be handled
     public boolean insertEvent(Event event) {

@@ -101,8 +101,8 @@
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <Label alignment="CENTER" maxHeight="30.0" maxWidth="136.0" minHeight="30.0" minWidth="60.0" prefHeight="30.0" prefWidth="136.0" text="Status" HBox.hgrow="ALWAYS" />
-                  <Label alignment="CENTER" maxHeight="30.0" maxWidth="122.0" minHeight="30.0" minWidth="60.0" prefHeight="30.0" prefWidth="122.0" text="Tickets" HBox.hgrow="ALWAYS" />
+                  <Label alignment="CENTER" maxHeight="30.0" maxWidth="152.0" minHeight="30.0" minWidth="60.0" prefHeight="30.0" prefWidth="152.0" text="Status" HBox.hgrow="ALWAYS" />
+                  <Label alignment="CENTER" maxHeight="30.0" maxWidth="112.0" minHeight="30.0" minWidth="60.0" prefHeight="30.0" prefWidth="112.0" text="Tickets" HBox.hgrow="ALWAYS" />
                   <Label alignment="CENTER" maxHeight="30.0" maxWidth="112.0" minHeight="30.0" minWidth="60.0" prefHeight="30.0" prefWidth="112.0" text="Start Date" HBox.hgrow="ALWAYS" />
                   <Label alignment="CENTER" maxHeight="30.0" maxWidth="212.0" minHeight="30.0" minWidth="106.0" prefHeight="30.0" prefWidth="212.0" text="Actions" HBox.hgrow="ALWAYS" />
                </children>
@@ -122,7 +122,7 @@
         </VBox>
         <StackPane fx:id="secondaryLayout" minHeight="360.0" minWidth="640.0" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: rgba(0, 0, 0, 0.5);" visible="false">
          <padding>
-            <Insets bottom="70.0" left="102.0" right="102.0" top="70.0" />
+            <Insets bottom="20.0" left="102.0" right="102.0" top="70.0" />
          </padding></StackPane>
 
     </children>

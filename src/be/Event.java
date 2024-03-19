@@ -1,5 +1,7 @@
 package be;
 
+import javafx.beans.property.SimpleStringProperty;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Date;

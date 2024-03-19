@@ -18,6 +18,8 @@ public class Model {
 // 2.maybe we use a map instead of a list where the eventId will be the key;
 // 3.add an observable object that will hold the current selected event to be managed
 
+
+
     private Displayable eventsDisplayer;
     private EventManager manager;
     private ILogicManager evmLogic;
