@@ -28,5 +28,5 @@ Label {
 }
 
 .valid-field {
-    -fx-border-color: transparent;
+    -fx-border-color: #cecdcd;
 }

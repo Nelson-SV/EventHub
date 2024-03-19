@@ -17,15 +17,9 @@ public class EventManager {
 /** Exception handling */
 
    public boolean addEvent(Event event) throws SQLException, EventException {
-       if (!isEventValid(event))
-           throw new EventException("Movie is incomplete");
        return eventD.insertEvent(event);
    }
 
 
-    private boolean isEventValid (Event event){
-        return event != null && !event.getName().isEmpty() &&
-                event.getStartDate() != null && event.getStartTime() != null &&
-                event.getLocation() != null && event.getLocation().getCity() != null && event.getLocation().getCountry() != null&& event.getLocation().getPostalCode() != null&& event.getLocation().getStreet() != null;
-    }
+
 }

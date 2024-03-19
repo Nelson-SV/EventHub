@@ -15,6 +15,8 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import view.components.main.Model;
 import view.components.ticketsGeneration.TicketsGeneration;
+
+import javax.swing.event.ChangeListener;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -60,6 +62,45 @@ public class CreateEventController {
         endTime.setItems(FXCollections.observableArrayList(generateTimeOptions()));
         model = Model.getInstance();
 
+        eventName.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.isEmpty()) {
+                markFieldAsValid(eventName);
+            }
+        });
+
+        startDate.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                markFieldAsValid(startDate);
+            }
+        });
+
+        startTime.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                markFieldAsValid(startTime);
+            }
+        });
+
+        city.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.isEmpty()) {
+                markFieldAsValid(city);
+            }
+        });
+        country.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.isEmpty()) {
+                markFieldAsValid(country);
+            }
+        });
+        postalCode.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.isEmpty()) {
+                markFieldAsValid(postalCode);
+            }
+        });
+        street.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.isEmpty()) {
+                markFieldAsValid(street);
+            }
+        });
+
     }
 
     public CreateEventController(StackPane stackPane) {
@@ -103,17 +144,10 @@ public class CreateEventController {
             String additionalE = additional.getText();
             String postalCodeE = postalCode.getText();
             Event event = new Event(name, description, startD, endD, startT, endT, new Location(streetE, additionalE, postalCodeE, countryE, cityE));
-            //try {
-                model.addEvent(event);
 
-                //the close method needs to be moved here after a cancel button is included
-            /*} catch (EventException e) {
-                Alert a = new Alert(Alert.AlertType.ERROR, e.getMessage());
-                e.printStackTrace();
-                a.show();
-            }*/
+            model.addEvent(event);
             closeWindow(actionEvent);
-//
+
         }
     }
 
@@ -140,6 +174,7 @@ public MFXScrollPane getRoot(){
     private void markFieldAsValid(TextField field) {
         field.getStyleClass().add("valid-field");
     }
+
 
 
     private boolean isEventValid() {
