@@ -1,10 +1,10 @@
 .flowPane {
     -fx-border-color: BLACK;
+    -fx-background-color: WHITE;
 }
 .mfx-text-field .floating-text{
     -fx-background-color: #DAC0A3;
-    /*-fx-text-fill: #102c57;*/
-    /*-fx-font-weight: bold;*/
+    -fx-font-weight: bold;
     -fx-text-fill: BLACK;
 }
 
@@ -26,6 +26,13 @@
     -fx-background-color: #DAC0A3;
 }
 
+.buttonGroup:pressed {
+    -fx-text-fill: WHITE;
+    -fx-border-color: #988672;
+    -fx-border-radius: 10;
+    -fx-background-color: #988672;
+}
+
 .vHBoxGroup {
     -fx-background-color: #DAC0A3;
 }
@@ -33,3 +40,17 @@
 .scrollPane {
     -fx-background-color: #DAC0A3;
 }
+
+.cancelBtn {
+    -fx-text-fill: #EA363C;
+    -fx-border-color: BLACK;
+    -fx-border-radius: 10;
+    -fx-background-color: #DAC0A3;
+}
+
+.cancelBtn:pressed{
+    -fx-text-fill: WHITE;
+    -fx-border-color: #F16F73;
+    -fx-background-color: #F16F73;
+}
+

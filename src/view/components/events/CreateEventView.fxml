@@ -140,7 +140,7 @@
                </VBox.margin>
                <children>
                   <Label styleClass="bold-label" text="Tickets" textFill="#5585b5" />
-                  <HBox prefHeight="100.0" prefWidth="200.0">
+                  <HBox fx:id="hBoxTickets" prefHeight="100.0" prefWidth="200.0">
                      <children>
                         <VBox prefHeight="87.0" prefWidth="239.0">
                            <children>
