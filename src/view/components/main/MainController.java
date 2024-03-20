@@ -35,16 +35,12 @@ public class MainController implements Initializable, Displayable {
     private Rectangle ticketingLine;
     @FXML
     private Rectangle eventsLine;
-
-
     @FXML
     private VBox mainEventContainer;
     @FXML
     private StackPane mainLayout;
     @FXML
     private StackPane secondaryLayout;
-    @FXML private StackPane event;
-
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -53,6 +49,7 @@ public class MainController implements Initializable, Displayable {
         NavigationHoverControl navigationHoverControl = new NavigationHoverControl(eventsLine, sellingLine, ticketingLine, eventsNavButton, sellingNavButton, ticketingNavButton);
         navigationHoverControl.initializeNavButtons();
         displayEvents();
+        bindParentWidth();
     }
 
     @FXML
@@ -64,11 +61,13 @@ public class MainController implements Initializable, Displayable {
 
     // observe the size off the list, if is changing update the UI (Observable design pattern)
 
-    /**Updates the events off the user based on the user interaction*/
+    /**
+     * Updates the events off the user based on the user interaction
+     */
     @Override
     public void displayEvents() {
         mainEventContainer.getChildren().clear();
-        model.getEvents().forEach(e -> mainEventContainer.getChildren().add(new EventComponent(e, new ManageAction(this.secondaryLayout,e.getId()))));
+        model.getEvents().forEach(e -> mainEventContainer.getChildren().add(new EventComponent(e, new ManageAction(this.secondaryLayout, e.getId()))));
     }
 
 
@@ -86,11 +85,20 @@ public class MainController implements Initializable, Displayable {
          */
     }
 
-    public void createEvent(ActionEvent actionEvent) {
+    @FXML
+    private void createEvent(ActionEvent actionEvent) {
         this.secondaryLayout.setVisible(true);
         this.secondaryLayout.setDisable(false);
         CreateEventController createEventController = new CreateEventController(secondaryLayout);
         secondaryLayout.getChildren().clear();
         secondaryLayout.getChildren().add(createEventController.getRoot());
+    }
+
+
+    private void bindParentWidth(){
+        secondaryLayout.minWidthProperty().bind(mainLayout.widthProperty());
+        secondaryLayout.minHeightProperty().bind(mainLayout.heightProperty());
+        secondaryLayout.maxWidthProperty().bind(mainLayout.widthProperty());
+        secondaryLayout.maxHeightProperty().bind(mainLayout.heightProperty());
     }
 }

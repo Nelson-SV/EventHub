@@ -19,7 +19,7 @@
     <children>
         <VBox alignment="TOP_CENTER" minHeight="360.0" minWidth="640.0" prefHeight="720.0" prefWidth="1280.0">
             <children>
-                <HBox fx:id="navigation" alignment="CENTER_LEFT" maxHeight="-Infinity" minHeight="30.0" minWidth="640.0" prefHeight="60.0" prefWidth="1280.0" styleClass="mainNavigation" VBox.vgrow="ALWAYS">
+                <HBox fx:id="navigation" alignment="CENTER_LEFT" maxHeight="-Infinity" minHeight="30.0" minWidth="640.0" prefHeight="120.0" prefWidth="1280.0" styleClass="mainNavigation" VBox.vgrow="ALWAYS">
                     <children>
                         <Label alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="35.0" minWidth="60.0" prefHeight="70.0" prefWidth="120.0" styleClass="eventLogo" text="EventHub" HBox.hgrow="ALWAYS">
                             <font>
@@ -94,7 +94,7 @@
                         <TextField maxHeight="30.0" maxWidth="312.0" prefHeight="30.0" prefWidth="312.0" promptText="Search events..." styleClass="searchBox" />
                     </children>
                     <VBox.margin>
-                        <Insets bottom="5.0" />
+                        <Insets bottom="10.0" />
                     </VBox.margin>
                 </GridPane>
             <HBox fillHeight="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="30.0" minWidth="536.0" prefHeight="30.0" prefWidth="1076.0" styleClass="eventsHeader" VBox.vgrow="ALWAYS">
@@ -124,16 +124,13 @@
             </ScrollPane>
             </children>
             <StackPane.margin>
-                <Insets />
+                <Insets bottom="30.0" />
             </StackPane.margin>
         </VBox>
-        <StackPane fx:id="secondaryLayout" minHeight="360.0" minWidth="640.0" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: rgba(0, 0, 0, 0.5);" visible="false">
+        <StackPane fx:id="secondaryLayout" style="-fx-background-color: rgba(0, 0, 0, 0.5);" visible="false">
          <padding>
-            <Insets bottom="20.0" left="102.0" right="102.0" top="70.0" />
+            <Insets bottom="30.0" left="120.0" right="120.0" top="120.0" />
          </padding></StackPane>
 
     </children>
-   <padding>
-      <Insets bottom="60.0" />
-   </padding>
 </StackPane>
