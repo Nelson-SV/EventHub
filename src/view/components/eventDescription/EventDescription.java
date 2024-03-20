@@ -86,28 +86,7 @@ public class EventDescription implements Initializable {
     }
 
 
-//        if (today.isBefore(startDate)) {
-//        label.setText("UPCOMING");
-//        label.getStyleClass().clear();
-//        label.getStyleClass().addAll("eventStatus", "active");
-//    }else if(today.isEqual(startDate)){
-//        label.setText("ONGOING");
-//        label.getStyleClass().clear();
-//        label.getStyleClass().addAll("eventStatus", "ongoing");
-//    }else if(endDate!=null && (today.isAfter(startDate) && today.isBefore(endDate)))){
-//        label.setText("ONGOING");
-//        label.getStyleClass().clear();
-//        label.getStyleClass().addAll("eventStatus", "ongoing");
-//    }
-//        else if (today.isAfter(startDate) && (endDate == null || today.isAfter(endDate))) {
-//        label.setText("");
-//        label.getStyleClass().clear();
-//        label.getStyleClass().addAll("eventStatus", "ongoing");
-//    } else {
-//        label.setText("FINALIZED");
-//        label.getStyleClass().clear();
-//        label.getStyleClass().addAll("eventStatus", "ended");
-//    }
+
 
     private void initializeStatus(LocalDateTime startDate, LocalDateTime endDate, Label label) {
         LocalDateTime today = LocalDateTime.now();
