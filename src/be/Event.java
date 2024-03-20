@@ -15,7 +15,7 @@ public class Event {
     private LocalTime startTime;
     private LocalTime endTime;
     private int id;
-    private Location location;
+    private String location;
 
     @Override
     public String toString() {
@@ -42,7 +42,7 @@ public class Event {
         this.availableTickets = availableTickets;
     }
 
-    public Event(String name, String description, LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime, Location location) {
+    public Event(String name, String description, LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime, String location) {
         this.name = name;
         this.description = description;
         this.startDate = startDate;
@@ -109,11 +109,11 @@ public class Event {
         this.id = id;
     }
 
-    public Location getLocation() {
+    public String getLocation() {
         return location;
     }
 
-    public void setLocation(Location locations) {
+    public void setLocation(String locations) {
         this.location = locations;
     }
 }

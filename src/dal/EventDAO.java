@@ -1,7 +1,6 @@
 package dal;
 
 import be.Event;
-import be.Location;
 import exceptions.EventException;
 
 import java.sql.Connection;
@@ -27,32 +26,32 @@ public class EventDAO {
         Connection conn = null;
         try {
             conn = connectionManager.getConnection();
-            conn.setAutoCommit(false);
+           /* conn.setAutoCommit(false);
             int locationId = insertLocation(event.getLocation(), conn);
             if (locationId < 1) {
                 conn.rollback();
                 return false;
-            }
+            }*/
 
-            String sql = "INSERT INTO Event (Start_date, Name, LocationId, Description, AvTickets, End_Date, Start_Time, End_Time) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO Event (Start_date, Name, Description, AvTickets, End_Date, Start_Time, End_Time, Location) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
             try (PreparedStatement statement = conn.prepareStatement(sql)) {
                 statement.setDate(1, java.sql.Date.valueOf(event.getStartDate()));
                 statement.setString(2, event.getName());
-                statement.setInt(3, locationId);
-                statement.setString(4, event.getDescription());
-                statement.setInt(5, 0);
+                statement.setString(3, event.getDescription());
+                statement.setInt(4, 0);
                 if (event.getEndDate() != null) {
-                    statement.setDate(6, java.sql.Date.valueOf(event.getEndDate()));
+                    statement.setDate(5, java.sql.Date.valueOf(event.getEndDate()));
                 } else {
-                    statement.setDate(6, null);
+                    statement.setDate(5, null);
                 }
-                statement.setTime(7, java.sql.Time.valueOf(event.getStartTime()));
+                statement.setTime(6, java.sql.Time.valueOf(event.getStartTime()));
                 if (event.getEndTime() != null) {
-                    statement.setTime(8, java.sql.Time.valueOf(event.getEndTime()));
+                    statement.setTime(7, java.sql.Time.valueOf(event.getEndTime()));
                 } else {
-                    statement.setTime(8, null);
+                    statement.setTime(7, null);
                 }
+                statement.setString(8, event.getLocation());
                 statement.executeUpdate();
             }
             conn.commit();
@@ -76,7 +75,7 @@ public class EventDAO {
         return success;
     }
 
-    public int insertLocation(Location location, Connection connection) throws SQLException {
+    /*public int insertLocation(Location location, Connection connection) throws SQLException {
         String sql = "INSERT INTO Location (street, additional, country, City, Postal_Code) VALUES (?, ?, ?, ?, ?)";
         try (PreparedStatement statement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, location.getStreet());
@@ -94,7 +93,7 @@ public class EventDAO {
                 }
             }
         }
-    }
+    }*/
 
 
     public List<Event> getEvents() {
@@ -106,7 +105,7 @@ public class EventDAO {
     //needs to be modified to handle the errors
     private List<Event> retrieveEvents() {
         List<Event> events = new ArrayList<>();
-        String sql = "SELECT * FROM Event AS e JOIN Location AS l ON e.LocationId=l.LocationId";
+        String sql = "SELECT * FROM Event";
         try (Connection conn = connectionManager.getConnection()) {
             try (PreparedStatement psmt = conn.prepareStatement(sql)) {
                 ResultSet res = psmt.executeQuery();
@@ -126,15 +125,9 @@ public class EventDAO {
                     if (res.getTime(9) != null) {
                         endTime = res.getTime(9).toLocalTime();
                     }
+                    String location = res.getString(10);
 
-                    int locId = res.getInt(10);
-                    String street = res.getString(11);
-                    String additional = res.getString(12);
-                    String country = res.getString(13);
-                    String city = res.getString(14);
-                    String postalCode = res.getString(15);
-                    Location location = new Location(street, additional, postalCode, country, city);
-                    location.setId(locId);
+                    int locId = res.getInt(11);
                     Event event = new Event(name, description, startDate, endDate, startTime, endTime, location);
                     event.setId(id);
                     event.setAvailableTickets(avTickets);

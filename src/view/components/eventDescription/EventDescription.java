@@ -52,7 +52,7 @@ public class EventDescription implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         this.eventActions.getChildren().add(manageAction);
         this.eventName.setText(event.getName());
-        this.eventLocation.setText(event.getLocation().getStreet() + ", " + event.getLocation().getCity());
+        this.eventLocation.setText(event.getLocation());
         this.initializeStatus(event.getStartDate(), event.getEndDate(), eventStatus);
         this.eventTickets.setText(event.getAvailableTickets() + "");
         this.eventStart.setText(START_DATE + event.getStartDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));

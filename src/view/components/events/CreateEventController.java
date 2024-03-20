@@ -1,6 +1,5 @@
 package view.components.events;
 import be.Event;
-import be.Location;
 import exceptions.EventException;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXDatePicker;
@@ -9,14 +8,14 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputControl;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import view.components.main.Model;
 import view.components.ticketsGeneration.TicketsGeneration;
 
-import javax.swing.event.ChangeListener;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -38,17 +37,11 @@ public class CreateEventController {
     @FXML
     public MFXComboBox <LocalTime> endTime;
     @FXML
-    public TextField eventDescription;
+    public TextArea eventDescription;
+
     @FXML
-    public TextField country;
-    @FXML
-    public TextField city;
-    @FXML
-    public TextField street;
-   @FXML
-   public TextField additional;
-    @FXML
-    public TextField postalCode;
+    public TextArea location;
+
     @FXML
     public HBox hBoxTickets;
 
@@ -80,26 +73,15 @@ public class CreateEventController {
             }
         });
 
-        city.textProperty().addListener((observable, oldValue, newValue) -> {
+        location.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.isEmpty()) {
-                markFieldAsValid(city);
+                markFieldAsValid(location);
             }
         });
-        country.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.isEmpty()) {
-                markFieldAsValid(country);
-            }
-        });
-        postalCode.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.isEmpty()) {
-                markFieldAsValid(postalCode);
-            }
-        });
-        street.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.isEmpty()) {
-                markFieldAsValid(street);
-            }
-        });
+
+
+
+
 
     }
 
@@ -138,12 +120,8 @@ public class CreateEventController {
             LocalDate endD = endDate.getValue();
             LocalTime endT = endTime.getValue();
             String description = eventDescription.getText();
-            String countryE = country.getText();
-            String cityE = city.getText();
-            String streetE = street.getText();
-            String additionalE = additional.getText();
-            String postalCodeE = postalCode.getText();
-            Event event = new Event(name, description, startD, endD, startT, endT, new Location(streetE, additionalE, postalCodeE, countryE, cityE));
+            String locationE = location.getText();
+            Event event = new Event(name, description, startD, endD, startT, endT, locationE);
 
             model.addEvent(event);
             closeWindow(actionEvent);
@@ -167,11 +145,11 @@ public MFXScrollPane getRoot(){
     }
 
 
-    private void markFieldAsInvalid(TextField field) {
+    private void markFieldAsInvalid(TextInputControl field) {
         field.getStyleClass().add("invalid-field");
     }
 
-    private void markFieldAsValid(TextField field) {
+    private void markFieldAsValid(TextInputControl field) {
         field.getStyleClass().add("valid-field");
     }
 
@@ -200,33 +178,14 @@ public MFXScrollPane getRoot(){
             markFieldAsValid(startTime);
         }
 
-        if (city.getText().isEmpty()) {
-            markFieldAsInvalid(city);
+        if (location.getText().isEmpty()){
+            markFieldAsInvalid(location);
             isValid = false;
         } else {
-            markFieldAsValid(city);
+            markFieldAsValid(location);
         }
 
-        if (country.getText().isEmpty()) {
-            markFieldAsInvalid(country);
-            isValid = false;
-        } else {
-            markFieldAsValid(country);
-        }
 
-        if (postalCode.getText().isEmpty()) {
-            markFieldAsInvalid(postalCode);
-            isValid = false;
-        } else {
-            markFieldAsValid(postalCode);
-        }
-
-        if (street.getText().isEmpty()) {
-            markFieldAsInvalid(street);
-            isValid = false;
-        } else {
-            markFieldAsValid(street);
-        }
         return isValid;
     }
 
