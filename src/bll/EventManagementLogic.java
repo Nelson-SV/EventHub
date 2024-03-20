@@ -4,13 +4,9 @@ import dal.EventDAO;
 import exceptions.EventException;
 import javafx.collections.ObservableMap;
 
-import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.List;
-
 public class EventManagementLogic implements ILogicManager{
     private EventDAO  eventData;
-    public EventManagementLogic() throws SQLException, EventException {
+    public EventManagementLogic() throws  EventException {
         this.eventData = new EventDAO();
     }
 

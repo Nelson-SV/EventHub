@@ -4,21 +4,27 @@ import javafx.scene.control.Alert;
 
 public class ExceptionHandler {
 
-    public void infoError(EventException eventException) {
+    public static void infoError(EventException eventException) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setContentText(eventException.getErrorCode().getValue());
         alert.show();
     }
 
-    public void warningError(EventException eventException) {
+    public static void warningError(EventException eventException) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setContentText(eventException.getErrorCode().getValue());
         alert.show();
     }
 
-    public void errorAlert(EventException eventException) {
+    public static void errorAlert(EventException eventException) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setContentText(eventException.getErrorCode().getValue());
+        alert.show();
+    }
+
+    public static void erorrAlertMessage(String errorMessage){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setContentText(errorMessage);
         alert.show();
     }
 

@@ -7,19 +7,18 @@ import exceptions.EventException;
 import java.sql.SQLException;
 
 public class EventManager {
+    private EventDAO eventD = null;
 
-    EventDAO eventD  = new EventDAO();
-
-    public EventManager() throws SQLException, EventException {
-
+    public EventManager() throws EventException {
+        this.eventD = new EventDAO();
     }
 
-/** Exception handling */
+    /**
+     * Exception handling
+     */
 
-   public boolean addEvent(Event event) throws SQLException, EventException {
-       return eventD.insertEvent(event);
-   }
-
-
+    public Integer addEvent(Event event) throws EventException {
+        return eventD.insertEvent(event);
+    }
 
 }

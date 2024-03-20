@@ -1,4 +1,5 @@
 package view.components.events;
+
 import be.Event;
 import exceptions.EventException;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
@@ -30,11 +31,11 @@ public class CreateEventController {
     @FXML
     public MFXDatePicker startDate;
     @FXML
-    public MFXComboBox <LocalTime> startTime;
+    public MFXComboBox<LocalTime> startTime;
     @FXML
     public MFXDatePicker endDate;
     @FXML
-    public MFXComboBox <LocalTime> endTime;
+    public MFXComboBox<LocalTime> endTime;
     @FXML
     public TextArea eventDescription;
 
@@ -83,9 +84,9 @@ public class CreateEventController {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("CreateEventView.fxml"));
         loader.setController(this);
         try {
-            editScrolPane=loader.load();
-            this.stackPane= stackPane;
-         } catch (IOException e) {
+            editScrolPane = loader.load();
+            this.stackPane = stackPane;
+        } catch (IOException e) {
 //            To be handled
             throw new RuntimeException(e);
         }
@@ -118,10 +119,8 @@ public class CreateEventController {
             Event event = new Event(name, description, startD, endD, startT, endT, locationE);
             model.addEvent(event);
             closeWindow(actionEvent);
-
         }
     }
-
 
 
     private void closeWindow(ActionEvent event) {
@@ -129,9 +128,9 @@ public class CreateEventController {
         this.stackPane.setVisible(false);
     }
 
-public MFXScrollPane getRoot(){
+    public MFXScrollPane getRoot() {
         return editScrolPane;
-}
+    }
 
     public void cancel(ActionEvent actionEvent) {
         closeWindow(actionEvent);
@@ -145,7 +144,6 @@ public MFXScrollPane getRoot(){
     private void markFieldAsValid(TextInputControl field) {
         field.getStyleClass().add("valid-field");
     }
-
 
 
     private boolean isEventValid() {
@@ -171,7 +169,7 @@ public MFXScrollPane getRoot(){
             markFieldAsValid(startTime);
         }
 
-        if (eventLocation.getText().isEmpty()){
+        if (eventLocation.getText().isEmpty()) {
             markFieldAsInvalid(eventLocation);
             isValid = false;
         } else {

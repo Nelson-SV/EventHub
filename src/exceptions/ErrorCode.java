@@ -3,7 +3,8 @@ package exceptions;
 public enum ErrorCode {
     INVALID_INPUT("Invalid Input"),
     CONNECTION_FAILED("Connection failed,please verify your network connection"),
-    OPERATION_DB_FAILED("Operation failed,please verify your network connection, ore try again");
+    OPERATION_DB_FAILED("Operation failed,please verify your network connection, or try again");
+
 
 
     private String value;

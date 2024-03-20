@@ -5,10 +5,7 @@ import bll.EventManagementLogic;
 import bll.EventManager;
 import bll.ILogicManager;
 import exceptions.EventException;
-import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
-import javafx.collections.ObservableList;
-import javafx.collections.ObservableMap;
+import javafx.collections.*;
 import view.components.listeners.Displayable;
 
 import java.sql.SQLException;
@@ -27,72 +24,71 @@ public class Model {
 // 3.add an observable object that will hold the current selected event to be managed
 
     private Displayable eventsDisplayer;
-    private ObservableMap<Integer,Event> coordinatorEvents;
-    private EventManager manager;
-    private ILogicManager evmLogic;
     /**
      * Holds the events for a given user
      */
-    private ObservableList<Event> events;
-    private final static Model instance;  //ensures that by using Singelton all controllers use the same model
-    static {
-        try {
-            instance = new Model();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        } catch (EventException e) {
-            throw new RuntimeException(e);
-        }
-    }
+    private ObservableMap<Integer, Event> coordinatorEvents;
+    private EventManager manager;
+    private ILogicManager evmLogic;
 
-    public static Model getInstance(){
+    private  static Model instance;  //ensures that by using Singelton all controllers use the same model
+
+//    static {
+//        try {
+//            instance = new Model();
+//        } catch (SQLException e) {
+//            throw new RuntimeException(e);
+//        } catch (EventException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
+
+    public static Model getInstance() throws EventException {
+        if(instance==null){
+             instance = new Model();
+        }
         return instance;
     }
 
-    private Model() throws SQLException, EventException {
+    private Model() throws EventException {
         manager = new EventManager();
-        events = FXCollections.observableArrayList();
-        coordinatorEvents=FXCollections.observableHashMap();
+        coordinatorEvents = FXCollections.observableHashMap();
         evmLogic = new EventManagementLogic();
         initializeEventsList();
     }
 
     public void addEvent(Event event) throws SQLException, EventException {
-        boolean inserted = manager.addEvent(event);
-        if (inserted) {
-            events.add(event);
+        Integer inserted = manager.addEvent(event);
+        if (inserted!=null) {
+            event.setId(inserted);
+            coordinatorEvents.put(inserted,event);
         }
     }
 
     private void initializeEventsList() throws EventException {
-       // this.events.setAll(evmLogic.getEvents());
-        coordinatorEvents=evmLogic.getEvents();
+        coordinatorEvents = evmLogic.getEvents();
         addUpdateEventListener();
     }
 
-    /**listener for changes in the  events list, calls the EventDisplayer method to display the events */
+    /**
+     * listener for changes in the  events list, calls the EventDisplayer method to display the events
+     */
     private void addUpdateEventListener() {
-        this.events.addListener((ListChangeListener<Event>) change -> {
-            while (change.next()) {
-                if (change.wasAdded() || change.wasUpdated() || change.wasRemoved()) {
-                    System.out.println("aloo");
-                    eventsDisplayer.displayEvents();
-                }
+        this.coordinatorEvents.addListener((MapChangeListener<? super Integer, ? super Event>) change -> {
+            if (change.wasAdded() || change.wasRemoved()) {
+                eventsDisplayer.displayEvents();
             }
         });
     }
-    public ObservableList<Event> getEvents() {
-        return this.events;
-    }
-
 
     /**
-     * Sets the Event Displayer responsible for displaying the events*/
+     * Sets the Event Displayer responsible for displaying the events
+     */
     public void setEventsDisplayer(Displayable eventsDisplayer) {
         this.eventsDisplayer = eventsDisplayer;
     }
 
-    public List<Event> sortedEventsList(){
+    public List<Event> sortedEventsList() {
         Collection<Event> events = coordinatorEvents.values();
         return events.stream()
                 .sorted(Comparator.comparing(event -> Math.abs(ChronoUnit.DAYS.between(LocalDate.now(), event.getStartDate()))))

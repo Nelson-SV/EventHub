@@ -1,27 +1,23 @@
 package view.components.main;
-
+import exceptions.EventException;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 import view.components.eventDescription.EventComponent;
 import view.components.events.CreateEventController;
 import view.components.listeners.Displayable;
 import view.components.manageButton.ManageAction;
-import view.components.ticketsGeneration.TicketsGeneration;
 import view.utility.NavigationHoverControl;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class MainController implements Initializable, Displayable {
+    private boolean initializationError = false;
     private Model model;
     @FXML
     private MFXButton eventsNavButton;
@@ -44,13 +40,21 @@ public class MainController implements Initializable, Displayable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        model = Model.getInstance();
-        model.setEventsDisplayer(this);
-        NavigationHoverControl navigationHoverControl = new NavigationHoverControl(eventsLine, sellingLine, ticketingLine, eventsNavButton, sellingNavButton, ticketingNavButton);
-        navigationHoverControl.initializeNavButtons();
-        displayEvents();
-        bindParentWidth();
+        try {
+            model = Model.getInstance();
+            model.setEventsDisplayer(this);
+            NavigationHoverControl navigationHoverControl = new NavigationHoverControl(eventsLine, sellingLine, ticketingLine, eventsNavButton, sellingNavButton, ticketingNavButton);
+            navigationHoverControl.initializeNavButtons();
+            displayEvents();
+            bindParentWidth();
+        } catch (EventException e) {
+            initializationError = true;
+            //throw new RuntimeException(e);
+        }
+
     }
+
+
 
     @FXML
     private void closeWindow(ActionEvent event) {
@@ -100,5 +104,9 @@ public class MainController implements Initializable, Displayable {
         secondaryLayout.minHeightProperty().bind(mainLayout.heightProperty());
         secondaryLayout.maxWidthProperty().bind(mainLayout.widthProperty());
         secondaryLayout.maxHeightProperty().bind(mainLayout.heightProperty());
+    }
+
+    public boolean isInitializationError() {
+        return initializationError;
     }
 }

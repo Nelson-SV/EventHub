@@ -4,7 +4,6 @@ import be.Event;
 import exceptions.ErrorCode;
 import exceptions.EventException;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
 
 import java.sql.Connection;
@@ -13,21 +12,20 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 public class EventDAO {
     private final ConnectionManager connectionManager;
 
-    public EventDAO() throws SQLException, EventException {
+    public EventDAO() throws EventException {
         this.connectionManager = new ConnectionManager();
 
     }
+
     //TODO
 // Exception to be handled
-    public boolean insertEvent(Event event) {
-        boolean success = false;
+    public Integer insertEvent(Event event) {
+        Integer eventId = null;
+        Integer generatedKey = null;
         Connection conn = null;
         try {
             conn = connectionManager.getConnection();
@@ -51,9 +49,17 @@ public class EventDAO {
                 }
                 statement.setString(8, event.getLocation());
                 statement.executeUpdate();
+
+                try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        generatedKey = generatedKeys.getInt(1);
+                    } else {
+                        throw new SQLException("Failed to insert location, no keys generated.");
+                    }
+                }
             }
             conn.commit();
-            success = true;
+            eventId = generatedKey;
         } catch (EventException | SQLException e) {
             if (conn != null) {
                 try {
@@ -70,7 +76,7 @@ public class EventDAO {
                 throw new RuntimeException(e);
             }
         }
-        return success;
+        return eventId;
     }
 
     /*public int insertLocation(Location location, Connection connection) throws SQLException {
@@ -94,7 +100,7 @@ public class EventDAO {
     }*/
 
 
-    public ObservableMap<Integer,Event> getEvents() throws EventException {
+    public ObservableMap<Integer, Event> getEvents() throws EventException {
         return retrieveEvents();
     }
 
@@ -103,9 +109,11 @@ public class EventDAO {
     //needs to be modified to handle the errors
 
 
-    /**Retrieves all the events related to an eventCoordinator*/
-    private ObservableMap<Integer,Event> retrieveEvents() throws EventException {
-        ObservableMap<Integer,Event> events = FXCollections.observableHashMap();
+    /**
+     * Retrieves all the events related to an eventCoordinator
+     */
+    private ObservableMap<Integer, Event> retrieveEvents() throws EventException {
+        ObservableMap<Integer, Event> events = FXCollections.observableHashMap();
         String sql = "SELECT * FROM Event";
         try (Connection conn = connectionManager.getConnection()) {
             try (PreparedStatement psmt = conn.prepareStatement(sql)) {
@@ -129,11 +137,11 @@ public class EventDAO {
                     Event event = new Event(name, description, startDate, endDate, startTime, endTime, location);
                     event.setId(id);
                     event.setAvailableTickets(avTickets);
-                    events.put(event.getId(),event);
+                    events.put(event.getId(), event);
                 }
             }
         } catch (EventException | SQLException e) {
-           throw new EventException(e.getMessage(),e.getCause(), ErrorCode.OPERATION_DB_FAILED);
+            throw new EventException(e.getMessage(), e.getCause(), ErrorCode.OPERATION_DB_FAILED);
         }
         return events;
     }
