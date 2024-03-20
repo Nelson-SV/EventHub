@@ -31,7 +31,8 @@ public class Model {
     private EventManager manager;
     private ILogicManager evmLogic;
 
-    private  static Model instance;  //ensures that by using Singelton all controllers use the same model
+    private static Model instance;
+    //ensures that by using Singelton all controllers use the same model
 
 //    static {
 //        try {
@@ -57,7 +58,7 @@ public class Model {
         initializeEventsList();
     }
 
-    public void addEvent(Event event) throws SQLException, EventException {
+    public void addEvent(Event event) throws EventException {
         Integer inserted = manager.addEvent(event);
         if (inserted!=null) {
             event.setId(inserted);

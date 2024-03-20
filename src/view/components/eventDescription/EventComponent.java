@@ -1,5 +1,8 @@
 package view.components.eventDescription;
 import be.Event;
+import exceptions.ErrorCode;
+import exceptions.EventException;
+import exceptions.ExceptionHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.HBox;
 import view.components.manageButton.ManageAction;
@@ -16,7 +19,7 @@ public class EventComponent extends HBox {
            eventContainer= loader.load();
            this.getChildren().add(eventContainer);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            ExceptionHandler.erorrAlertMessage(ErrorCode.LOADING_FXML_FAILED.getValue());
         }
     }
 }

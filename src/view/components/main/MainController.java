@@ -71,7 +71,7 @@ public class MainController implements Initializable, Displayable {
     @Override
     public void displayEvents() {
         mainEventContainer.getChildren().clear();
-        model.sortedEventsList().forEach(e -> mainEventContainer.getChildren().add(new EventComponent(e, new ManageAction(this.secondaryLayout, e.getId()))));
+        model.sortedEventsList().forEach(e -> mainEventContainer.getChildren().add(new EventComponent(e, new ManageAction(this.secondaryLayout, e.getId(),model))));
     }
 
 
@@ -93,7 +93,7 @@ public class MainController implements Initializable, Displayable {
     private void createEvent(ActionEvent actionEvent) {
         this.secondaryLayout.setVisible(true);
         this.secondaryLayout.setDisable(false);
-        CreateEventController createEventController = new CreateEventController(secondaryLayout);
+        CreateEventController createEventController = new CreateEventController(secondaryLayout,model);
         secondaryLayout.getChildren().clear();
         secondaryLayout.getChildren().add(createEventController.getRoot());
     }

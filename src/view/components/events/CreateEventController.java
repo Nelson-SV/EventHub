@@ -1,11 +1,14 @@
 package view.components.events;
 
 import be.Event;
+import exceptions.ErrorCode;
 import exceptions.EventException;
+import exceptions.ExceptionHandler;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXDatePicker;
 import io.github.palexdev.materialfx.controls.MFXScrollPane;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.TextArea;
@@ -47,10 +50,11 @@ public class CreateEventController {
 
     private Model model;
 
-    private final StackPane stackPane;
+    private  StackPane stackPane;
 
     @FXML
     public void initialize() {
+
 //        startTime.setItems(FXCollections.observableArrayList(generateTimeOptions()));
 //        endTime.setItems(FXCollections.observableArrayList(generateTimeOptions()));
 //        model = Model.getInstance();
@@ -80,15 +84,15 @@ public class CreateEventController {
 
     }
 
-    public CreateEventController(StackPane stackPane) {
+    public CreateEventController(StackPane stackPane ,Model model) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("CreateEventView.fxml"));
         loader.setController(this);
         try {
             editScrolPane = loader.load();
             this.stackPane = stackPane;
+            this.model=model;
         } catch (IOException e) {
-//            To be handled
-            throw new RuntimeException(e);
+            ExceptionHandler.erorrAlertMessage(ErrorCode.LOADING_FXML_FAILED.getValue());
         }
     }
 
@@ -107,7 +111,7 @@ public class CreateEventController {
         stackPane.getChildren().add(ticketsGeneration.getRoot());
     }
 
-    public void saveEvent(ActionEvent actionEvent) throws SQLException, EventException {
+    public void saveEvent(ActionEvent actionEvent){
         if (isEventValid()) {
             String name = eventName.getText();
             LocalDate startD = startDate.getValue();
@@ -117,8 +121,13 @@ public class CreateEventController {
             String description = eventDescription.getText();
             String locationE = eventLocation.getText();
             Event event = new Event(name, description, startD, endD, startT, endT, locationE);
-            model.addEvent(event);
-            closeWindow(actionEvent);
+            try {
+                model.addEvent(event);
+                closeWindow(actionEvent);
+            } catch (EventException e) {
+                ExceptionHandler.erorrAlertMessage(e.getErrorCode().getValue());
+           }
+
         }
     }
 
@@ -175,8 +184,6 @@ public class CreateEventController {
         } else {
             markFieldAsValid(eventLocation);
         }
-
-
         return isValid;
     }
 

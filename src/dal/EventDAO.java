@@ -23,7 +23,7 @@ public class EventDAO {
 
     //TODO
 // Exception to be handled
-    public Integer insertEvent(Event event) {
+    public Integer insertEvent(Event event) throws EventException {
         Integer eventId = null;
         Integer generatedKey = null;
         Connection conn = null;
@@ -35,13 +35,18 @@ public class EventDAO {
                 statement.setDate(1, java.sql.Date.valueOf(event.getStartDate()));
                 statement.setString(2, event.getName());
                 statement.setString(3, event.getDescription());
-                statement.setInt(4, 0);
+                statement.setInt(4,0);
                 if (event.getEndDate() != null) {
                     statement.setDate(5, java.sql.Date.valueOf(event.getEndDate()));
                 } else {
                     statement.setDate(5, null);
                 }
-                statement.setTime(6, java.sql.Time.valueOf(event.getStartTime()));
+                if(event.getStartTime()!=null){
+                    statement.setTime(6, java.sql.Time.valueOf(event.getStartTime()));
+                }else{
+                    statement.setTime(6,null);
+                }
+
                 if (event.getEndTime() != null) {
                     statement.setTime(7, java.sql.Time.valueOf(event.getEndTime()));
                 } else {
@@ -53,8 +58,9 @@ public class EventDAO {
                 try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
                     if (generatedKeys.next()) {
                         generatedKey = generatedKeys.getInt(1);
+                        System.out.println(generatedKey+ "sadwefwefq");
                     } else {
-                        throw new SQLException("Failed to insert location, no keys generated.");
+                        throw new EventException(ErrorCode.OPERATION_DB_FAILED);
                     }
                 }
             }
@@ -65,15 +71,15 @@ public class EventDAO {
                 try {
                     conn.rollback();
                 } catch (SQLException ex) {
-                    throw new RuntimeException(ex);
+                    throw new EventException(ex.getMessage(),ex.getCause(),ErrorCode.CONNECTION_FAILED);
                 }
             }
-            throw new RuntimeException(e);
+            throw new EventException(e.getMessage(),e.getCause(),ErrorCode.CONNECTION_FAILED);
         } finally {
             try {
                 conn.close();
             } catch (SQLException e) {
-                throw new RuntimeException(e);
+                throw new EventException(e.getMessage(),e.getCause(),ErrorCode.CONNECTION_FAILED);
             }
         }
         return eventId;
