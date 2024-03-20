@@ -26,15 +26,8 @@ public class EventDAO {
         Connection conn = null;
         try {
             conn = connectionManager.getConnection();
-           /* conn.setAutoCommit(false);
-            int locationId = insertLocation(event.getLocation(), conn);
-            if (locationId < 1) {
-                conn.rollback();
-                return false;
-            }*/
-
+            conn.setAutoCommit(false);
             String sql = "INSERT INTO Event (Start_date, Name, Description, AvTickets, End_Date, Start_Time, End_Time, Location) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-
             try (PreparedStatement statement = conn.prepareStatement(sql)) {
                 statement.setDate(1, java.sql.Date.valueOf(event.getStartDate()));
                 statement.setString(2, event.getName());
@@ -110,33 +103,35 @@ public class EventDAO {
             try (PreparedStatement psmt = conn.prepareStatement(sql)) {
                 ResultSet res = psmt.executeQuery();
                 while (res.next()) {
+                    System.out.println(res.getInt(1));
                     int id = res.getInt(1);
                     LocalDate startDate = res.getDate(2).toLocalDate();
+                    System.out.println(res.getDate(2));
                     String name = res.getString(3);
-                    String description = res.getString(5);
-                    int avTickets = res.getInt(6);
 
+                    String description = res.getString(4);
+                    int avTickets = res.getInt(5);
                     LocalDate endDate = null;
-                    if (res.getDate(7) != null) {
-                        endDate = res.getDate(7).toLocalDate();
+                    if (res.getDate(6) != null) {
+                        endDate = res.getDate(6).toLocalDate();
                     }
-                    LocalTime startTime = res.getTime(8).toLocalTime();
+                    LocalTime startTime = res.getTime(7).toLocalTime();
                     LocalTime endTime = null;
-                    if (res.getTime(9) != null) {
-                        endTime = res.getTime(9).toLocalTime();
+                    if (res.getTime(8) != null) {
+                        endTime = res.getTime(8).toLocalTime();
                     }
-                    String location = res.getString(10);
-
-                    int locId = res.getInt(11);
+                    String location = res.getString(9);
                     Event event = new Event(name, description, startDate, endDate, startTime, endTime, location);
                     event.setId(id);
                     event.setAvailableTickets(avTickets);
+
                     events.add(event);
+                    System.out.println("executed");
                 }
             }
 
         } catch (EventException | SQLException e) {
-            System.out.println(e.getCause().getMessage());
+           throw  new RuntimeException();
         }
         return events;
     }

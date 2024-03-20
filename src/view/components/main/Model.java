@@ -66,6 +66,7 @@ public class Model {
         this.events.addListener((ListChangeListener<Event>) change -> {
             while (change.next()) {
                 if (change.wasAdded() || change.wasUpdated() || change.wasRemoved()) {
+                    System.out.println("aloo");
                     eventsDisplayer.displayEvents();
                 }
             }

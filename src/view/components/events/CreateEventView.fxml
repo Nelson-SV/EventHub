@@ -92,7 +92,7 @@
                         <VBox prefHeight="76.0" prefWidth="455.0">
                            <children>
                               <Label text="Location  *" />
-                              <TextArea fx:id="location" prefHeight="91.0" prefWidth="113.0" />
+                              <TextArea fx:id="eventLocation" prefHeight="91.0" prefWidth="113.0" />
                            </children>
                         </VBox>
                      </children>

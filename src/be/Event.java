@@ -168,5 +168,7 @@ public class Event {
         this.startTime = new SimpleObjectProperty<>();
         this.endTime = new SimpleObjectProperty<>();
         this.location = new SimpleStringProperty();
+    this.id=new SimpleIntegerProperty();
+    this.availableTickets=new SimpleIntegerProperty();
     }
 }

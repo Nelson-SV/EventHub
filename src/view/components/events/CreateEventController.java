@@ -4,7 +4,6 @@ import exceptions.EventException;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXDatePicker;
 import io.github.palexdev.materialfx.controls.MFXScrollPane;
-import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -40,7 +39,7 @@ public class CreateEventController {
     public TextArea eventDescription;
 
     @FXML
-    public TextArea location;
+    public TextArea eventLocation;
 
     @FXML
     public HBox hBoxTickets;
@@ -51,37 +50,32 @@ public class CreateEventController {
 
     @FXML
     public void initialize() {
-        startTime.setItems(FXCollections.observableArrayList(generateTimeOptions()));
-        endTime.setItems(FXCollections.observableArrayList(generateTimeOptions()));
-        model = Model.getInstance();
-
-        eventName.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.isEmpty()) {
-                markFieldAsValid(eventName);
-            }
-        });
-
-        startDate.valueProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue != null) {
-                markFieldAsValid(startDate);
-            }
-        });
-
-        startTime.valueProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue != null) {
-                markFieldAsValid(startTime);
-            }
-        });
-
-        location.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.isEmpty()) {
-                markFieldAsValid(location);
-            }
-        });
-
-
-
-
+//        startTime.setItems(FXCollections.observableArrayList(generateTimeOptions()));
+//        endTime.setItems(FXCollections.observableArrayList(generateTimeOptions()));
+//        model = Model.getInstance();
+//        eventName.textProperty().addListener((observable, oldValue, newValue) -> {
+//            if (!newValue.isEmpty()) {
+//                markFieldAsValid(eventName);
+//            }
+//        });
+//
+//        startDate.valueProperty().addListener((observable, oldValue, newValue) -> {
+//            if (newValue != null) {
+//                markFieldAsValid(startDate);
+//            }
+//        });
+//
+//        startTime.valueProperty().addListener((observable, oldValue, newValue) -> {
+//            if (newValue != null) {
+//                markFieldAsValid(startTime);
+//            }
+//        });
+//
+//        location.textProperty().addListener((observable, oldValue, newValue) -> {
+//            if (!newValue.isEmpty()) {
+//                markFieldAsValid(location);
+//            }
+//        });
 
     }
 
@@ -120,9 +114,8 @@ public class CreateEventController {
             LocalDate endD = endDate.getValue();
             LocalTime endT = endTime.getValue();
             String description = eventDescription.getText();
-            String locationE = location.getText();
+            String locationE = eventLocation.getText();
             Event event = new Event(name, description, startD, endD, startT, endT, locationE);
-
             model.addEvent(event);
             closeWindow(actionEvent);
 
@@ -178,11 +171,11 @@ public MFXScrollPane getRoot(){
             markFieldAsValid(startTime);
         }
 
-        if (location.getText().isEmpty()){
-            markFieldAsInvalid(location);
+        if (eventLocation.getText().isEmpty()){
+            markFieldAsInvalid(eventLocation);
             isValid = false;
         } else {
-            markFieldAsValid(location);
+            markFieldAsValid(eventLocation);
         }
 
 

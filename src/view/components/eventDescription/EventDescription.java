@@ -1,12 +1,11 @@
 package view.components.eventDescription;
-
 import be.Event;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import view.components.manageButton.ManageAction;
-
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -40,6 +39,8 @@ public class EventDescription implements Initializable {
     private Label eventEnd;
     @FXML
     private ManageAction manageAction;
+
+
     @FXML
     private Event event;
 
@@ -50,13 +51,25 @@ public class EventDescription implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+      bindViewToModel(event);
         this.eventActions.getChildren().add(manageAction);
-        this.eventName.setText(event.getName());
-        this.eventLocation.setText(event.getLocation());
+//        this.eventName.setText(event.getName());
+//        this.eventLocation.setText(event.getLocation());
         this.initializeStatus(event.getStartDate(), event.getEndDate(), eventStatus);
-        this.eventTickets.setText(event.getAvailableTickets() + "");
-        this.eventStart.setText(START_DATE + event.getStartDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+//        this.eventTickets.setText(event.getAvailableTickets() + "");
+//        this.eventStart.setText(START_DATE + event.getStartDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
         initializeEndDate(event.getEndDate(), eventEnd);
+
+    }
+
+    private void bindViewToModel(Event event) {
+        System.out.println("sassss");
+        this.eventName.textProperty().bind(event.nameProperty());
+        this.eventLocation.textProperty().bind(event.descriptionProperty());
+        this.eventTickets.textProperty().bind(event.availableTicketsProperty().asString());
+        SimpleStringProperty simpleStringProperty = new SimpleStringProperty();
+        simpleStringProperty.setValue(START_DATE + event.getStartDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        this.eventStart.textProperty().bind(simpleStringProperty);
     }
 
     private void initializeEndDate(LocalDate endDate, Label label) {
@@ -66,6 +79,7 @@ public class EventDescription implements Initializable {
             label.setText(END_DATE + "NA");
         }
     }
+
 
     private void initializeStatus(LocalDate startDate, LocalDate endDate, Label label) {
         LocalDate today = LocalDate.now();
@@ -84,7 +98,6 @@ public class EventDescription implements Initializable {
             label.getStyleClass().addAll("eventStatus", "ended");
         }
     }
-
 
 
 }

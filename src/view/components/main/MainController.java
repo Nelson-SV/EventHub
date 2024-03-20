@@ -50,7 +50,6 @@ public class MainController implements Initializable, Displayable {
     public void initialize(URL location, ResourceBundle resources) {
         model = Model.getInstance();
         model.setEventsDisplayer(this);
-
         NavigationHoverControl navigationHoverControl = new NavigationHoverControl(eventsLine, sellingLine, ticketingLine, eventsNavButton, sellingNavButton, ticketingNavButton);
         navigationHoverControl.initializeNavButtons();
         displayEvents();
@@ -90,11 +89,8 @@ public class MainController implements Initializable, Displayable {
     public void createEvent(ActionEvent actionEvent) {
         this.secondaryLayout.setVisible(true);
         this.secondaryLayout.setDisable(false);
-
         CreateEventController createEventController = new CreateEventController(secondaryLayout);
         secondaryLayout.getChildren().clear();
         secondaryLayout.getChildren().add(createEventController.getRoot());
-
-
     }
 }

@@ -110,11 +110,11 @@
                   <Label alignment="CENTER" maxHeight="30.0" maxWidth="212.0" minHeight="30.0" minWidth="106.0" prefHeight="30.0" prefWidth="212.0" text="Actions" HBox.hgrow="ALWAYS" />
                </children>
             </HBox>
-<<<<<<< HEAD
+
             <ScrollPane fx:id="eventsView" hbarPolicy="NEVER" maxWidth="1076.0" minHeight="242.0" minWidth="536.0" prefHeight="485.0" prefWidth="1076.0" styleClass="eventsView" vbarPolicy="ALWAYS" VBox.vgrow="NEVER">
-=======
-            <ScrollPane fx:id="eventsView" hbarPolicy="NEVER" maxWidth="1076.0" minHeight="242.0" minWidth="536.0" prefHeight="485.0" prefWidth="1076.0" styleClass="eventsView" vbarPolicy="ALWAYS" VBox.vgrow="ALWAYS">
->>>>>>> 3cc61cc0c7410ee78569b7d9bc0333985e870b4c
+
+
+
                <content>
                   <VBox fx:id="mainEventContainer" alignment="TOP_CENTER" fillWidth="false" spacing="5.0">
                      <padding>
