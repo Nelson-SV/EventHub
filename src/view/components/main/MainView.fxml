@@ -54,6 +54,9 @@
                         <Rectangle fx:id="sellingLine" arcHeight="5.0" arcWidth="5.0" height="10.0" smooth="false" strokeType="INSIDE" styleClass="eventBar" width="120.0" HBox.hgrow="ALWAYS" />
                         <Rectangle fx:id="ticketingLine" arcHeight="5.0" arcWidth="5.0" height="10.0" smooth="false" strokeType="INSIDE" styleClass="eventBar" width="120.0" HBox.hgrow="ALWAYS" />
                     </children>
+               <VBox.margin>
+                  <Insets bottom="60.0" />
+               </VBox.margin>
                 </HBox>
                 <GridPane alignment="CENTER" maxHeight="80.0" maxWidth="1072.0" prefHeight="80.0" prefWidth="1072.0">
                     <columnConstraints>
@@ -107,7 +110,7 @@
                   <Label alignment="CENTER" maxHeight="30.0" maxWidth="212.0" minHeight="30.0" minWidth="106.0" prefHeight="30.0" prefWidth="212.0" text="Actions" HBox.hgrow="ALWAYS" />
                </children>
             </HBox>
-            <ScrollPane fx:id="eventsView" hbarPolicy="NEVER" maxHeight="485.0" maxWidth="1076.0" minHeight="242.0" minWidth="536.0" prefHeight="485.0" prefWidth="1076.0" styleClass="eventsView" vbarPolicy="ALWAYS" VBox.vgrow="NEVER">
+            <ScrollPane fx:id="eventsView" hbarPolicy="NEVER" maxWidth="1076.0" minHeight="242.0" minWidth="536.0" prefHeight="485.0" prefWidth="1076.0" styleClass="eventsView" vbarPolicy="ALWAYS" VBox.vgrow="NEVER">
                <content>
                   <VBox fx:id="mainEventContainer" alignment="TOP_CENTER" fillWidth="false" spacing="5.0">
                      <padding>
@@ -126,4 +129,7 @@
          </padding></StackPane>
 
     </children>
+   <padding>
+      <Insets bottom="60.0" />
+   </padding>
 </StackPane>
