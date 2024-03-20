@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.HBox?>
@@ -7,7 +8,7 @@
 
 <HBox fx:id="eventContainer" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="60.0" minWidth="536.0" prefHeight="120.0" prefWidth="1072.0" styleClass="componentBackgroundColor, eventComponentContainer" stylesheets="@EventDescription.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <children>
-        <VBox alignment="CENTER_LEFT" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="60.0" minWidth="260.0" prefHeight="120.0" prefWidth="480.0" styleClass="componentBackgroundColor,eventName" stylesheets="@EventDescription.css" HBox.hgrow="ALWAYS">
+        <VBox alignment="CENTER_LEFT" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="60.0" minWidth="260.0" prefHeight="120.0" prefWidth="368.0" styleClass="componentBackgroundColor,eventName" stylesheets="@EventDescription.css" HBox.hgrow="ALWAYS">
             <children>
                 <Label fx:id="eventName" text="Beer Tasting" VBox.vgrow="ALWAYS">
                     <font>
@@ -34,10 +35,38 @@
         </VBox>
         <VBox alignment="CENTER" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="60.0" minWidth="60.0" prefHeight="120.0" prefWidth="112.0" styleClass="componentBackgroundColor ,dates" stylesheets="@EventDescription.css" HBox.hgrow="ALWAYS">
             <children>
-                <Label fx:id="eventStart" VBox.vgrow="ALWAYS" />
-                <Label fx:id="eventEnd" VBox.vgrow="ALWAYS" />
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" stylesheets="@EventDescription.css">
+               <children>
+                      <Label fx:id="eventStart" alignment="TOP_LEFT" styleClass="dates">
+                     <font>
+                        <Font size="13.0" />
+                     </font></Label>
+                  <Label styleClass="delimiter" text="/" />
+                      <Label fx:id="eventEnd" alignment="BOTTOM_RIGHT" styleClass="dates">
+                     <font>
+                        <Font size="13.0" />
+                     </font></Label>
+               </children>
+            </HBox>
             </children>
         </VBox>
+      <VBox alignment="CENTER" prefHeight="120.0" prefWidth="112.0 " styleClass="componentBackgroundColor,dates">
+         <children>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Label fx:id="startTime" alignment="TOP_LEFT" styleClass="dates">
+                     <font>
+                        <Font size="13.0" />
+                     </font></Label>
+                  <Label styleClass="delimiter" text="/" />
+                  <Label fx:id="endTime" alignment="BOTTOM_RIGHT" styleClass="dates">
+                     <font>
+                        <Font size="13.0" />
+                     </font></Label>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
         <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="60.0" minWidth="106.0" prefHeight="120.0" prefWidth="212.0" HBox.hgrow="ALWAYS">
             <children>
                 <HBox fx:id="eventActions" alignment="BOTTOM_CENTER" fillHeight="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="60.0" minWidth="106.0" prefHeight="60.0" prefWidth="212.0" styleClass="componentBackgroundColor,eventAction" stylesheets="@EventDescription.css" VBox.vgrow="ALWAYS">

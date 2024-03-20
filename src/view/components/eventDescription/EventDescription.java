@@ -1,7 +1,7 @@
 package view.components.eventDescription;
 
 import be.Event;
-import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.binding.StringBinding;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -11,13 +11,15 @@ import view.components.manageButton.ManageAction;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 
-
 public class EventDescription implements Initializable {
-    private final String START_DATE = "Start : ";
-    private final String END_DATE = "End : ";
+    private final String START_DATE = "Start date: ";
+    private final String END_DATE = "End date: ";
+    private final String START_TIME = "Start time:";
+    private final String END_TIME = "End time:";
     private final String UPOMING = "UPCOMING";
     private final String FINALIZED = "FINALIZED";
     private final String ONGOING = "ONGOING";
@@ -37,9 +39,14 @@ public class EventDescription implements Initializable {
     @FXML
     private Label eventStart;
     @FXML
-    private HBox eventActions;
-    @FXML
     private Label eventEnd;
+    @FXML
+    private Label startTime;
+    @FXML
+    private Label endTime;
+    @FXML
+    private HBox eventActions;
+
     @FXML
     private ManageAction manageAction;
 
@@ -56,36 +63,75 @@ public class EventDescription implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         bindViewToModel(event);
         this.eventActions.getChildren().add(manageAction);
-//        this.eventName.setText(event.getName());
-//        this.eventLocation.setText(event.getLocation());
-        LocalDateTime startDateTime= LocalDateTime.of(event.getStartDate(),event.getEndTime());
-        LocalDateTime endDateTime = LocalDateTime.of(event.getEndDate(),event.getEndTime());
+        LocalDateTime startDateTime = LocalDateTime.of(event.getStartDate(), event.getEndTime());
+        LocalDateTime endDateTime = LocalDateTime.of(event.getEndDate(), event.getEndTime());
         this.initializeStatus(startDateTime, endDateTime, eventStatus);
-//        this.eventTickets.setText(event.getAvailableTickets() + "");
-//        this.eventStart.setText(START_DATE + event.getStartDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-        initializeEndDate(event.getEndDate(), eventEnd);
-
     }
 
     private void bindViewToModel(Event event) {
-        System.out.println("sassss");
         this.eventName.textProperty().bind(event.nameProperty());
         this.eventLocation.textProperty().bind(event.descriptionProperty());
         this.eventTickets.textProperty().bind(event.availableTicketsProperty().asString());
-        SimpleStringProperty simpleStringProperty = new SimpleStringProperty();
-        simpleStringProperty.setValue(START_DATE + event.getStartDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-        this.eventStart.textProperty().bind(simpleStringProperty);
+        bindDates(event, eventStart, eventEnd, startTime, endTime);
     }
 
-    private void initializeEndDate(LocalDate endDate, Label label) {
-        if (endDate != null) {
-            label.setText(END_DATE + event.getEndDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-        } else {
-            label.setText(END_DATE + "NA");
-        }
+    private void bindDates(Event event, Label startDate, Label endDate, Label startTime, Label endTIme) {
+        StringBinding eventStartBinding = new StringBinding() {
+            {
+                super.bind(event.startDateProperty());
+            }
+
+            @Override
+            protected String computeValue() {
+                LocalDate startDate = event.getStartDate();
+                return startDate.format(DateTimeFormatter.ofPattern("yy-MM-dd"));
+            }
+        };
+
+        StringBinding eventEndBinding = new StringBinding() {
+            {
+                super.bind(event.endDateProperty());
+            }
+
+            @Override
+            protected String computeValue() {
+                LocalDate endDate = event.getEndDate();
+                if (event.getEndDate() != null) {
+                    return endDate.format(DateTimeFormatter.ofPattern("yy-MM-dd"));
+                }
+                return "N/A";
+
+            }
+        };
+        StringBinding eventStartTimeBinding = new StringBinding() {
+            {
+                super.bind(event.startTimeProperty());
+            }
+
+            @Override
+            protected String computeValue() {
+                LocalTime startDateTime = event.getStartTime();
+                return startDateTime.format(DateTimeFormatter.ofPattern("HH:mm"));
+            }
+        };
+        StringBinding eventEndTimeBinding = new StringBinding() {
+            {
+                super.bind(event.startTimeProperty());
+            }
+            @Override
+            protected String computeValue() {
+                LocalTime startDateTime = event.getStartTime();
+                if (event.getEndDate() != null) {
+                    return startDateTime.format(DateTimeFormatter.ofPattern("HH:mm"));
+                }
+                return "N/A";
+            }
+        };
+        startDate.textProperty().bind(eventStartBinding);
+        endDate.textProperty().bind(eventEndBinding);
+        startTime.textProperty().bind(eventStartTimeBinding);
+        endTIme.textProperty().bind(eventEndTimeBinding);
     }
-
-
 
 
     private void initializeStatus(LocalDateTime startDate, LocalDateTime endDate, Label label) {

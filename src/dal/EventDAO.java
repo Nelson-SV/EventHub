@@ -111,10 +111,8 @@ public class EventDAO {
             try (PreparedStatement psmt = conn.prepareStatement(sql)) {
                 ResultSet res = psmt.executeQuery();
                 while (res.next()) {
-                    System.out.println(res.getInt(1));
                     int id = res.getInt(1);
                     LocalDate startDate = res.getDate(2).toLocalDate();
-                    System.out.println(res.getDate(2));
                     String name = res.getString(3);
                     String description = res.getString(4);
                     int avTickets = res.getInt(5);

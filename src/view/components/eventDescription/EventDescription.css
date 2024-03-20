@@ -35,11 +35,12 @@
     -fx-background-radius: 10 0 0 10;
 }
 
-.dates > .label {
+.dates {
     -fx-text-fill: #102c57;
     -fx-font-weight: 600;
-    -fx-font-size: 14;
+    -fx-font-size:13;
 }
+
 
 .avTickets {
     -fx-text-fill: #102c57;
@@ -51,6 +52,12 @@
 .eventAction {
     -fx-background-radius: 0 10 10 0;
     -fx-alignment: bottom-center;
+}
+
+.delimiter {
+    -fx-text-fill: #121212;
+    -fx-font-weight: 600;
+    -fx-font-size: 18;
 }
 
 .active {
