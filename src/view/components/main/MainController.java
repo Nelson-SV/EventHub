@@ -67,7 +67,7 @@ public class MainController implements Initializable, Displayable {
     @Override
     public void displayEvents() {
         mainEventContainer.getChildren().clear();
-        model.getEvents().forEach(e -> mainEventContainer.getChildren().add(new EventComponent(e, new ManageAction(this.secondaryLayout, e.getId()))));
+        model.sortedEventsList().forEach(e -> mainEventContainer.getChildren().add(new EventComponent(e, new ManageAction(this.secondaryLayout, e.getId()))));
     }
 
 

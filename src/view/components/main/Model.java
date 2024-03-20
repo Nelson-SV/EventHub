@@ -8,9 +8,17 @@ import exceptions.EventException;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.collections.ObservableMap;
 import view.components.listeners.Displayable;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class Model {
 //TODO
@@ -18,9 +26,8 @@ public class Model {
 // 2.maybe we use a map instead of a list where the eventId will be the key;
 // 3.add an observable object that will hold the current selected event to be managed
 
-
-
     private Displayable eventsDisplayer;
+    private ObservableMap<Integer,Event> coordinatorEvents;
     private EventManager manager;
     private ILogicManager evmLogic;
     /**
@@ -45,6 +52,7 @@ public class Model {
     private Model() throws SQLException, EventException {
         manager = new EventManager();
         events = FXCollections.observableArrayList();
+        coordinatorEvents=FXCollections.observableHashMap();
         evmLogic = new EventManagementLogic();
         initializeEventsList();
     }
@@ -56,8 +64,9 @@ public class Model {
         }
     }
 
-    private void initializeEventsList() {
-        this.events.setAll(evmLogic.getEvents());
+    private void initializeEventsList() throws EventException {
+       // this.events.setAll(evmLogic.getEvents());
+        coordinatorEvents=evmLogic.getEvents();
         addUpdateEventListener();
     }
 
@@ -81,6 +90,13 @@ public class Model {
      * Sets the Event Displayer responsible for displaying the events*/
     public void setEventsDisplayer(Displayable eventsDisplayer) {
         this.eventsDisplayer = eventsDisplayer;
+    }
+
+    public List<Event> sortedEventsList(){
+        Collection<Event> events = coordinatorEvents.values();
+        return events.stream()
+                .sorted(Comparator.comparing(event -> Math.abs(ChronoUnit.DAYS.between(LocalDate.now(), event.getStartDate()))))
+                .collect(Collectors.toList());
     }
 
 }

@@ -1,7 +1,11 @@
 package dal;
 
 import be.Event;
+import exceptions.ErrorCode;
 import exceptions.EventException;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.ObservableMap;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,6 +14,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class EventDAO {
@@ -89,15 +94,18 @@ public class EventDAO {
     }*/
 
 
-    public List<Event> getEvents() {
+    public ObservableMap<Integer,Event> getEvents() throws EventException {
         return retrieveEvents();
     }
 
     //TODO
     //needs to be modified to accept an user
     //needs to be modified to handle the errors
-    private List<Event> retrieveEvents() {
-        List<Event> events = new ArrayList<>();
+
+
+    /**Retrieves all the events related to an eventCoordinator*/
+    private ObservableMap<Integer,Event> retrieveEvents() throws EventException {
+        ObservableMap<Integer,Event> events = FXCollections.observableHashMap();
         String sql = "SELECT * FROM Event";
         try (Connection conn = connectionManager.getConnection()) {
             try (PreparedStatement psmt = conn.prepareStatement(sql)) {
@@ -108,7 +116,6 @@ public class EventDAO {
                     LocalDate startDate = res.getDate(2).toLocalDate();
                     System.out.println(res.getDate(2));
                     String name = res.getString(3);
-
                     String description = res.getString(4);
                     int avTickets = res.getInt(5);
                     LocalDate endDate = null;
@@ -124,14 +131,11 @@ public class EventDAO {
                     Event event = new Event(name, description, startDate, endDate, startTime, endTime, location);
                     event.setId(id);
                     event.setAvailableTickets(avTickets);
-
-                    events.add(event);
-                    System.out.println("executed");
+                    events.put(event.getId(),event);
                 }
             }
-
         } catch (EventException | SQLException e) {
-           throw  new RuntimeException();
+           throw new EventException(e.getMessage(),e.getCause(), ErrorCode.OPERATION_DB_FAILED);
         }
         return events;
     }

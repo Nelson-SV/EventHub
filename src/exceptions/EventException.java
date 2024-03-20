@@ -1,6 +1,4 @@
 package exceptions;
-
-import javax.swing.*;
 import java.io.IOException;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
@@ -19,39 +17,37 @@ public class EventException extends Exception {
              logger.addHandler(fileHandler);
              SimpleFormatter simpleFormatter = new SimpleFormatter();
              fileHandler.setFormatter(simpleFormatter);
-             fileHandler.setLevel(Level.SEVERE);
         } catch (IOException e) {
-            throw new RuntimeException(e);
-        }finally {
-            assert fileHandler != null;
-            fileHandler.close();
+            System.out.println("Could not log");
         }
-
     }
 
-    public EventException(String message, Throwable cause, ErrorCode code, Level level) {
+    public EventException(String message, Throwable cause, ErrorCode code) {
         super(message, cause);
         this.errorCode = code;
-        logException(message, cause, code,level);
+        logException(message, cause, code,Level.FINEST);
     }
-    public EventException (String message,Level level){
+    public EventException (String message){
         super(message);
-        logException(message,null,null,level);
+        logException(message,null,null,Level.FINEST);
     }
-    public EventException (ErrorCode code, Level level){
+    public EventException (ErrorCode code){
         super();
         this.errorCode=code;
-        logException(null,null,code,level);
+        logException(null,null,code,Level.FINEST);
     }
 
-    private void logException(String message, Throwable cause, ErrorCode code,Level level) {
-        logger.log( level ,"Exception Occurred: " + message + " | ErrorCode: " + code + " | Cause: " + cause);
+    private void logException(String message, Throwable cause, ErrorCode code, Level level) {
+        if (cause != null) {
+            logger.log(level, "Exception Occurred: " + message + " | ErrorCode: " + code, cause);
+        } else {
+            logger.log(level, "Exception Occurred: " + message + " | ErrorCode: " + code);
+        }
     }
+
     public ErrorCode getErrorCode() {
         return errorCode;
     }
 
-    public EventException(String message) {
-        super(message);
-    }
+
 }

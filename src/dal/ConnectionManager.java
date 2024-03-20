@@ -4,7 +4,6 @@ import com.microsoft.sqlserver.jdbc.SQLServerException;
 import exceptions.ErrorCode;
 import exceptions.EventException;
 import java.sql.Connection;
-import java.util.logging.Level;
 
 
 public class ConnectionManager {
@@ -23,9 +22,8 @@ public class ConnectionManager {
         public Connection getConnection() throws EventException {
             try {
                 return ds.getConnection();
-
             } catch (SQLServerException e) {
-                throw new EventException(e.getMessage(),e.getCause(), ErrorCode.CONNECTION_FAILED, Level.SEVERE);
+                throw new EventException(e.getMessage(),e.getCause(), ErrorCode.CONNECTION_FAILED);
             }
         }
 

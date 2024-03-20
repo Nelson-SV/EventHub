@@ -1,4 +1,5 @@
 package view.components.eventDescription;
+
 import be.Event;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
@@ -6,8 +7,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import view.components.manageButton.ManageAction;
+
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 
@@ -51,11 +54,13 @@ public class EventDescription implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-      bindViewToModel(event);
+        bindViewToModel(event);
         this.eventActions.getChildren().add(manageAction);
 //        this.eventName.setText(event.getName());
 //        this.eventLocation.setText(event.getLocation());
-        this.initializeStatus(event.getStartDate(), event.getEndDate(), eventStatus);
+        LocalDateTime startDateTime= LocalDateTime.of(event.getStartDate(),event.getEndTime());
+        LocalDateTime endDateTime = LocalDateTime.of(event.getEndDate(),event.getEndTime());
+        this.initializeStatus(startDateTime, endDateTime, eventStatus);
 //        this.eventTickets.setText(event.getAvailableTickets() + "");
 //        this.eventStart.setText(START_DATE + event.getStartDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
         initializeEndDate(event.getEndDate(), eventEnd);
@@ -81,23 +86,42 @@ public class EventDescription implements Initializable {
     }
 
 
-    private void initializeStatus(LocalDate startDate, LocalDate endDate, Label label) {
-        LocalDate today = LocalDate.now();
+//        if (today.isBefore(startDate)) {
+//        label.setText("UPCOMING");
+//        label.getStyleClass().clear();
+//        label.getStyleClass().addAll("eventStatus", "active");
+//    }else if(today.isEqual(startDate)){
+//        label.setText("ONGOING");
+//        label.getStyleClass().clear();
+//        label.getStyleClass().addAll("eventStatus", "ongoing");
+//    }else if(endDate!=null && (today.isAfter(startDate) && today.isBefore(endDate)))){
+//        label.setText("ONGOING");
+//        label.getStyleClass().clear();
+//        label.getStyleClass().addAll("eventStatus", "ongoing");
+//    }
+//        else if (today.isAfter(startDate) && (endDate == null || today.isAfter(endDate))) {
+//        label.setText("");
+//        label.getStyleClass().clear();
+//        label.getStyleClass().addAll("eventStatus", "ongoing");
+//    } else {
+//        label.setText("FINALIZED");
+//        label.getStyleClass().clear();
+//        label.getStyleClass().addAll("eventStatus", "ended");
+//    }
 
-        if (today.isBefore(startDate)) {
-            label.setText("UPCOMING");
-            label.getStyleClass().clear();
-            label.getStyleClass().addAll("eventStatus", "active");
-        } else if ((today.isEqual(startDate) || today.isAfter(startDate)) && (endDate == null || today.isBefore(endDate))) {
-            label.setText("ONGOING");
-            label.getStyleClass().clear();
-            label.getStyleClass().addAll("eventStatus", "ongoing");
-        } else {
+    private void initializeStatus(LocalDateTime startDate, LocalDateTime endDate, Label label) {
+        LocalDateTime today = LocalDateTime.now();
+        label.getStyleClass().clear();
+        label.getStyleClass().add("eventStatus");
+        if (endDate != null && today.isAfter(endDate)) {
             label.setText("FINALIZED");
-            label.getStyleClass().clear();
-            label.getStyleClass().addAll("eventStatus", "ended");
+            label.getStyleClass().add("ended");
+        } else if (today.isBefore(startDate)) {
+            label.setText("UPCOMING");
+            label.getStyleClass().add("active");
+        } else if (!today.isBefore(startDate) && (endDate == null || !today.isAfter(endDate))) {
+            label.setText("ONGOING");
+            label.getStyleClass().add("ongoing");
         }
     }
-
-
 }
