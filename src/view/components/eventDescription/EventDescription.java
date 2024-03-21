@@ -63,9 +63,17 @@ public class EventDescription implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         bindViewToModel(event);
         this.eventActions.getChildren().add(manageAction);
-        LocalDateTime startDateTime = LocalDateTime.of(event.getStartDate(), event.getEndTime());
-        LocalDateTime endDateTime = LocalDateTime.of(event.getEndDate(), event.getEndTime());
-        this.initializeStatus(startDateTime, endDateTime, eventStatus);
+        LocalDateTime startDateTime = LocalDateTime.of(event.getStartDate(), event.getStartTime());
+        LocalDateTime endDateTime = null;
+        if (event.getEndDate() == null && event.getEndTime() == null) {
+            this.initializeStatusByStartDate(startDateTime,eventStatus);
+        }else if(event.getEndDate()==null){
+initializeStatusByStartAndEndTime(startDateTime,event.getEndTime(),eventStatus);
+        }
+        else{
+            endDateTime = LocalDateTime.of(event.getEndDate(), event.getEndTime());
+            this.initializeStatus(startDateTime, endDateTime, eventStatus);
+        }
     }
 
     private void bindViewToModel(Event event) {
@@ -75,7 +83,7 @@ public class EventDescription implements Initializable {
         bindDates(event, eventStart, eventEnd, startTime, endTime);
     }
 
-    private void bindDates(Event event, Label startDate, Label endDate, Label startTime, Label endTIme) {
+    private void bindDates(Event event, Label startDate, Label endDate, Label startTime, Label endTime) {
         StringBinding eventStartBinding = new StringBinding() {
             {
                 super.bind(event.startDateProperty());
@@ -118,6 +126,7 @@ public class EventDescription implements Initializable {
             {
                 super.bind(event.startTimeProperty());
             }
+
             @Override
             protected String computeValue() {
                 LocalTime startDateTime = event.getStartTime();
@@ -130,9 +139,40 @@ public class EventDescription implements Initializable {
         startDate.textProperty().bind(eventStartBinding);
         endDate.textProperty().bind(eventEndBinding);
         startTime.textProperty().bind(eventStartTimeBinding);
-        endTIme.textProperty().bind(eventEndTimeBinding);
+        endTime.textProperty().bind(eventEndTimeBinding);
     }
 
+    private void initializeStatusByStartDate(LocalDateTime startDate, Label label) {
+        LocalDateTime today = LocalDateTime.now();
+        label.getStyleClass().clear();
+        label.getStyleClass().add("eventStatus");
+        if (startDate.isAfter(today)) {
+            label.setText("UPCOMING");
+            label.getStyleClass().add("active");
+        } else if (startDate.toLocalDate().isEqual(today.toLocalDate())) {
+            label.setText("ONGOING");
+            label.getStyleClass().add("ongoing");
+        }else{
+            label.setText("FINALIZED");
+            label.getStyleClass().add("ended");
+        }
+    }
+
+    private void initializeStatusByStartAndEndTime(LocalDateTime startDate, LocalTime endTime,Label label){
+        LocalDateTime today = LocalDateTime.now();
+        label.getStyleClass().clear();
+        label.getStyleClass().add("eventStatus");
+        if (startDate.isAfter(today)) {
+            label.setText("UPCOMING");
+            label.getStyleClass().add("active");
+        } else if ((startDate.toLocalTime().isAfter(today.toLocalTime())) && today.toLocalTime().isBefore(endTime)) {
+            label.setText("ONGOING");
+            label.getStyleClass().add("ongoing");
+        }else{
+            label.setText("FINALIZED");
+            label.getStyleClass().add("ended");
+        }
+    }
 
     private void initializeStatus(LocalDateTime startDate, LocalDateTime endDate, Label label) {
         LocalDateTime today = LocalDateTime.now();

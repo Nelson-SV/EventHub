@@ -5,13 +5,14 @@ import javafx.beans.property.SimpleStringProperty;
 public class User {
     private SimpleStringProperty firstName;
     private SimpleStringProperty lastName;
-    private SimpleObjectProperty<Role> role;
+    private SimpleStringProperty role;
     private SimpleIntegerProperty userId;
 
-    public User(SimpleStringProperty firstName, SimpleStringProperty lastName, SimpleObjectProperty<Role> role) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.role = role;
+    public User(String firstName, String lastName, String role) {
+        this.firstName = new SimpleStringProperty(firstName);
+        this.lastName = new SimpleStringProperty(lastName);
+        this.role = new SimpleStringProperty(role);
+        this.userId= new SimpleIntegerProperty();
     }
 
     public String getFirstName() {
@@ -38,17 +39,7 @@ public class User {
         this.lastName.set(lastName);
     }
 
-    public Role getRole() {
-        return role.get();
-    }
 
-    public SimpleObjectProperty<Role> roleProperty() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role.set(role);
-    }
 
     public int getUserId() {
         return userId.get();

@@ -1,5 +1,6 @@
 package view.components.manageButton;
-
+import exceptions.EventException;
+import exceptions.ExceptionHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.input.MouseEvent;
@@ -17,7 +18,6 @@ public class ManageController implements Initializable {
     @FXML
     private VBox manageControl;
     private StackPane editWindow;
-    private EventManagementController manageEventController;
     private Model model;
 
     public ManageController(StackPane editwindow, Model model) {
@@ -25,12 +25,19 @@ public class ManageController implements Initializable {
         this.editWindow = editwindow;
     }
 
-    private void openEditWindow(MouseEvent event) {
+    private void openEditWindow(MouseEvent event){
         this.editWindow.setVisible(true);
         this.editWindow.setDisable(false);
-        this.manageEventController = new EventManagementController(model);
-        editWindow.getChildren().add(manageEventController.getRoot());
+
         model.setSelectedEvent(Integer.parseInt(manageControl.getId()));
+        EventManagementController manageEventController = new EventManagementController(editWindow);
+        editWindow.getChildren().clear();
+        editWindow.getChildren().add(manageEventController.getRoot());
+        try {
+            model.initializeEventCoordinators(Integer.parseInt(manageControl.getId()));
+        } catch (EventException e) {
+            ExceptionHandler.errorAlert(e);
+        }
     }
 
     @Override

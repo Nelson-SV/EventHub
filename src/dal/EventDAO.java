@@ -1,6 +1,8 @@
 package dal;
 
 import be.Event;
+import be.Role;
+import be.User;
 import exceptions.ErrorCode;
 import exceptions.EventException;
 import javafx.collections.FXCollections;
@@ -118,5 +120,33 @@ public class EventDAO {
             throw new EventException(e.getMessage(), e.getCause(), ErrorCode.OPERATION_DB_FAILED);
         }
         return events;
+    }
+
+    public ObservableMap<Integer, User> getEventCoordinators(int eventId) throws EventException {
+        ObservableMap<Integer,User> evCoordinators = FXCollections.observableHashMap();
+        String sql = "SELECT U.UserId,U.FirstName,U.LastName,U.Role FROM USERS AS U "+
+        "Where U.Role Like ? "+
+        "AND U.UserId NOT IN (SELECT us.UserId FROM Users us join UsersEvents ue ON us.UserId=ue.UserId  join Event e ON e.EventId=ue.EventId WHERE e.EventId=?)";
+
+
+        try(Connection conn = connectionManager.getConnection()){
+            try(PreparedStatement psmt = conn.prepareStatement(sql)){
+                psmt.setString(1, Role.EVENT_COORDINATOR.getValue());
+                psmt.setInt(2,eventId);
+                ResultSet rs =psmt.executeQuery();
+                while(rs.next()){
+                int userId = rs.getInt(1);
+                String firstName = rs.getString(2);
+                String lastName = rs.getString(3);
+                String role =  rs.getString(4);
+                User user = new User(firstName,lastName,role);
+                user.setUserId(userId);
+                evCoordinators.put(userId,user);
+                }
+            }
+        } catch (SQLException |EventException e) {
+            throw new EventException(e.getMessage(),e.getCause(),ErrorCode.OPERATION_DB_FAILED);
+        }
+        return evCoordinators;
     }
 }

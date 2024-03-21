@@ -1,5 +1,7 @@
 package view.components.eventManagement;
+
 import exceptions.ErrorCode;
+import exceptions.EventException;
 import exceptions.ExceptionHandler;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
@@ -13,12 +15,12 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 import view.components.main.Model;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalTime;
 import java.util.ResourceBundle;
-
 public class EventManagementController implements Initializable {
     @FXML
     private MFXButton saveEdit;
@@ -45,25 +47,38 @@ public class EventManagementController implements Initializable {
     private GridPane managementRoot;
 
     private Model model;
+    private StackPane secondaryLayout;
 
     public GridPane getRoot() {
         return managementRoot;
     }
 
-    public EventManagementController(Model model) {
+    public EventManagementController( StackPane secondaryLayout) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("EventManager.fxml"));
         loader.setController(this);
         try {
-           managementRoot= loader.load();
-           this.model= model;
+            managementRoot = loader.load();
+            System.out.println(managementRoot.getChildren().size());
+            this.secondaryLayout = secondaryLayout;
         } catch (IOException e) {
+            System.out.println(e.getCause().getMessage());
+            System.out.println(e.getMessage());
             ExceptionHandler.erorrAlertMessage(ErrorCode.LOADING_FXML_FAILED.getValue());
         }
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-      initializeEventTime(this.startTime,this.endTime);
+        try {
+            this.model=Model.getInstance();
+        } catch (EventException e) {
+            //to be handled
+            throw new RuntimeException(e);
+        }
+        initializeEventTime(this.startTime, this.endTime);
+        bindSelectedEventProprieties();
+        cancelEdit.setOnAction((e)->cancelEditOperation());
+
     }
 
 
@@ -77,13 +92,14 @@ public class EventManagementController implements Initializable {
         return timeOptions;
     }
 
-    private void  initializeEventTime(MFXComboBox startTime,MFXComboBox endTime){
+    private void initializeEventTime(MFXComboBox<LocalTime> startTime, MFXComboBox<LocalTime> endTime) {
         startTime.setItems(generateTimeOptions());
         endTime.setItems(generateTimeOptions());
-        bindSelectedEventProprieties();
+
     }
 
-    private void bindSelectedEventProprieties(){
+    private void bindSelectedEventProprieties() {
+        System.out.println(model.getSelectedEvent());
         eventName.textProperty().bindBidirectional(model.getSelectedEvent().nameProperty());
         startDate.valueProperty().bindBidirectional(model.getSelectedEvent().startDateProperty());
         endDate.valueProperty().bindBidirectional(model.getSelectedEvent().endDateProperty());
@@ -92,4 +108,14 @@ public class EventManagementController implements Initializable {
         eventDescription.textProperty().bindBidirectional(model.getSelectedEvent().descriptionProperty());
         eventLocation.textProperty().bindBidirectional(model.getSelectedEvent().locationProperty());
     }
+
+
+
+private void cancelEditOperation(){
+        this.secondaryLayout.getChildren().clear();
+        this.secondaryLayout.setDisable(true);
+        this.secondaryLayout.setVisible(false);
+}
+
+
 }

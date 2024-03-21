@@ -1,19 +1,17 @@
 package view.components.main;
 
 import be.Event;
+import be.User;
 import bll.EventManagementLogic;
 import bll.EventManager;
 import bll.ILogicManager;
 import exceptions.EventException;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.*;
 import view.components.listeners.Displayable;
 
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,6 +27,12 @@ public class Model {
      * Holds the events for a given user
      */
     private ObservableMap<Integer, Event> coordinatorEvents;
+    /**
+     * holds all the event coordinators available
+     */
+    private ObservableMap<Integer, User> allEventCoordinators;
+
+
     private EventManager manager;
     private ILogicManager evmLogic;
     /**
@@ -60,9 +64,16 @@ public class Model {
         manager = new EventManager();
         coordinatorEvents = FXCollections.observableHashMap();
         evmLogic = new EventManagementLogic();
-        initializeEventsList();
+        allEventCoordinators = FXCollections.observableHashMap();
+        initializeEventsMap();
     }
 
+
+    /**
+     * creates a new event
+     *
+     * @param event the new event created
+     */
     public void addEvent(Event event) throws EventException {
         Integer inserted = manager.addEvent(event);
         if (inserted != null) {
@@ -71,8 +82,17 @@ public class Model {
         }
     }
 
+    /**initialize the event coordinators list*/
+public void initializeEventCoordinators(int eventId) throws EventException {
+    this.allEventCoordinators=evmLogic.getEventCoordinators(eventId);
+}
 
-    private void initializeEventsList() throws EventException {
+
+
+    /**
+     * initialize the events map
+     */
+    private void initializeEventsMap() throws EventException {
         coordinatorEvents = evmLogic.getEvents();
         addUpdateEventListener();
     }
@@ -95,6 +115,9 @@ public class Model {
         this.eventsDisplayer = eventsDisplayer;
     }
 
+    /**
+     * sorts the events with the least amount pff time remaining until it starts first
+     */
     public List<Event> sortedEventsList() {
         Collection<Event> events = coordinatorEvents.values();
         return events.stream()
@@ -102,10 +125,17 @@ public class Model {
                 .collect(Collectors.toList());
     }
 
+
+    /**
+     * set the event that has been selected to be managed
+     */
     public void setSelectedEvent(int id) {
         this.selectedEvent = new Event(coordinatorEvents.get(id));
     }
 
+    /**
+     * returns the event that have been selected for editing
+     */
     public Event getSelectedEvent() {
         return this.selectedEvent;
     }

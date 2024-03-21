@@ -19,7 +19,6 @@ public class Main extends Application {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("view/components/main/MainView.fxml"));
         Parent root = loader.load();
         MainController mc = loader.getController();
-
         if(mc.isInitializationError()){
            primaryStage.setTitle("EventHub");
            Alert alert = new Alert(Alert.AlertType.ERROR,ErrorCode.OPERATION_DB_FAILED.getValue());
