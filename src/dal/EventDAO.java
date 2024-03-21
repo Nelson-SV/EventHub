@@ -28,7 +28,7 @@ public class EventDAO {
         Connection conn = null;
         try {
             conn = connectionManager.getConnection();
-            conn.setAutoCommit(false);
+            //conn.setAutoCommit(false);
             String sql = "INSERT INTO Event (Start_date, Name, Description, AvTickets, End_Date, Start_Time, End_Time, Location) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
             try (PreparedStatement statement = conn.prepareStatement(sql)) {
                 statement.setDate(1, java.sql.Date.valueOf(event.getStartDate()));
@@ -62,7 +62,7 @@ public class EventDAO {
                     }
                 }
             }
-            conn.commit();
+            //conn.commit();
             eventId = generatedKey;
         } catch (EventException | SQLException e) {
             if (conn != null) {
@@ -71,7 +71,6 @@ public class EventDAO {
                 } catch (SQLException ex) {
                     throw new EventException(ex.getMessage(),ex.getCause(),ErrorCode.CONNECTION_FAILED);
                 }
-
             }
             System.out.println(e.getMessage());
             throw new RuntimeException();
