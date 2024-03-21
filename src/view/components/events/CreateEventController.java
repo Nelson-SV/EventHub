@@ -7,6 +7,7 @@ import exceptions.ExceptionHandler;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXDatePicker;
 import io.github.palexdev.materialfx.controls.MFXScrollPane;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -53,34 +54,36 @@ public class CreateEventController {
     private  StackPane stackPane;
 
     @FXML
-    public void initialize() {
+    public void initialize() throws EventException {
 
-//        startTime.setItems(FXCollections.observableArrayList(generateTimeOptions()));
-//        endTime.setItems(FXCollections.observableArrayList(generateTimeOptions()));
-//        model = Model.getInstance();
-//        eventName.textProperty().addListener((observable, oldValue, newValue) -> {
-//            if (!newValue.isEmpty()) {
-//                markFieldAsValid(eventName);
-//            }
-//        });
-//
-//        startDate.valueProperty().addListener((observable, oldValue, newValue) -> {
-//            if (newValue != null) {
-//                markFieldAsValid(startDate);
-//            }
-//        });
-//
-//        startTime.valueProperty().addListener((observable, oldValue, newValue) -> {
-//            if (newValue != null) {
-//                markFieldAsValid(startTime);
-//            }
-//        });
-//
-//        location.textProperty().addListener((observable, oldValue, newValue) -> {
-//            if (!newValue.isEmpty()) {
-//                markFieldAsValid(location);
-//            }
-//        });
+       startTime.setItems(FXCollections.observableArrayList(generateTimeOptions()));
+        endTime.setItems(FXCollections.observableArrayList(generateTimeOptions()));
+        model = Model.getInstance();
+
+
+        eventName.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.isEmpty()) {
+                markFieldAsValid(eventName);
+            }
+        });
+
+        startDate.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                markFieldAsValid(startDate);
+            }
+        });
+
+        startTime.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                markFieldAsValid(startTime);
+            }
+        });
+
+        eventLocation.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.isEmpty()) {
+                markFieldAsValid(eventLocation);
+            }
+        });
 
     }
 
@@ -121,10 +124,13 @@ public class CreateEventController {
             String description = eventDescription.getText();
             String locationE = eventLocation.getText();
             Event event = new Event(name, description, startD, endD, startT, endT, locationE);
+            System.out.println("working" + event);
             try {
                 model.addEvent(event);
+                System.out.println("event" + event);
                 closeWindow(actionEvent);
             } catch (EventException e) {
+                System.out.println(event);
                 ExceptionHandler.erorrAlertMessage(e.getErrorCode().getValue());
            }
 
