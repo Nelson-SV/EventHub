@@ -58,7 +58,6 @@ public class CreateEventController {
 
        startTime.setItems(FXCollections.observableArrayList(generateTimeOptions()));
         endTime.setItems(FXCollections.observableArrayList(generateTimeOptions()));
-        model = Model.getInstance();
 
 
         eventName.textProperty().addListener((observable, oldValue, newValue) -> {
