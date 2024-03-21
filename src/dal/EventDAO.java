@@ -5,7 +5,6 @@ import exceptions.ErrorCode;
 import exceptions.EventException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableMap;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
