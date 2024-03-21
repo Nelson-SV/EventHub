@@ -155,7 +155,7 @@ public class Event {
         this.startTime.setValue(startTime);
         this.endTime.setValue(endTime);
         this.description.setValue(description);
-
+        this.location.setValue(location);
 
     }
 
