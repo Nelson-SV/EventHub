@@ -156,6 +156,7 @@ public class Event {
         this.endTime.setValue(endTime);
         this.description.setValue(description);
         this.location.setValue(location);
+        System.out.println("");
     }
 
 
