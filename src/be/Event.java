@@ -23,21 +23,6 @@ public class Event {
     private SimpleStringProperty location;
     private SimpleIntegerProperty availableTickets;
 
-    @Override
-    public String toString() {
-        return "Event{" +
-                "name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
-                ", startTime=" + startTime +
-                ", endTime=" + endTime +
-                ", id=" + id +
-                ", location=" + location.toString() +
-                ", availableTickets=" + availableTickets +
-                '}';
-    }
-
     public int getId() {
         return id.get();
     }
@@ -104,6 +89,21 @@ public class Event {
 
     public SimpleObjectProperty<LocalTime> startTimeProperty() {
         return startTime;
+    }
+
+    @Override
+    public String toString() {
+        return "Event{" +
+                "id=" + id +
+                ", name=" + name +
+                ", description=" + description +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
+                ", location=" + location +
+                ", availableTickets=" + availableTickets +
+                '}';
     }
 
     public void setStartTime(LocalTime startTime) {

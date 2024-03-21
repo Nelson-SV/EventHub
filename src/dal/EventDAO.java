@@ -57,7 +57,6 @@ public class EventDAO {
                 try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
                     if (generatedKeys.next()) {
                         generatedKey = generatedKeys.getInt(1);
-                        System.out.println(generatedKey+ "sadwefwefq");
                     } else {
                         throw new EventException(ErrorCode.OPERATION_DB_FAILED);
                     }
@@ -72,8 +71,11 @@ public class EventDAO {
                 } catch (SQLException ex) {
                     throw new EventException(ex.getMessage(),ex.getCause(),ErrorCode.CONNECTION_FAILED);
                 }
+
             }
-            throw new EventException(e.getMessage(),e.getCause(),ErrorCode.CONNECTION_FAILED);
+            System.out.println(e.getMessage());
+            throw new RuntimeException();
+           // throw new EventException(e.getMessage(),e.getCause(),ErrorCode.CONNECTION_FAILED);
         } finally {
             try {
                 conn.close();
