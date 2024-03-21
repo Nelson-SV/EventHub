@@ -66,6 +66,8 @@ public class Model {
         }
     }
 
+
+
     private void initializeEventsList() throws EventException {
         coordinatorEvents = evmLogic.getEvents();
         addUpdateEventListener();

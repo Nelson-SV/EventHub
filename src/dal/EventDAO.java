@@ -5,10 +5,8 @@ import exceptions.ErrorCode;
 import exceptions.EventException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableMap;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+
+import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -17,94 +15,64 @@ public class EventDAO {
 
     public EventDAO() throws EventException {
         this.connectionManager = new ConnectionManager();
-
     }
 
-    //TODO
-// Exception to be handled
     public Integer insertEvent(Event event) throws EventException {
         Integer eventId = null;
-        Integer generatedKey = null;
         Connection conn = null;
         try {
             conn = connectionManager.getConnection();
-            //conn.setAutoCommit(false);
+            conn.setAutoCommit(false);
             String sql = "INSERT INTO Event (Start_date, Name, Description, AvTickets, End_Date, Start_Time, End_Time, Location) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-            try (PreparedStatement statement = conn.prepareStatement(sql)) {
-                statement.setDate(1, java.sql.Date.valueOf(event.getStartDate()));
-                statement.setString(2, event.getName());
-                statement.setString(3, event.getDescription());
-                statement.setInt(4,0);
-                if (event.getEndDate() != null) {
-                    statement.setDate(5, java.sql.Date.valueOf(event.getEndDate()));
-                } else {
-                    statement.setDate(5, null);
-                }
-                if(event.getStartTime()!=null){
-                    statement.setTime(6, java.sql.Time.valueOf(event.getStartTime()));
-                }else{
-                    statement.setTime(6,null);
-                }
+            PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            statement.setDate(1, java.sql.Date.valueOf(event.getStartDate()));
+            statement.setString(2, event.getName());
+            statement.setString(3, event.getDescription());
+            statement.setInt(4, 0);
+            if (event.getEndDate() != null) {
+                statement.setDate(5, java.sql.Date.valueOf(event.getEndDate()));
+            } else {
+                statement.setDate(5, null);
+            }
+            if (event.getStartTime() != null) {
+                statement.setTime(6, java.sql.Time.valueOf(event.getStartTime()));
+            } else {
+                statement.setTime(6, null);
+            }
 
-                if (event.getEndTime() != null) {
-                    statement.setTime(7, java.sql.Time.valueOf(event.getEndTime()));
+            if (event.getEndTime() != null) {
+                statement.setTime(7, java.sql.Time.valueOf(event.getEndTime()));
+            } else {
+                statement.setTime(7, null);
+            }
+            statement.setString(8, event.getLocation());
+            statement.executeUpdate();
+            try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    eventId = generatedKeys.getInt(1);
                 } else {
-                    statement.setTime(7, null);
-                }
-                statement.setString(8, event.getLocation());
-                statement.executeUpdate();
-
-                try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
-                    if (generatedKeys.next()) {
-                        generatedKey = generatedKeys.getInt(1);
-                    } else {
-                        throw new EventException(ErrorCode.OPERATION_DB_FAILED);
-                    }
+                    throw new EventException(ErrorCode.OPERATION_DB_FAILED);
                 }
             }
-            //conn.commit();
-            eventId = generatedKey;
+            conn.commit();
         } catch (EventException | SQLException e) {
             if (conn != null) {
                 try {
                     conn.rollback();
                 } catch (SQLException ex) {
-                    throw new EventException(ex.getMessage(),ex.getCause(),ErrorCode.CONNECTION_FAILED);
+                    throw new EventException(ex.getMessage(), ex.getCause(), ErrorCode.CONNECTION_FAILED);
                 }
             }
-            System.out.println(e.getMessage());
-            throw new RuntimeException();
-           // throw new EventException(e.getMessage(),e.getCause(),ErrorCode.CONNECTION_FAILED);
+            throw new EventException(e.getMessage(), e.getCause(), ErrorCode.CONNECTION_FAILED);
         } finally {
             try {
                 conn.close();
             } catch (SQLException e) {
-                throw new EventException(e.getMessage(),e.getCause(),ErrorCode.CONNECTION_FAILED);
+                throw new EventException(e.getMessage(), e.getCause(), ErrorCode.CONNECTION_FAILED);
             }
         }
         return eventId;
     }
-
-    /*public int insertLocation(Location location, Connection connection) throws SQLException {
-        String sql = "INSERT INTO Location (street, additional, country, City, Postal_Code) VALUES (?, ?, ?, ?, ?)";
-        try (PreparedStatement statement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
-            statement.setString(1, location.getStreet());
-            statement.setString(2, location.getAdditional());
-            statement.setString(3, location.getCountry());
-            statement.setString(4, location.getCity());
-            statement.setString(5, location.getPostalCode());
-            statement.executeUpdate();
-
-            try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
-                if (generatedKeys.next()) {
-                    return generatedKeys.getInt(1); // Return generated location ID
-                } else {
-                    throw new SQLException("Failed to insert location, no keys generated.");
-                }
-            }
-        }
-    }*/
-
 
     public ObservableMap<Integer, Event> getEvents() throws EventException {
         return retrieveEvents();
@@ -121,6 +89,7 @@ public class EventDAO {
     private ObservableMap<Integer, Event> retrieveEvents() throws EventException {
         ObservableMap<Integer, Event> events = FXCollections.observableHashMap();
         String sql = "SELECT * FROM Event";
+
         try (Connection conn = connectionManager.getConnection()) {
             try (PreparedStatement psmt = conn.prepareStatement(sql)) {
                 ResultSet res = psmt.executeQuery();
@@ -151,6 +120,4 @@ public class EventDAO {
         }
         return events;
     }
-
-
 }
