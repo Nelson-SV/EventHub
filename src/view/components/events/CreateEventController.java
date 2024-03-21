@@ -101,7 +101,7 @@ public class CreateEventController {
     private List<LocalTime> generateTimeOptions() {
         List<LocalTime> timeOptions = new ArrayList<>();
         LocalTime time = LocalTime.of(0, 0);
-        while (time.isBefore(LocalTime.of(23, 0))) { // Adjust the end time as needed
+        while (time.isBefore(LocalTime.of(23, 0))) {
             timeOptions.add(time);
             time = time.plusHours(1);
         }

@@ -158,6 +158,18 @@ public class Event {
         this.location.setValue(location);
     }
 
+    public Event(Event originalEvent) {
+        initializeFields();
+        this.name.setValue(originalEvent.getName());
+        this.description.setValue(originalEvent.getDescription());
+        this.startDate.setValue(originalEvent.getStartDate());
+        this.endDate.setValue(originalEvent.getEndDate());
+        this.startTime.setValue(originalEvent.getStartTime());
+        this.endTime.setValue(originalEvent.getEndTime());
+        this.description.setValue(originalEvent.getDescription());
+        this.location.setValue(originalEvent.getLocation());
+    }
+
 
     private void initializeFields() {
         this.name = new SimpleStringProperty();
@@ -167,7 +179,7 @@ public class Event {
         this.startTime = new SimpleObjectProperty<>();
         this.endTime = new SimpleObjectProperty<>();
         this.location = new SimpleStringProperty();
-    this.id=new SimpleIntegerProperty();
-    this.availableTickets=new SimpleIntegerProperty();
+        this.id = new SimpleIntegerProperty();
+        this.availableTickets = new SimpleIntegerProperty();
     }
 }

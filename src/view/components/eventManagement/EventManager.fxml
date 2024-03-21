@@ -3,6 +3,7 @@
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
 <?import io.github.palexdev.materialfx.controls.MFXComboBox?>
 <?import io.github.palexdev.materialfx.controls.MFXDatePicker?>
+<?import io.github.palexdev.materialfx.controls.MFXFilterComboBox?>
 <?import io.github.palexdev.materialfx.controls.MFXScrollPane?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
@@ -16,9 +17,8 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.SVGPath?>
 <?import javafx.scene.text.Font?>
-<?import org.controlsfx.control.SearchableComboBox?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="320.0" minWidth="640.0" prefHeight="640.0" prefWidth="1076.0" style="-fx-background-color: #EADBC8FF;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane fx:id="managementRoot" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="320.0" minWidth="640.0" prefHeight="640.0" prefWidth="1076.0" style="-fx-background-color: #EADBC8FF;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <columnConstraints>
         <ColumnConstraints fx:id="editColumn" halignment="CENTER" hgrow="SOMETIMES" minWidth="250.0" prefWidth="500.0" />
         <ColumnConstraints hgrow="SOMETIMES" minWidth="250.0" prefWidth="450.0" />
@@ -97,7 +97,7 @@
             <VBox maxWidth="-Infinity" prefHeight="30.0" prefWidth="480.0" spacing="5.0">
                <children>
                   <Label text="Assign colaborators" />
-                  <SearchableComboBox fx:id="coordinators" editable="true" prefHeight="30.0" prefWidth="480.0" promptText="Search coordinator by name" />
+                  <MFXFilterComboBox fx:id="coordinators" floatingText="Search coordinator by name" prefWidth="480.0" />
                </children>
             </VBox>
             <HBox alignment="CENTER_RIGHT" maxWidth="-Infinity" prefHeight="100.0" prefWidth="480.0" spacing="20.0">

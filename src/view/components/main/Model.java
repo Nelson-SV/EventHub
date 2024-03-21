@@ -5,6 +5,7 @@ import bll.EventManagementLogic;
 import bll.EventManager;
 import bll.ILogicManager;
 import exceptions.EventException;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.*;
 import view.components.listeners.Displayable;
 
@@ -30,6 +31,10 @@ public class Model {
     private ObservableMap<Integer, Event> coordinatorEvents;
     private EventManager manager;
     private ILogicManager evmLogic;
+    /**
+     * holds the current opened event for managing
+     */
+    private Event selectedEvent;
 
     private static Model instance;
     //ensures that by using Singelton all controllers use the same model
@@ -45,8 +50,8 @@ public class Model {
 //    }
 
     public static Model getInstance() throws EventException {
-        if(instance==null){
-             instance = new Model();
+        if (instance == null) {
+            instance = new Model();
         }
         return instance;
     }
@@ -60,12 +65,11 @@ public class Model {
 
     public void addEvent(Event event) throws EventException {
         Integer inserted = manager.addEvent(event);
-        if (inserted!=null) {
+        if (inserted != null) {
             event.setId(inserted);
-            coordinatorEvents.put(inserted,event);
+            coordinatorEvents.put(inserted, event);
         }
     }
-
 
 
     private void initializeEventsList() throws EventException {
@@ -96,6 +100,14 @@ public class Model {
         return events.stream()
                 .sorted(Comparator.comparing(event -> Math.abs(ChronoUnit.DAYS.between(LocalDate.now(), event.getStartDate()))))
                 .collect(Collectors.toList());
+    }
+
+    public void setSelectedEvent(int id) {
+        this.selectedEvent = new Event(coordinatorEvents.get(id));
+    }
+
+    public Event getSelectedEvent() {
+        return this.selectedEvent;
     }
 
 }

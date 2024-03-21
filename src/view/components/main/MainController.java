@@ -8,6 +8,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import view.components.eventDescription.EventComponent;
+import view.components.eventManagement.EventManagementController;
 import view.components.events.CreateEventController;
 import view.components.listeners.Displayable;
 import view.components.manageButton.ManageAction;

@@ -12,7 +12,6 @@ import java.time.LocalTime;
 
 public class EventDAO {
     private final ConnectionManager connectionManager;
-
     public EventDAO() throws EventException {
         this.connectionManager = new ConnectionManager();
     }
