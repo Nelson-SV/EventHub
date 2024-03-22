@@ -8,17 +8,17 @@ import io.github.palexdev.materialfx.controls.MFXTextField;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import view.components.events.CreateEventController;
-import view.components.main.MainController;
 
 import java.io.IOException;
 
@@ -26,52 +26,51 @@ import static javafx.scene.paint.Color.*;
 
 public class TicketsGeneration {
 
-    public MFXButton addTicketBT;
-    public MFXComboBox ticketTypeCombo, ticketColorCombo;
-    public MFXTextField ticketPriceTF, ticketQuantity;
-    public MFXComboBox eventNameCombo;
-    public MFXTextField eventLocationTF, eventDateTF;
-    public MFXTextField line4TF, line5TF, line6TF;
-    public Label eventNameLB, eventDateLB, eventLocationLB, line4LB, line5LB, line6LB, custNameLB, custEmailLB, ticketTypeLB, ticketPriceLB;
-    public ImageView qrCode, logoImg, barCode;
-    public FlowPane ticketPane;
-    public MFXScrollPane scrollPane;
-
-    public CreateEventController createEventController;
-    private StackPane secondaryLayout;
-
-    private Ticket ticket;
-
-    public MFXScrollPane getRoot() {
-        return scrollPane;
-    }
+    @FXML
+    private FlowPane ticketTypeFlowPane;
+    @FXML
+    private CreateEventController createEventController;
+    @FXML
+    private StackPane secondaryLayout, thirdLayout;
 
 
-    public TicketsGeneration(StackPane secondaryLayout, CreateEventController createEventController) {
+
+    public TicketsGeneration(StackPane secondaryLayout, StackPane thirdLayout, CreateEventController createEventController) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("TicketsGeneration.fxml"));
         loader.setController(this);
         try {
-            scrollPane=loader.load();
+            ticketTypeFlowPane=loader.load();
             this.secondaryLayout=secondaryLayout;
+            this.thirdLayout = thirdLayout;
             this.createEventController = createEventController;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public void initialize() {
-        updateEventInformation();
-        updateTicketInformation();
-        updateExtraLines();
+    public FlowPane getRoot() {
+        return ticketTypeFlowPane;
+    }
 
-        qrCode.setImage(new Image("/resources/images/Image 1.png"));
-        barCode.setImage(new Image("/resources/images/Image 2.png"));
-        logoImg.setImage(new Image("/resources/images/Image 3.png"));
+    @FXML
+    private void initialize() {
+
+        /*
+        TicketsDesignController ticketsDesignController = new TicketsDesignController();
+        ticketHBox.getChildren().add(ticketsDesignController);
+
+        ticketsDesignController.getQrCode().setImage(new Image("/resources/images/Image 1.png"));
+        ticketsDesignController.getBarCode().setImage(new Image ("/resources/images/Image 2.png"));
+        ticketsDesignController.getLogoImg().setImage(new Image("/resources/images/Image 3.png"));
+
+         */
+
 
     }
 
     public void addTickets(ActionEvent actionEvent) {
 
+        /*
         ticket = new Ticket(ticketTypeLB.getText(), ticketQuantity.getText());
 
         Label ticketType = new Label(ticket.getTicketType());
@@ -92,11 +91,15 @@ public class TicketsGeneration {
         });
 
         secondaryLayout.getChildren().remove(this.getRoot());
+
+         */
     }
 
     public void cancelAction(ActionEvent actionEvent) {
-        secondaryLayout.getChildren().remove(this.getRoot());
+        //secondaryLayout.getChildren().remove(this.getRoot());
     }
+
+    /*
 
     public void updateEventInformation(){
             ObservableList<String> list = FXCollections.observableArrayList();
@@ -130,8 +133,8 @@ public class TicketsGeneration {
 
     public void updateTicketInformation(){
         ObservableList<String> list = FXCollections.observableArrayList();
-        list.add("Normal Ticket");
-        list.add("Special Ticket");
+        list.add("Normal TicketsDesignController");
+        list.add("Special TicketsDesignController");
         ticketTypeCombo.setItems(list);
 
         // Add a listener to ticketTypeCombo
@@ -196,5 +199,7 @@ public class TicketsGeneration {
             }
         });
     }
+
+     */
 
 }
