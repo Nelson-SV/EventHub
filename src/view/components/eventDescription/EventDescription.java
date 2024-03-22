@@ -66,11 +66,10 @@ public class EventDescription implements Initializable {
         LocalDateTime startDateTime = LocalDateTime.of(event.getStartDate(), event.getStartTime());
         LocalDateTime endDateTime = null;
         if (event.getEndDate() == null && event.getEndTime() == null) {
-            this.initializeStatusByStartDate(startDateTime,eventStatus);
-        }else if(event.getEndDate()==null){
-initializeStatusByStartAndEndTime(startDateTime,event.getEndTime(),eventStatus);
-        }
-        else{
+            this.initializeStatusByStartDate(startDateTime, eventStatus);
+        } else if (event.getEndTime() != null && event.getEndDate() == null) {
+            initializeStatusByStartAndEndTime(startDateTime, event.getEndTime(), eventStatus);
+        } else {
             endDateTime = LocalDateTime.of(event.getEndDate(), event.getEndTime());
             this.initializeStatus(startDateTime, endDateTime, eventStatus);
         }
@@ -124,14 +123,14 @@ initializeStatusByStartAndEndTime(startDateTime,event.getEndTime(),eventStatus);
         };
         StringBinding eventEndTimeBinding = new StringBinding() {
             {
-                super.bind(event.startTimeProperty());
+                super.bind(event.endTimeProperty());
             }
 
             @Override
             protected String computeValue() {
-                LocalTime startDateTime = event.getStartTime();
-                if (event.getEndDate() != null) {
-                    return startDateTime.format(DateTimeFormatter.ofPattern("HH:mm"));
+                LocalTime startEndTime = event.getEndTime();
+                if (event.getEndTime() != null) {
+                    return startEndTime.format(DateTimeFormatter.ofPattern("HH:mm"));
                 }
                 return "N/A";
             }
@@ -152,13 +151,13 @@ initializeStatusByStartAndEndTime(startDateTime,event.getEndTime(),eventStatus);
         } else if (startDate.toLocalDate().isEqual(today.toLocalDate())) {
             label.setText("ONGOING");
             label.getStyleClass().add("ongoing");
-        }else{
+        } else {
             label.setText("FINALIZED");
             label.getStyleClass().add("ended");
         }
     }
 
-    private void initializeStatusByStartAndEndTime(LocalDateTime startDate, LocalTime endTime,Label label){
+    private void initializeStatusByStartAndEndTime(LocalDateTime startDate, LocalTime endTime, Label label) {
         LocalDateTime today = LocalDateTime.now();
         label.getStyleClass().clear();
         label.getStyleClass().add("eventStatus");
@@ -168,7 +167,7 @@ initializeStatusByStartAndEndTime(startDateTime,event.getEndTime(),eventStatus);
         } else if ((startDate.toLocalTime().isAfter(today.toLocalTime())) && today.toLocalTime().isBefore(endTime)) {
             label.setText("ONGOING");
             label.getStyleClass().add("ongoing");
-        }else{
+        } else {
             label.setText("FINALIZED");
             label.getStyleClass().add("ended");
         }

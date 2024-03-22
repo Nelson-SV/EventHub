@@ -1,5 +1,4 @@
 package view.components.eventManagement;
-
 import exceptions.ErrorCode;
 import exceptions.EventException;
 import exceptions.ExceptionHandler;
