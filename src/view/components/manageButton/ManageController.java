@@ -25,12 +25,12 @@ public class ManageController implements Initializable {
         this.editWindow = editwindow;
     }
 
-    private void openEditWindow(MouseEvent event){
+    private void openEditWindow(MouseEvent event) {
         this.editWindow.setVisible(true);
         this.editWindow.setDisable(false);
-
         model.setSelectedEvent(Integer.parseInt(manageControl.getId()));
         EventManagementController manageEventController = new EventManagementController(editWindow);
+        model.setCoordinatorsDisplayer(manageEventController);
         editWindow.getChildren().clear();
         editWindow.getChildren().add(manageEventController.getRoot());
         try {

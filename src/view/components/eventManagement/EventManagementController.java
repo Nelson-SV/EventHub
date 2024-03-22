@@ -1,4 +1,6 @@
 package view.components.eventManagement;
+
+import be.User;
 import exceptions.ErrorCode;
 import exceptions.EventException;
 import exceptions.ExceptionHandler;
@@ -11,22 +13,23 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import view.components.listeners.CoordinatorsDisplayer;
 import view.components.main.Model;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalTime;
 import java.util.ResourceBundle;
-public class EventManagementController implements Initializable {
+
+public class EventManagementController implements Initializable, CoordinatorsDisplayer {
     @FXML
     private MFXButton saveEdit;
     @FXML
     private MFXButton cancelEdit;
     @FXML
-    private MFXFilterComboBox<String> coordinators;
+    private MFXFilterComboBox<User> coordinators;
     @FXML
     private TextArea eventLocation;
     @FXML
@@ -44,7 +47,6 @@ public class EventManagementController implements Initializable {
     //TODO put the generateTimeOptions into an utility class
     @FXML
     private GridPane managementRoot;
-
     private Model model;
     private StackPane secondaryLayout;
 
@@ -52,16 +54,15 @@ public class EventManagementController implements Initializable {
         return managementRoot;
     }
 
-    public EventManagementController( StackPane secondaryLayout) {
+
+    //TODO initialize the coordinators comboBox with the user Name and checkBox.
+    public EventManagementController(StackPane secondaryLayout) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("EventManager.fxml"));
         loader.setController(this);
         try {
             managementRoot = loader.load();
-            System.out.println(managementRoot.getChildren().size());
             this.secondaryLayout = secondaryLayout;
         } catch (IOException e) {
-            System.out.println(e.getCause().getMessage());
-            System.out.println(e.getMessage());
             ExceptionHandler.erorrAlertMessage(ErrorCode.LOADING_FXML_FAILED.getValue());
         }
     }
@@ -69,18 +70,20 @@ public class EventManagementController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
-            this.model=Model.getInstance();
+            this.model = Model.getInstance();
         } catch (EventException e) {
-            //to be handled
-            throw new RuntimeException(e);
+            ExceptionHandler.errorAlert(e);
         }
         initializeEventTime(this.startTime, this.endTime);
         bindSelectedEventProprieties();
-        cancelEdit.setOnAction((e)->cancelEditOperation());
-
+        cancelEdit.setOnAction((e) -> cancelEditOperation());
+        setCoordinators();
     }
 
 
+    /**
+     * initialize the event time variables
+     */
     private ObservableList<LocalTime> generateTimeOptions() {
         ObservableList<LocalTime> timeOptions = FXCollections.observableArrayList();
         LocalTime time = LocalTime.of(0, 0);
@@ -91,14 +94,19 @@ public class EventManagementController implements Initializable {
         return timeOptions;
     }
 
+    /**
+     * initialize the event time variables
+     */
     private void initializeEventTime(MFXComboBox<LocalTime> startTime, MFXComboBox<LocalTime> endTime) {
         startTime.setItems(generateTimeOptions());
         endTime.setItems(generateTimeOptions());
-
     }
 
+
+    /**
+     * binds the selected event to the eventManagementPage
+     */
     private void bindSelectedEventProprieties() {
-        System.out.println(model.getSelectedEvent());
         eventName.textProperty().bindBidirectional(model.getSelectedEvent().nameProperty());
         startDate.valueProperty().bindBidirectional(model.getSelectedEvent().startDateProperty());
         endDate.valueProperty().bindBidirectional(model.getSelectedEvent().endDateProperty());
@@ -109,12 +117,17 @@ public class EventManagementController implements Initializable {
     }
 
 
-
-private void cancelEditOperation(){
+    /**
+     * cancel the event editing
+     */
+    private void cancelEditOperation() {
         this.secondaryLayout.getChildren().clear();
         this.secondaryLayout.setDisable(true);
         this.secondaryLayout.setVisible(false);
-}
+    }
 
-
+    @Override
+    public void setCoordinators() {
+        coordinators.setItems(model.getAllEventCoordinators());
+    }
 }

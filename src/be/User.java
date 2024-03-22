@@ -1,7 +1,9 @@
 package be;
+
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
+
 public class User {
     private SimpleStringProperty firstName;
     private SimpleStringProperty lastName;
@@ -12,7 +14,13 @@ public class User {
         this.firstName = new SimpleStringProperty(firstName);
         this.lastName = new SimpleStringProperty(lastName);
         this.role = new SimpleStringProperty(role);
-        this.userId= new SimpleIntegerProperty();
+        this.userId = new SimpleIntegerProperty();
+    }
+
+    @Override
+    public String toString() {
+        return firstName.get() + lastName.get();
+
     }
 
     public String getFirstName() {
@@ -38,7 +46,6 @@ public class User {
     public void setLastName(String lastName) {
         this.lastName.set(lastName);
     }
-
 
 
     public int getUserId() {

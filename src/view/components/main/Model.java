@@ -7,6 +7,8 @@ import bll.EventManager;
 import bll.ILogicManager;
 import exceptions.EventException;
 import javafx.collections.*;
+import view.components.eventManagement.EventManagementController;
+import view.components.listeners.CoordinatorsDisplayer;
 import view.components.listeners.Displayable;
 
 import java.time.LocalDate;
@@ -23,6 +25,7 @@ public class Model {
 // 3.add an observable object that will hold the current selected event to be managed
 
     private Displayable eventsDisplayer;
+    private CoordinatorsDisplayer coordinatorsDisplayer;
     /**
      * Holds the events for a given user
      */
@@ -65,6 +68,7 @@ public class Model {
         coordinatorEvents = FXCollections.observableHashMap();
         evmLogic = new EventManagementLogic();
         allEventCoordinators = FXCollections.observableHashMap();
+        addEventListenerCoordinators();
         initializeEventsMap();
     }
 
@@ -84,7 +88,7 @@ public class Model {
 
     /**initialize the event coordinators list*/
 public void initializeEventCoordinators(int eventId) throws EventException {
-    this.allEventCoordinators=evmLogic.getEventCoordinators(eventId);
+    evmLogic.getEventCoordinators(eventId).values().forEach((user)->allEventCoordinators.put(user.getUserId(),user));
 }
 
 
@@ -123,6 +127,27 @@ public void initializeEventCoordinators(int eventId) throws EventException {
         return events.stream()
                 .sorted(Comparator.comparing(event -> Math.abs(ChronoUnit.DAYS.between(LocalDate.now(), event.getStartDate()))))
                 .collect(Collectors.toList());
+    }
+
+
+
+    /**get all event Coordinators off the app that are not assigned to this event*/
+    public ObservableList<User> getAllEventCoordinators() {
+        return FXCollections.observableArrayList(allEventCoordinators.values());
+    }
+
+    /**
+     * listen for the eventCoordinators changes*/
+    private void addEventListenerCoordinators(){
+        this.allEventCoordinators.addListener((MapChangeListener<? super Integer, ? super User>) change  ->{
+           if(change.wasAdded()|| change.wasRemoved()){
+               coordinatorsDisplayer.setCoordinators();
+           }
+        });
+    }
+    /**updates the view that is displaying the coordinators*/
+    public void setCoordinatorsDisplayer(CoordinatorsDisplayer displayer){
+        this.coordinatorsDisplayer=displayer;
     }
 
 
