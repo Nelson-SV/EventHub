@@ -1,5 +1,4 @@
 package view.components.eventManagement;
-
 import be.User;
 import exceptions.ErrorCode;
 import exceptions.EventException;
@@ -67,6 +66,8 @@ public class EventManagementController implements Initializable, CoordinatorsDis
         }
     }
 
+
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
@@ -77,7 +78,7 @@ public class EventManagementController implements Initializable, CoordinatorsDis
         initializeEventTime(this.startTime, this.endTime);
         bindSelectedEventProprieties();
         cancelEdit.setOnAction((e) -> cancelEditOperation());
-        setCoordinators();
+        //setCoordinators();
     }
 
 
