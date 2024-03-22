@@ -21,7 +21,7 @@
             <children>
                 <HBox fx:id="navigation" alignment="CENTER_LEFT" maxHeight="-Infinity" minHeight="30.0" minWidth="640.0" prefHeight="120.0" prefWidth="1280.0" styleClass="mainNavigation" VBox.vgrow="ALWAYS">
                     <children>
-                        <Label alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="35.0" minWidth="60.0" prefHeight="70.0" prefWidth="120.0" styleClass="eventLogo" text="EventHub" HBox.hgrow="ALWAYS">
+                        <Label alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="35.0" minWidth="60.0" prefHeight="70.0" prefWidth="150.0" styleClass="eventLogo" text="EventHub" HBox.hgrow="ALWAYS">
                             <font>
                                 <Font name="System Bold Italic" size="24.0" />
                             </font>
@@ -29,18 +29,18 @@
                                 <Insets />
                             </HBox.margin>
                         </Label>
-                        <MFXButton fx:id="eventsNavButton" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="30.0" minWidth="60.0" prefHeight="60.0" prefWidth="120.0" rippleColor="#102c57" styleClass="controlNav" text="Events" HBox.hgrow="ALWAYS">
+                        <MFXButton fx:id="eventsNavButton" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="30.0" minWidth="60.0" prefHeight="60.0" prefWidth="150.0" rippleColor="#102c57" styleClass="controlNav" text="Events" HBox.hgrow="ALWAYS">
                             <font>
                                 <Font name="Arial Bold" size="18.0" />
                             </font>
                         </MFXButton>
 
-                              <MFXButton fx:id="sellingNavButton" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="30.0" minWidth="60.0" prefHeight="60.0" prefWidth="120.0" rippleColor="#102c57" styleClass="controlNav" text="Selling">
+                              <MFXButton fx:id="sellingNavButton" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="30.0" minWidth="60.0" prefHeight="60.0" prefWidth="150.0" rippleColor="#102c57" styleClass="controlNav" text="Selling">
                             <font>
                                 <Font size="18.0" />
                             </font>
                         </MFXButton>
-                        <MFXButton fx:id="ticketingNavButton" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="30.0" minWidth="60.0" onAction="#createTicket" prefHeight="60.0" prefWidth="120.0" rippleColor="#102c57" styleClass="controlNav" text="Ticketing">
+                        <MFXButton fx:id="specialTicketNavButton" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="30.0" minWidth="60.0" onAction="#createSpecialTicket" prefHeight="60.0" prefWidth="150.0" rippleColor="#102c57" styleClass="controlNav" text="Special Tickets" textAlignment="CENTER">
                             <font>
                                 <Font size="18.0" />
                             </font>
@@ -49,10 +49,10 @@
                 </HBox>
                 <HBox maxHeight="-Infinity" minHeight="-Infinity" minWidth="640.0" prefHeight="10.0" prefWidth="1280.0" styleClass="transitionBar" VBox.vgrow="ALWAYS">
                     <children>
-                        <Rectangle arcHeight="5.0" arcWidth="5.0" height="10.0" smooth="false" strokeType="INSIDE" styleClass="eventBar" width="120.0" HBox.hgrow="ALWAYS" />
-                        <Rectangle fx:id="eventsLine" arcHeight="5.0" arcWidth="5.0" height="10.0" smooth="false" strokeType="INSIDE" styleClass="eventBar" width="120.0" HBox.hgrow="ALWAYS" />
-                        <Rectangle fx:id="sellingLine" arcHeight="5.0" arcWidth="5.0" height="10.0" smooth="false" strokeType="INSIDE" styleClass="eventBar" width="120.0" HBox.hgrow="ALWAYS" />
-                        <Rectangle fx:id="ticketingLine" arcHeight="5.0" arcWidth="5.0" height="10.0" smooth="false" strokeType="INSIDE" styleClass="eventBar" width="120.0" HBox.hgrow="ALWAYS" />
+                        <Rectangle arcHeight="5.0" arcWidth="5.0" height="10.0" smooth="false" strokeType="INSIDE" styleClass="eventBar" width="150.0" HBox.hgrow="ALWAYS" />
+                        <Rectangle fx:id="eventsLine" arcHeight="5.0" arcWidth="5.0" height="10.0" smooth="false" strokeType="INSIDE" styleClass="eventBar" width="150.0" HBox.hgrow="ALWAYS" />
+                        <Rectangle fx:id="sellingLine" arcHeight="5.0" arcWidth="5.0" height="10.0" smooth="false" strokeType="INSIDE" styleClass="eventBar" width="150.0" HBox.hgrow="ALWAYS" />
+                        <Rectangle fx:id="ticketingLine" arcHeight="5.0" arcWidth="5.0" height="10.0" smooth="false" strokeType="INSIDE" styleClass="eventBar" width="150.0" HBox.hgrow="ALWAYS" />
                     </children>
                <VBox.margin>
                   <Insets bottom="60.0" />
@@ -132,6 +132,11 @@
          <padding>
             <Insets bottom="30.0" left="120.0" right="120.0" top="120.0" />
          </padding></StackPane>
+      <StackPane fx:id="thirdLayout" layoutX="10.0" layoutY="10.0" style="-fx-background-color: rgba(0, 0, 0, 0.5);" visible="false">
+         <padding>
+            <Insets bottom="30.0" left="120.0" right="120.0" top="120.0" />
+         </padding>
+      </StackPane>
 
     </children>
 </StackPane>

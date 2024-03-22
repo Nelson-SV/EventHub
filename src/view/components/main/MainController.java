@@ -8,7 +8,6 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import view.components.eventDescription.EventComponent;
-import view.components.eventManagement.EventManagementController;
 import view.components.events.CreateEventController;
 import view.components.listeners.Displayable;
 import view.components.manageButton.ManageAction;
@@ -25,7 +24,7 @@ public class MainController implements Initializable, Displayable {
     @FXML
     private MFXButton sellingNavButton;
     @FXML
-    private MFXButton ticketingNavButton;
+    private MFXButton specialTicketNavButton;
     @FXML
     private Rectangle sellingLine;
     @FXML
@@ -37,14 +36,14 @@ public class MainController implements Initializable, Displayable {
     @FXML
     private StackPane mainLayout;
     @FXML
-    private StackPane secondaryLayout;
+    private StackPane secondaryLayout, thirdLayout;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
             model = Model.getInstance();
             model.setEventsDisplayer(this);
-            NavigationHoverControl navigationHoverControl = new NavigationHoverControl(eventsLine, sellingLine, ticketingLine, eventsNavButton, sellingNavButton, ticketingNavButton);
+            NavigationHoverControl navigationHoverControl = new NavigationHoverControl(eventsLine, sellingLine, ticketingLine, eventsNavButton, sellingNavButton, specialTicketNavButton);
             navigationHoverControl.initializeNavButtons();
             displayEvents();
             bindParentWidth();
@@ -76,25 +75,15 @@ public class MainController implements Initializable, Displayable {
     }
 
 
-    public void createTicket(ActionEvent actionEvent) throws IOException {
+    public void createSpecialTicket(ActionEvent actionEvent) {
 
-        /*
-        //TicketsGeneration ticketController = loader.getController();
-        //ticketController.setMainController(this);
-
-        Stage stage = new Stage();
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.setTitle("Create Ticket");
-        stage.setScene(new Scene(new TicketsGeneration(secondaryLayout).getRoot()));
-        stage.show();
-         */
     }
 
     @FXML
     private void createEvent(ActionEvent actionEvent) {
         this.secondaryLayout.setVisible(true);
         this.secondaryLayout.setDisable(false);
-        CreateEventController createEventController = new CreateEventController(secondaryLayout,model);
+        CreateEventController createEventController = new CreateEventController(secondaryLayout, thirdLayout, model);
         secondaryLayout.getChildren().clear();
         secondaryLayout.getChildren().add(createEventController.getRoot());
     }
