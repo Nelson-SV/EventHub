@@ -51,7 +51,7 @@ public class CreateEventController {
 
     private Model model;
 
-    private  StackPane stackPane;
+    private  StackPane stackPane, thirdLayout;
 
     @FXML
     public void initialize() throws EventException {
@@ -86,12 +86,13 @@ public class CreateEventController {
 
     }
 
-    public CreateEventController(StackPane stackPane ,Model model) {
+    public CreateEventController(StackPane stackPane, StackPane thirdLayout ,Model model) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("CreateEventView.fxml"));
         loader.setController(this);
         try {
             editScrolPane = loader.load();
             this.stackPane = stackPane;
+            this.thirdLayout = thirdLayout;
             this.model=model;
         } catch (IOException e) {
             ExceptionHandler.erorrAlertMessage(ErrorCode.LOADING_FXML_FAILED.getValue());
@@ -109,8 +110,15 @@ public class CreateEventController {
     }
 
     public void addTicket(ActionEvent actionEvent) {
-        TicketsGeneration ticketsGeneration = new TicketsGeneration(stackPane, this);
-        stackPane.getChildren().add(ticketsGeneration.getRoot());
+        showThirdLayout();
+        TicketsGeneration ticketsGeneration = new TicketsGeneration(stackPane, thirdLayout,  this);
+        thirdLayout.getChildren().add(ticketsGeneration.getRoot());
+    }
+
+    private void showThirdLayout() {
+        thirdLayout.getChildren().clear();
+        thirdLayout.setDisable(false);
+        thirdLayout.setVisible(true);
     }
 
     public void saveEvent(ActionEvent actionEvent){
