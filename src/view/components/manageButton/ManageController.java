@@ -19,22 +19,24 @@ public class ManageController implements Initializable {
     private VBox manageControl;
     private StackPane editWindow;
     private Model model;
+    private int eventId;
 
-    public ManageController(StackPane editwindow, Model model) {
+    public ManageController(StackPane editwindow, Model model,int eventId) {
         this.model = model;
         this.editWindow = editwindow;
+        this.eventId=eventId;
     }
 
     private void openEditWindow(MouseEvent event) {
         this.editWindow.setVisible(true);
         this.editWindow.setDisable(false);
-        model.setSelectedEvent(Integer.parseInt(manageControl.getId()));
+        model.setSelectedEvent(this.eventId);
         EventManagementController manageEventController = new EventManagementController(editWindow);
         model.setCoordinatorsDisplayer(manageEventController);
         editWindow.getChildren().clear();
         editWindow.getChildren().add(manageEventController.getRoot());
         try {
-            model.initializeEventCoordinators(Integer.parseInt(manageControl.getId()));
+            model.initializeEventCoordinators(this.eventId);
         } catch (EventException e) {
             ExceptionHandler.errorAlert(e);
         }

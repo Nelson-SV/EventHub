@@ -12,15 +12,13 @@ public class ManageAction extends VBox {
     private VBox manageControl;
     public ManageAction(StackPane editWindow, int eventId, Model model) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("ManageButton.fxml"));
-        loader.setController(new ManageController(editWindow,model));
+        loader.setController(new ManageController(editWindow,model,eventId));
         try {
             manageControl= loader.load();
             this.getChildren().add(manageControl);
-            manageControl.setId(eventId+"");
         } catch (IOException e) {
             System.out.println("alert from here");
             ExceptionHandler.erorrAlertMessage(ErrorCode.LOADING_FXML_FAILED.getValue());
-
         }
     }
 
