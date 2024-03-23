@@ -68,7 +68,7 @@ public class EventManagementController implements Initializable, CoordinatorsDis
         loader.setController(this);
         try {
             managementRoot = loader.load();
-            this.secondaryLayout = secondaryLayout;+
+            this.secondaryLayout = secondaryLayout;
         } catch (IOException e) {
             e.printStackTrace();
             ExceptionHandler.erorrAlertMessage(ErrorCode.LOADING_FXML_FAILED.getValue());
