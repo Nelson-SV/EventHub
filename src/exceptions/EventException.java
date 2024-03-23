@@ -44,7 +44,6 @@ public class EventException extends Exception {
             logger.log(level, "Exception Occurred: " + message + " | ErrorCode: " + code);
         }
     }
-
     public ErrorCode getErrorCode() {
         return errorCode;
     }

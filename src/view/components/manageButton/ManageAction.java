@@ -17,7 +17,6 @@ public class ManageAction extends VBox {
             manageControl= loader.load();
             this.getChildren().add(manageControl);
         } catch (IOException e) {
-            System.out.println("alert from here");
             ExceptionHandler.erorrAlertMessage(ErrorCode.LOADING_FXML_FAILED.getValue());
         }
     }

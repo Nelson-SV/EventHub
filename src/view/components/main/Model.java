@@ -7,6 +7,7 @@ import bll.EventManager;
 import bll.ILogicManager;
 import exceptions.EventException;
 import javafx.collections.*;
+import javafx.concurrent.Task;
 import view.components.eventManagement.EventManagementController;
 import view.components.listeners.CoordinatorsDisplayer;
 import view.components.listeners.Displayable;
@@ -36,6 +37,8 @@ public class Model {
     private ObservableMap<Integer, User> allEventCoordinators;
 
 
+
+
     private EventManager manager;
     private ILogicManager evmLogic;
     /**
@@ -44,18 +47,6 @@ public class Model {
     private Event selectedEvent;
 
     private static Model instance;
-    //ensures that by using Singelton all controllers use the same model
-
-//    static {
-//        try {
-//            instance = new Model();
-//        } catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        } catch (EventException e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
-
     public static Model getInstance() throws EventException {
         if (instance == null) {
             instance = new Model();
@@ -68,7 +59,7 @@ public class Model {
         coordinatorEvents = FXCollections.observableHashMap();
         evmLogic = new EventManagementLogic();
         allEventCoordinators = FXCollections.observableHashMap();
-        addEventListenerCoordinators();
+    //    addEventListenerCoordinators();
         initializeEventsMap();
     }
 
@@ -86,10 +77,10 @@ public class Model {
         }
     }
 
-    /**initialize the event coordinators list*/
-public void initializeEventCoordinators(int eventId) throws EventException {
-    evmLogic.getEventCoordinators(eventId).values().forEach((user)->allEventCoordinators.put(user.getUserId(),user));
-}
+//    /**initialize the event coordinators list*/
+//public void initializeEventCoordinators(int eventId) throws EventException {
+//    evmLogic.getEventCoordinators(eventId).values().forEach((user)->allEventCoordinators.put(user.getUserId(),user));
+//}
 
 
 
@@ -130,26 +121,25 @@ public void initializeEventCoordinators(int eventId) throws EventException {
     }
 
 
+//
+//    /**get all event Coordinators off the app that are not assigned to this event*/
+//    public ObservableList<User> getAllEventCoordinators() {
+//        return FXCollections.observableArrayList(allEventCoordinators.values());
+//    }
 
-    /**get all event Coordinators off the app that are not assigned to this event*/
-    public ObservableList<User> getAllEventCoordinators() {
-        return FXCollections.observableArrayList(allEventCoordinators.values());
-    }
-
-    /**
-     * listen for the eventCoordinators changes*/
-    private void addEventListenerCoordinators(){
-        this.allEventCoordinators.addListener((MapChangeListener<? super Integer, ? super User>) change  ->{
-           if(change.wasAdded()|| change.wasRemoved()){
-               coordinatorsDisplayer.setCoordinators();
-           }
-        });
-    }
+//    /**
+//     * listen for the eventCoordinators changes
+//    private void addEventListenerCoordinators(){
+//        this.allEventCoordinators.addListener((MapChangeListener<? super Integer, ? super User>) change  ->{
+//           if(change.wasAdded()|| change.wasRemoved()){
+//               coordinatorsDisplayer.setCoordinators();
+//           }
+//        });
+//    }*/
     /**updates the view that is displaying the coordinators*/
     public void setCoordinatorsDisplayer(CoordinatorsDisplayer displayer){
         this.coordinatorsDisplayer=displayer;
     }
-
 
     /**
      * set the event that has been selected to be managed
@@ -165,4 +155,11 @@ public void initializeEventCoordinators(int eventId) throws EventException {
         return this.selectedEvent;
     }
 
+    public Task<List<User>> executeData(int eventId) {
+       return this.evmLogic.getevCoord(eventId);
+    }
+
+    public CoordinatorsDisplayer getCoordinatorsDisplayer() {
+        return coordinatorsDisplayer;
+    }
 }

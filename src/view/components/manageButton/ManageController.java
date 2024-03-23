@@ -1,6 +1,14 @@
 package view.components.manageButton;
+
+import be.User;
+import exceptions.ErrorCode;
 import exceptions.EventException;
 import exceptions.ExceptionHandler;
+import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.input.MouseEvent;
@@ -11,6 +19,9 @@ import view.components.events.CreateEventController;
 import view.components.main.Model;
 
 import java.net.URL;
+import java.security.Provider;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 
@@ -20,11 +31,12 @@ public class ManageController implements Initializable {
     private StackPane editWindow;
     private Model model;
     private int eventId;
+    private Service<List<User>> service;
 
-    public ManageController(StackPane editwindow, Model model,int eventId) {
+    public ManageController(StackPane editwindow, Model model, int eventId) {
         this.model = model;
         this.editWindow = editwindow;
-        this.eventId=eventId;
+        this.eventId = eventId;
     }
 
     private void openEditWindow(MouseEvent event) {
@@ -35,15 +47,40 @@ public class ManageController implements Initializable {
         model.setCoordinatorsDisplayer(manageEventController);
         editWindow.getChildren().clear();
         editWindow.getChildren().add(manageEventController.getRoot());
-        try {
-            model.initializeEventCoordinators(this.eventId);
-        } catch (EventException e) {
-            ExceptionHandler.errorAlert(e);
-        }
+        Platform.runLater(()->initializeOrUpdateService(this.eventId));
     }
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         manageControl.addEventHandler(MouseEvent.MOUSE_CLICKED, this::openEditWindow);
     }
+    public void initializeOrUpdateService(int newEventId) {
+        if (service == null) {
+            service = new Service<List<User>>() {
+                @Override
+                protected Task<List<User>> createTask() {
+                    return model.executeData(eventId);
+                }
+            };
+
+            service.setOnSucceeded(event -> {
+                Platform.runLater(() -> {
+                    System.out.println("update");
+                    model.getCoordinatorsDisplayer().setCoordinators(FXCollections.observableArrayList(service.getValue()));
+                });
+            });
+
+            service.setOnFailed(event -> {
+                Throwable cause = service.getException();
+                ExceptionHandler.errorAlert(new EventException(cause.getMessage(), cause, ErrorCode.OPERATION_DB_FAILED));
+            });
+        }
+
+        if (service.isRunning()) {
+            service.cancel();
+        }
+        service.restart();
+    }
+
 }

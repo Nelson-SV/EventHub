@@ -47,7 +47,8 @@ public class UsersDAO {
                         }
                     }
                 } catch (SQLException | EventException e) {
-                    throw new EventException(e.getMessage(), e.getCause(), ErrorCode.OPERATION_DB_FAILED);
+                    System.out.println(e.getMessage()+e.getCause()+ErrorCode.OPERATION_DB_FAILED);
+                   // throw new EventException(e.getMessage(), e.getCause(), ErrorCode.OPERATION_DB_FAILED);
                 };
                 return evCoord;
             };

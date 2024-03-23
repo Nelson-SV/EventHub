@@ -1,4 +1,5 @@
 package view.components.eventManagement;
+
 import be.User;
 import exceptions.ErrorCode;
 import exceptions.EventException;
@@ -7,19 +8,25 @@ import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXDatePicker;
 import io.github.palexdev.materialfx.controls.MFXFilterComboBox;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import javafx.stage.WindowEvent;
 import view.components.listeners.CoordinatorsDisplayer;
 import view.components.main.Model;
+
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalTime;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class EventManagementController implements Initializable, CoordinatorsDisplayer {
@@ -34,11 +41,11 @@ public class EventManagementController implements Initializable, CoordinatorsDis
     @FXML
     private TextArea eventDescription;
     @FXML
-    private MFXComboBox endTime;
+    private MFXComboBox<LocalTime> endTime;
     @FXML
     private MFXDatePicker endDate;
     @FXML
-    private MFXComboBox startTime;
+    private MFXComboBox<LocalTime> startTime;
     @FXML
     private MFXDatePicker startDate;
     @FXML
@@ -55,17 +62,18 @@ public class EventManagementController implements Initializable, CoordinatorsDis
 
 
     //TODO initialize the coordinators comboBox with the user Name and checkBox.
+
     public EventManagementController(StackPane secondaryLayout) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("EventManager.fxml"));
         loader.setController(this);
         try {
             managementRoot = loader.load();
-            this.secondaryLayout = secondaryLayout;
+            this.secondaryLayout = secondaryLayout;+
         } catch (IOException e) {
+            e.printStackTrace();
             ExceptionHandler.erorrAlertMessage(ErrorCode.LOADING_FXML_FAILED.getValue());
         }
     }
-
 
 
     @Override
@@ -75,10 +83,11 @@ public class EventManagementController implements Initializable, CoordinatorsDis
         } catch (EventException e) {
             ExceptionHandler.errorAlert(e);
         }
-        initializeEventTime(this.startTime, this.endTime);
-        bindSelectedEventProprieties();
-        cancelEdit.setOnAction((e) -> cancelEditOperation());
-        //setCoordinators();
+
+        initializeEventTime(startTime,endTime);
+        Platform.runLater(this::bindSelectedEventProprieties);
+       cancelEdit.setOnAction((e)->cancelEditOperation());
+
     }
 
 
@@ -128,7 +137,7 @@ public class EventManagementController implements Initializable, CoordinatorsDis
     }
 
     @Override
-    public void setCoordinators() {
-        coordinators.setItems(model.getAllEventCoordinators());
+    public void setCoordinators(ObservableList<User> users) {
+        coordinators.setItems(users);
     }
 }

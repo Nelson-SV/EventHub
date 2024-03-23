@@ -1,6 +1,9 @@
 package view.components.main;
+import be.User;
 import exceptions.EventException;
 import io.github.palexdev.materialfx.controls.MFXButton;
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -14,6 +17,7 @@ import view.components.manageButton.ManageAction;
 import view.utility.NavigationHoverControl;
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class MainController implements Initializable, Displayable {
@@ -99,4 +103,5 @@ public class MainController implements Initializable, Displayable {
     public boolean isInitializationError() {
         return initializationError;
     }
+
 }
