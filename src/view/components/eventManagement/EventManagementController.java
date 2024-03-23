@@ -27,7 +27,7 @@ import view.components.listeners.CoordinatorsDisplayer;
 import view.components.loadingComponent.LoadingActions;
 import view.components.loadingComponent.LoadingComponent;
 import view.components.main.Model;
-
+import view.utility.EditEventValidator;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalTime;
@@ -61,22 +61,21 @@ public class EventManagementController implements Initializable, CoordinatorsDis
     @FXML
     CheckComboBox<User> coordinators;
     private Model model;
-    private StackPane secondaryLayout,thirdLayout;
+    private StackPane secondaryLayout, thirdLayout;
     private Service<Void> service;
 
     private LoadingComponent loadingComponent;
 
 
-
     //TODO initialize the coordinators comboBox with the user Name and checkBox.
 
-    public EventManagementController(StackPane secondaryLayout,StackPane thirdLayout) {
+    public EventManagementController(StackPane secondaryLayout, StackPane thirdLayout) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("EventManager.fxml"));
         loader.setController(this);
         try {
             managementRoot = loader.load();
             this.secondaryLayout = secondaryLayout;
-            this.thirdLayout= thirdLayout;
+            this.thirdLayout = thirdLayout;
         } catch (IOException e) {
             e.printStackTrace();
             ExceptionHandler.erorrAlertMessage(ErrorCode.LOADING_FXML_FAILED.getValue());
@@ -91,10 +90,12 @@ public class EventManagementController implements Initializable, CoordinatorsDis
         } catch (EventException | TicketException e) {
             ExceptionHandler.errorAlert((EventException) e);
         }
+        System.out.println(endDate.getStyleClass());
         initializeEventTime(startTime, endTime);
         Platform.runLater(this::bindSelectedEventProprieties);
+        EditEventValidator.addEventListeners(eventName,startDate,startTime,eventLocation);
         cancelEdit.setOnAction((e) -> cancelEditOperation());
-        saveEdit.setOnAction((e)->saveOperation());
+        saveEdit.setOnAction((e) -> saveOperation());
     }
 
 
@@ -143,20 +144,27 @@ public class EventManagementController implements Initializable, CoordinatorsDis
         this.secondaryLayout.setVisible(false);
     }
 
-    private void saveOperation(){
+    private void saveOperation() {
+        if(EditEventValidator.isEventValid(eventName,startDate,startTime,eventLocation)){
+            initializeLoadingView();
+            Platform.runLater(this::initializeService);
+        }
+    }
+
+    private void initializeLoadingView() {
         this.thirdLayout.getChildren().clear();
         loadingComponent = new LoadingComponent();
         this.thirdLayout.getChildren().add(loadingComponent);
         this.thirdLayout.setVisible(true);
         this.thirdLayout.setDisable(false);
-        Platform.runLater(this::initializeService);
     }
 
-    private void closeLoader(){
+    private void closeLoader() {
         this.thirdLayout.getChildren().clear();
         this.thirdLayout.setVisible(false);
         this.thirdLayout.setDisable(true);
     }
+
     @Override
     public void setCoordinators(ObservableList<User> users) {
         coordinators.getItems().setAll(users);
@@ -166,8 +174,8 @@ public class EventManagementController implements Initializable, CoordinatorsDis
             coordinators.getCheckModel().getCheckedItems().forEach(e -> System.out.println(e.getUserId()));
         });
     }
-    
-    private void initializeService(){
+
+    private void initializeService() {
         service = new Service<Void>() {
             @Override
             protected Task<Void> createTask() {
@@ -183,13 +191,15 @@ public class EventManagementController implements Initializable, CoordinatorsDis
                         return null;
                     }
                 };
-            };
+            }
+
+            ;
         };
-        service.setOnSucceeded((e)->{
+        service.setOnSucceeded((e) -> {
             this.loadingComponent.setAction(LoadingActions.SUCCES.getActionValue());
-            Platform.runLater(()->{
+            Platform.runLater(() -> {
                 PauseTransition pauseTransition = new PauseTransition(Duration.millis(1000));
-                pauseTransition.setOnFinished((ev)->{
+                pauseTransition.setOnFinished((ev) -> {
                     closeLoader();
                     cancelEditOperation();
                 });
@@ -197,8 +207,8 @@ public class EventManagementController implements Initializable, CoordinatorsDis
             });
         });
 
-        service.setOnFailed((e)->{
-            Throwable cause= service.getException();
+        service.setOnFailed((e) -> {
+            Throwable cause = service.getException();
             ExceptionHandler.erorrAlertMessage(cause.getMessage());
             Platform.runLater(this::closeLoader);
         });

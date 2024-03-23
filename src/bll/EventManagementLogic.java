@@ -41,6 +41,11 @@ public class EventManagementLogic implements ILogicManager{
     public boolean isModifyed(Map<Integer, List<Integer>> assignedCoordinators, Event selectedEvent,Event original) {
         return !assignedCoordinators.get(selectedEvent.getId()).isEmpty() || !selectedEvent.equals(original);
     }
+    public boolean isEditValid(Event selectedEvent){
+        return !selectedEvent.getName().isEmpty() && selectedEvent.getStartDate()!=null
+                && selectedEvent.getStartTime()!=null&&!selectedEvent.getLocation().isEmpty();
+
+    }
 
 
     /**persist the edit event operation
