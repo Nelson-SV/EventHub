@@ -14,9 +14,7 @@ import view.components.listeners.Displayable;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Model {
@@ -35,9 +33,7 @@ public class Model {
      * holds all the event coordinators available
      */
     private ObservableMap<Integer, User> allEventCoordinators;
-
-
-
+    private HashMap<Integer,List<Integer>> assignedoordinators;
 
     private EventManager manager;
     private ILogicManager evmLogic;
@@ -120,22 +116,6 @@ public class Model {
                 .collect(Collectors.toList());
     }
 
-
-//
-//    /**get all event Coordinators off the app that are not assigned to this event*/
-//    public ObservableList<User> getAllEventCoordinators() {
-//        return FXCollections.observableArrayList(allEventCoordinators.values());
-//    }
-
-//    /**
-//     * listen for the eventCoordinators changes
-//    private void addEventListenerCoordinators(){
-//        this.allEventCoordinators.addListener((MapChangeListener<? super Integer, ? super User>) change  ->{
-//           if(change.wasAdded()|| change.wasRemoved()){
-//               coordinatorsDisplayer.setCoordinators();
-//           }
-//        });
-//    }*/
     /**updates the view that is displaying the coordinators*/
     public void setCoordinatorsDisplayer(CoordinatorsDisplayer displayer){
         this.coordinatorsDisplayer=displayer;
@@ -143,8 +123,10 @@ public class Model {
 
     /**
      * set the event that has been selected to be managed
+     * it is a clone, if user wants to cancel , than the original event will not be affected
      */
-    public void setSelectedEvent(int id) {
+    public void setSelectedEvent(int id)
+    {
         this.selectedEvent = new Event(coordinatorEvents.get(id));
     }
 
@@ -155,6 +137,7 @@ public class Model {
         return this.selectedEvent;
     }
 
+    /**retrieve the eventCoordinators that are not assigned to the selected event */
     public Task<List<User>> executeData(int eventId) {
        return this.evmLogic.getevCoord(eventId);
     }
@@ -162,4 +145,19 @@ public class Model {
     public CoordinatorsDisplayer getCoordinatorsDisplayer() {
         return coordinatorsDisplayer;
     }
+
+
+    /**save the edit operation performed on the current selected event*/
+    public void saveEditEventOperation(Map<Integer,List<Integer>> assignedCoordinators){
+       boolean isModified=evmLogic.isModifyed(assignedCoordinators,selectedEvent,coordinatorEvents.get(selectedEvent.getId()));
+        if(!isModified){
+            return;
+        }
+        evmLogic.saveEditOperation(selectedEvent,assignedCoordinators);
+
+
+
+    }
+
+
 }

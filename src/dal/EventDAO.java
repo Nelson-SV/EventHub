@@ -13,7 +13,9 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 public class EventDAO {
     private final ConnectionManager connectionManager;
@@ -179,4 +181,73 @@ public class EventDAO {
         }
         return evCoordinators;
     }
+
+    public void  saveEditOperation(Event selectedEvent, Map<Integer, List<Integer>> assignedCoordinators) {
+        String updateEvent = "UPDATE Event SET Start_date=?,Name=?,Description=?,End_Date=?,Start_Time=?,End_Time=?,Location=? WHERE EventId=?";
+
+             Connection conn = null;
+        try{
+            conn= connectionManager.getConnection();
+            conn.setAutoCommit(false);
+          try(PreparedStatement psmt = conn.prepareStatement(updateEvent)){
+                if(selectedEvent.getStartDate()!=null){
+                    psmt.setDate(1,Date.valueOf(selectedEvent.getStartDate()));
+                }else{
+                    psmt.setDate(1,null);
+                }
+                psmt.setString(2,selectedEvent.getName());
+                psmt.setString(3,selectedEvent.getDescription());
+                if(selectedEvent.getEndDate()!=null){
+                    psmt.setDate(4,Date.valueOf(selectedEvent.getEndDate()));
+                }else{
+                    psmt.setDate(4,null);
+                }
+                if(selectedEvent.getStartTime()!=null){
+                    psmt.setTime(5,Time.valueOf(selectedEvent.getStartTime()));
+                }else{
+                    psmt.setTime(5,null);
+                }
+                if(selectedEvent.getEndTime()!=null){
+                    psmt.setTime(6,Time.valueOf(selectedEvent.getEndTime()));
+                }else{
+                    psmt.setTime(6,null);
+                }
+                psmt.setString(7,selectedEvent.getLocation());
+                psmt.executeUpdate();
+          }
+              insertCoordinators(selectedEvent.getId(),assignedCoordinators,conn);
+            conn.commit();
+
+        } catch (SQLException | EventException e) {
+           try{
+               if(conn!=null){
+                   conn.rollback();
+               }
+           } catch (SQLException ex) {
+               ex.printStackTrace();
+           }
+        }finally {
+            if(conn!=null){
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                   e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    private  void insertCoordinators(int eventId, Map<Integer, List<Integer>> assignedCoordinators,Connection conn) throws SQLException {
+        String insertCoordinators="INSERT INTO UserEvents(UserId,EventId)  values (?,?)";
+        try(PreparedStatement psmt = conn.prepareStatement(insertCoordinators)){
+            for(Integer userId : assignedCoordinators.get(eventId) ){
+                psmt.setInt(1, userId);
+                psmt.setInt(2,eventId);
+                psmt.addBatch();
+            }
+            psmt.executeBatch();
+        }
+    }
 }
+
+

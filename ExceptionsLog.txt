@@ -1,0 +1,5 @@
+Mar 23, 2024 2:36:09 PM exceptions.ExceptionLogger <init>
+INFO: Logger initialized 
+.......................................
+Mar 23, 2024 2:36:09 PM Main main
+WARNING: TESt
