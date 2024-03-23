@@ -18,4 +18,5 @@ public interface ILogicManager {
     boolean isModifyed(Map<Integer, List<Integer>> assignedCoordinators, Event selectedEvent, Event original);
 
     void saveEditOperation(Event selectedEvent, Map<Integer, List<Integer>> assignedCoordinators);
+    boolean isEditValid(Event selectedEvent);
 }

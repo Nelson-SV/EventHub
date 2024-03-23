@@ -131,16 +131,12 @@ public class CreateEventController {
             String description = eventDescription.getText();
             String locationE = eventLocation.getText();
             Event event = new Event(name, description, startD, endD, startT, endT, locationE);
-            System.out.println("working" + event);
             try {
                 model.addEvent(event);
-                System.out.println("event" + event);
                 closeWindow(actionEvent);
             } catch (EventException e) {
-                System.out.println(event);
                 ExceptionHandler.erorrAlertMessage(e.getErrorCode().getValue());
            }
-
         }
     }
 

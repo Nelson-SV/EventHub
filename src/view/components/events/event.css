@@ -20,13 +20,17 @@ Label {
     -fx-background-radius: 5px; /* Set corner radius */
 
 }
+
 .bold-label {
     -fx-font-weight: bold; /* Make text bold */
 }
+
 .invalid-field {
     -fx-border-color: red;
+    -fx-border-width: 2;
 }
 
 .valid-field {
     -fx-border-color: #cecdcd;
+    -fx-border-width: 2;
 }

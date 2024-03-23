@@ -147,10 +147,19 @@ public class Model {
     }
 
 
+public boolean isEditValid(){
+     return  evmLogic.isEditValid(selectedEvent);
+}
+
+public boolean isModified(Map<Integer,List<Integer>> assignedCoordinators){
+       return evmLogic.isModifyed(assignedCoordinators,selectedEvent,coordinatorEvents.get(selectedEvent.getId()));
+}
+
     /**save the edit operation performed on the current selected event*/
     public void saveEditEventOperation(Map<Integer,List<Integer>> assignedCoordinators){
        boolean isModified=evmLogic.isModifyed(assignedCoordinators,selectedEvent,coordinatorEvents.get(selectedEvent.getId()));
-        if(!isModified){
+
+       if(!isModified){
             return;
         }
         evmLogic.saveEditOperation(selectedEvent,assignedCoordinators);
