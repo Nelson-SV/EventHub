@@ -4,6 +4,7 @@ import be.User;
 import exceptions.ErrorCode;
 import exceptions.EventException;
 import exceptions.ExceptionHandler;
+import exceptions.TicketException;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXDatePicker;
@@ -87,8 +88,8 @@ public class EventManagementController implements Initializable, CoordinatorsDis
     public void initialize(URL location, ResourceBundle resources) {
         try {
             this.model = Model.getInstance();
-        } catch (EventException e) {
-            ExceptionHandler.errorAlert(e);
+        } catch (EventException | TicketException e) {
+            ExceptionHandler.errorAlert((EventException) e);
         }
         initializeEventTime(startTime, endTime);
         Platform.runLater(this::bindSelectedEventProprieties);
