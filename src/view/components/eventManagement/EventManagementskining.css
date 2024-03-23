@@ -1,0 +1,18 @@
+
+.managementContainer{
+    -fx-background-radius: 10;
+}
+.combo-box-base {
+    -fx-background-color: -fx-shadow-highlight-color, -fx-outer-border, -fx-inner-border, white;
+    -fx-background-insets: 0 0 -1 0, 0, 1, 2;
+    -fx-background-radius: 3px, 3px, 2px, 1px;
+}
+
+.combo-box .combo-box-popup .list-cell{
+    -fx-text-fill: #5585b5;
+}
+
+.combo-box .combo-box-popup .list-cell:hover {
+    -fx-background-color: #E1EBF2;
+}
+

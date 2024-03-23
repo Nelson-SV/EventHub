@@ -1,0 +1,8 @@
+.loadingComponent{
+    -fx-background-color: rgba(0, 0, 0, 0.5);
+}
+
+.loadingComponent>.label{
+    -fx-text-fill: #0a47a9;
+    -fx-font-size: 18;
+}

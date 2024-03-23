@@ -10,9 +10,9 @@ import java.io.IOException;
 
 public class ManageAction extends VBox {
     private VBox manageControl;
-    public ManageAction(StackPane editWindow, int eventId, Model model) {
+    public ManageAction(StackPane editWindow,StackPane thirdLayout, int eventId, Model model) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("ManageButton.fxml"));
-        loader.setController(new ManageController(editWindow,model,eventId));
+        loader.setController(new ManageController(editWindow,thirdLayout,model,eventId));
         try {
             manageControl= loader.load();
             this.getChildren().add(manageControl);

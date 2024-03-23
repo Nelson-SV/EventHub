@@ -1,5 +1,6 @@
 
 import exceptions.ErrorCode;
+import exceptions.ExceptionLogger;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -7,6 +8,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 import view.components.main.MainController;
+
+import java.util.logging.Level;
 
 
 public class Main extends Application {

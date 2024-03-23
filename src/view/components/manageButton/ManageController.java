@@ -15,12 +15,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import view.components.eventManagement.EventManagementController;
-import view.components.events.CreateEventController;
 import view.components.main.Model;
-
 import java.net.URL;
-import java.security.Provider;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -29,21 +25,23 @@ public class ManageController implements Initializable {
     @FXML
     private VBox manageControl;
     private StackPane editWindow;
+    private StackPane thirdLayout;
     private Model model;
     private int eventId;
     private Service<List<User>> service;
 
-    public ManageController(StackPane editwindow, Model model, int eventId) {
+    public ManageController(StackPane editwindow,StackPane thirdLayout, Model model, int eventId) {
         this.model = model;
         this.editWindow = editwindow;
         this.eventId = eventId;
+        this.thirdLayout= thirdLayout;
     }
 
     private void openEditWindow(MouseEvent event) {
         this.editWindow.setVisible(true);
         this.editWindow.setDisable(false);
         model.setSelectedEvent(this.eventId);
-        EventManagementController manageEventController = new EventManagementController(editWindow);
+        EventManagementController manageEventController = new EventManagementController(editWindow,thirdLayout);
         model.setCoordinatorsDisplayer(manageEventController);
         editWindow.getChildren().clear();
         editWindow.getChildren().add(manageEventController.getRoot());

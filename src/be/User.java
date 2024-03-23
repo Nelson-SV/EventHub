@@ -19,7 +19,7 @@ public class User {
 
     @Override
     public String toString() {
-        return firstName.get() + lastName.get();
+        return firstName.get() + " "+lastName.get();
 
     }
 
