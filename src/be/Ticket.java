@@ -32,6 +32,13 @@ public class Ticket {
         this.ticketPrice = price;
     }
 
+    public Ticket (int id, String ticketType, int quantity, float ticketPrice) {
+        this.id = id;
+        this.ticketType = ticketType;
+        this.quantity = quantity;
+        this.ticketPrice = ticketPrice;
+    }
+
     public Ticket (String ticketType, int quantity, float ticketPrice) {
         this.ticketType = ticketType;
         this.quantity = quantity;
@@ -108,5 +115,20 @@ public class Ticket {
 
     public void setUUID(String UUID) {
         this.UUID = UUID;
+    }
+
+    @Override
+    public String toString() {
+        return "Ticket{" +
+                "id=" + id +
+                ", eventName='" + eventName + '\'' +
+                ", ticketType='" + ticketType + '\'' +
+                ", quantity=" + quantity +
+                ", ticketPrice=" + ticketPrice +
+                ", startDate='" + startDate + '\'' +
+                ", customerName='" + customerName + '\'' +
+                ", customerEmail='" + customerEmail + '\'' +
+                ", UUID='" + UUID + '\'' +
+                '}';
     }
 }

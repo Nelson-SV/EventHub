@@ -1,10 +1,9 @@
 package bll;
 
 import be.Event;
+import be.Ticket;
 import dal.EventDAO;
 import exceptions.EventException;
-
-import java.sql.SQLException;
 
 public class EventManager {
     private EventDAO eventD = null;
@@ -17,8 +16,8 @@ public class EventManager {
      * Exception handling
      */
 
-    public Integer addEvent(Event event) throws EventException {
-        return eventD.insertEvent(event);
+    public Integer addEvent(Event event, Ticket addedTicket) throws EventException {
+        return eventD.insertEvent(event, addedTicket);
     }
 
 }

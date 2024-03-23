@@ -2,9 +2,11 @@ package dal;
 
 import be.Event;
 import be.Role;
+import be.Ticket;
 import be.User;
 import exceptions.ErrorCode;
 import exceptions.EventException;
+import exceptions.TicketException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
@@ -23,7 +25,7 @@ public class EventDAO {
         this.connectionManager = new ConnectionManager();
     }
 
-    public Integer insertEvent(Event event) throws EventException {
+    public Integer insertEvent(Event event, Ticket addedTicket) throws EventException {
         Integer eventId = null;
         Connection conn = null;
         try {
@@ -53,6 +55,9 @@ public class EventDAO {
             }
             statement.setString(8, event.getLocation());
             statement.executeUpdate();
+
+
+
             try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
                     eventId = generatedKeys.getInt(1);
@@ -61,6 +66,9 @@ public class EventDAO {
                 }
             }
             conn.commit();
+            if(addedTicket != null) {
+                addTicketToEvent(eventId, addedTicket, conn);
+            }
         } catch (EventException | SQLException e) {
             if (conn != null) {
                 try {
@@ -80,9 +88,27 @@ public class EventDAO {
         return eventId;
     }
 
-    public ObservableMap<Integer, Event> getEvents() throws EventException {
-        return retrieveEvents();
+    public void addTicketToEvent(int eventID, Ticket ticket, Connection conn) throws EventException {
+        System.out.println(ticket);
+        System.out.println(eventID);
+        try {
+            conn.setAutoCommit(false);
+            String sql = "INSERT INTO EventTickets (Event_ID, Ticket_ID) VALUES (?, ?)";
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setInt(1, eventID);
+            statement.setInt(2, ticket.getId());
+
+            statement.executeUpdate();
+            conn.commit();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
+
+        public ObservableMap<Integer, Event> getEvents () throws EventException {
+            return retrieveEvents();
+        }
+
 
     //TODO
     //needs to be modified to accept an user
