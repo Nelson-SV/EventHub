@@ -111,7 +111,7 @@ public class CreateEventController {
 
     public void addTicket(ActionEvent actionEvent) {
         showThirdLayout();
-        TicketsGeneration ticketsGeneration = new TicketsGeneration(stackPane, thirdLayout,  this);
+        TicketsGeneration ticketsGeneration = new TicketsGeneration(stackPane, thirdLayout,  this, model);
         thirdLayout.getChildren().add(ticketsGeneration.getRoot());
     }
 

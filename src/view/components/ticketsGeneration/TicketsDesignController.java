@@ -70,4 +70,123 @@ public class TicketsDesignController extends FlowPane {
     public void setBarCode(ImageView barCode) {
         this.barCode = barCode;
     }
+
+    @FXML
+    private void initialize() {
+
+        /*
+        TicketsDesignController ticketsDesignController = new TicketsDesignController();
+        ticketHBox.getChildren().add(ticketsDesignController);
+
+        ticketsDesignController.getQrCode().setImage(new Image("/resources/images/Image 1.png"));
+        ticketsDesignController.getBarCode().setImage(new Image ("/resources/images/Image 2.png"));
+        ticketsDesignController.getLogoImg().setImage(new Image("/resources/images/Image 3.png"));
+
+         */
+
+
+    }
+
+    /*
+
+    public void updateEventInformation(){
+            ObservableList<String> list = FXCollections.observableArrayList();
+            list.add("Event 1");
+            list.add("Event 2");
+            eventNameCombo.setItems(list);
+
+            eventNameCombo.textProperty().addListener((observable, oldValue, newValue) -> {
+                // Update the label with the new selected Event
+                eventNameLB.setText(newValue);
+            });
+
+            eventDateTF.textProperty().addListener((observable, oldValue, newValue) -> {
+                if (newValue.isEmpty()) {
+                    eventDateLB.setText("Event Date Line");
+                } else {
+                    // If the text field has text, update the label with the new text
+                    eventDateLB.setText(newValue);
+                }
+            });
+
+            eventLocationTF.textProperty().addListener((observable, oldValue, newValue) -> {
+                if (newValue.isEmpty()) {
+                    eventLocationLB.setText("Event Location Line");
+                } else {
+                    // If the text field has text, update the label with the new text
+                    eventLocationLB.setText(newValue);
+                }
+            });
+    }
+
+    public void updateTicketInformation(){
+        ObservableList<String> list = FXCollections.observableArrayList();
+        list.add("Normal TicketsDesignController");
+        list.add("Special TicketsDesignController");
+        ticketTypeCombo.setItems(list);
+
+        // Add a listener to ticketTypeCombo
+        ticketTypeCombo.textProperty().addListener((observable, oldValue, newValue) -> {
+            // Update the label with the new selected type
+            ticketTypeLB.setText(newValue);
+        });
+
+        ticketPriceTF.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.isEmpty()) {
+                ticketPriceLB.setText("dkk");
+            } else {
+                // If the text field has text, update the label with the new text
+                ticketPriceLB.setText(newValue + "dkk");
+            }
+        });
+
+        ObservableList<String> colorList = FXCollections.observableArrayList();
+        colorList.add("Yellow");
+        colorList.add("Light Red");
+        ticketColorCombo.setItems(colorList);
+
+        // Add a listener to ticketColorCombo
+        ticketColorCombo.textProperty().addListener((observable, oldValue, newValue) -> {
+            // Update the ticketPane with the new selected color
+            switch (newValue) {
+                case "Yellow":
+                    ticketPane.setStyle("-fx-background-color: lightyellow;");
+                    break;
+                case "Light Red":
+                    ticketPane.setStyle("-fx-background-color: #F5979A;");
+                    break;
+            }
+        });
+    }
+
+    public void updateExtraLines(){
+        line4TF.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.isEmpty()) {
+                line4LB.setText("Fourth Line");
+            } else {
+                // If the text field has text, update the label with the new text
+                line4LB.setText(newValue);
+            }
+        });
+
+        line5TF.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.isEmpty()) {
+                line5LB.setText("Fifth Line");
+            } else {
+                // If the text field has text, update the label with the new text
+                line5LB.setText(newValue);
+            }
+        });
+
+        line6TF.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.isEmpty()) {
+                line6LB.setText("Sixth Line");
+            } else {
+                // If the text field has text, update the label with the new text
+                line6LB.setText(newValue);
+            }
+        });
+    }
+
+     */
 }

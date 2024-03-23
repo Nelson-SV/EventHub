@@ -1,14 +1,16 @@
 package view.components.main;
 
 import be.Event;
+import be.Ticket;
 import be.User;
 import bll.EventManagementLogic;
 import bll.EventManager;
 import bll.ILogicManager;
+import bll.TicketManager;
 import exceptions.EventException;
+import exceptions.TicketException;
 import javafx.collections.*;
 import javafx.concurrent.Task;
-import view.components.eventManagement.EventManagementController;
 import view.components.listeners.CoordinatorsDisplayer;
 import view.components.listeners.Displayable;
 
@@ -39,23 +41,25 @@ public class Model {
 
 
 
-    private EventManager manager;
+    private EventManager eventManager;
     private ILogicManager evmLogic;
+    private TicketManager ticketManager;
     /**
      * holds the current opened event for managing
      */
     private Event selectedEvent;
 
     private static Model instance;
-    public static Model getInstance() throws EventException {
+    public static Model getInstance() throws EventException, TicketException {
         if (instance == null) {
             instance = new Model();
         }
         return instance;
     }
 
-    private Model() throws EventException {
-        manager = new EventManager();
+    private Model() throws EventException, TicketException {
+        eventManager = new EventManager();
+        ticketManager = new TicketManager();
         coordinatorEvents = FXCollections.observableHashMap();
         evmLogic = new EventManagementLogic();
         allEventCoordinators = FXCollections.observableHashMap();
@@ -70,10 +74,17 @@ public class Model {
      * @param event the new event created
      */
     public void addEvent(Event event) throws EventException {
-        Integer inserted = manager.addEvent(event);
+        Integer inserted = eventManager.addEvent(event);
         if (inserted != null) {
             event.setId(inserted);
             coordinatorEvents.put(inserted, event);
+        }
+    }
+
+    public void addTicket(Ticket ticket) throws EventException, TicketException {
+        Integer inserted = ticketManager.addTicket(ticket);
+        if (inserted != null) {
+            ticket.setId(inserted);
         }
     }
 

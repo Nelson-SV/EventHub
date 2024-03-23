@@ -1,6 +1,7 @@
 package view.components.main;
 import be.User;
 import exceptions.EventException;
+import exceptions.TicketException;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
@@ -51,7 +52,7 @@ public class MainController implements Initializable, Displayable {
             navigationHoverControl.initializeNavButtons();
             displayEvents();
             bindParentWidth();
-        } catch (EventException e) {
+        } catch (EventException | TicketException e) {
             initializationError = true;
             //throw new RuntimeException(e);
         }
