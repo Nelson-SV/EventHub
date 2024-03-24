@@ -34,7 +34,7 @@ import java.time.LocalTime;
 import java.util.ResourceBundle;
 
 
-public class EventManagementController implements Initializable, CoordinatorsDisplayer {
+public class EventManagementController extends GridPane implements Initializable, CoordinatorsDisplayer {
     @FXML
     private MFXButton saveEdit;
     @FXML
@@ -69,7 +69,7 @@ public class EventManagementController implements Initializable, CoordinatorsDis
     private LoadingComponent loadingComponent;
 
 
-    //TODO initialize the coordinators comboBox with the user Name and checkBox.
+
 
     public EventManagementController(StackPane secondaryLayout, StackPane thirdLayout) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("EventManager.fxml"));
@@ -78,6 +78,7 @@ public class EventManagementController implements Initializable, CoordinatorsDis
             managementRoot = loader.load();
             this.secondaryLayout = secondaryLayout;
             this.thirdLayout = thirdLayout;
+            this.getChildren().add(managementRoot);
         } catch (IOException e) {
             ExceptionHandler.erorrAlertMessage(ErrorCode.LOADING_FXML_FAILED.getValue());
         }

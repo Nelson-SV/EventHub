@@ -44,7 +44,7 @@ public class ManageController implements Initializable {
         EventManagementController manageEventController = new EventManagementController(editWindow,thirdLayout);
         model.setCoordinatorsDisplayer(manageEventController);
         editWindow.getChildren().clear();
-        editWindow.getChildren().add(manageEventController.getRoot());
+        editWindow.getChildren().add(manageEventController);
         Platform.runLater(()->initializeOrUpdateService(this.eventId));
     }
 
@@ -64,7 +64,6 @@ public class ManageController implements Initializable {
 
             service.setOnSucceeded(event -> {
                 Platform.runLater(() -> {
-                    System.out.println("update");
                     model.getCoordinatorsDisplayer().setCoordinators(FXCollections.observableArrayList(service.getValue()));
                 });
             });
