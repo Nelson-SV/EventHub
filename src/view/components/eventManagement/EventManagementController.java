@@ -173,12 +173,12 @@ public class EventManagementController extends GridPane implements Initializable
 
     private void saveOperation() {
         boolean isEventValid = EditEventValidator.isEventValid(eventName, startDate, startTime, endDate, endTime, eventLocation);
-        if(isEventValid){
-           if(model.isEditValid()){
-               System.out.println("Edit is valid");
-               initializeLoadingView();
-               initializeService();
-           }
+        if (isEventValid) {
+            if (model.isEditValid()) {
+                System.out.println("Edit is valid");
+                initializeLoadingView();
+                initializeService();
+            }
         }
     }
 
@@ -206,6 +206,9 @@ public class EventManagementController extends GridPane implements Initializable
         });
     }
 
+    //TODO GROSU IONUT ANDREI throw exceptions from the DAO level all the way to the model,
+    // throw the exception in the task creation, handle the exception in the servie failed,
+    //return boolean , in order to update the map, that will update the events page.
     private void initializeService() {
         service = new Service<>() {
             @Override
