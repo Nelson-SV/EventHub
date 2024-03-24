@@ -27,7 +27,7 @@ public class EventDAO {
         this.connectionManager = new ConnectionManager();
     }
 
-    public Integer insertEvent(Event event, Ticket addedTicket) throws EventException {
+    public Integer insertEvent(Event event, List<Ticket> tickets) throws EventException {
         Integer eventId = null;
         Connection conn = null;
         try {
@@ -65,13 +65,13 @@ public class EventDAO {
                 }
             }
 
+            if (!tickets.isEmpty()) {
+                List<Integer> ticketIds = insertTicket(tickets, conn);
+                addTicketToEvent(ticketIds, eventId, conn);
+            }
             conn.commit();
 
-            //this is outside off the transaction
-            if(addedTicket != null) {
-                addTicketToEvent(eventId, addedTicket, conn);
-            }
-        } catch (EventException | SQLException e) {
+        } catch (EventException | SQLException | TicketException e) {
             if (conn != null) {
                 try {
                     conn.rollback();
@@ -90,29 +90,49 @@ public class EventDAO {
         return eventId;
     }
 
-
-    //Todo hope my comments are not upsetting you, have a nice day!!!
-    //the ticket needs to be added at the same time with the event, in the same tranasaction,
-    // to avoid having tickets without events, not in his own transaction.
-    public void addTicketToEvent(int eventID, Ticket ticket, Connection conn) throws EventException {
-        System.out.println(ticket);
-        System.out.println(eventID);
-        try {
-            conn.setAutoCommit(false);
-            String sql = "INSERT INTO EventTickets (Event_ID, Ticket_ID) VALUES (?, ?)";
-            PreparedStatement statement = conn.prepareStatement(sql);
-            statement.setInt(1, eventID);
-            statement.setInt(2, ticket.getId());
-            statement.executeUpdate();
-            conn.commit();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+    public void addTicketToEvent(List<Integer> ticketIds, int eventID, Connection conn) throws EventException, SQLException {
+        String sql = "INSERT INTO EventTickets (TicketID, EventID) VALUES (?, ?)";
+        try (PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            for (Integer ticketId : ticketIds) {
+                statement.setInt(1, ticketId);
+                statement.setInt(2, eventID);
+                statement.addBatch();
+            }
+            statement.executeBatch();
         }
     }
 
-        public ObservableMap<Integer, Event> getEvents () throws EventException {
-            return retrieveEvents();
+    public List<Integer> insertTicket(List<Ticket> tickets, Connection conn) throws TicketException, SQLException {
+        List<Integer> ticketIds = new ArrayList<>();
+        String ticketSql = "INSERT INTO Ticket (Type, Quantity, Price) VALUES (?, ?, ?)";
+        try (PreparedStatement ticketStatement = conn.prepareStatement(ticketSql, Statement.RETURN_GENERATED_KEYS)) {
+            for (Ticket ticket : tickets) {
+                ticketStatement.setString(1, ticket.getTicketType());
+                ticketStatement.setInt(2, ticket.getQuantity());
+                ticketStatement.setFloat(3, ticket.getTicketPrice());
+
+                // Execute the insert statement
+                ticketStatement.executeUpdate();
+
+                // Retrieve generated keys after executing the statement
+                try (ResultSet generatedKeys = ticketStatement.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        ticketIds.add(generatedKeys.getInt(1));
+                        System.out.println(ticketIds);
+                    } else {
+                        System.out.println("Failed to retrieve generated keys for ticket.");
+                        throw new TicketException("Failed to retrieve generated keys for ticket.");
+                    }
+                }
+            }
         }
+        return ticketIds;
+    }
+
+
+    public ObservableMap<Integer, Event> getEvents () throws EventException {
+        return retrieveEvents();
+    }
 
 
     //TODO

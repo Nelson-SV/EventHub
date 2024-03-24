@@ -45,7 +45,7 @@ public class Model {
      * holds the current opened event for managing
      */
     private Event selectedEvent;
-    private Ticket addedTicket;
+    private List<Ticket> addedTickets;
 
     private static Model instance;
     public static Model getInstance() throws EventException, TicketException {
@@ -62,6 +62,7 @@ public class Model {
         eventTickets = FXCollections.observableHashMap();
         evmLogic = new EventManagementLogic();
         allEventCoordinators = FXCollections.observableHashMap();
+        addedTickets = new ArrayList<>();
     //    addEventListenerCoordinators();
         initializeEventsMap();
     }
@@ -73,21 +74,30 @@ public class Model {
      * @param event the new event created
      */
     public void addEvent(Event event) throws EventException {
-        Integer inserted = eventManager.addEvent(event, addedTicket);
+        Integer inserted = eventManager.addEvent(event, addedTickets);
         if (inserted != null) {
             event.setId(inserted);
             coordinatorEvents.put(inserted, event);
         }
     }
 
-    public void addTicket(Ticket ticket) throws TicketException {
+    public List<Ticket> getNewTicket(Ticket ticket){
+        addedTickets.add(ticket);
+        return addedTickets;
+    }
+
+    /*
+    public List<Ticket> addTicket(Ticket ticket) throws TicketException {
         Integer inserted = ticketManager.addTicket(ticket);
         if (inserted != null) {
             ticket.setId(inserted);
             addedTicket = new Ticket(inserted, ticket.getTicketType(), ticket.getQuantity(), ticket.getTicketPrice());
             eventTickets.put(inserted, ticket);
         }
+        return null;
     }
+
+     */
 
 //    /**initialize the event coordinators list*/
 //public void initializeEventCoordinators(int eventId) throws EventException {
