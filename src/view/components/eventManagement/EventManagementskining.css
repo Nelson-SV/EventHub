@@ -57,6 +57,14 @@
     -fx-border-color: red;
     -fx-border-width: 2;
 }
+.endDate:error{
+    -fx-border-color: red;
+    -fx-border-width: 2;
+}
+.endTime:error{
+    -fx-border-color: red;
+    -fx-border-width: 2;
+}
 
 /*.invalid-field {*/
 /*    -fx-border-color: red;*/

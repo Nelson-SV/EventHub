@@ -94,13 +94,33 @@ public class EventManagementController extends GridPane implements Initializable
         }
         initializeEventTime(startTime, endTime);
         Platform.runLater(this::bindSelectedEventProprieties);
-        EditEventValidator.addEventListeners(eventName,startDate,startTime,eventLocation);
-        EditEventValidator.addTimeToolTip(startTime);
-        EditEventValidator.addTimeValidityChecker(startTime);
-        EditEventValidator.addDateToolTip(startDate);
-        EditEventValidator.addDateValidityChecker(startDate);
+        EditEventValidator.initializeDateFormat(startDate);
+        EditEventValidator.initializeDateFormat(endDate);
+        EditEventValidator.addEventListeners(eventName,startDate,startTime,endDate,endTime,eventLocation);
+        //add tool tips for the dates
+        addToolTipsForDates();
+        //add dates validity checker
+        addDatesValidityChecker();
         cancelEdit.setOnAction((e) -> cancelEditOperation());
         saveEdit.setOnAction((e) -> saveOperation());
+    }
+
+
+    /**
+     * add validity checker for the dates*/
+    private void addDatesValidityChecker() {
+        EditEventValidator.addTimeValidityChecker(startTime);
+        EditEventValidator.addDateValidityChecker(startDate);
+        EditEventValidator.addTimeValidityChecker(endTime);
+        EditEventValidator.addDateValidityChecker(endDate);
+    }
+    /**
+     * add tooltips for the dates*/
+    private void addToolTipsForDates() {
+        EditEventValidator.addTimeToolTip(startTime);
+        EditEventValidator.addDateToolTip(startDate);
+        EditEventValidator.addDateToolTip(endDate);
+        EditEventValidator.addTimeToolTip(endTime);
     }
 
 
@@ -150,7 +170,7 @@ public class EventManagementController extends GridPane implements Initializable
     }
 
     private void saveOperation() {
-        if(EditEventValidator.isEventValid(eventName,startDate,startTime,eventLocation,invalidInput)){
+        if(EditEventValidator.isEventValid(eventName,startDate,startTime,endDate,endTime,eventLocation)){
             initializeLoadingView();
             Platform.runLater(this::initializeService);
         }

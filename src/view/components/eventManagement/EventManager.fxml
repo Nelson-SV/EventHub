@@ -63,13 +63,13 @@
                         <VBox prefHeight="200.0" prefWidth="100.0">
                             <children>
                                 <Label text="End date  " />
-                                <MFXDatePicker fx:id="endDate" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="120.0" styleClass="normal" />
+                                <MFXDatePicker fx:id="endDate" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="120.0" styleClass="endDate" />
                             </children>
                         </VBox>
                         <VBox prefHeight="200.0" prefWidth="100.0">
                             <children>
                                 <Label text="End time" />
-                                <MFXComboBox fx:id="endTime" allowEdit="true" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="120.0" styleClass="normal" />
+                                <MFXComboBox fx:id="endTime" allowEdit="true" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="120.0" styleClass="endTime" />
                             </children>
                         </VBox>
                     </children>

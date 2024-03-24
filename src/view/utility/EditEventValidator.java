@@ -9,6 +9,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.util.Duration;
+import javafx.util.StringConverter;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -20,21 +21,31 @@ public class EditEventValidator {
     private static final String VALID_TIME_FORMAT = "Please enter the time in the 24-hour format: HH:mm.";
     private static final String VALID_DATE_FORMAT = "Please enter the date in this format 'yyyy-MM-dd' (e.g.,2024-03-22).";
     private static final String regex = "^([01]?[0-9]|2[0-3]):[0-5][0-9]$";
-    private static final DateTimeFormatter textToTime =  DateTimeFormatter.ofPattern("yyyy-MM-dd");
-    public static boolean isEventValid(TextField name, MFXDatePicker startDate, MFXComboBox<LocalTime> startTime, TextArea eventLocation, TextArea errorBox) {
+    private static final DateTimeFormatter textToTime = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
+
+    /**
+     * validate the user inputs for the edit operation
+     */
+    public static boolean isEventValid(TextField name, MFXDatePicker startDate, MFXComboBox<LocalTime> startTime, MFXDatePicker endDate, MFXComboBox<LocalTime> endTIme, TextArea eventLocation) {
         String startText = startDate.getText();
         String startTimeText = startTime.getText();
         boolean isValid = true;
-        boolean isValidTime = startTimeText.matches(regex);
-        LocalDate validDate = parseDate(startText,textToTime);
+        boolean isValidStartTime = startTimeText.matches(regex);
+        LocalDate validStartDate = parseDate(startText, textToTime);
 
-        if (!isValidTime) {
+        if (!isValidStartTime) {
             return false;
         }
 
-        if(validDate==null){
+        if (validStartDate == null) {
             return false;
+        }
+
+        if (!endDate.getText().isEmpty() || !endTIme.getText().isEmpty()) {
+            if (!checkEndValid(endDate, endTIme)) {
+                return false;
+            }
         }
 
 
@@ -81,68 +92,59 @@ public class EditEventValidator {
         return isValid;
     }
 
-
-    public static void addEventListeners(TextField eventName, MFXDatePicker startDate, MFXComboBox<LocalTime> startTime, TextArea eventLocation) {
+    /**
+     * listeners for the empty values
+     */
+    public static void addEventListeners(TextField eventName, MFXDatePicker startDate, MFXComboBox<LocalTime> startTime, MFXDatePicker endDate, MFXComboBox<LocalTime> endTime, TextArea eventLocation) {
         eventName.textProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue.length() == 1) {
-                Platform.runLater(() -> eventName.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, false));
+                eventName.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, false);
             } else if (newValue.isEmpty()) {
-                Platform.runLater(() -> eventName.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, true));
+                eventName.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, true);
             }
         });
 
         startDate.valueProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
-                Platform.runLater(() -> startDate.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, false));
+                startDate.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, false);
             } else {
-                Platform.runLater(() -> startDate.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, true));
+                startDate.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, true);
             }
         });
 
         startDate.textProperty().addListener(((observable, oldValue, newValue) -> {
             if (newValue.length() == 1) {
-                Platform.runLater(() -> startDate.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, false));
+                startDate.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, false);
             } else if (newValue.isEmpty()) {
-                Platform.runLater(() -> startDate.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, true));
+                startDate.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, true);
             }
         }));
 
 
         startTime.textProperty().addListener(((observable, oldValue, newValue) -> {
             if (newValue.length() == 1) {
-                Platform.runLater(() -> startTime.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, false));
+                startTime.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, false);
             } else if (newValue.isEmpty()) {
-                Platform.runLater(() -> startTime.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, true));
+                startTime.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, true);
             }
         }));
 
         startTime.valueProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
-                Platform.runLater(() -> startTime.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, false));
+                startTime.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, false);
             } else {
-                Platform.runLater(() -> startTime.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, true));
+                startTime.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, true);
             }
         });
 
         eventLocation.textProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue.length() == 1) {
-                Platform.runLater(() -> eventLocation.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, false));
+                eventLocation.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, false);
             } else if (newValue.isEmpty()) {
-                Platform.runLater(() -> eventLocation.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, true));
+                eventLocation.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, true);
             }
         });
-    }
 
-
-    private static void enableInvalidMessage(TextArea textArea) {
-        textArea.setDisable(false);
-        textArea.setVisible(true);
-    }
-
-    private static void hideInvalidMessage(TextArea textArea) {
-        System.out.println("hide");
-        textArea.setDisable(true);
-        textArea.setVisible(false);
     }
 
     public static void addTimeToolTip(MFXComboBox<LocalTime> time) {
@@ -150,49 +152,115 @@ public class EditEventValidator {
         time.setTooltip(errorTooltip);
     }
 
-    public static void  addDateToolTip(MFXDatePicker date){
+    public static void addDateToolTip(MFXDatePicker date) {
         Tooltip tooltip = new Tooltip(VALID_DATE_FORMAT);
         date.setTooltip(tooltip);
     }
 
-    public static void addTimeValidityChecker(MFXComboBox<LocalTime> startTime) {
-        startTime.textProperty().addListener(((observable, oldValue, newValue) -> {
-            PauseTransition pauseTransition = new PauseTransition(Duration.millis(100));
-            pauseTransition.setOnFinished((e) -> {
-                startTime.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, !newValue.matches("^([01]?[0-9]|2[0-3]):[0-5][0-9]$"));
-            });
-            pauseTransition.playFromStart();
+
+    /**
+     * checks if the time inserted in the text box is valid
+     */
+    public static void addTimeValidityChecker(MFXComboBox<LocalTime> time) {
+        time.textProperty().addListener(((observable, oldValue, newValue) -> {
+            if (!newValue.isEmpty()) {
+                PauseTransition pauseTransition = new PauseTransition(Duration.millis(100));
+                pauseTransition.setOnFinished((e) -> {
+                    time.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, !newValue.matches("^([01]?[0-9]|2[0-3]):[0-5][0-9]$"));
+                });
+                pauseTransition.playFromStart();
+            } else {
+                PauseTransition pauseTransition = new PauseTransition(Duration.millis(100));
+                pauseTransition.setOnFinished((e) -> {
+                    time.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, false);
+                });
+                pauseTransition.playFromStart();
+
+            }
         }));
     }
 
-
-    public static void addDateValidityChecker(MFXDatePicker date){
+    /**
+     * listener that checks if the date inserted in the text is valid
+     */
+    public static void addDateValidityChecker(MFXDatePicker date) {
         date.textProperty().addListener(((observable, oldValue, newValue) -> {
-            PauseTransition pauseTransition = new PauseTransition(Duration.millis(100));
-            pauseTransition.setOnFinished((e) -> {
-                date.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, parseDate(newValue, textToTime) == null);
-            });
-            pauseTransition.playFromStart();
+            if (!newValue.isEmpty()) {
+                PauseTransition pauseTransition = new PauseTransition(Duration.millis(300));
+                pauseTransition.setOnFinished((e) -> {
+                    date.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, parseDate(newValue, textToTime) == null);
+                });
+                pauseTransition.playFromStart();
+            } else {
+                PauseTransition pauseTransition = new PauseTransition(Duration.millis(300));
+                pauseTransition.setOnFinished((e) -> {
+                    date.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, false);
+                });
+                pauseTransition.playFromStart();
+            }
         }));
     }
 
+
+    /**
+     * parse a string to a LocalDate used to check if a date is valid or not
+     */
     private static LocalDate parseDate(String text, DateTimeFormatter formatter) {
         try {
             return LocalDate.parse(text, formatter);
         } catch (DateTimeParseException e) {
             return null;
         }
-
     }
 
 
-//    private static void markFieldAsInvalid(TextInputControl field) {
-//        field.getStyleClass().clear();
-//        field.getStyleClass().addAll("mfx-text-field", "mfx-combo-box", "mfx-date-picker","normal","invalid-field");
-//    }
-//
-//    private static void markFieldAsValid(TextInputControl field) {
-//        field.getStyleClass().clear();
-//        field.getStyleClass().addAll("mfx-text-field", "mfx-combo-box","mfx-date-picker", "normal");
-//    }
+    /**
+     * changes the MFXDatePicker format display
+     */
+    public static void initializeDateFormat(MFXDatePicker date) {
+        date.converterSupplierProperty().set(() -> new StringConverter<LocalDate>() {
+            @Override
+            public String toString(LocalDate date) {
+                if (date != null) {
+                    return textToTime.format(date);
+                } else {
+                    return "";
+                }
+            }
+
+            @Override
+            public LocalDate fromString(String string) {
+                if (string != null && !string.isEmpty()) {
+                    return LocalDate.parse(string, textToTime);
+                } else {
+                    return null;
+                }
+            }
+        });
+    }
+
+
+    /**
+     * Checks if the end date and end time are in the valid format
+     */
+
+
+    private static boolean checkEndValid(MFXDatePicker endDate, MFXComboBox<LocalTime> endTime) {
+        if (endDate.getText() != null && !endDate.getText().isEmpty()) {
+            try {
+                LocalDate.parse(endDate.getText(), textToTime);
+            } catch (DateTimeParseException e) {
+                endDate.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, true);
+                return false;
+            }
+        }
+
+        if (endTime.getText() != null && !endTime.getText().isEmpty()) {
+            if (!endTime.getText().matches(regex)) {
+                endTime.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, true);
+                return false;
+            }
+        }
+        return true;
+    }
 }
