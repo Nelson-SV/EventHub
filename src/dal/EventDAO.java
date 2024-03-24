@@ -6,6 +6,7 @@ import be.Ticket;
 import be.User;
 import exceptions.ErrorCode;
 import exceptions.EventException;
+import exceptions.ExceptionLogger;
 import exceptions.TicketException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 
 public class EventDAO {
     private final ConnectionManager connectionManager;
@@ -162,7 +164,6 @@ public class EventDAO {
         "Where U.Role Like ? "+
         "AND U.UserId NOT IN (SELECT us.UserId FROM Users us join UsersEvents ue ON us.UserId=ue.UserId  join Event e ON e.EventId=ue.EventId WHERE e.EventId=?)";
 
-
         try(Connection conn = connectionManager.getConnection()){
             try(PreparedStatement psmt = conn.prepareStatement(sql)){
                 psmt.setString(1, Role.EVENT_COORDINATOR.getValue());
@@ -185,35 +186,35 @@ public class EventDAO {
     }
 
 
-    public List<User> getEventCoordinatorsList(int eventId) throws EventException {
-        List<User> evCoordinators = new ArrayList<>();
-        String sql = "SELECT U.UserId,U.FirstName,U.LastName,U.Role FROM USERS AS U "+
-                "Where U.Role Like ? "+
-                "AND U.UserId NOT IN (SELECT us.UserId FROM Users us join UsersEvents ue ON us.UserId=ue.UserId  join Event e ON e.EventId=ue.EventId WHERE e.EventId=?)";
-        try(Connection conn = connectionManager.getConnection()){
-            try(PreparedStatement psmt = conn.prepareStatement(sql)){
-                psmt.setString(1, Role.EVENT_COORDINATOR.getValue());
-                psmt.setInt(2,eventId);
-                ResultSet rs =psmt.executeQuery();
-                while(rs.next()){
-                    int userId = rs.getInt(1);
-                    String firstName = rs.getString(2);
-                    String lastName = rs.getString(3);
-                    String role =  rs.getString(4);
-                    User user = new User(firstName,lastName,role);
-                    user.setUserId(userId);
-                    evCoordinators.add(user);
-                }
-            }
-        } catch (SQLException |EventException e) {
-            throw new EventException(e.getMessage(),e.getCause(),ErrorCode.OPERATION_DB_FAILED);
-        }
-        return evCoordinators;
-    }
+//    public List<User> getEventCoordinatorsList(int eventId) throws EventException {
+//        List<User> evCoordinators = new ArrayList<>();
+//        String sql = "SELECT U.UserId,U.FirstName,U.LastName,U.Role FROM USERS AS U "+
+//                "Where U.Role Like ? "+
+//                "AND U.UserId NOT IN (SELECT us.UserId FROM Users us join UsersEvents ue ON us.UserId=ue.UserId  join Event e ON e.EventId=ue.EventId WHERE e.EventId=?)";
+//        try(Connection conn = connectionManager.getConnection()){
+//            try(PreparedStatement psmt = conn.prepareStatement(sql)){
+//                psmt.setString(1, Role.EVENT_COORDINATOR.getValue());
+//                psmt.setInt(2,eventId);
+//                ResultSet rs =psmt.executeQuery();
+//                while(rs.next()){
+//                    int userId = rs.getInt(1);
+//                    String firstName = rs.getString(2);
+//                    String lastName = rs.getString(3);
+//                    String role =  rs.getString(4);
+//                    User user = new User(firstName,lastName,role);
+//                    user.setUserId(userId);
+//                    evCoordinators.add(user);
+//                }
+//            }
+//        } catch (SQLException |EventException e) {
+//            throw new EventException(e.getMessage(),e.getCause(),ErrorCode.OPERATION_DB_FAILED);
+//        }
+//        return evCoordinators;
+//    }
 
     public void  saveEditOperation(Event selectedEvent, Map<Integer, List<Integer>> assignedCoordinators) {
+        System.out.println(selectedEvent);
         String updateEvent = "UPDATE Event SET Start_date=?,Name=?,Description=?,End_Date=?,Start_Time=?,End_Time=?,Location=? WHERE EventId=?";
-
              Connection conn = null;
         try{
             conn= connectionManager.getConnection();
@@ -243,11 +244,12 @@ public class EventDAO {
                     psmt.setTime(6,null);
                 }
                 psmt.setString(7,selectedEvent.getLocation());
-                psmt.executeUpdate();
+                psmt.setInt(8,selectedEvent.getId());
+              System.out.println(     psmt.executeUpdate());
+              System.out.println(conn);
           }
               insertCoordinators(selectedEvent.getId(),assignedCoordinators,conn);
-            conn.commit();
-
+          conn.commit();
         } catch (SQLException | EventException e) {
            try{
                if(conn!=null){
@@ -255,6 +257,7 @@ public class EventDAO {
                }
            } catch (SQLException ex) {
                ex.printStackTrace();
+               ExceptionLogger.getInstance().getLogger().log(Level.SEVERE,ex.getMessage(),ex);
            }
         }finally {
             if(conn!=null){
@@ -262,16 +265,20 @@ public class EventDAO {
                     conn.close();
                 } catch (SQLException e) {
                    e.printStackTrace();
+                    ExceptionLogger.getInstance().getLogger().log(Level.SEVERE,e.getMessage(),e);
+
                 }
             }
         }
     }
 
     private  void insertCoordinators(int eventId, Map<Integer, List<Integer>> assignedCoordinators,Connection conn) throws SQLException {
-        String insertCoordinators="INSERT INTO UserEvents(UserId,EventId)  values (?,?)";
+        System.out.println(eventId);
+        System.out.println(assignedCoordinators.get(eventId));
+        String insertCoordinators="INSERT INTO UsersEvents(UserId,EventId) values (?,?)";
         try(PreparedStatement psmt = conn.prepareStatement(insertCoordinators)){
             for(Integer userId : assignedCoordinators.get(eventId) ){
-                psmt.setInt(1, userId);
+                psmt.setInt(1,userId);
                 psmt.setInt(2,eventId);
                 psmt.addBatch();
             }

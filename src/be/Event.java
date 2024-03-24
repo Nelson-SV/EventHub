@@ -164,6 +164,7 @@ public class Event {
 
     public Event(Event originalEvent) {
         initializeFields();
+        this.setId(originalEvent.getId());
         this.name.setValue(originalEvent.getName());
         this.description.setValue(originalEvent.getDescription());
         this.startDate.setValue(originalEvent.getStartDate());

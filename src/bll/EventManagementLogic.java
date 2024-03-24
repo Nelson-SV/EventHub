@@ -7,6 +7,8 @@ import exceptions.EventException;
 import javafx.collections.ObservableMap;
 import javafx.concurrent.Task;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Map;
 
@@ -42,9 +44,44 @@ public class EventManagementLogic implements ILogicManager{
         return !assignedCoordinators.get(selectedEvent.getId()).isEmpty() || !selectedEvent.equals(original);
     }
     public boolean isEditValid(Event selectedEvent){
-        return !selectedEvent.getName().isEmpty() && selectedEvent.getStartDate()!=null
-                && selectedEvent.getStartTime()!=null&&!selectedEvent.getLocation().isEmpty();
+    boolean endDateValid = true;
+    boolean endTimeValid = true;
+    if(selectedEvent.getEndDate()!=null){
+        endDateValid=isEndDateValid(selectedEvent.startDateProperty().get(),selectedEvent.endDateProperty().get());
+    }
+    if(selectedEvent.getEndTime()!=null) {
+        endTimeValid = isEndTimeValid(selectedEvent.startTimeProperty().get(), selectedEvent.endTimeProperty().get());
+    }
+     return isNameValid(selectedEvent.getName())&&
+            !isStartDateNull(selectedEvent.getStartDate())
+             && !isStartTimeNull(selectedEvent.getStartTime())
+             && !isLocationEmpty(selectedEvent.getLocation())
+             && endDateValid
+             && endTimeValid;
+    }
 
+    private boolean isNameValid(String name){
+        return !name.isEmpty();
+    }
+
+    private boolean isStartDateNull(LocalDate startDate){
+        return startDate==null;
+    }
+
+    private boolean isStartTimeNull(LocalTime startTime){
+        return startTime==null;
+    }
+
+    private boolean isEndDateValid(LocalDate startDate,LocalDate endDate){
+        return startDate.isBefore(endDate);
+    }
+
+    private boolean isEndTimeValid(LocalTime startTime, LocalTime endTime){
+        return startTime.isBefore(endTime);
+    }
+
+    private boolean isLocationEmpty(String location){
+        return location.isEmpty();
     }
 
 

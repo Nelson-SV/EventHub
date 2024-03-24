@@ -170,19 +170,14 @@ public boolean isEditValid(){
 public boolean isModified(Map<Integer,List<Integer>> assignedCoordinators){
        return evmLogic.isModifyed(assignedCoordinators,selectedEvent,coordinatorEvents.get(selectedEvent.getId()));
 }
-
     /**save the edit operation performed on the current selected event*/
-    public void saveEditEventOperation(Map<Integer,List<Integer>> assignedCoordinators){
-       boolean isModified=evmLogic.isModifyed(assignedCoordinators,selectedEvent,coordinatorEvents.get(selectedEvent.getId()));
-
+    public void saveEditEventOperation(List<User> assignedCoordinators) {
+        HashMap<Integer,List<Integer>> assignedCoordinatorsMap = new HashMap<>();
+        assignedCoordinatorsMap.put(selectedEvent.getId(),assignedCoordinators.stream().map(User::getUserId).collect(Collectors.toList()));
+       boolean isModified=evmLogic.isModifyed(assignedCoordinatorsMap,selectedEvent,coordinatorEvents.get(selectedEvent.getId()));
        if(!isModified){
             return;
         }
-        evmLogic.saveEditOperation(selectedEvent,assignedCoordinators);
-
-
-
+        evmLogic.saveEditOperation(selectedEvent,assignedCoordinatorsMap);
     }
-
-
 }

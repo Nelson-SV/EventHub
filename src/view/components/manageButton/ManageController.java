@@ -45,7 +45,7 @@ public class ManageController implements Initializable {
         model.setCoordinatorsDisplayer(manageEventController);
         editWindow.getChildren().clear();
         editWindow.getChildren().add(manageEventController);
-        Platform.runLater(()->initializeOrUpdateService(this.eventId));
+        initializeOrUpdateService(this.eventId);
     }
 
 
@@ -61,7 +61,6 @@ public class ManageController implements Initializable {
                     return model.executeData(eventId);
                 }
             };
-
             service.setOnSucceeded(event -> {
                 Platform.runLater(() -> {
                     model.getCoordinatorsDisplayer().setCoordinators(FXCollections.observableArrayList(service.getValue()));

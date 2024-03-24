@@ -28,6 +28,7 @@ import view.components.loadingComponent.LoadingActions;
 import view.components.loadingComponent.LoadingComponent;
 import view.components.main.Model;
 import view.utility.EditEventValidator;
+
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalTime;
@@ -61,14 +62,12 @@ public class EventManagementController extends GridPane implements Initializable
     @FXML
     CheckComboBox<User> coordinators;
     private Model model;
- @FXML
+    @FXML
     private TextArea invalidInput;
     private StackPane secondaryLayout, thirdLayout;
     private Service<Void> service;
 
     private LoadingComponent loadingComponent;
-
-
 
 
     public EventManagementController(StackPane secondaryLayout, StackPane thirdLayout) {
@@ -96,7 +95,7 @@ public class EventManagementController extends GridPane implements Initializable
         Platform.runLater(this::bindSelectedEventProprieties);
         EditEventValidator.initializeDateFormat(startDate);
         EditEventValidator.initializeDateFormat(endDate);
-        EditEventValidator.addEventListeners(eventName,startDate,startTime,endDate,endTime,eventLocation);
+        EditEventValidator.addEventListeners(eventName, startDate, startTime, endDate, endTime, eventLocation);
         //add tool tips for the dates
         addToolTipsForDates();
         //add dates validity checker
@@ -107,17 +106,18 @@ public class EventManagementController extends GridPane implements Initializable
 
 
     /**
-     * add validity checker for the dates*/
+     * add validity checker for the dates
+     */
     private void addDatesValidityChecker() {
-      //  EditEventValidator.addTimeValidityChecker(startTime);
         EditEventValidator.addTimeTextEmptyChecker(startTime);
-       // EditEventValidator.addDateValidityChecker(startDate);
         EditEventValidator.addDateTextEmptyChecker(startDate);
         EditEventValidator.addTimeValidityChecker(endTime);
         EditEventValidator.addDateValidityChecker(endDate);
     }
+
     /**
-     * add tooltips for the dates*/
+     * add tooltips for the dates
+     */
     private void addToolTipsForDates() {
         EditEventValidator.addTimeToolTip(startTime);
         EditEventValidator.addDateToolTip(startDate);
@@ -172,9 +172,13 @@ public class EventManagementController extends GridPane implements Initializable
     }
 
     private void saveOperation() {
-        if(EditEventValidator.isEventValid(eventName,startDate,startTime,endDate,endTime,eventLocation)){
-            initializeLoadingView();
-            Platform.runLater(this::initializeService);
+        boolean isEventValid = EditEventValidator.isEventValid(eventName, startDate, startTime, endDate, endTime, eventLocation);
+        if(isEventValid){
+           if(model.isEditValid()){
+               System.out.println("Edit is valid");
+               initializeLoadingView();
+               initializeService();
+           }
         }
     }
 
@@ -203,27 +207,19 @@ public class EventManagementController extends GridPane implements Initializable
     }
 
     private void initializeService() {
-        service = new Service<Void>() {
+        service = new Service<>() {
             @Override
             protected Task<Void> createTask() {
-                return new Task<Void>() {
+                return new Task<>() {
                     @Override
                     protected Void call() throws Exception {
-
-                        try {
-                            Thread.sleep(5000);
-                        } catch (InterruptedException e) {
-                            throw new RuntimeException(e);
-                        }
+                        model.saveEditEventOperation(coordinators.getCheckModel().getCheckedItems());
                         return null;
                     }
                 };
             }
-
-            ;
         };
         service.setOnSucceeded((e) -> {
-            this.loadingComponent.setAction(LoadingActions.SUCCES.getActionValue());
             Platform.runLater(() -> {
                 PauseTransition pauseTransition = new PauseTransition(Duration.millis(1000));
                 pauseTransition.setOnFinished((ev) -> {
@@ -233,11 +229,10 @@ public class EventManagementController extends GridPane implements Initializable
                 pauseTransition.play();
             });
         });
-
         service.setOnFailed((e) -> {
             Throwable cause = service.getException();
             ExceptionHandler.erorrAlertMessage(cause.getMessage());
-            Platform.runLater(this::closeLoader);
+            closeLoader();
         });
         service.restart();
     }
