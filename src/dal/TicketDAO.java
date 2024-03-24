@@ -19,6 +19,9 @@ public class TicketDAO {
         this.connectionManager = new ConnectionManager();
     }
 
+    //Todo hope my comments are not upsetting you , have a nice day !!!
+    //ticket insertion needs to be in the same transaction with the insert event, not in his own transaction,
+    //all the data regarding to an event needs to be inserted at the same time, if one fails everrything fails.
     public Integer insertTicket(Ticket ticket) throws TicketException {
         Integer ticketId = null;
         Connection conn = null;
@@ -59,6 +62,8 @@ public class TicketDAO {
         return ticketId;
     }
 
+
+    //this method is in the EventDao, you can reuse
     private ObservableMap<Integer, Event> retrieveEvents() throws EventException {
         ObservableMap<Integer, Event> events = FXCollections.observableHashMap();
         String sql = "SELECT * FROM Event";

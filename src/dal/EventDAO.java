@@ -55,9 +55,6 @@ public class EventDAO {
             }
             statement.setString(8, event.getLocation());
             statement.executeUpdate();
-
-
-
             try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
                     eventId = generatedKeys.getInt(1);
@@ -65,7 +62,10 @@ public class EventDAO {
                     throw new EventException(ErrorCode.OPERATION_DB_FAILED);
                 }
             }
+
             conn.commit();
+
+            //this is outside off the transaction
             if(addedTicket != null) {
                 addTicketToEvent(eventId, addedTicket, conn);
             }
@@ -88,6 +88,10 @@ public class EventDAO {
         return eventId;
     }
 
+
+    //Todo hope my comments are not upsetting you, have a nice day!!!
+    //the ticket needs to be added at the same time with the event, in the same tranasaction,
+    // to avoid having tickets without events, not in his own transaction.
     public void addTicketToEvent(int eventID, Ticket ticket, Connection conn) throws EventException {
         System.out.println(ticket);
         System.out.println(eventID);
@@ -97,7 +101,6 @@ public class EventDAO {
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setInt(1, eventID);
             statement.setInt(2, ticket.getId());
-
             statement.executeUpdate();
             conn.commit();
         } catch (SQLException e) {
@@ -215,6 +218,7 @@ public class EventDAO {
         try{
             conn= connectionManager.getConnection();
             conn.setAutoCommit(false);
+            conn.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
           try(PreparedStatement psmt = conn.prepareStatement(updateEvent)){
                 if(selectedEvent.getStartDate()!=null){
                     psmt.setDate(1,Date.valueOf(selectedEvent.getStartDate()));

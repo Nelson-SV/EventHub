@@ -29,7 +29,7 @@
         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
     </rowConstraints>
     <children>
-        <VBox maxWidth="-Infinity" minHeight="115.0" minWidth="240.0" prefHeight="330.0" prefWidth="500.0" style="-fx-background-color: white; -fx-border-radius: 50; -fx-background-color: #EADBC8FF;" stylesheets="@EventManagementskining.css" GridPane.rowSpan="2">
+        <VBox maxWidth="-Infinity" minHeight="115.0" minWidth="240.0" prefHeight="330.0" prefWidth="500.0" spacing="10.0" style="-fx-background-color: white; -fx-border-radius: 50; -fx-background-color: #EADBC8FF;" stylesheets="@EventManagementskining.css" GridPane.rowSpan="2">
             <children>
                 <Label prefHeight="60.0" styleClass="eventManagementHeader" text="Event info" textFill="#5585b5">
                     <font>
@@ -57,7 +57,7 @@
                         <VBox prefHeight="200.0" prefWidth="100.0">
                             <children>
                                 <Label text="Start  time  *" />
-                                <MFXComboBox fx:id="startTime" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="120.0" styleClass="startTime" />
+                                <MFXComboBox fx:id="startTime" allowEdit="true" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="120.0" styleClass="startTime" />
                             </children>
                         </VBox>
                         <VBox prefHeight="200.0" prefWidth="100.0">
@@ -69,7 +69,7 @@
                         <VBox prefHeight="200.0" prefWidth="100.0">
                             <children>
                                 <Label text="End time" />
-                                <MFXComboBox fx:id="endTime" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="120.0" styleClass="normal" />
+                                <MFXComboBox fx:id="endTime" allowEdit="true" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="120.0" styleClass="normal" />
                             </children>
                         </VBox>
                     </children>
@@ -102,6 +102,7 @@
             </VBox>
             <HBox alignment="CENTER_RIGHT" maxWidth="-Infinity" prefHeight="100.0" prefWidth="480.0" spacing="20.0">
                <children>
+                  <TextArea fx:id="invalidInput" disable="true" editable="false" prefHeight="0.0" prefWidth="300.0" styleClass="invalidInput" visible="false" wrapText="true" />
                   <MFXButton fx:id="cancelEdit" prefWidth="80.0" style="-fx-background-color: #5585b5;" text="Cancel" />
                   <MFXButton fx:id="saveEdit" prefWidth="80.0" style="-fx-background-color: #5585b5;" text="Save" />
                </children>

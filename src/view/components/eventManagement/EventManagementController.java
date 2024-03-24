@@ -61,6 +61,8 @@ public class EventManagementController implements Initializable, CoordinatorsDis
     @FXML
     CheckComboBox<User> coordinators;
     private Model model;
+ @FXML
+    private TextArea invalidInput;
     private StackPane secondaryLayout, thirdLayout;
     private Service<Void> service;
 
@@ -77,7 +79,6 @@ public class EventManagementController implements Initializable, CoordinatorsDis
             this.secondaryLayout = secondaryLayout;
             this.thirdLayout = thirdLayout;
         } catch (IOException e) {
-            e.printStackTrace();
             ExceptionHandler.erorrAlertMessage(ErrorCode.LOADING_FXML_FAILED.getValue());
         }
     }
@@ -90,10 +91,13 @@ public class EventManagementController implements Initializable, CoordinatorsDis
         } catch (EventException | TicketException e) {
             ExceptionHandler.errorAlert((EventException) e);
         }
-        System.out.println(endDate.getStyleClass());
         initializeEventTime(startTime, endTime);
         Platform.runLater(this::bindSelectedEventProprieties);
         EditEventValidator.addEventListeners(eventName,startDate,startTime,eventLocation);
+        EditEventValidator.addTimeToolTip(startTime);
+        EditEventValidator.addTimeValidityChecker(startTime);
+        EditEventValidator.addDateToolTip(startDate);
+        EditEventValidator.addDateValidityChecker(startDate);
         cancelEdit.setOnAction((e) -> cancelEditOperation());
         saveEdit.setOnAction((e) -> saveOperation());
     }
@@ -106,8 +110,8 @@ public class EventManagementController implements Initializable, CoordinatorsDis
         ObservableList<LocalTime> timeOptions = FXCollections.observableArrayList();
         LocalTime time = LocalTime.of(0, 0);
         while (time.isBefore(LocalTime.of(23, 0))) {
-            timeOptions.add(time);
             time = time.plusHours(1);
+            timeOptions.add(time);
         }
         return timeOptions;
     }
@@ -145,7 +149,7 @@ public class EventManagementController implements Initializable, CoordinatorsDis
     }
 
     private void saveOperation() {
-        if(EditEventValidator.isEventValid(eventName,startDate,startTime,eventLocation)){
+        if(EditEventValidator.isEventValid(eventName,startDate,startTime,eventLocation,invalidInput)){
             initializeLoadingView();
             Platform.runLater(this::initializeService);
         }

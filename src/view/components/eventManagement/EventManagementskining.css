@@ -29,6 +29,16 @@
     -fx-border-width: 2;
 }
 
+.invalidInput:error{
+    -fx-background-color: #E1EBF2;
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+    -fx-text-fill: #5585b5;
+    -fx-font-size: 12;
+    -fx-text-overrun: elipsis;
+    -fx-font-weight:bold;
+}
+
 .eventName{
     -fx-background-radius: 5px;
     -fx-border-radius: 5px;
