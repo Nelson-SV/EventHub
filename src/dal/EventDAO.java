@@ -9,14 +9,12 @@ import exceptions.EventException;
 import exceptions.ExceptionLogger;
 import exceptions.TicketException;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
 
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -111,17 +109,13 @@ public class EventDAO {
                 ticketStatement.setInt(2, ticket.getQuantity());
                 ticketStatement.setFloat(3, ticket.getTicketPrice());
 
-                // Execute the insert statement
                 ticketStatement.executeUpdate();
 
-                // Retrieve generated keys after executing the statement
                 try (ResultSet generatedKeys = ticketStatement.getGeneratedKeys()) {
                     if (generatedKeys.next()) {
                         ticketIds.add(generatedKeys.getInt(1));
-                        System.out.println(ticketIds);
                     } else {
-                        System.out.println("Failed to retrieve generated keys for ticket.");
-                        throw new TicketException("Failed to retrieve generated keys for ticket.");
+                        throw new TicketException(ErrorCode.OPERATION_DB_FAILED);
                     }
                 }
             }
