@@ -15,8 +15,4 @@ public class TicketManager {
         this.ticketD = new TicketDAO();
     }
 
-    public Integer addTicket(Ticket ticket) throws TicketException {
-        return ticketD.insertTicket(ticket);
-    }
-
 }

@@ -24,6 +24,8 @@ import view.components.events.CreateEventController;
 import view.components.main.Model;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import static javafx.scene.paint.Color.*;
 
@@ -37,6 +39,9 @@ public class TicketsGeneration {
     private StackPane secondaryLayout, thirdLayout;
     @FXML
     private MFXTextField ticketTypeTF, ticketPriceTF, ticketQuantityTF;
+
+    @FXML
+    private List<Ticket> newTickets;
     @FXML
     private Model model;
 
@@ -58,7 +63,7 @@ public class TicketsGeneration {
 
     @FXML
     private void initialize() {
-
+        newTickets = new ArrayList<>();
     }
 
     @FXML
@@ -81,13 +86,16 @@ public class TicketsGeneration {
         createEventController.hBoxTickets.setAlignment(Pos.CENTER_LEFT);
         createEventController.hBoxTickets.getChildren().add(0, vBox);
 
-        model.addTicket(ticket);
+        model.getNewTicket(ticket);
+
 
         remove.setOnAction(event -> { createEventController.hBoxTickets.getChildren().remove(vBox);
         });
 
         closeWindow();
     }
+
+
 
     @FXML
     private void cancelAction(ActionEvent actionEvent) {
