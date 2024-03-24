@@ -109,8 +109,10 @@ public class EventManagementController extends GridPane implements Initializable
     /**
      * add validity checker for the dates*/
     private void addDatesValidityChecker() {
-        EditEventValidator.addTimeValidityChecker(startTime);
-        EditEventValidator.addDateValidityChecker(startDate);
+      //  EditEventValidator.addTimeValidityChecker(startTime);
+        EditEventValidator.addTimeTextEmptyChecker(startTime);
+       // EditEventValidator.addDateValidityChecker(startDate);
+        EditEventValidator.addDateTextEmptyChecker(startDate);
         EditEventValidator.addTimeValidityChecker(endTime);
         EditEventValidator.addDateValidityChecker(endDate);
     }

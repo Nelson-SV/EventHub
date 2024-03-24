@@ -157,6 +157,31 @@ public class EditEventValidator {
         date.setTooltip(tooltip);
     }
 
+    /**
+     * check if the date text is valid
+     */
+    public static void addTimeTextEmptyChecker(MFXComboBox<LocalTime> time) {
+        time.textProperty().addListener(((observable, oldValue, newValue) -> {
+            PauseTransition pauseTransition = new PauseTransition(Duration.millis(100));
+            pauseTransition.setOnFinished((e) -> {
+                time.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, !newValue.matches("^([01]?[0-9]|2[0-3]):[0-5][0-9]$"));
+            });
+            pauseTransition.playFromStart();
+        }));
+    }
+
+    /**
+     * check if the start date text is valid
+     */
+    public static void addDateTextEmptyChecker(MFXDatePicker date) {
+        date.textProperty().addListener(((observable, oldValue, newValue) -> {
+            PauseTransition pauseTransition = new PauseTransition(Duration.millis(100));
+            pauseTransition.setOnFinished((e) -> {
+                date.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, parseDate(newValue, textToTime) == null);
+            });
+            pauseTransition.playFromStart();
+        }));
+    }
 
     /**
      * checks if the time inserted in the text box is valid
