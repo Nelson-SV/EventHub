@@ -180,7 +180,7 @@ public class Model {
         return evmLogic.isModifyed(assignedCoordinators,selectedEvent,coordinatorEvents.get(selectedEvent.getId()));
     }
     /**save the edit operation performed on the current selected event*/
-    public void saveEditEventOperation(List<User> assignedCoordinators) {
+    public void saveEditEventOperation(List<User> assignedCoordinators) throws EventException {
         HashMap<Integer,List<Integer>> assignedCoordinatorsMap = new HashMap<>();
         assignedCoordinatorsMap.put(selectedEvent.getId(),assignedCoordinators.stream().map(User::getUserId).collect(Collectors.toList()));
         boolean isModified=evmLogic.isModifyed(assignedCoordinatorsMap,selectedEvent,coordinatorEvents.get(selectedEvent.getId()));

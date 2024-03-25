@@ -217,6 +217,7 @@ public class EventManagementController extends GridPane implements Initializable
                     @Override
                     protected Void call() throws Exception {
                         model.saveEditEventOperation(coordinators.getCheckModel().getCheckedItems());
+                        System.out.println("Edit operation saved");
                         return null;
                     }
                 };
@@ -224,7 +225,8 @@ public class EventManagementController extends GridPane implements Initializable
         };
         service.setOnSucceeded((e) -> {
             Platform.runLater(() -> {
-                PauseTransition pauseTransition = new PauseTransition(Duration.millis(1000));
+                loadingComponent.setAction(LoadingActions.SUCCES.getActionValue());
+                PauseTransition pauseTransition = new PauseTransition(Duration.millis(500));
                 pauseTransition.setOnFinished((ev) -> {
                     closeLoader();
                     cancelEditOperation();
@@ -235,7 +237,14 @@ public class EventManagementController extends GridPane implements Initializable
         service.setOnFailed((e) -> {
             Throwable cause = service.getException();
             ExceptionHandler.erorrAlertMessage(cause.getMessage());
-            closeLoader();
+            Platform.runLater(() -> {
+                loadingComponent.setAction(LoadingActions.FAIL.getActionValue());
+                PauseTransition pauseTransition = new PauseTransition(Duration.millis(500));
+                pauseTransition.setOnFinished((ev) -> {
+                    closeLoader();
+                });
+            });
+
         });
         service.restart();
     }
