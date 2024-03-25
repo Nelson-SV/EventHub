@@ -1,202 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
-<?import io.github.palexdev.materialfx.controls.MFXComboBox?>
-<?import io.github.palexdev.materialfx.controls.MFXScrollPane?>
 <?import io.github.palexdev.materialfx.controls.MFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<!--        fx:controller="view.components.ticketsGeneration.TicketsGeneration"-->
-
-<MFXScrollPane fx:id="scrollPane" maxHeight="600.0" maxWidth="800.0" minHeight="600.0" minWidth="800.0" prefHeight="600.0" prefWidth="800.0" styleClass="scrollPane" stylesheets="TicketsGeneration.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
-   <content>
-      <VBox maxHeight="718.0" maxWidth="898.0" minHeight="597.0" minWidth="598.0" prefHeight="597.0" prefWidth="797.0" styleClass="vHBoxGroup" stylesheets="@TicketsGeneration.css">
+<FlowPane fx:id="ticketTypeFlowPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="260.0" prefWidth="570.0" style="-fx-background-color: white; -fx-background-radius: 10;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <HBox prefHeight="50.0" prefWidth="570.0">
          <children>
-            <HBox alignment="CENTER" prefHeight="243.0" prefWidth="782.0" styleClass="vHBoxGroup" stylesheets="@TicketsGeneration.css">
+            <VBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="600.0">
                <children>
-                  <FlowPane fx:id="ticketPane" prefHeight="202.0" prefWidth="450.0" styleClass="flowPane" stylesheets="@TicketsGeneration.css">
-                     <children>
-                        <HBox alignment="CENTER" prefHeight="200.0" prefWidth="126.0">
-                           <children>
-                              <ImageView fx:id="logoImg" fitHeight="100.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" />
-                              <ImageView fx:id="barCode" fitHeight="100.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" />
-                           </children>
-                        </HBox>
-                        <VBox prefHeight="200.0" prefWidth="213.0">
-                           <children>
-                              <Label fx:id="eventNameLB" prefWidth="250.0" text="Event Name Line">
-                                 <VBox.margin>
-                                    <Insets left="15.0" top="10.0" />
-                                 </VBox.margin>
-                                 <font>
-                                    <Font size="15.0" />
-                                 </font>
-                              </Label>
-                              <Label fx:id="eventDateLB" prefWidth="250.0" text="Event Date Line">
-                                 <VBox.margin>
-                                    <Insets left="15.0" />
-                                 </VBox.margin>
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </Label>
-                              <Label fx:id="eventLocationLB" prefWidth="250.0" text="Event Location Line">
-                                 <VBox.margin>
-                                    <Insets bottom="20.0" left="15.0" />
-                                 </VBox.margin>
-                              </Label>
-                              <Label fx:id="line4LB" prefWidth="250.0" text="Fourth Line">
-                                 <VBox.margin>
-                                    <Insets left="15.0" />
-                                 </VBox.margin>
-                                 <font>
-                                    <Font size="12.0" />
-                                 </font>
-                              </Label>
-                              <Label fx:id="line5LB" prefWidth="250.0" text="Fifth Line">
-                                 <VBox.margin>
-                                    <Insets bottom="5.0" left="15.0" />
-                                 </VBox.margin>
-                                 <font>
-                                    <Font size="12.0" />
-                                 </font>
-                              </Label>
-                              <Label fx:id="line6LB" prefWidth="250.0" text="Sixth Line">
-                                 <VBox.margin>
-                                    <Insets bottom="20.0" left="15.0" />
-                                 </VBox.margin>
-                                 <font>
-                                    <Font size="12.0" />
-                                 </font>
-                              </Label>
-                              <Label fx:id="custNameLB" prefHeight="17.0" prefWidth="250.0" text="Customer Name">
-                                 <VBox.margin>
-                                    <Insets left="15.0" />
-                                 </VBox.margin>
-                                 <font>
-                                    <Font size="11.0" />
-                                 </font>
-                              </Label>
-                              <Label fx:id="custEmailLB" prefWidth="250.0" text="Customer Email">
-                                 <VBox.margin>
-                                    <Insets left="15.0" />
-                                 </VBox.margin>
-                                 <font>
-                                    <Font size="11.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </VBox>
-                        <VBox prefHeight="200.0" prefWidth="73.0">
-                           <children>
-                              <VBox prefHeight="100.0" prefWidth="63.0">
-                                 <children>
-                                    <HBox alignment="CENTER" prefHeight="50.0" prefWidth="63.0">
-                                       <children>
-                                          <Label prefHeight="12.0" prefWidth="100.0" rotate="90.0" text="Ticket Price">
-                                             <font>
-                                                <Font size="6.0" />
-                                             </font>
-                                          </Label>
-                                          <Label prefHeight="13.0" prefWidth="98.0" rotate="90.0" text="Ticket Type">
-                                             <font>
-                                                <Font size="6.0" />
-                                             </font>
-                                          </Label>
-                                       </children>
-                                    </HBox>
-                                    <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0">
-                                       <children>
-                                          <Label fx:id="ticketPriceLB" rotate="90.0" text="dkk">
-                                             <font>
-                                                <Font size="4.0" />
-                                             </font>
-                                             <HBox.margin>
-                                                <Insets left="10.0" />
-                                             </HBox.margin>
-                                          </Label>
-                                          <Label fx:id="ticketTypeLB" rotate="90.0" text="Normal Ticket">
-                                             <font>
-                                                <Font size="4.0" />
-                                             </font>
-                                             <HBox.margin>
-                                                <Insets left="20.0" />
-                                             </HBox.margin>
-                                          </Label>
-                                       </children>
-                                    </HBox>
-                                 </children>
-                              </VBox>
-                              <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-                                 <children>
-                                    <ImageView fx:id="qrCode" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" />
-                                 </children>
-                              </HBox>
-                           </children>
-                        </VBox>
-                     </children>
-                  </FlowPane>
+                  <Label text="Add a new ticket type">
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                  </Label>
                </children>
                <padding>
-                  <Insets bottom="30.0" top="30.0" />
+                  <Insets left="15.0" />
                </padding>
-            </HBox>
-            <HBox prefHeight="20.0" prefWidth="858.0" style="-fx-background-color: brown;">
-               <VBox.margin>
-                  <Insets left="20.0" right="20.0" />
-               </VBox.margin></HBox>
-            <VBox prefHeight="240.0" prefWidth="898.0">
-               <children>
-                  <HBox alignment="CENTER" prefHeight="120.0" prefWidth="898.0" spacing="10.0">
-                     <children>
-                        <MFXComboBox fx:id="ticketTypeCombo" allowEdit="true" floatMode="ABOVE" floatingText="Ticket Type" prefWidth="148.0" styleClass="comboGroup" />
-                        <MFXComboBox fx:id="ticketColorCombo" allowEdit="true" floatMode="ABOVE" floatingText="Ticket Color" prefWidth="148.0" styleClass="comboGroup" />
-                        <MFXTextField fx:id="ticketPriceTF" floatMode="ABOVE" floatingText="Ticket Price" floatingTextGap="0.0" prefHeight="32.0" prefWidth="148.0" styleClass="textFieldGroup" />
-                        <MFXTextField fx:id="ticketQuantity" floatMode="ABOVE" floatingText="Quantity to Generate" floatingTextGap="0.0" layoutX="306.0" layoutY="10.0" prefHeight="32.0" prefWidth="148.0" styleClass="textFieldGroup" />
-                        <MFXComboBox fx:id="eventNameCombo" allowEdit="true" floatMode="ABOVE" floatingText="Event Name Line" prefWidth="123.0" styleClass="comboGroup" />
-                     </children>
-                     <padding>
-                        <Insets top="30.0" />
-                     </padding>
-                  </HBox>
-                  <HBox alignment="CENTER" prefHeight="120.0" prefWidth="898.0" spacing="10.0">
-                     <children>
-                        <MFXTextField fx:id="eventDateTF" floatMode="ABOVE" floatingText="Event Date Line" floatingTextGap="0.0" prefHeight="32.0" prefWidth="148.0" styleClass="textFieldGroup" />
-                        <MFXTextField fx:id="eventLocationTF" floatMode="ABOVE" floatingText="Event Location Line" floatingTextGap="0.0" prefHeight="32.0" prefWidth="148.0" styleClass="textFieldGroup" />
-                        <MFXTextField fx:id="line4TF" floatMode="ABOVE" floatingText="Fourth Line" floatingTextGap="0.0" prefHeight="32.0" prefWidth="148.0" styleClass="textFieldGroup" />
-                        <MFXTextField fx:id="line5TF" floatMode="ABOVE" floatingText="Fifth Line" floatingTextGap="0.0" prefHeight="32.0" prefWidth="148.0" styleClass="textFieldGroup" />
-                        <MFXTextField fx:id="line6TF" floatMode="ABOVE" floatingText="Sixth Line" floatingTextGap="0.0" prefHeight="32.0" prefWidth="148.0" styleClass="textFieldGroup" />
-                     </children>
-                     <padding>
-                        <Insets bottom="20.0" />
-                     </padding>
-                  </HBox>
-               </children>
             </VBox>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="898.0" styleClass="vHBoxGroup" stylesheets="@TicketsGeneration.css">
-               <children>
-                  <VBox alignment="CENTER" prefHeight="131.0" prefWidth="895.0" spacing="10.0">
-                     <children>
-                        <MFXButton fx:id="addTicketBT" onAction="#addTickets" prefHeight="0.0" prefWidth="150.0" styleClass="buttonGroup" stylesheets="@TicketsGeneration.css" text="Add Tickets">
-                           <font>
-                              <Font name="System Bold" size="15.0" />
-                           </font>
-                        </MFXButton>
-                        <MFXButton fx:id="cancelBtn" cancelButton="true" onAction="#cancelAction" prefHeight="30.0" prefWidth="100.0" styleClass="cancelBtn" stylesheets="@TicketsGeneration.css" text="Cancel">
-                           <font>
-                              <Font name="System Bold" size="15.0" />
-                           </font></MFXButton>
-                     </children>
-                  </VBox>
-               </children>
-            </HBox>
+         </children>
+      </HBox>
+      <VBox alignment="CENTER_LEFT" prefHeight="80.0" prefWidth="300.0">
+         <children>
+            <Label text="Ticket type *" />
+            <MFXTextField fx:id="ticketTypeTF" floatMode="DISABLED" prefHeight="30.0" prefWidth="250.0" promptText="e.g. General Admission" />
+         </children>
+         <padding>
+            <Insets left="15.0" />
+         </padding>
+      </VBox>
+      <VBox alignment="CENTER_LEFT" prefHeight="80.0" prefWidth="270.0">
+         <children>
+            <Label text="Price" />
+            <MFXTextField fx:id="ticketPriceTF" floatMode="DISABLED" prefHeight="30.0" prefWidth="250.0" promptText="e.g. 500 dkk" />
          </children>
       </VBox>
-   </content>
-</MFXScrollPane>
+      <VBox alignment="CENTER_LEFT" prefHeight="80.0" prefWidth="570.0">
+         <children>
+            <Label text="Quantity *" />
+            <MFXTextField fx:id="ticketQuantityTF" floatMode="DISABLED" prefHeight="30.0" prefWidth="250.0" promptText="e.g. 200" />
+         </children>
+         <padding>
+            <Insets left="15.0" />
+         </padding>
+      </VBox>
+      <HBox alignment="CENTER_RIGHT" prefHeight="50.0" prefWidth="570.0" spacing="20.0">
+         <children>
+            <MFXButton onAction="#cancelAction" text="Cancel" />
+            <MFXButton onAction="#addTickets" text="Add ticket" />
+         </children>
+         <padding>
+            <Insets bottom="10.0" right="20.0" />
+         </padding>
+      </HBox>
+   </children>
+</FlowPane>

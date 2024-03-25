@@ -46,11 +46,8 @@ public class EventDescription implements Initializable {
     private Label endTime;
     @FXML
     private HBox eventActions;
-
     @FXML
     private ManageAction manageAction;
-
-
     @FXML
     private Event event;
 

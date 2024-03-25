@@ -1,9 +1,7 @@
 package view.components.main;
 
-import be.Customer;
 import be.Event;
 import be.User;
-import bll.CustomerManager;
 import bll.EventManagementLogic;
 import bll.EventManager;
 import bll.ILogicManager;
@@ -39,7 +37,6 @@ public class Model {
 
 
     private EventManager manager;
-    private CustomerManager customerManager;
     private ILogicManager evmLogic;
     /**
      * holds the current opened event for managing
@@ -49,6 +46,15 @@ public class Model {
     private static Model instance;
     //ensures that by using Singelton all controllers use the same model
 
+//    static {
+//        try {
+//            instance = new Model();
+//        } catch (SQLException e) {
+//            throw new RuntimeException(e);
+//        } catch (EventException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
 
     public static Model getInstance() throws EventException {
         if (instance == null) {
@@ -58,7 +64,6 @@ public class Model {
     }
 
     private Model() throws EventException {
-        customerManager = new CustomerManager();
         manager = new EventManager();
         coordinatorEvents = FXCollections.observableHashMap();
         evmLogic = new EventManagementLogic();
@@ -146,7 +151,6 @@ public void initializeEventCoordinators(int eventId) throws EventException {
     }
 
 
-
     /**
      * set the event that has been selected to be managed
      */
@@ -159,20 +163,6 @@ public void initializeEventCoordinators(int eventId) throws EventException {
      */
     public Event getSelectedEvent() {
         return this.selectedEvent;
-    }
-
-    public void addCustomer(Customer customer) throws EventException {
-        customerManager.addCustomer(customer);
-
-    }
-    public List<String> getAllEventNames() {
-        Collection<Event> events = coordinatorEvents.values();
-
-        List<String> eventNames = events.stream()
-                .map(Event::getName) // Extract the name of each event
-                .collect(Collectors.toList()); // Collect names into a list
-
-        return eventNames;
     }
 
 }

@@ -3,7 +3,6 @@
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
 <?import io.github.palexdev.materialfx.controls.MFXComboBox?>
 <?import io.github.palexdev.materialfx.controls.MFXDatePicker?>
-<?import io.github.palexdev.materialfx.controls.MFXFilterComboBox?>
 <?import io.github.palexdev.materialfx.controls.MFXScrollPane?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
@@ -17,8 +16,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.SVGPath?>
 <?import javafx.scene.text.Font?>
+<?import org.controlsfx.control.CheckComboBox?>
 
-<GridPane fx:id="managementRoot" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="320.0" minWidth="640.0" prefHeight="640.0" prefWidth="1076.0" style="-fx-background-color: #EADBC8FF;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane fx:id="managementRoot" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="320.0" minWidth="640.0" prefHeight="640.0" prefWidth="1076.0" style="-fx-background-color: #EADBC8FF;" styleClass="managementContainer" stylesheets="@EventManagementskining.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <columnConstraints>
         <ColumnConstraints fx:id="editColumn" halignment="CENTER" hgrow="SOMETIMES" minWidth="250.0" prefWidth="500.0" />
         <ColumnConstraints hgrow="SOMETIMES" minWidth="250.0" prefWidth="450.0" />
@@ -29,19 +29,19 @@
         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
     </rowConstraints>
     <children>
-        <VBox maxWidth="-Infinity" minHeight="115.0" minWidth="240.0" prefHeight="330.0" prefWidth="500.0" style="-fx-background-color: white; -fx-border-radius: 50; -fx-background-color: #EADBC8FF;" GridPane.rowSpan="2">
+        <VBox maxWidth="-Infinity" minHeight="115.0" minWidth="240.0" prefHeight="330.0" prefWidth="500.0" spacing="10.0" style="-fx-background-color: white; -fx-border-radius: 50; -fx-background-color: #EADBC8FF;" stylesheets="@EventManagementskining.css" GridPane.rowSpan="2">
             <children>
-                <Label prefHeight="60.0" style="-fx-font-style: bold;" text="Event info" textFill="#5585b5">
+                <Label prefHeight="60.0" styleClass="eventManagementHeader" text="Event info" textFill="#5585b5">
                     <font>
                         <Font name="System Bold" size="18.0" />
                     </font>
                 </Label>
-                <HBox prefHeight="71.0" prefWidth="480.0" style="-fx-background-radius: 20;">
+                <HBox prefHeight="71.0" prefWidth="480.0">
                     <children>
                         <VBox prefHeight="71.0" prefWidth="219.0">
                             <children>
                                 <Label text="Name  " />
-                                <TextField fx:id="eventName" />
+                                <TextField fx:id="eventName" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="30.0" prefWidth="200.0" styleClass="eventName" />
                             </children>
                         </VBox>
                     </children>
@@ -51,25 +51,25 @@
                         <VBox maxWidth="-Infinity" prefHeight="50.0" prefWidth="100.0">
                             <children>
                                 <Label text="Start date  *" />
-                                <MFXDatePicker fx:id="startDate" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="120.0" styleClass="date-picker" />
+                                <MFXDatePicker fx:id="startDate" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="120.0" styleClass="startDate" />
                             </children>
                         </VBox>
                         <VBox prefHeight="200.0" prefWidth="100.0">
                             <children>
                                 <Label text="Start  time  *" />
-                                <MFXComboBox fx:id="startTime" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="120.0" />
+                                <MFXComboBox fx:id="startTime" allowEdit="true" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="120.0" styleClass="startTime" />
                             </children>
                         </VBox>
                         <VBox prefHeight="200.0" prefWidth="100.0">
                             <children>
                                 <Label text="End date  " />
-                                <MFXDatePicker fx:id="endDate" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="120.0" />
+                                <MFXDatePicker fx:id="endDate" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="120.0" styleClass="endDate" />
                             </children>
                         </VBox>
                         <VBox prefHeight="200.0" prefWidth="100.0">
                             <children>
                                 <Label text="End time" />
-                                <MFXComboBox fx:id="endTime" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="120.0" />
+                                <MFXComboBox fx:id="endTime" allowEdit="true" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="120.0" styleClass="endTime" />
                             </children>
                         </VBox>
                     </children>
@@ -89,20 +89,21 @@
                         <VBox prefHeight="91.0" prefWidth="480.0" spacing="5.0">
                             <children>
                                 <Label text="Location" />
-                                <TextArea fx:id="eventLocation" prefHeight="74.0" prefWidth="481.0" />
+                                <TextArea fx:id="eventLocation" prefHeight="74.0" prefWidth="481.0" styleClass="eventLocation" />
                             </children>
                         </VBox>
                     </children>
                 </HBox>
             <VBox maxWidth="-Infinity" prefHeight="30.0" prefWidth="480.0" spacing="5.0">
                <children>
-                  <Label text="Assign colaborators" />
-                  <MFXFilterComboBox fx:id="coordinators" floatingText="Search coordinator by name" prefWidth="480.0" />
+                  <Label text="Assign collaborators" />
+                  <CheckComboBox fx:id="coordinators" prefWidth="481.0" />
                </children>
             </VBox>
             <HBox alignment="CENTER_RIGHT" maxWidth="-Infinity" prefHeight="100.0" prefWidth="480.0" spacing="20.0">
                <children>
-                  <MFXButton fx:id="cancelEdit"  prefWidth="80.0" style="-fx-background-color: #5585b5;" text="Cancel" />
+                  <TextArea fx:id="invalidInput" disable="true" editable="false" prefHeight="0.0" prefWidth="300.0" styleClass="invalidInput" visible="false" wrapText="true" />
+                  <MFXButton fx:id="cancelEdit" prefWidth="80.0" style="-fx-background-color: #5585b5;" text="Cancel" />
                   <MFXButton fx:id="saveEdit" prefWidth="80.0" style="-fx-background-color: #5585b5;" text="Save" />
                </children>
             </HBox>

@@ -4,80 +4,125 @@ import be.User;
 import exceptions.ErrorCode;
 import exceptions.EventException;
 import exceptions.ExceptionHandler;
+import exceptions.TicketException;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXDatePicker;
-import io.github.palexdev.materialfx.controls.MFXFilterComboBox;
+import javafx.animation.PauseTransition;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import javafx.util.Duration;
+import org.controlsfx.control.CheckComboBox;
 import view.components.listeners.CoordinatorsDisplayer;
+import view.components.loadingComponent.LoadingActions;
+import view.components.loadingComponent.LoadingComponent;
 import view.components.main.Model;
+import view.utility.EditEventValidator;
+
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalTime;
 import java.util.ResourceBundle;
 
-public class EventManagementController implements Initializable, CoordinatorsDisplayer {
+
+public class EventManagementController extends GridPane implements Initializable, CoordinatorsDisplayer {
     @FXML
     private MFXButton saveEdit;
     @FXML
     private MFXButton cancelEdit;
-    @FXML
-    private MFXFilterComboBox<User> coordinators;
+
     @FXML
     private TextArea eventLocation;
     @FXML
     private TextArea eventDescription;
     @FXML
-    private MFXComboBox endTime;
+    private MFXComboBox<LocalTime> endTime;
     @FXML
     private MFXDatePicker endDate;
     @FXML
-    private MFXComboBox startTime;
+    private MFXComboBox<LocalTime> startTime;
     @FXML
     private MFXDatePicker startDate;
     @FXML
     private TextField eventName;
-    //TODO put the generateTimeOptions into an utility class
     @FXML
     private GridPane managementRoot;
+    @FXML
+    private ComboBox<User> normal;
+    @FXML
+    CheckComboBox<User> coordinators;
     private Model model;
-    private StackPane secondaryLayout;
+    @FXML
+    private TextArea invalidInput;
+    private StackPane secondaryLayout, thirdLayout;
+    private Service<Void> service;
 
-    public GridPane getRoot() {
-        return managementRoot;
-    }
+    private LoadingComponent loadingComponent;
 
 
-    //TODO initialize the coordinators comboBox with the user Name and checkBox.
-    public EventManagementController(StackPane secondaryLayout) {
+    public EventManagementController(StackPane secondaryLayout, StackPane thirdLayout) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("EventManager.fxml"));
         loader.setController(this);
         try {
             managementRoot = loader.load();
             this.secondaryLayout = secondaryLayout;
+            this.thirdLayout = thirdLayout;
+            this.getChildren().add(managementRoot);
         } catch (IOException e) {
             ExceptionHandler.erorrAlertMessage(ErrorCode.LOADING_FXML_FAILED.getValue());
         }
     }
 
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
             this.model = Model.getInstance();
-        } catch (EventException e) {
-            ExceptionHandler.errorAlert(e);
+        } catch (EventException | TicketException e) {
+            ExceptionHandler.errorAlert((EventException) e);
         }
-        initializeEventTime(this.startTime, this.endTime);
-        bindSelectedEventProprieties();
+        initializeEventTime(startTime, endTime);
+        Platform.runLater(this::bindSelectedEventProprieties);
+        EditEventValidator.initializeDateFormat(startDate);
+        EditEventValidator.initializeDateFormat(endDate);
+        EditEventValidator.addEventListeners(eventName, startDate, startTime, endDate, endTime, eventLocation);
+        //add tool tips for the dates
+        addToolTipsForDates();
+        //add dates validity checker
+        addDatesValidityChecker();
         cancelEdit.setOnAction((e) -> cancelEditOperation());
-        setCoordinators();
+        saveEdit.setOnAction((e) -> saveOperation());
+    }
+
+
+    /**
+     * add validity checker for the dates
+     */
+    private void addDatesValidityChecker() {
+        EditEventValidator.addTimeTextEmptyChecker(startTime);
+        EditEventValidator.addDateTextEmptyChecker(startDate);
+        EditEventValidator.addTimeValidityChecker(endTime);
+        EditEventValidator.addDateValidityChecker(endDate);
+    }
+
+    /**
+     * add tooltips for the dates
+     */
+    private void addToolTipsForDates() {
+        EditEventValidator.addTimeToolTip(startTime);
+        EditEventValidator.addDateToolTip(startDate);
+        EditEventValidator.addDateToolTip(endDate);
+        EditEventValidator.addTimeToolTip(endTime);
     }
 
 
@@ -88,8 +133,8 @@ public class EventManagementController implements Initializable, CoordinatorsDis
         ObservableList<LocalTime> timeOptions = FXCollections.observableArrayList();
         LocalTime time = LocalTime.of(0, 0);
         while (time.isBefore(LocalTime.of(23, 0))) {
-            timeOptions.add(time);
             time = time.plusHours(1);
+            timeOptions.add(time);
         }
         return timeOptions;
     }
@@ -126,8 +171,76 @@ public class EventManagementController implements Initializable, CoordinatorsDis
         this.secondaryLayout.setVisible(false);
     }
 
+    private void saveOperation() {
+        boolean isEventValid = EditEventValidator.isEventValid(eventName, startDate, startTime, endDate, endTime, eventLocation);
+        if (isEventValid) {
+            if (model.isEditValid()) {
+                System.out.println("Edit is valid");
+                initializeLoadingView();
+                initializeService();
+            }
+        }
+    }
+
+    private void initializeLoadingView() {
+        this.thirdLayout.getChildren().clear();
+        loadingComponent = new LoadingComponent();
+        this.thirdLayout.getChildren().add(loadingComponent);
+        this.thirdLayout.setVisible(true);
+        this.thirdLayout.setDisable(false);
+    }
+
+    private void closeLoader() {
+        this.thirdLayout.getChildren().clear();
+        this.thirdLayout.setVisible(false);
+        this.thirdLayout.setDisable(true);
+    }
+
     @Override
-    public void setCoordinators() {
-        coordinators.setItems(model.getAllEventCoordinators());
+    public void setCoordinators(ObservableList<User> users) {
+        coordinators.getItems().setAll(users);
+        coordinators.setTitle("Assigned collaborators");
+        coordinators.setShowCheckedCount(true);
+        coordinators.getCheckModel().getCheckedItems().addListener((ListChangeListener<User>) c -> {
+            coordinators.getCheckModel().getCheckedItems().forEach(e -> System.out.println(e.getUserId()));
+        });
+    }
+
+    //TODO GROSU IONUT ANDREI throw exceptions from the DAO level all the way to the model,
+    // throw the exception in the task creation, handle the exception in the servie failed,
+    //return boolean , in order to update the map, that will update the events page.
+    private void initializeService() {
+        service = new Service<>() {
+            @Override
+            protected Task<Void> createTask() {
+                return new Task<>() {
+                    @Override
+                    protected Void call() throws Exception {
+                        model.saveEditEventOperation(coordinators.getCheckModel().getCheckedItems());
+                        return null;
+                    }
+                };
+            }
+        };
+        service.setOnSucceeded((e) -> {
+            Platform.runLater(() -> {
+                PauseTransition pauseTransition = new PauseTransition(Duration.millis(1000));
+                pauseTransition.setOnFinished((ev) -> {
+                    closeLoader();
+                    cancelEditOperation();
+                });
+                pauseTransition.play();
+            });
+        });
+        service.setOnFailed((e) -> {
+            Throwable cause = service.getException();
+            ExceptionHandler.erorrAlertMessage(cause.getMessage());
+            closeLoader();
+        });
+        service.restart();
+    }
+
+    public GridPane getRoot() {
+        return managementRoot;
     }
 }

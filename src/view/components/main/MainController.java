@@ -7,7 +7,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
-import view.components.SellingTickets.SellingViewController;
 import view.components.eventDescription.EventComponent;
 import view.components.eventManagement.EventManagementController;
 import view.components.events.CreateEventController;
@@ -39,8 +38,6 @@ public class MainController implements Initializable, Displayable {
     private StackPane mainLayout;
     @FXML
     private StackPane secondaryLayout;
-    @FXML
-    private VBox vBox;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -112,13 +109,5 @@ public class MainController implements Initializable, Displayable {
 
     public boolean isInitializationError() {
         return initializationError;
-    }
-
-    public void selling(ActionEvent actionEvent) {
-        //this.vBox.setVisible(true);
-        //this.vBox.setDisable(false);
-        SellingViewController sellingViewController = new SellingViewController(vBox,model);
-        vBox.getChildren().clear();
-        vBox.getChildren().add(sellingViewController.getRoot());
     }
 }

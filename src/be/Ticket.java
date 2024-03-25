@@ -2,24 +2,22 @@ package be;
 
 public class Ticket {
 
+    private int id;
     private String eventName;
     private String ticketType;
-    private String ticketPrice;
-    private String[] included;
-
+    private int quantity;
+    private float ticketPrice;
     private String startDate;
     private String customerName;
     private String customerEmail;
     private String UUID;
 
-    private String quantity;
 
-    public Ticket(String eventName, String ticketType, String ticketPrice, String[] included,  String startDate, String customerName, String customerEmail, String UUID, String quantity) {
+    public Ticket(int id, String eventName, String ticketType, float ticketPrice,  String startDate, String customerName, String customerEmail, String UUID, int quantity) {
+        this.id = id;
         this.eventName = eventName;
         this.ticketType = ticketType;
         this.ticketPrice = ticketPrice;
-        this.included = included;
-
         this.startDate = startDate;
         this.customerName = customerName;
         this.customerEmail = customerEmail;
@@ -27,24 +25,39 @@ public class Ticket {
         this.quantity = quantity;
     }
 
-    public Ticket (String nameEvent, String ticketType,  String startDate, String price){
+    public Ticket (String nameEvent, String ticketType,  String startDate, float price){
         this.eventName = nameEvent;
         this.ticketType = ticketType;
-
         this.startDate = startDate;
         this.ticketPrice = price;
     }
 
-    public Ticket (String ticketType, String quantity) {
+    public Ticket (int id, String ticketType, int quantity, float ticketPrice) {
+        this.id = id;
         this.ticketType = ticketType;
         this.quantity = quantity;
+        this.ticketPrice = ticketPrice;
     }
 
-    public String getQuantity() {
+    public Ticket (String ticketType, int quantity, float ticketPrice) {
+        this.ticketType = ticketType;
+        this.quantity = quantity;
+        this.ticketPrice = ticketPrice;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(String quantity) {
+    public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
 
@@ -64,22 +77,13 @@ public class Ticket {
         this.ticketType = ticketType;
     }
 
-    public String getTicketPrice() {
+    public float getTicketPrice() {
         return ticketPrice;
     }
 
-    public void setTicketPrice(String ticketPrice) {
+    public void setTicketPrice(float ticketPrice) {
         this.ticketPrice = ticketPrice;
     }
-
-    public String[] getIncluded() {
-        return included;
-    }
-
-    public void setIncluded(String[] included) {
-        this.included = included;
-    }
-
 
     public String getStartDate() {
         return startDate;
@@ -111,5 +115,20 @@ public class Ticket {
 
     public void setUUID(String UUID) {
         this.UUID = UUID;
+    }
+
+    @Override
+    public String toString() {
+        return "Ticket{" +
+                "id=" + id +
+                ", eventName='" + eventName + '\'' +
+                ", ticketType='" + ticketType + '\'' +
+                ", quantity=" + quantity +
+                ", ticketPrice=" + ticketPrice +
+                ", startDate='" + startDate + '\'' +
+                ", customerName='" + customerName + '\'' +
+                ", customerEmail='" + customerEmail + '\'' +
+                ", UUID='" + UUID + '\'' +
+                '}';
     }
 }

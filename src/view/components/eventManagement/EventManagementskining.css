@@ -1,0 +1,78 @@
+
+.managementContainer{
+    -fx-background-radius: 10;
+}
+.combo-box-base {
+    -fx-background-color: -fx-shadow-highlight-color, -fx-outer-border, -fx-inner-border, white;
+    -fx-background-insets: 0 0 -1 0, 0, 1, 2;
+    -fx-background-radius: 3px, 3px, 2px, 1px;
+}
+
+.combo-box .combo-box-popup .list-cell{
+    -fx-text-fill: #5585b5;
+}
+
+.combo-box .combo-box-popup .list-cell:hover {
+    -fx-background-color: #E1EBF2;
+}
+.eventManagementHeader{
+    -fx-text-fill: #5585b5;
+    -fx-font-size: 18;
+    -fx-font-weight:bold;
+}
+.startDate:error{
+    -fx-border-color: red;
+    -fx-border-width: 2;
+}
+.startTime:error{
+    -fx-border-color: red;
+    -fx-border-width: 2;
+}
+
+.invalidInput:error{
+    -fx-background-color: #E1EBF2;
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+    -fx-text-fill: #5585b5;
+    -fx-font-size: 12;
+    -fx-text-overrun: elipsis;
+    -fx-font-weight:bold;
+}
+
+.eventName{
+    -fx-background-radius: 5px;
+    -fx-border-radius: 5px;
+    -fx-background-color:#fff;
+}
+.eventName:error{
+    -fx-border-color: red;
+    -fx-border-width: 2;
+}
+.eventLocation{
+    -fx-background-radius: 5px;
+    -fx-border-radius: 5px;
+    -fx-background-color:#fff;
+}
+.eventLocation:error{
+    -fx-border-color: red;
+    -fx-border-width: 2;
+}
+.endDate:error{
+    -fx-border-color: red;
+    -fx-border-width: 2;
+}
+.endTime:error{
+    -fx-border-color: red;
+    -fx-border-width: 2;
+}
+
+/*.invalid-field {*/
+/*    -fx-border-color: red;*/
+/*    -fx-border-width: 2;*/
+/*}*/
+
+/*.valid-field {*/
+/*    -fx-border-color: #cecdcd;*/
+/*    -fx-border-width: 2;*/
+/*}*/
+

@@ -51,7 +51,7 @@ public class CreateEventController {
 
     private Model model;
 
-    private  StackPane stackPane;
+    private  StackPane stackPane, thirdLayout;
 
     @FXML
     public void initialize() throws EventException {
@@ -86,12 +86,13 @@ public class CreateEventController {
 
     }
 
-    public CreateEventController(StackPane stackPane ,Model model) {
+    public CreateEventController(StackPane stackPane, StackPane thirdLayout ,Model model) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("CreateEventView.fxml"));
         loader.setController(this);
         try {
             editScrolPane = loader.load();
             this.stackPane = stackPane;
+            this.thirdLayout = thirdLayout;
             this.model=model;
         } catch (IOException e) {
             ExceptionHandler.erorrAlertMessage(ErrorCode.LOADING_FXML_FAILED.getValue());
@@ -109,8 +110,15 @@ public class CreateEventController {
     }
 
     public void addTicket(ActionEvent actionEvent) {
-        TicketsGeneration ticketsGeneration = new TicketsGeneration(stackPane, this);
-        stackPane.getChildren().add(ticketsGeneration.getRoot());
+        showThirdLayout();
+        TicketsGeneration ticketsGeneration = new TicketsGeneration(stackPane, thirdLayout,  this, model);
+        thirdLayout.getChildren().add(ticketsGeneration.getRoot());
+    }
+
+    private void showThirdLayout() {
+        thirdLayout.getChildren().clear();
+        thirdLayout.setDisable(false);
+        thirdLayout.setVisible(true);
     }
 
     public void saveEvent(ActionEvent actionEvent){
@@ -123,16 +131,12 @@ public class CreateEventController {
             String description = eventDescription.getText();
             String locationE = eventLocation.getText();
             Event event = new Event(name, description, startD, endD, startT, endT, locationE);
-            System.out.println("working" + event);
             try {
                 model.addEvent(event);
-                System.out.println("event" + event);
                 closeWindow(actionEvent);
             } catch (EventException e) {
-                System.out.println(event);
                 ExceptionHandler.erorrAlertMessage(e.getErrorCode().getValue());
            }
-
         }
     }
 

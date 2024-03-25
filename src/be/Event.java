@@ -9,10 +9,14 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 public class Event {
     private SimpleIntegerProperty id;
     private SimpleStringProperty name;
+
+
+
     private SimpleStringProperty description;
     private SimpleObjectProperty<LocalDate> startDate;
     private SimpleObjectProperty<LocalDate> endDate;
@@ -160,6 +164,7 @@ public class Event {
 
     public Event(Event originalEvent) {
         initializeFields();
+        this.setId(originalEvent.getId());
         this.name.setValue(originalEvent.getName());
         this.description.setValue(originalEvent.getDescription());
         this.startDate.setValue(originalEvent.getStartDate());
@@ -181,5 +186,18 @@ public class Event {
         this.location = new SimpleStringProperty();
         this.id = new SimpleIntegerProperty();
         this.availableTickets = new SimpleIntegerProperty();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Event event = (Event) o;
+        return Objects.equals(id, event.id) && Objects.equals(name, event.name) && Objects.equals(description, event.description) && Objects.equals(startDate, event.startDate) && Objects.equals(endDate, event.endDate) && Objects.equals(startTime, event.startTime) && Objects.equals(endTime, event.endTime) && Objects.equals(location, event.location) && Objects.equals(availableTickets, event.availableTickets);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, description, startDate, endDate, startTime, endTime, location, availableTickets);
     }
 }
