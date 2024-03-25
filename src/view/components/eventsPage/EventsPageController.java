@@ -18,6 +18,9 @@ import view.components.manageButton.ManageAction;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+
+
+//TODO if is time add the loading animation for the events
 public class EventsPageController extends VBox implements Displayable, Initializable {
     @FXML
     private VBox eventsPageView;
@@ -26,7 +29,7 @@ public class EventsPageController extends VBox implements Displayable, Initializ
     private StackPane secondaryLayout, thirdLayout;
     private Model model;
 
-    private Service getEvents;
+    private Service<Void> getEvents;
 
     public EventsPageController(StackPane secondaryLayout, StackPane thirdLayout) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("EventsView.fxml"));
@@ -67,7 +70,7 @@ public class EventsPageController extends VBox implements Displayable, Initializ
             model.setEventsDisplayer(this);
             initializeEvents();
         } catch (EventException | TicketException e) {
-            //exception needs to be treated with the ExceptionHandler , error message
+
             ExceptionHandler.erorrAlertMessage(e.getMessage());
         }
     }
