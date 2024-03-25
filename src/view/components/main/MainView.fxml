@@ -35,7 +35,7 @@
                             </font>
                         </MFXButton>
 
-                              <MFXButton fx:id="sellingNavButton" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="30.0" minWidth="60.0" prefHeight="60.0" prefWidth="120.0" rippleColor="#102c57" styleClass="controlNav" text="Selling">
+                              <MFXButton fx:id="sellingNavButton" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="30.0" minWidth="60.0" onAction="#selling" prefHeight="60.0" prefWidth="120.0" rippleColor="#102c57" styleClass="controlNav" text="Selling">
                             <font>
                                 <Font size="18.0" />
                             </font>
@@ -58,7 +58,7 @@
                   <Insets />
                </VBox.margin>
                 </HBox>
-            <VBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="600.0" prefWidth="1280.0" VBox.vgrow="ALWAYS">
+            <VBox fx:id="vBox" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="600.0" prefWidth="1280.0" VBox.vgrow="ALWAYS">
                <children>
                       <GridPane alignment="CENTER" maxHeight="80.0" maxWidth="1072.0" prefHeight="80.0" prefWidth="1072.0">
                           <columnConstraints>

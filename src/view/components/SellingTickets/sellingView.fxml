@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXComboBox?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<VBox fx:id="box" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1280.0" style="-fx-background-color: white;" stylesheets="selling.css" VBox.vgrow="ALWAYS" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <HBox alignment="CENTER" prefHeight="511.0" prefWidth="1020.0" style="-fx-background-color: E5EDF8FF; -fx-background-radius: 20;" VBox.vgrow="ALWAYS">
+         <VBox.margin>
+            <Insets bottom="20.0" left="150.0" right="150.0" top="100.0" />
+         </VBox.margin>
+         <children>
+            <VBox prefHeight="454.0" prefWidth="579.0" spacing="25.0">
+               <children>
+                  <Label prefHeight="40.0" prefWidth="134.0" text="Customer details">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <HBox prefHeight="71.0" prefWidth="449.0">
+                     <children>
+                        <VBox prefHeight="62.0" prefWidth="215.0">
+                           <children>
+                              <Label text="Name" />
+                              <TextField fx:id="name" prefHeight="40.0" prefWidth="215.0" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="70.0" prefWidth="449.0">
+                     <children>
+                        <VBox prefHeight="100.0" prefWidth="216.0">
+                           <children>
+                              <Label text="LastName" />
+                              <TextField fx:id="lastName" prefHeight="40.0" prefWidth="216.0" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="70.0" prefWidth="449.0">
+                     <children>
+                        <VBox prefHeight="100.0" prefWidth="215.0">
+                           <children>
+                              <Label text="Email" />
+                              <TextField fx:id="email" prefHeight="40.0" prefWidth="215.0" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+                  <HBox alignment="BOTTOM_LEFT" prefHeight="93.0" prefWidth="599.0" spacing="30.0" />
+               </children>
+               <padding>
+                  <Insets left="100.0" top="20.0" />
+               </padding>
+            </VBox>
+            <VBox prefHeight="454.0" prefWidth="532.0" spacing="25.0">
+               <children>
+                  <Label prefHeight="40.0" prefWidth="119.0" text="Choose Tickets">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <HBox prefHeight="71.0" prefWidth="549.0">
+                     <children>
+                        <VBox prefHeight="100.0" prefWidth="237.0">
+                           <children>
+                              <Label text="Events" />
+                              <MFXComboBox fx:id="allEvents" prefHeight="40.0" prefWidth="201.0" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="86.0" prefWidth="549.0" spacing="10.0">
+                     <children>
+                        <VBox prefHeight="86.0" prefWidth="201.0">
+                           <children>
+                              <Label text="Event tickets" />
+                              <MFXComboBox fx:id="allEventTickets" prefHeight="41.0" prefWidth="200.0" />
+                           </children>
+                        </VBox>
+                        <VBox prefHeight="86.0" prefWidth="60.0">
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" />
+                              <TextField fx:id="eventTicketsAmount" prefHeight="39.0" prefWidth="55.0" promptText="Amount" />
+                           </children>
+                        </VBox>
+                        <VBox prefHeight="70.0" prefWidth="100.0">
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" />
+                              <Button fx:id="AddEventTickets" mnemonicParsing="false" prefHeight="36.0" prefWidth="47.0" text="+" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="70.0" prefWidth="479.0" spacing="10.0">
+                     <children>
+                        <VBox prefHeight="81.0" prefWidth="199.0">
+                           <children>
+                              <Label text="Special tickets" />
+                              <MFXComboBox fx:id="specialTickets" prefHeight="40.0" prefWidth="199.0" />
+                           </children>
+                        </VBox>
+                        <VBox prefHeight="86.0" prefWidth="64.0">
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" />
+                              <TextField fx:id="SpecialTicketsAmount" prefHeight="37.0" prefWidth="56.0" promptText="Amount" />
+                           </children>
+                        </VBox>
+                        <VBox prefHeight="200.0" prefWidth="100.0">
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" />
+                              <Button fx:id="AddSpecialTickets" mnemonicParsing="false" prefHeight="36.0" prefWidth="47.0" text="+" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="89.0" prefWidth="599.0" spacing="10.0">
+                     <children>
+                        <VBox prefHeight="89.0" prefWidth="229.0">
+                           <children>
+                              <Label text="All tickets" />
+                              <ListView fx:id="allSelectedTickets" prefHeight="72.0" prefWidth="178.0" />
+                           </children>
+                        </VBox>
+                        <VBox prefHeight="79.0" prefWidth="100.0">
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" />
+                              <Button mnemonicParsing="false" prefHeight="35.0" prefWidth="63.0" text="Remove" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <VBox prefHeight="96.0" prefWidth="267.0">
+                           <children>
+                              <Label text="Total" />
+                              <Label />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+               </children>
+               <opaqueInsets>
+                  <Insets left="70.0" />
+               </opaqueInsets>
+               <padding>
+                  <Insets top="20.0" />
+               </padding>
+            </VBox>
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" prefHeight="123.0" prefWidth="1020.0" spacing="30.0" stylesheets="@selling.css" VBox.vgrow="ALWAYS">
+         <VBox.margin>
+            <Insets bottom="30.0" left="130.0" right="130.0" />
+         </VBox.margin>
+         <children>
+            <Button mnemonicParsing="false" prefHeight="33.0" prefWidth="105.0" stylesheets="@selling.css" text="Print ticket" />
+            <Button mnemonicParsing="false" onAction="#sell" prefHeight="33.0" prefWidth="133.0" stylesheets="@selling.css" text="Sell" />
+         </children>
+      </HBox>
+   </children>
+</VBox>
