@@ -229,7 +229,6 @@ public class EventDAO {
 
     public boolean saveEditOperation(Event selectedEvent, Map<Integer, List<Integer>> assignedCoordinators) throws EventException {
         boolean succeded = false;
-        System.out.println(selectedEvent.getId());
         String updateEvent = "UPDATE Event SET Start_date=?,Name=?,Description=?,End_Date=?,Start_Time=?,End_Time=?,Location=? WHERE EventId=?";
         Connection conn = null;
         try {
@@ -266,7 +265,6 @@ public class EventDAO {
             }
             insertCoordinators(selectedEvent.getId(), assignedCoordinators, conn);
             conn.commit();
-            System.out.println("executed");
             succeded = true;
         } catch (SQLException | EventException e) {
             try {

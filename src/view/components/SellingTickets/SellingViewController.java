@@ -51,7 +51,6 @@ public class SellingViewController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         List<String> eventNames = model.getAllEventNames();
         allEvents.setItems(FXCollections.observableArrayList(eventNames));
-
         allEvents.setOnAction(event -> {
             allEventTickets.clearSelection();
             String selectedEventName = (String) allEvents.getSelectionModel().getSelectedItem();
@@ -59,11 +58,9 @@ public class SellingViewController implements Initializable {
             if (eventId != -1) {
                 try {
                     ObservableMap<Integer, Ticket> tickets = model.getTicketsForEvent(eventId);
-
                     List<String> ticketInfoList = tickets.values().stream()
                             .map(ticket -> ticket.getTicketType() + " - Q" + ticket.getQuantity() + " - " + ticket.getTicketPrice() +"DKK")
                             .collect(Collectors.toList());
-
                     allEventTickets.setItems(FXCollections.observableArrayList(ticketInfoList));
                 } catch (TicketException e) {
                     // Handle exception

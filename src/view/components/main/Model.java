@@ -200,9 +200,9 @@ public class Model {
         evmLogic.saveEditOperation(selectedEvent,assignedCoordinatorsMap);
     }
 
+
     public void addCustomer (Customer customer) throws EventException {
         customerManager.addCustomer(customer);
-
     }
     public List<String> getAllEventNames () {
         Collection<Event> events = coordinatorEvents.values();
