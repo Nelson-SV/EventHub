@@ -96,9 +96,7 @@ public class EventManagementController extends GridPane implements Initializable
         EditEventValidator.initializeDateFormat(startDate);
         EditEventValidator.initializeDateFormat(endDate);
         EditEventValidator.addEventListeners(eventName, startDate, startTime, endDate, endTime, eventLocation);
-        //add tool tips for the dates
         addToolTipsForDates();
-        //add dates validity checker
         addDatesValidityChecker();
         cancelEdit.setOnAction((e) -> cancelEditOperation());
         saveEdit.setOnAction((e) -> saveOperation());
@@ -217,7 +215,6 @@ public class EventManagementController extends GridPane implements Initializable
                     @Override
                     protected Void call() throws Exception {
                         model.saveEditEventOperation(coordinators.getCheckModel().getCheckedItems());
-                        System.out.println("Edit operation saved");
                         return null;
                     }
                 };
@@ -230,6 +227,7 @@ public class EventManagementController extends GridPane implements Initializable
                 pauseTransition.setOnFinished((ev) -> {
                     closeLoader();
                     cancelEditOperation();
+                    Platform.runLater(()->model.getEventsDisplayer().displayEvents());
                 });
                 pauseTransition.play();
             });
@@ -243,6 +241,7 @@ public class EventManagementController extends GridPane implements Initializable
                 pauseTransition.setOnFinished((ev) -> {
                     closeLoader();
                 });
+                pauseTransition.play();
             });
 
         });

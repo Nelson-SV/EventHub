@@ -4,6 +4,7 @@ import exceptions.ErrorCode;
 import exceptions.EventException;
 import exceptions.ExceptionHandler;
 import exceptions.TicketException;
+import javafx.application.Platform;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -51,8 +52,11 @@ public class EventsPageController extends VBox implements Displayable, Initializ
      */
     @Override
     public void displayEvents() {
-        mainEventContainer.getChildren().clear();
-        model.sortedEventsList().forEach(e -> mainEventContainer.getChildren().add(new EventComponent(e, new ManageAction(this.secondaryLayout, thirdLayout, e.getId(), model))));
+        Platform.runLater(() -> {
+            mainEventContainer.getChildren().clear();
+            model.sortedEventsList().forEach(e -> mainEventContainer.getChildren().add(new EventComponent(e, new ManageAction(this.secondaryLayout, thirdLayout, e.getId(), model))));
+        });
+
     }
 
     @FXML
