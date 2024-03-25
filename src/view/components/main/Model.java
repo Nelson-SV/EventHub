@@ -1,21 +1,20 @@
 package view.components.main;
 
+import be.Customer;
 import be.Event;
+import be.Ticket;
 import be.User;
-import bll.EventManagementLogic;
-import bll.EventManager;
-import bll.ILogicManager;
+import bll.*;
 import exceptions.EventException;
+import exceptions.TicketException;
 import javafx.collections.*;
-import view.components.eventManagement.EventManagementController;
+import javafx.concurrent.Task;
 import view.components.listeners.CoordinatorsDisplayer;
 import view.components.listeners.Displayable;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Model {
@@ -25,50 +24,45 @@ public class Model {
 // 3.add an observable object that will hold the current selected event to be managed
 
     private Displayable eventsDisplayer;
+    private CustomerManager customerManager;
     private CoordinatorsDisplayer coordinatorsDisplayer;
     /**
      * Holds the events for a given user
      */
     private ObservableMap<Integer, Event> coordinatorEvents;
+    private ObservableMap<Integer, Ticket> eventTickets;
     /**
      * holds all the event coordinators available
      */
     private ObservableMap<Integer, User> allEventCoordinators;
+    private HashMap<Integer,List<Integer>> assignedoordinators;
 
-
-    private EventManager manager;
+    private EventManager eventManager;
     private ILogicManager evmLogic;
+    private TicketManager ticketManager;
     /**
      * holds the current opened event for managing
      */
     private Event selectedEvent;
+    private List<Ticket> addedTickets;
 
     private static Model instance;
-    //ensures that by using Singelton all controllers use the same model
-
-//    static {
-//        try {
-//            instance = new Model();
-//        } catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        } catch (EventException e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
-
-    public static Model getInstance() throws EventException {
+    public static Model getInstance() throws EventException, TicketException {
         if (instance == null) {
             instance = new Model();
         }
         return instance;
     }
 
-    private Model() throws EventException {
-        manager = new EventManager();
+    private Model() throws EventException, TicketException {
+        eventManager = new EventManager();
+        ticketManager = new TicketManager();
         coordinatorEvents = FXCollections.observableHashMap();
+        eventTickets = FXCollections.observableHashMap();
         evmLogic = new EventManagementLogic();
         allEventCoordinators = FXCollections.observableHashMap();
-        addEventListenerCoordinators();
+        addedTickets = new ArrayList<>();
+        //    addEventListenerCoordinators();
         initializeEventsMap();
     }
 
@@ -79,17 +73,35 @@ public class Model {
      * @param event the new event created
      */
     public void addEvent(Event event) throws EventException {
-        Integer inserted = manager.addEvent(event);
+        Integer inserted = eventManager.addEvent(event, addedTickets);
         if (inserted != null) {
             event.setId(inserted);
             coordinatorEvents.put(inserted, event);
         }
     }
 
-    /**initialize the event coordinators list*/
-public void initializeEventCoordinators(int eventId) throws EventException {
-    evmLogic.getEventCoordinators(eventId).values().forEach((user)->allEventCoordinators.put(user.getUserId(),user));
-}
+    public List<Ticket> getNewTicket(Ticket ticket){
+        addedTickets.add(ticket);
+        return addedTickets;
+    }
+
+    /*
+    public List<Ticket> addTicket(Ticket ticket) throws TicketException {
+        Integer inserted = ticketManager.addTicket(ticket);
+        if (inserted != null) {
+            ticket.setId(inserted);
+            addedTicket = new Ticket(inserted, ticket.getTicketType(), ticket.getQuantity(), ticket.getTicketPrice());
+            eventTickets.put(inserted, ticket);
+        }
+        return null;
+    }
+
+     */
+
+//    /**initialize the event coordinators list*/
+//public void initializeEventCoordinators(int eventId) throws EventException {
+//    evmLogic.getEventCoordinators(eventId).values().forEach((user)->allEventCoordinators.put(user.getUserId(),user));
+//}
 
 
 
@@ -129,32 +141,17 @@ public void initializeEventCoordinators(int eventId) throws EventException {
                 .collect(Collectors.toList());
     }
 
-
-
-    /**get all event Coordinators off the app that are not assigned to this event*/
-    public ObservableList<User> getAllEventCoordinators() {
-        return FXCollections.observableArrayList(allEventCoordinators.values());
-    }
-
-    /**
-     * listen for the eventCoordinators changes*/
-    private void addEventListenerCoordinators(){
-        this.allEventCoordinators.addListener((MapChangeListener<? super Integer, ? super User>) change  ->{
-           if(change.wasAdded()|| change.wasRemoved()){
-               coordinatorsDisplayer.setCoordinators();
-           }
-        });
-    }
     /**updates the view that is displaying the coordinators*/
     public void setCoordinatorsDisplayer(CoordinatorsDisplayer displayer){
         this.coordinatorsDisplayer=displayer;
     }
 
-
     /**
      * set the event that has been selected to be managed
+     * it is a clone, if user wants to cancel , than the original event will not be affected
      */
-    public void setSelectedEvent(int id) {
+    public void setSelectedEvent(int id)
+    {
         this.selectedEvent = new Event(coordinatorEvents.get(id));
     }
 
@@ -165,4 +162,45 @@ public void initializeEventCoordinators(int eventId) throws EventException {
         return this.selectedEvent;
     }
 
+    /**retrieve the eventCoordinators that are not assigned to the selected event */
+    public Task<List<User>> executeData(int eventId) {
+        return this.evmLogic.getevCoord(eventId);
+    }
+
+    public CoordinatorsDisplayer getCoordinatorsDisplayer() {
+        return coordinatorsDisplayer;
+    }
+
+
+    public boolean isEditValid(){
+        return  evmLogic.isEditValid(selectedEvent);
+    }
+
+    public boolean isModified(Map<Integer,List<Integer>> assignedCoordinators){
+        return evmLogic.isModifyed(assignedCoordinators,selectedEvent,coordinatorEvents.get(selectedEvent.getId()));
+    }
+    /**save the edit operation performed on the current selected event*/
+    public void saveEditEventOperation(List<User> assignedCoordinators) {
+        HashMap<Integer,List<Integer>> assignedCoordinatorsMap = new HashMap<>();
+        assignedCoordinatorsMap.put(selectedEvent.getId(),assignedCoordinators.stream().map(User::getUserId).collect(Collectors.toList()));
+        boolean isModified=evmLogic.isModifyed(assignedCoordinatorsMap,selectedEvent,coordinatorEvents.get(selectedEvent.getId()));
+        if(!isModified){
+            return;
+        }
+        evmLogic.saveEditOperation(selectedEvent,assignedCoordinatorsMap);
+    }
+
+    public void addCustomer (Customer customer) throws EventException {
+        customerManager.addCustomer(customer);
+
+    }
+    public List<String> getAllEventNames () {
+        Collection<Event> events = coordinatorEvents.values();
+
+        List<String> eventNames = events.stream()
+                .map(Event::getName) // Extract the name of each event
+                .collect(Collectors.toList()); // Collect names into a list
+
+        return eventNames;
+    }
 }
