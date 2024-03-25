@@ -84,5 +84,31 @@ public class TicketDAO {
         }
         return tickets;
     }
+    public ObservableMap<Integer, Ticket> retrieveTicketsForEvent(int eventId) throws TicketException {
+        ObservableMap<Integer, Ticket> tickets = FXCollections.observableHashMap();
+        String sql = "SELECT t.* FROM Ticket t JOIN EventTickets et ON t.ID = et.TicketID WHERE et.EventID = ?";
+
+        try (Connection conn = connectionManager.getConnection();
+             PreparedStatement psmt = conn.prepareStatement(sql)) {
+            psmt.setInt(1, eventId);
+            try (ResultSet res = psmt.executeQuery()) {
+                while (res.next()) {
+                    int id = res.getInt("ID");
+                    String type = res.getString("Type");
+                    int quantity = res.getInt("Quantity");
+                    float price = res.getFloat("Price");
+
+                    Ticket ticket = new Ticket(id, type, quantity, price);
+                    tickets.put(ticket.getId(), ticket);
+                }
+            }
+        } catch (SQLException | EventException e) {
+            throw new TicketException(e.getMessage(), e.getCause(), ErrorCode.OPERATION_DB_FAILED);
+        }
+
+        return tickets;
+    }
+
+
 
 }

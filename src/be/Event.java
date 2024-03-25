@@ -200,4 +200,8 @@ public class Event {
     public int hashCode() {
         return Objects.hash(id, name, description, startDate, endDate, startTime, endTime, location, availableTickets);
     }
+
+    public String getNameForDisplay() {
+        return getName();
+    }
 }
