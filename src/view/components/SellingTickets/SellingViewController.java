@@ -68,12 +68,7 @@ public class SellingViewController implements Initializable {
         String customerName = name.getText();
         String customerLastName = lastName.getText();
         String customerEmail = email.getText();
-
         Customer customer = new Customer(customerName, customerLastName, customerEmail);
         model.addCustomer(customer);
-
     }
-
-
-
 }

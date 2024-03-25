@@ -108,7 +108,7 @@ public class Model {
     /**
      * initialize the events map
      */
-    private void initializeEventsMap() throws EventException {
+    public void initializeEventsMap() throws EventException {
         coordinatorEvents = evmLogic.getEvents();
         addUpdateEventListener();
     }
