@@ -262,7 +262,8 @@ public class EventDAO {
                 psmt.setString(7, selectedEvent.getLocation());
                 psmt.setInt(8, selectedEvent.getId());
 
-                psmt.executeUpdate();}
+                psmt.executeUpdate();
+            }
             insertCoordinators(selectedEvent.getId(), assignedCoordinators, conn);
             conn.commit();
             System.out.println("executed");
@@ -291,7 +292,7 @@ public class EventDAO {
     private void insertCoordinators(int eventId, Map<Integer, List<Integer>> assignedCoordinators, Connection conn) throws SQLException {
         System.out.println(eventId);
         System.out.println(assignedCoordinators.get(eventId));
-        if(assignedCoordinators.get(eventId).isEmpty()){
+        if (assignedCoordinators.get(eventId).isEmpty()) {
             return;
         }
         String insertCoordinators = "INSERT INTO UsersEvents(UserId,EventId) values (?,?)";
