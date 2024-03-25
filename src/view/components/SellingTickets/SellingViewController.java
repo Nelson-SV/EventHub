@@ -2,12 +2,15 @@ package view.components.SellingTickets;
 
 import be.Customer;
 import be.Event;
+import be.Ticket;
 import exceptions.ErrorCode;
 import exceptions.EventException;
 import exceptions.ExceptionHandler;
+import exceptions.TicketException;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXScrollPane;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -20,8 +23,10 @@ import view.components.main.Model;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 public class SellingViewController implements Initializable {
 
@@ -38,12 +43,36 @@ public class SellingViewController implements Initializable {
     private TextField email;
     @FXML
     private MFXComboBox allEvents;
+    @FXML
+    private MFXComboBox allEventTickets;
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         List<String> eventNames = model.getAllEventNames();
         allEvents.setItems(FXCollections.observableArrayList(eventNames));
+
+        allEvents.setOnAction(event -> {
+            allEventTickets.clearSelection();
+            String selectedEventName = (String) allEvents.getSelectionModel().getSelectedItem();
+            int eventId = model.getEventIdByName(selectedEventName);
+            if (eventId != -1) {
+                try {
+                    ObservableMap<Integer, Ticket> tickets = model.getTicketsForEvent(eventId);
+
+                    List<String> ticketInfoList = tickets.values().stream()
+                            .map(ticket -> ticket.getTicketType() + " - Q" + ticket.getQuantity() + " - " + ticket.getTicketPrice() +"DKK")
+                            .collect(Collectors.toList());
+
+                    allEventTickets.setItems(FXCollections.observableArrayList(ticketInfoList));
+                } catch (TicketException e) {
+                    // Handle exception
+                }
+            }
+        });
+
+
+
 
     }
 
@@ -73,6 +102,8 @@ public class SellingViewController implements Initializable {
         model.addCustomer(customer);
 
     }
+
+
 
 
 

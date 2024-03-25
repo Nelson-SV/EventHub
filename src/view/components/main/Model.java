@@ -25,6 +25,8 @@ public class Model {
 
     private Displayable eventsDisplayer;
     private CustomerManager customerManager;
+
+
     private CoordinatorsDisplayer coordinatorsDisplayer;
     /**
      * Holds the events for a given user
@@ -52,6 +54,14 @@ public class Model {
             instance = new Model();
         }
         return instance;
+    }
+
+    public ObservableMap<Integer, Event> getCoordinatorEvents() {
+        return coordinatorEvents;
+    }
+
+    public void setCoordinatorEvents(ObservableMap<Integer, Event> coordinatorEvents) {
+        this.coordinatorEvents = coordinatorEvents;
     }
 
     private Model() throws EventException, TicketException {
@@ -203,4 +213,17 @@ public class Model {
 
         return eventNames;
     }
+    public ObservableMap<Integer, Ticket> getTicketsForEvent(int eventId) throws TicketException {
+        eventTickets = ticketManager.getTicketsForEvent(eventId); // Store tickets for the specified event
+        return eventTickets; // Return the tickets for the specified event
+    }
+    public Integer getEventIdByName(String eventName) {
+        for (Event event : coordinatorEvents.values()) {
+            if (event.getName().equals(eventName)) {
+                return event.getId();
+            }
+        }
+        return -1;
+    }
+
 }
