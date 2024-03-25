@@ -5,6 +5,7 @@ public enum ErrorCode {
     CONNECTION_FAILED("Connection failed,please verify your network connection"),
     OPERATION_DB_FAILED("Operation failed,please verify your network connection, or try again"),
     LOADING_FXML_FAILED("Operation failed, problems reading files, please try again or restart the application"),
+    FAILED_TO_LOAD_EVENTS("Failed to load events, please try again or restart the application"),
     ;
 
 

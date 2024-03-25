@@ -1,4 +1,5 @@
 package view.components.main;
+
 import exceptions.EventException;
 import exceptions.TicketException;
 import io.github.palexdev.materialfx.controls.MFXButton;
@@ -10,12 +11,12 @@ import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import view.components.SellingTickets.SellingViewController;
 import view.components.eventDescription.EventComponent;
-import view.components.eventManagement.EventManagementController;
 import view.components.events.CreateEventController;
+import view.components.eventsPage.EventsPageController;
 import view.components.listeners.Displayable;
 import view.components.manageButton.ManageAction;
 import view.utility.NavigationHoverControl;
-import java.io.IOException;
+
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -39,7 +40,8 @@ public class MainController implements Initializable, Displayable {
     @FXML
     private StackPane mainLayout;
     @FXML
-    private VBox vBox;
+    private VBox pageDisplayer;
+
 
     @FXML
     private StackPane secondaryLayout, thirdLayout;
@@ -48,11 +50,12 @@ public class MainController implements Initializable, Displayable {
     public void initialize(URL location, ResourceBundle resources) {
         try {
             model = Model.getInstance();
-            model.setEventsDisplayer(this);
+            //model.setEventsDisplayer(this);
             NavigationHoverControl navigationHoverControl = new NavigationHoverControl(eventsLine, sellingLine, ticketingLine, eventsNavButton, sellingNavButton, specialTicketNavButton);
             navigationHoverControl.initializeNavButtons();
-            displayEvents();
-            bindParentWidth();
+            initializeMainPageEvents();
+            //displayEvents();
+            // bindParentWidth();
         } catch (EventException | TicketException e) {
             initializationError = true;
             //throw new RuntimeException(e);
@@ -76,7 +79,7 @@ public class MainController implements Initializable, Displayable {
     @Override
     public void displayEvents() {
         mainEventContainer.getChildren().clear();
-        model.sortedEventsList().forEach(e -> mainEventContainer.getChildren().add(new EventComponent(e, new ManageAction(this.secondaryLayout,thirdLayout, e.getId(),model))));
+        model.sortedEventsList().forEach(e -> mainEventContainer.getChildren().add(new EventComponent(e, new ManageAction(this.secondaryLayout, thirdLayout, e.getId(), model))));
     }
 
 
@@ -94,7 +97,7 @@ public class MainController implements Initializable, Displayable {
     }
 
 
-    private void bindParentWidth(){
+    private void bindParentWidth() {
         secondaryLayout.minWidthProperty().bind(mainLayout.widthProperty());
         secondaryLayout.minHeightProperty().bind(mainLayout.heightProperty());
         secondaryLayout.maxWidthProperty().bind(mainLayout.widthProperty());
@@ -105,11 +108,31 @@ public class MainController implements Initializable, Displayable {
         return initializationError;
     }
 
-    public void selling(ActionEvent actionEvent) {
+    @FXML
+    private void selling(ActionEvent actionEvent) {
+        SellingViewController sellingViewController = new SellingViewController(pageDisplayer, model);
+        pageDisplayer.getChildren().clear();
+        pageDisplayer.getChildren().add(sellingViewController.getRoot());
+    }
 
-        SellingViewController sellingViewController = new SellingViewController(vBox,model);
-        vBox.getChildren().clear();
-        vBox.getChildren().add(sellingViewController.getRoot());
+    @FXML
+    private void navigateEventsPage(ActionEvent actionEvent) {
+        EventsPageController eventsPageController = new EventsPageController(secondaryLayout, thirdLayout);
+        pageDisplayer.getChildren().clear();
+        pageDisplayer.getChildren().add(eventsPageController);
+    }
+
+    private void initializeMainPageEvents() {
+        EventsPageController eventsPageController = new EventsPageController(secondaryLayout, thirdLayout);
+        pageDisplayer.getChildren().clear();
+        pageDisplayer.getChildren().add(eventsPageController);
+    }
+
+
+
+
+    public VBox getPageDisplayer() {
+        return pageDisplayer;
     }
 
 }
