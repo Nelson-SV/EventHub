@@ -16,6 +16,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
@@ -31,7 +32,6 @@ import java.util.stream.Collectors;
 public class SellingViewController implements Initializable {
 
     @FXML
-    //private GridPane editGridPane;
     private VBox box;
     private VBox vBox;
     private Model model;
@@ -45,6 +45,12 @@ public class SellingViewController implements Initializable {
     private MFXComboBox allEvents;
     @FXML
     private MFXComboBox allEventTickets;
+    @FXML
+    private MFXComboBox specialTickets;
+    @FXML
+    private TextField eventTicketsAmount;
+    @FXML
+    private ListView allSelectedTickets;
 
 
     @Override
@@ -53,26 +59,49 @@ public class SellingViewController implements Initializable {
         allEvents.setItems(FXCollections.observableArrayList(eventNames));
 
         allEvents.setOnAction(event -> {
+            loadTicketsInfo();
+            loadSpecialTicketsInfo();
+        });
+    }
+
+    private void loadTicketsInfo(){
             allEventTickets.clearSelection();
             String selectedEventName = (String) allEvents.getSelectionModel().getSelectedItem();
             int eventId = model.getEventIdByName(selectedEventName);
             if (eventId != -1) {
                 try {
-                    ObservableMap<Integer, Ticket> tickets = model.getTicketsForEvent(eventId);
+                    ObservableMap<Integer, Ticket> ticketsMap = model.getTicketsForEvent(eventId);
 
-                    List<String> ticketInfoList = tickets.values().stream()
+                    List<String> ticketInfoList = ticketsMap.values().stream()
                             .map(ticket -> ticket.getTicketType() + " - Q" + ticket.getQuantity() + " - " + ticket.getTicketPrice() +"DKK")
                             .collect(Collectors.toList());
 
                     allEventTickets.setItems(FXCollections.observableArrayList(ticketInfoList));
-                } catch (TicketException e) {
+                } catch (EventException e) {
                     // Handle exception
                 }
             }
-        });
 
 
+    }
 
+    private void loadSpecialTicketsInfo(){
+            specialTickets.clearSelection();
+            String selectedEventName = (String) allEvents.getSelectionModel().getSelectedItem();
+            int eventId = model.getEventIdByName(selectedEventName);
+            if (eventId != -1) {
+                try {
+                    ObservableMap<Integer, Ticket> specialTicketsMap  = model.getSpecialTicketsForEventOrNot(eventId);
+
+                    List<String> specialTicketInfoList = specialTicketsMap .values().stream()
+                            .map(ticket -> ticket.getTicketType() + " - Q" + ticket.getQuantity() + " - " + ticket.getTicketPrice() +"DKK")
+                            .collect(Collectors.toList());
+
+                    specialTickets.setItems(FXCollections.observableArrayList(specialTicketInfoList));
+                } catch (EventException e) {
+                    // Handle exception
+                }
+            }
 
     }
 
@@ -91,6 +120,32 @@ public class SellingViewController implements Initializable {
 
     public VBox getRoot() {
         return box;
+    }
+
+    public void addEventTicket(ActionEvent actionEvent){
+        String selectedTicketInfo = (String) allEventTickets.getSelectionModel().getSelectedItem();
+        String amountOfEventTickets = eventTicketsAmount.getText();
+
+        if (selectedTicketInfo != null && !amountOfEventTickets.isEmpty()) {
+            // Add the selected ticket information along with quantity to the ListView
+            String[] ticketParts = selectedTicketInfo.split(" - ");
+            String ticketType = ticketParts[0]; // Extract ticket type
+            String ticketPriceString = ticketParts[2].replaceAll("[^0-9]", "");// Extract ticket price
+            float ticketPrice = Float.parseFloat(ticketPriceString);
+
+            int selectedQuantity = Integer.parseInt(amountOfEventTickets); // Parse selected quantity
+            float totalPrice = ticketPrice * selectedQuantity;
+
+            // Create a string containing the ticket information along with the total price
+            String ticketDetails = ticketType + " - Quantity: " + selectedQuantity + " - Total Price: " + totalPrice + "DKK";
+            allSelectedTickets.getItems().add(ticketDetails);
+
+            allEventTickets.getSelectionModel().clearSelection();
+            eventTicketsAmount.clear();
+        } else {
+        }
+
+
     }
 
     public void sell(ActionEvent actionEvent) throws EventException {

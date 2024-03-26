@@ -16,8 +16,12 @@ public class TicketManager {
         this.ticketD = new TicketDAO();
     }
 
-    public ObservableMap<Integer, Ticket> getTicketsForEvent(int eventId) throws TicketException {
+    public ObservableMap<Integer, Ticket> getTicketsForEvent(int eventId) throws EventException {
         return ticketD.retrieveTicketsForEvent(eventId);
+    }
+
+    public ObservableMap<Integer, Ticket> getSpecialTicketsRelatedOrNot(int eventId) throws EventException {
+        return ticketD.retrieveSpecialTicketsForEventOrNot(eventId);
     }
 
 }

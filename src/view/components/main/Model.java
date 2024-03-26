@@ -33,6 +33,7 @@ public class Model {
      */
     private ObservableMap<Integer, Event> coordinatorEvents;
     private ObservableMap<Integer, Ticket> eventTickets;
+    private ObservableMap<Integer, Ticket> specialTickets;
     /**
      * holds all the event coordinators available
      */
@@ -213,10 +214,16 @@ public class Model {
 
         return eventNames;
     }
-    public ObservableMap<Integer, Ticket> getTicketsForEvent(int eventId) throws TicketException {
+    public ObservableMap<Integer, Ticket> getTicketsForEvent(int eventId) throws EventException {
         eventTickets = ticketManager.getTicketsForEvent(eventId); // Store tickets for the specified event
         return eventTickets; // Return the tickets for the specified event
     }
+    public ObservableMap<Integer, Ticket> getSpecialTicketsForEventOrNot(int eventId) throws EventException {
+        specialTickets = ticketManager.getSpecialTicketsRelatedOrNot(eventId); // Store tickets for the specified event
+        return specialTickets; // Return the tickets for the specified event
+    }
+
+
     public Integer getEventIdByName(String eventName) {
         for (Event event : coordinatorEvents.values()) {
             if (event.getName().equals(eventName)) {
