@@ -1,9 +1,6 @@
 package view.components.main;
 
-import be.Customer;
-import be.Event;
-import be.Ticket;
-import be.User;
+import be.*;
 import bll.*;
 import exceptions.EventException;
 import exceptions.TicketException;
@@ -11,7 +8,6 @@ import javafx.collections.*;
 import javafx.concurrent.Task;
 import view.components.listeners.CoordinatorsDisplayer;
 import view.components.listeners.Displayable;
-
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
@@ -25,30 +21,32 @@ public class Model {
 
     private Displayable eventsDisplayer;
     private CustomerManager customerManager;
-
-
     private CoordinatorsDisplayer coordinatorsDisplayer;
+
+
+
+
+
     /**
      * Holds the events for a given user
      */
     private ObservableMap<Integer, Event> coordinatorEvents;
-    private ObservableMap<Integer, Ticket> eventTickets;
-    /**
-     * holds all the event coordinators available
-     */
-    private ObservableMap<Integer, User> allEventCoordinators;
-    private HashMap<Integer,List<Integer>> assignedoordinators;
 
+//TODO not sure if we will need it , not use @Grosu
+    private ObservableMap<Integer, EventStatus> coordinatorEventsWithStatus;
+    private ObservableMap<Integer, Ticket> eventTickets;
     private EventManager eventManager;
     private ILogicManager evmLogic;
     private TicketManager ticketManager;
+
     /**
      * holds the current opened event for managing
      */
     private Event selectedEvent;
-    private List<Ticket> addedTickets;
 
+    private List<Ticket> addedTickets;
     private static Model instance;
+
     public static Model getInstance() throws EventException, TicketException {
         if (instance == null) {
             instance = new Model();
@@ -56,26 +54,18 @@ public class Model {
         return instance;
     }
 
-    public ObservableMap<Integer, Event> getCoordinatorEvents() {
-        return coordinatorEvents;
-    }
 
-    public void setCoordinatorEvents(ObservableMap<Integer, Event> coordinatorEvents) {
-        this.coordinatorEvents = coordinatorEvents;
-    }
 
     private Model() throws EventException, TicketException {
         eventManager = new EventManager();
         ticketManager = new TicketManager();
         coordinatorEvents = FXCollections.observableHashMap();
+        coordinatorEventsWithStatus= FXCollections.observableHashMap();
         eventTickets = FXCollections.observableHashMap();
         evmLogic = new EventManagementLogic();
-        allEventCoordinators = FXCollections.observableHashMap();
         addedTickets = new ArrayList<>();
-        //    addEventListenerCoordinators();
         initializeEventsMap();
     }
-
 
     /**
      * creates a new event
@@ -95,24 +85,6 @@ public class Model {
         return addedTickets;
     }
 
-    /*
-    public List<Ticket> addTicket(Ticket ticket) throws TicketException {
-        Integer inserted = ticketManager.addTicket(ticket);
-        if (inserted != null) {
-            ticket.setId(inserted);
-            addedTicket = new Ticket(inserted, ticket.getTicketType(), ticket.getQuantity(), ticket.getTicketPrice());
-            eventTickets.put(inserted, ticket);
-        }
-        return null;
-    }
-
-     */
-
-//    /**initialize the event coordinators list*/
-//public void initializeEventCoordinators(int eventId) throws EventException {
-//    evmLogic.getEventCoordinators(eventId).values().forEach((user)->allEventCoordinators.put(user.getUserId(),user));
-//}
-
 
 
     /**
@@ -120,19 +92,32 @@ public class Model {
      */
     public void initializeEventsMap() throws EventException {
         coordinatorEvents = evmLogic.getEvents();
-        addUpdateEventListener();
+
     }
 
+
+    //TODO change from using events to events with status , after discussing with the team
+    // do not use for now @Grosu
     /**
-     * listener for changes in the  events list, calls the EventDisplayer method to display the events
-     */
-    private void addUpdateEventListener() {
-        this.coordinatorEvents.addListener((MapChangeListener<? super Integer, ? super Event>) change -> {
-            if (change.wasAdded() || change.wasRemoved()) {
-                eventsDisplayer.displayEvents();
-            }
-        });
+     * initialize the events with status map */
+    private void initializeEventsWithStatusMap(Map<Integer,Event> coordinatorEvents){
+      coordinatorEventsWithStatus = evmLogic.getEventsWithStatus(coordinatorEvents);
     }
+
+
+//Todo needs to be deleted if not used anymore Grosu
+
+//    /**
+//     * listener for changes in the  events list, calls the EventDisplayer method to display the events
+//     */
+//    private void addUpdateEventListener() {
+//        this.coordinatorEvents.addListener((MapChangeListener<? super Integer, ? super Event>) change -> {
+//            if (change.wasAdded() || change.wasRemoved()) {
+//                eventsDisplayer.displayEvents();
+//            }
+//        });
+//    }
+
 
     /**
      * Sets the Event Displayer responsible for displaying the events
@@ -149,10 +134,12 @@ public class Model {
      * sorts the events with the least amount pff time remaining until it starts first
      */
     public List<Event> sortedEventsList() {
-        Collection<Event> events = coordinatorEvents.values();
-        return events.stream()
-                .sorted(Comparator.comparing(event -> Math.abs(ChronoUnit.DAYS.between(LocalDate.now(), event.getStartDate()))))
-                .collect(Collectors.toList());
+
+        return evmLogic.getSortedEventsByStatus(coordinatorEvents.values());
+//        Collection<Event> events = coordinatorEvents.values();
+//        return events.stream()
+//                .sorted(Comparator.comparing(event -> Math.abs(ChronoUnit.DAYS.between(LocalDate.now(), event.getStartDate()))))
+//                .collect(Collectors.toList());
     }
 
     /**updates the view that is displaying the coordinators*/
@@ -238,4 +225,32 @@ public class Model {
         }
         return -1;
     }
+
+
+    public ObservableMap<Integer, Event> getCoordinatorEvents() {
+        return coordinatorEvents;
+    }
+
+
+    public void setCoordinatorEvents(ObservableMap<Integer, Event> coordinatorEvents) {
+        this.coordinatorEvents = coordinatorEvents;
+    }
+
+        /*
+    public List<Ticket> addTicket(Ticket ticket) throws TicketException {
+        Integer inserted = ticketManager.addTicket(ticket);
+        if (inserted != null) {
+            ticket.setId(inserted);
+            addedTicket = new Ticket(inserted, ticket.getTicketType(), ticket.getQuantity(), ticket.getTicketPrice());
+            eventTickets.put(inserted, ticket);
+        }
+        return null;
+    }
+
+     */
+
+//    /**initialize the event coordinators list*/
+//public void initializeEventCoordinators(int eventId) throws EventException {
+//    evmLogic.getEventCoordinators(eventId).values().forEach((user)->allEventCoordinators.put(user.getUserId(),user));
+//}
 }
