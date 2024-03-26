@@ -21,6 +21,7 @@ import java.util.logging.Level;
 
 public class EventDAO {
     private final ConnectionManager connectionManager;
+
     public EventDAO() throws EventException {
         this.connectionManager = new ConnectionManager();
     }
@@ -124,7 +125,7 @@ public class EventDAO {
     }
 
 
-    public ObservableMap<Integer, Event> getEvents () throws EventException {
+    public ObservableMap<Integer, Event> getEvents() throws EventException {
         return retrieveEvents();
     }
 
@@ -173,28 +174,28 @@ public class EventDAO {
     }
 
     public ObservableMap<Integer, User> getEventCoordinators(int eventId) throws EventException {
-        ObservableMap<Integer,User> evCoordinators = FXCollections.observableHashMap();
-        String sql = "SELECT U.UserId,U.FirstName,U.LastName,U.Role FROM USERS AS U "+
-        "Where U.Role Like ? "+
-        "AND U.UserId NOT IN (SELECT us.UserId FROM Users us join UsersEvents ue ON us.UserId=ue.UserId  join Event e ON e.EventId=ue.EventId WHERE e.EventId=?)";
+        ObservableMap<Integer, User> evCoordinators = FXCollections.observableHashMap();
+        String sql = "SELECT U.UserId,U.FirstName,U.LastName,U.Role FROM USERS AS U " +
+                "Where U.Role Like ? " +
+                "AND U.UserId NOT IN (SELECT us.UserId FROM Users us join UsersEvents ue ON us.UserId=ue.UserId  join Event e ON e.EventId=ue.EventId WHERE e.EventId=?)";
 
-        try(Connection conn = connectionManager.getConnection()){
-            try(PreparedStatement psmt = conn.prepareStatement(sql)){
+        try (Connection conn = connectionManager.getConnection()) {
+            try (PreparedStatement psmt = conn.prepareStatement(sql)) {
                 psmt.setString(1, Role.EVENT_COORDINATOR.getValue());
-                psmt.setInt(2,eventId);
-                ResultSet rs =psmt.executeQuery();
-                while(rs.next()){
-                int userId = rs.getInt(1);
-                String firstName = rs.getString(2);
-                String lastName = rs.getString(3);
-                String role =  rs.getString(4);
-                User user = new User(firstName,lastName,role);
-                user.setUserId(userId);
-                evCoordinators.put(userId,user);
+                psmt.setInt(2, eventId);
+                ResultSet rs = psmt.executeQuery();
+                while (rs.next()) {
+                    int userId = rs.getInt(1);
+                    String firstName = rs.getString(2);
+                    String lastName = rs.getString(3);
+                    String role = rs.getString(4);
+                    User user = new User(firstName, lastName, role);
+                    user.setUserId(userId);
+                    evCoordinators.put(userId, user);
                 }
             }
-        } catch (SQLException |EventException e) {
-            throw new EventException(e.getMessage(),e.getCause(),ErrorCode.OPERATION_DB_FAILED);
+        } catch (SQLException | EventException e) {
+            throw new EventException(e.getMessage(), e.getCause(), ErrorCode.OPERATION_DB_FAILED);
         }
         return evCoordinators;
     }
@@ -226,74 +227,77 @@ public class EventDAO {
 //        return evCoordinators;
 //    }
 
-    public void  saveEditOperation(Event selectedEvent, Map<Integer, List<Integer>> assignedCoordinators) {
-        System.out.println(selectedEvent);
+    public boolean saveEditOperation(Event selectedEvent, Map<Integer, List<Integer>> assignedCoordinators) throws EventException {
+        boolean succeded = false;
         String updateEvent = "UPDATE Event SET Start_date=?,Name=?,Description=?,End_Date=?,Start_Time=?,End_Time=?,Location=? WHERE EventId=?";
-             Connection conn = null;
-        try{
-            conn= connectionManager.getConnection();
+        Connection conn = null;
+        try {
+            conn = connectionManager.getConnection();
             conn.setAutoCommit(false);
             conn.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
-          try(PreparedStatement psmt = conn.prepareStatement(updateEvent)){
-                if(selectedEvent.getStartDate()!=null){
-                    psmt.setDate(1,Date.valueOf(selectedEvent.getStartDate()));
-                }else{
-                    psmt.setDate(1,null);
+            try (PreparedStatement psmt = conn.prepareStatement(updateEvent)) {
+                if (selectedEvent.getStartDate() != null) {
+                    psmt.setDate(1, Date.valueOf(selectedEvent.getStartDate()));
+                } else {
+                    psmt.setDate(1, null);
                 }
-                psmt.setString(2,selectedEvent.getName());
-                psmt.setString(3,selectedEvent.getDescription());
-                if(selectedEvent.getEndDate()!=null){
-                    psmt.setDate(4,Date.valueOf(selectedEvent.getEndDate()));
-                }else{
-                    psmt.setDate(4,null);
+                psmt.setString(2, selectedEvent.getName());
+                psmt.setString(3, selectedEvent.getDescription());
+                if (selectedEvent.getEndDate() != null) {
+                    psmt.setDate(4, Date.valueOf(selectedEvent.getEndDate()));
+                } else {
+                    psmt.setDate(4, null);
                 }
-                if(selectedEvent.getStartTime()!=null){
-                    psmt.setTime(5,Time.valueOf(selectedEvent.getStartTime()));
-                }else{
-                    psmt.setTime(5,null);
+                if (selectedEvent.getStartTime() != null) {
+                    psmt.setTime(5, Time.valueOf(selectedEvent.getStartTime()));
+                } else {
+                    psmt.setTime(5, null);
                 }
-                if(selectedEvent.getEndTime()!=null){
-                    psmt.setTime(6,Time.valueOf(selectedEvent.getEndTime()));
-                }else{
-                    psmt.setTime(6,null);
+                if (selectedEvent.getEndTime() != null) {
+                    psmt.setTime(6, Time.valueOf(selectedEvent.getEndTime()));
+                } else {
+                    psmt.setTime(6, null);
                 }
-                psmt.setString(7,selectedEvent.getLocation());
-                psmt.setInt(8,selectedEvent.getId());
-              System.out.println(     psmt.executeUpdate());
-              System.out.println(conn);
-          }
-              insertCoordinators(selectedEvent.getId(),assignedCoordinators,conn);
-          conn.commit();
+                psmt.setString(7, selectedEvent.getLocation());
+                psmt.setInt(8, selectedEvent.getId());
+
+                psmt.executeUpdate();
+            }
+            insertCoordinators(selectedEvent.getId(), assignedCoordinators, conn);
+            conn.commit();
+            succeded = true;
         } catch (SQLException | EventException e) {
-           try{
-               if(conn!=null){
-                   conn.rollback();
-               }
-           } catch (SQLException ex) {
-               ex.printStackTrace();
-               ExceptionLogger.getInstance().getLogger().log(Level.SEVERE,ex.getMessage(),ex);
-           }
-        }finally {
-            if(conn!=null){
+            try {
+                if (conn != null) {
+                    conn.rollback();
+                }
+            } catch (SQLException ex) {
+                ExceptionLogger.getInstance().getLogger().log(Level.SEVERE, ex.getMessage(), ex);
+                throw new EventException(ex.getMessage(), ex.getCause(), ErrorCode.OPERATION_DB_FAILED);
+            }
+        } finally {
+            if (conn != null) {
                 try {
                     conn.close();
                 } catch (SQLException e) {
-                   e.printStackTrace();
-                    ExceptionLogger.getInstance().getLogger().log(Level.SEVERE,e.getMessage(),e);
-
+                    ExceptionLogger.getInstance().getLogger().log(Level.SEVERE, e.getMessage(), e);
                 }
             }
         }
+        return succeded;
     }
 
-    private  void insertCoordinators(int eventId, Map<Integer, List<Integer>> assignedCoordinators,Connection conn) throws SQLException {
+    private void insertCoordinators(int eventId, Map<Integer, List<Integer>> assignedCoordinators, Connection conn) throws SQLException {
         System.out.println(eventId);
         System.out.println(assignedCoordinators.get(eventId));
-        String insertCoordinators="INSERT INTO UsersEvents(UserId,EventId) values (?,?)";
-        try(PreparedStatement psmt = conn.prepareStatement(insertCoordinators)){
-            for(Integer userId : assignedCoordinators.get(eventId) ){
-                psmt.setInt(1,userId);
-                psmt.setInt(2,eventId);
+        if (assignedCoordinators.get(eventId).isEmpty()) {
+            return;
+        }
+        String insertCoordinators = "INSERT INTO UsersEvents(UserId,EventId) values (?,?)";
+        try (PreparedStatement psmt = conn.prepareStatement(insertCoordinators)) {
+            for (Integer userId : assignedCoordinators.get(eventId)) {
+                psmt.setInt(1, userId);
+                psmt.setInt(2, eventId);
                 psmt.addBatch();
             }
             psmt.executeBatch();

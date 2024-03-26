@@ -66,7 +66,10 @@ public class EventDescription implements Initializable {
             this.initializeStatusByStartDate(startDateTime, eventStatus);
         } else if (event.getEndTime() != null && event.getEndDate() == null) {
             initializeStatusByStartAndEndTime(startDateTime, event.getEndTime(), eventStatus);
-        } else {
+        } else if(event.getEndTime() == null && event.getEndDate() != null){
+            endDateTime = LocalDateTime.of(event.getEndDate(), LocalTime.MAX);
+            this.initializeStatus(startDateTime, endDateTime, eventStatus);
+        } else if(event.getEndTime() != null){
             endDateTime = LocalDateTime.of(event.getEndDate(), event.getEndTime());
             this.initializeStatus(startDateTime, endDateTime, eventStatus);
         }
@@ -161,7 +164,8 @@ public class EventDescription implements Initializable {
         if (startDate.isAfter(today)) {
             label.setText("UPCOMING");
             label.getStyleClass().add("active");
-        } else if ((startDate.toLocalTime().isAfter(today.toLocalTime())) && today.toLocalTime().isBefore(endTime)) {
+        } else if (startDate.toLocalDate().isEqual(today.toLocalDate()) &&
+                (today.toLocalTime().isAfter(startDate.toLocalTime()) && today.toLocalTime().isBefore(endTime))) {
             label.setText("ONGOING");
             label.getStyleClass().add("ongoing");
         } else {

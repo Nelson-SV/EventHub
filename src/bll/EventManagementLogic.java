@@ -89,7 +89,7 @@ public class EventManagementLogic implements ILogicManager{
      * @param selectedEvent the current edited event
      * @param assignedCoordinators the coordinates assigned to this event*/
     @Override
-    public void saveEditOperation(Event selectedEvent, Map<Integer, List<Integer>> assignedCoordinators) {
-     eventData.saveEditOperation(selectedEvent,assignedCoordinators);
+    public boolean saveEditOperation(Event selectedEvent, Map<Integer, List<Integer>> assignedCoordinators) throws EventException {
+     return eventData.saveEditOperation(selectedEvent,assignedCoordinators);
     }
 }

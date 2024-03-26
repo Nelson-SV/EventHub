@@ -96,9 +96,7 @@ public class EventManagementController extends GridPane implements Initializable
         EditEventValidator.initializeDateFormat(startDate);
         EditEventValidator.initializeDateFormat(endDate);
         EditEventValidator.addEventListeners(eventName, startDate, startTime, endDate, endTime, eventLocation);
-        //add tool tips for the dates
         addToolTipsForDates();
-        //add dates validity checker
         addDatesValidityChecker();
         cancelEdit.setOnAction((e) -> cancelEditOperation());
         saveEdit.setOnAction((e) -> saveOperation());
@@ -224,10 +222,12 @@ public class EventManagementController extends GridPane implements Initializable
         };
         service.setOnSucceeded((e) -> {
             Platform.runLater(() -> {
-                PauseTransition pauseTransition = new PauseTransition(Duration.millis(1000));
+                loadingComponent.setAction(LoadingActions.SUCCES.getActionValue());
+                PauseTransition pauseTransition = new PauseTransition(Duration.millis(500));
                 pauseTransition.setOnFinished((ev) -> {
                     closeLoader();
                     cancelEditOperation();
+                    Platform.runLater(()->model.getEventsDisplayer().displayEvents());
                 });
                 pauseTransition.play();
             });
@@ -235,7 +235,15 @@ public class EventManagementController extends GridPane implements Initializable
         service.setOnFailed((e) -> {
             Throwable cause = service.getException();
             ExceptionHandler.erorrAlertMessage(cause.getMessage());
-            closeLoader();
+            Platform.runLater(() -> {
+                loadingComponent.setAction(LoadingActions.FAIL.getActionValue());
+                PauseTransition pauseTransition = new PauseTransition(Duration.millis(500));
+                pauseTransition.setOnFinished((ev) -> {
+                    closeLoader();
+                });
+                pauseTransition.play();
+            });
+
         });
         service.restart();
     }

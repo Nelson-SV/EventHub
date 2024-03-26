@@ -142,6 +142,10 @@ public class Model {
         this.eventsDisplayer = eventsDisplayer;
     }
 
+    public Displayable getEventsDisplayer() {
+        return eventsDisplayer;
+    }
+
     /**
      * sorts the events with the least amount pff time remaining until it starts first
      */
@@ -190,20 +194,29 @@ public class Model {
     public boolean isModified(Map<Integer,List<Integer>> assignedCoordinators){
         return evmLogic.isModifyed(assignedCoordinators,selectedEvent,coordinatorEvents.get(selectedEvent.getId()));
     }
+
+
+
     /**save the edit operation performed on the current selected event*/
-    public void saveEditEventOperation(List<User> assignedCoordinators) {
+    public void saveEditEventOperation(List<User> assignedCoordinators) throws EventException {
         HashMap<Integer,List<Integer>> assignedCoordinatorsMap = new HashMap<>();
+        System.out.println(selectedEvent);
         assignedCoordinatorsMap.put(selectedEvent.getId(),assignedCoordinators.stream().map(User::getUserId).collect(Collectors.toList()));
         boolean isModified=evmLogic.isModifyed(assignedCoordinatorsMap,selectedEvent,coordinatorEvents.get(selectedEvent.getId()));
         if(!isModified){
             return;
         }
-        evmLogic.saveEditOperation(selectedEvent,assignedCoordinatorsMap);
+        boolean editSucceded =evmLogic.saveEditOperation(selectedEvent,assignedCoordinatorsMap);
+        if(editSucceded){
+            coordinatorEvents.put(selectedEvent.getId(),selectedEvent);
+        }
     }
+
+
+
 
     public void addCustomer (Customer customer) throws EventException {
         customerManager.addCustomer(customer);
-
     }
     public List<String> getAllEventNames () {
         Collection<Event> events = coordinatorEvents.values();
@@ -232,5 +245,4 @@ public class Model {
         }
         return -1;
     }
-
 }
