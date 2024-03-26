@@ -57,7 +57,6 @@ public class SellingViewController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         List<String> eventNames = model.getAllEventNames();
         allEvents.setItems(FXCollections.observableArrayList(eventNames));
-
         allEvents.setOnAction(event -> {
             loadTicketsInfo();
             loadSpecialTicketsInfo();
@@ -65,22 +64,22 @@ public class SellingViewController implements Initializable {
     }
 
     private void loadTicketsInfo(){
-            allEventTickets.clearSelection();
-            String selectedEventName = (String) allEvents.getSelectionModel().getSelectedItem();
-            int eventId = model.getEventIdByName(selectedEventName);
-            if (eventId != -1) {
-                try {
-                    ObservableMap<Integer, Ticket> ticketsMap = model.getTicketsForEvent(eventId);
+        allEventTickets.clearSelection();
+        String selectedEventName = (String) allEvents.getSelectionModel().getSelectedItem();
+        int eventId = model.getEventIdByName(selectedEventName);
+        if (eventId != -1) {
+            try {
+                ObservableMap<Integer, Ticket> ticketsMap = model.getTicketsForEvent(eventId);
 
-                    List<String> ticketInfoList = ticketsMap.values().stream()
-                            .map(ticket -> ticket.getTicketType() + " - Q" + ticket.getQuantity() + " - " + ticket.getTicketPrice() +"DKK")
-                            .collect(Collectors.toList());
+                List<String> ticketInfoList = ticketsMap.values().stream()
+                        .map(ticket -> ticket.getTicketType() + " - Q" + ticket.getQuantity() + " - " + ticket.getTicketPrice() +"DKK")
+                        .collect(Collectors.toList());
 
-                    allEventTickets.setItems(FXCollections.observableArrayList(ticketInfoList));
-                } catch (EventException e) {
-                    // Handle exception
-                }
+                allEventTickets.setItems(FXCollections.observableArrayList(ticketInfoList));
+            } catch (EventException e) {
+                // Handle exception
             }
+        }
 
 
     }
