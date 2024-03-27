@@ -10,12 +10,14 @@ import exceptions.TicketException;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXScrollPane;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
@@ -23,6 +25,7 @@ import javafx.scene.layout.VBox;
 import view.components.main.Model;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,16 +53,25 @@ public class SellingViewController implements Initializable {
     @FXML
     private TextField eventTicketsAmount;
     @FXML
+    private TextField specialTicketsAmount;
+    @FXML
     private ListView allSelectedTickets;
+    @FXML
+    private Label totalPrice;
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         List<String> eventNames = model.getAllEventNames();
         allEvents.setItems(FXCollections.observableArrayList(eventNames));
+
         allEvents.setOnAction(event -> {
             loadTicketsInfo();
             loadSpecialTicketsInfo();
+        });
+        //update total price based on changes
+        allSelectedTickets.getItems().addListener((ListChangeListener<String>) change -> {
+            updateTotalPrice();
         });
     }
 
@@ -130,10 +142,10 @@ public class SellingViewController implements Initializable {
             String[] ticketParts = selectedTicketInfo.split(" - ");
             String ticketType = ticketParts[0]; // Extract ticket type
             String ticketPriceString = ticketParts[2].replaceAll("[^0-9]", "");// Extract ticket price
-            float ticketPrice = Float.parseFloat(ticketPriceString);
+            BigDecimal ticketPrice = new BigDecimal(ticketPriceString);
 
             int selectedQuantity = Integer.parseInt(amountOfEventTickets); // Parse selected quantity
-            float totalPrice = ticketPrice * selectedQuantity;
+            BigDecimal totalPrice = ticketPrice.multiply(BigDecimal.valueOf(selectedQuantity));
 
             // Create a string containing the ticket information along with the total price
             String ticketDetails = ticketType + " - Quantity: " + selectedQuantity + " - Total Price: " + totalPrice + "DKK";
@@ -147,7 +159,49 @@ public class SellingViewController implements Initializable {
 
     }
     public void addSpecialTickets(ActionEvent actionEvent){
+        String selectedSpecialTicketInfo = (String) specialTickets.getSelectionModel().getSelectedItem();
+        String amountOfEventTickets = specialTicketsAmount.getText();
 
+        if (selectedSpecialTicketInfo != null && !amountOfEventTickets.isEmpty()) {
+            // Add the selected ticket information along with quantity to the ListView
+            String[] ticketParts = selectedSpecialTicketInfo.split(" - ");
+            String ticketType = ticketParts[0]; // Extract ticket type
+            String ticketPriceString = ticketParts[2].replaceAll("[^0-9]", "");// Extract ticket price
+            BigDecimal ticketPrice = new BigDecimal(ticketPriceString);
+
+            int selectedQuantity = Integer.parseInt(amountOfEventTickets); // Parse selected quantity
+            BigDecimal totalPrice = ticketPrice.multiply(BigDecimal.valueOf(selectedQuantity));
+
+            // Create a string containing the ticket information along with the total price
+            String ticketDetails = ticketType + " - Quantity: " + selectedQuantity + " - Total Price: " + totalPrice + "DKK";
+            allSelectedTickets.getItems().add(ticketDetails);
+
+            specialTickets.getSelectionModel().clearSelection();
+            specialTicketsAmount.clear();
+        } else {
+        }
+
+    }
+
+    private void updateTotalPrice() {
+        BigDecimal total = BigDecimal.ZERO; // Initialize to zero
+        for (Object item : allSelectedTickets.getItems()) {
+            String ticketDetails = (String) item;
+            String[] parts = ticketDetails.split(" - ");
+            String totalPriceString = parts[2].replaceAll("[^0-9.]", ""); // Extract total price string
+            BigDecimal totalPrice = new BigDecimal(totalPriceString); // Parse total price to BigDecimal
+            total = total.add(totalPrice); // Add total price to running total
+        }
+
+        totalPrice.setText("Total Price: " + total.toString() + " DKK");
+    }
+
+    public void removeTicket(ActionEvent actionEvent){
+        if (allSelectedTickets.getSelectionModel().getSelectedItem() != null) {
+            // Cast the selected item to String
+            String selectedTicket = (String) allSelectedTickets.getSelectionModel().getSelectedItem();
+            allSelectedTickets.getItems().remove(selectedTicket);
+        }
     }
 
 
