@@ -8,6 +8,7 @@ import exceptions.TicketException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableMap;
 
+import java.math.BigDecimal;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -96,7 +97,7 @@ public class TicketDAO {
                     int id = res.getInt("ID");
                     String type = res.getString("Type");
                     int quantity = res.getInt("Quantity");
-                    float price = res.getFloat("Price");
+                    BigDecimal price = res.getBigDecimal("Price");
 
                     Ticket ticket = new Ticket(id, type, quantity, price);
                     tickets.put(ticket.getId(), ticket);
@@ -121,7 +122,7 @@ public class TicketDAO {
                     int id = res.getInt("ID");
                     String type = res.getString("Type");
                     int quantity = res.getInt("Quantity");
-                    float price = res.getFloat("Price");
+                    BigDecimal price = res.getBigDecimal("Price");
 
                     Ticket ticket = new Ticket(id, type, quantity, price);
                     tickets.put(ticket.getId(), ticket);

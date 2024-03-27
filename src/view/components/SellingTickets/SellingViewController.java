@@ -146,6 +146,10 @@ public class SellingViewController implements Initializable {
 
 
     }
+    public void addSpecialTickets(ActionEvent actionEvent){
+
+    }
+
 
     public void sell(ActionEvent actionEvent) throws EventException {
         String customerName = name.getText();

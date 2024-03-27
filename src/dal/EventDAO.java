@@ -108,7 +108,7 @@ public class EventDAO {
             for (Ticket ticket : tickets) {
                 ticketStatement.setString(1, ticket.getTicketType());
                 ticketStatement.setInt(2, ticket.getQuantity());
-                ticketStatement.setFloat(3, ticket.getTicketPrice());
+                ticketStatement.setBigDecimal(3, ticket.getTicketPrice());
 
                 ticketStatement.executeUpdate();
 

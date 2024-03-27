@@ -24,6 +24,7 @@ import view.components.events.CreateEventController;
 import view.components.main.Model;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,7 +70,7 @@ public class TicketsGeneration {
     @FXML
     private void addTickets(ActionEvent actionEvent) throws EventException, TicketException {
 
-        Ticket ticket = new Ticket(ticketTypeTF.getText(), Integer.parseInt(ticketQuantityTF.getText()), Float.parseFloat(ticketPriceTF.getText()));
+        Ticket ticket = new Ticket(ticketTypeTF.getText(), Integer.parseInt(ticketQuantityTF.getText()), new BigDecimal(ticketPriceTF.getText()));
 
         Label ticketType = new Label(ticket.getTicketType());
         ticketType.setTextFill(BLACK);
