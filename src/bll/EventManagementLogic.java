@@ -91,8 +91,8 @@ public class EventManagementLogic implements ILogicManager {
     private boolean isEndTimeValid(LocalTime startTime, LocalTime endTime, LocalDate startDate, LocalDate endDate) {
         if (startDate.isEqual(endDate)) {
             return startTime.isBefore(endTime);
-        } else {
-            return !startTime.isAfter(endTime);
+        } else  {
+            return true;
         }
     }
 
