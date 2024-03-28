@@ -11,8 +11,11 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Window;
 import view.components.eventDescription.EventComponent;
 import view.components.events.CreateEventController;
 import view.components.listeners.Displayable;
@@ -52,11 +55,14 @@ public class EventsPageController extends VBox implements Displayable, Initializ
      */
     @Override
     public void displayEvents() {
-        Platform.runLater(() -> {
-            mainEventContainer.getChildren().clear();
-            model.sortedEventsList().forEach(e -> mainEventContainer.getChildren().add(new EventComponent(e, new ManageAction(this.secondaryLayout, thirdLayout, e.getId(), model))));
-        });
 
+        if(mainEventContainer.getScene()!=null){
+            Platform.runLater(() -> {
+                mainEventContainer.getChildren().clear();
+                model.sortedEventsList().forEach(e -> mainEventContainer.getChildren().add(new EventComponent(e, new ManageAction(this.secondaryLayout, thirdLayout, e.getId(), model))));
+            });
+
+        }
     }
 
     @FXML

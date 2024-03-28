@@ -65,7 +65,7 @@ public class EventManagementLogic implements ILogicManager {
             endTimeValid = isEndTimeValid(startTime, endTime, startDate, endDate);
         }
         return isNameValid(selectedEvent.getName()) &&
-                !isStartDateNull(startDate) &&
+                isStartDateValid(startDate) &&
                 !isStartTimeNull(startTime) &&
                 !isLocationEmpty(selectedEvent.getLocation()) &&
                 endDateValid &&
@@ -76,8 +76,8 @@ public class EventManagementLogic implements ILogicManager {
         return !name.isEmpty();
     }
 
-    private boolean isStartDateNull(LocalDate startDate) {
-        return startDate == null;
+    private boolean isStartDateValid(LocalDate startDate) {
+        return startDate != null && !startDate.isBefore(LocalDate.now());
     }
 
     private boolean isStartTimeNull(LocalTime startTime) {
@@ -85,13 +85,17 @@ public class EventManagementLogic implements ILogicManager {
     }
 
     private boolean isEndDateValid(LocalDate startDate, LocalDate endDate) {
-        return startDate.isBefore(endDate);
+        return !startDate.isAfter(endDate);
     }
 
     private boolean isEndTimeValid(LocalTime startTime, LocalTime endTime, LocalDate startDate, LocalDate endDate) {
-        if (startDate.isEqual(endDate)) {
-            return startTime.isBefore(endTime);
-        } else  {
+        if (endDate != null) {
+            if (startDate.isEqual(endDate)) {
+                return startTime.isBefore(endTime);
+            } else {
+                return startTime.isBefore(endTime);
+            }
+        } else {
             return true;
         }
     }

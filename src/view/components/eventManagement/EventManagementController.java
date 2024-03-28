@@ -171,6 +171,7 @@ public class EventManagementController extends GridPane implements Initializable
 
     private void saveOperation() {
         boolean isEventValid = EditEventValidator.isEventValid(eventName, startDate, startTime, endDate, endTime, eventLocation);
+        System.out.println(endTime.getValue());
         if (isEventValid) {
             if (model.isEditValid()) {
                 System.out.println("Edit is valid");
