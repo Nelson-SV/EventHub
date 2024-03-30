@@ -103,6 +103,7 @@ public class EventDescription implements Initializable {
                 return startDateTime.format(DateTimeFormatter.ofPattern("HH:mm"));
             }
         };
+
         StringBinding eventEndTimeBinding = new StringBinding() {
             {
                 super.bind(event.endTimeProperty());

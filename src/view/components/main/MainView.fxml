@@ -13,7 +13,7 @@
     <children>
         <VBox alignment="TOP_CENTER" minHeight="360.0" minWidth="640.0" prefHeight="720.0" prefWidth="1280.0">
             <children>
-                <HBox fx:id="navigation" alignment="CENTER_LEFT" maxHeight="-Infinity" minHeight="30.0" minWidth="640.0" prefHeight="81.0" prefWidth="1280.0" styleClass="mainNavigation" VBox.vgrow="ALWAYS">
+                <HBox fx:id="navigation" alignment="CENTER_LEFT" maxHeight="-Infinity" minHeight="30.0" minWidth="640.0" prefHeight="60.0" prefWidth="1280.0" styleClass="mainNavigation" VBox.vgrow="ALWAYS">
                     <children>
                         <Label alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="35.0" minWidth="60.0" prefHeight="70.0" prefWidth="150.0" styleClass="eventLogo" text="EventHub" HBox.hgrow="ALWAYS">
                             <font>

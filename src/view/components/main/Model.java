@@ -185,6 +185,7 @@ public class Model {
 
 
     public boolean isEditValid(){
+        System.out.println("In edit");
         return  evmLogic.isEditValid(selectedEvent);
     }
 

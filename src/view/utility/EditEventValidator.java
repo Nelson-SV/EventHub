@@ -1,16 +1,13 @@
 package view.utility;
-
 import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXDatePicker;
 import javafx.animation.PauseTransition;
-import javafx.application.Platform;
 import javafx.css.PseudoClass;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.util.Duration;
 import javafx.util.StringConverter;
-
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -22,7 +19,6 @@ public class EditEventValidator {
     private static final String VALID_DATE_FORMAT = "Please enter the date in this format 'yyyy-MM-dd' (e.g.,2024-03-22).";
     private static final String regex = "^([01]?[0-9]|2[0-3]):[0-5][0-9]$";
     private static final DateTimeFormatter textToTime = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
 
     /**
      * validate the user inputs for the edit operation
@@ -58,7 +54,6 @@ public class EditEventValidator {
 
         LocalDate startDateValue = startDate.getValue();
         LocalTime startTimeValue = startTime.getValue();
-
 
         if (startText.isEmpty()) {
             startDate.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, true);
@@ -200,7 +195,6 @@ public class EditEventValidator {
                     time.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, false);
                 });
                 pauseTransition.playFromStart();
-
             }
         }));
     }
@@ -268,8 +262,6 @@ public class EditEventValidator {
     /**
      * Checks if the end date and end time are in the valid format
      */
-
-
     private static boolean checkEndValid(MFXDatePicker endDate, MFXComboBox<LocalTime> endTime) {
         if (endDate.getText() != null && !endDate.getText().isEmpty()) {
             try {

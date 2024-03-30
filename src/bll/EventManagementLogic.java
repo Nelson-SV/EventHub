@@ -64,6 +64,7 @@ public class EventManagementLogic implements ILogicManager {
         if (endTime != null) {
             endTimeValid = isEndTimeValid(startTime, endTime, startDate, endDate);
         }
+
         return isNameValid(selectedEvent.getName()) &&
                 isStartDateValid(startDate) &&
                 !isStartTimeNull(startTime) &&

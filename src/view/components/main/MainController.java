@@ -35,6 +35,8 @@ public class MainController implements Initializable {
     private StackPane mainLayout;
     @FXML
     private VBox pageDisplayer;
+    @FXML
+    private VBox eventsPageController;
 
 
     @FXML
@@ -70,17 +72,18 @@ public class MainController implements Initializable {
 
     @FXML
     private void navigateEventsPage(ActionEvent actionEvent) {
-        EventsPageController eventsPageController = new EventsPageController(secondaryLayout, thirdLayout);
-        pageDisplayer.getChildren().clear();
-        pageDisplayer.getChildren().add(eventsPageController);
+        if(!pageDisplayer.getChildren().contains(eventsPageController)){
+            eventsPageController= new EventsPageController(secondaryLayout,thirdLayout);
+            pageDisplayer.getChildren().clear();
+            pageDisplayer.getChildren().add(eventsPageController);
+        }
     }
 
     private void initializeMainPageEvents() {
-        EventsPageController eventsPageController = new EventsPageController(secondaryLayout, thirdLayout);
+        eventsPageController = new EventsPageController(secondaryLayout, thirdLayout);
         pageDisplayer.getChildren().clear();
         pageDisplayer.getChildren().add(eventsPageController);
     }
-
     public VBox getPageDisplayer() {
         return pageDisplayer;
     }

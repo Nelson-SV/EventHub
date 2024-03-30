@@ -1,0 +1,20 @@
+.confirmationMain{
+    -fx-background-color: #F8F0E5;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+}
+
+.label{
+    -fx-text-fill: #102c57;
+}
+.cancelButton{
+    -fx-background-color: #2A9D8F;
+    -fx-text-fill: #102c57;
+}
+.saveButton{
+    -fx-background-color: #E63946;
+    -fx-text-fill: #102c57;
+}
+
+
+
