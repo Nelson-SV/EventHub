@@ -31,6 +31,7 @@ import view.components.listeners.CoordinatorsDisplayer;
 import view.components.loadingComponent.LoadingActions;
 import view.components.loadingComponent.LoadingComponent;
 import view.components.main.Model;
+import view.utility.CommonMethods;
 import view.utility.EditEventValidator;
 
 import java.io.IOException;
@@ -234,11 +235,8 @@ public class EventManagementController extends GridPane implements Initializable
 
     private void saveOperation() {
         boolean isEventValid = EditEventValidator.isEventValid(eventName, startDate, startTime, endDate, endTime, eventLocation);
-        System.out.println(endTime.getValue());
         if (isEventValid) {
-            System.out.println("View is valid");
             if (model.isEditValid()) {
-                System.out.println("Edit is valid");
                 initializeLoadingView();
                 initializeService();
             }
@@ -254,9 +252,7 @@ public class EventManagementController extends GridPane implements Initializable
     }
 
     private void closeLoader() {
-        this.thirdLayout.getChildren().clear();
-        this.thirdLayout.setVisible(false);
-        this.thirdLayout.setDisable(true);
+        CommonMethods.closeWindow(thirdLayout);
     }
 
     @Override

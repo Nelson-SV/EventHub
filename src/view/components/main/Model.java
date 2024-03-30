@@ -205,6 +205,15 @@ public class Model {
             this.coordinatorEvents.remove(eventId);
         }
     }
+
+    /**
+     * compares the dates of the events with the current date,
+     * in order to rerender the view*/
+    public boolean compareEventDatesWithCurrentDate(){
+        return EventStatusCalculator.isStatusChanged(coordinatorEvents.values());
+    }
+
+
     public boolean isModified(Map<Integer,List<Integer>> assignedCoordinators){
         return evmLogic.isModifyed(assignedCoordinators,selectedEvent,coordinatorEvents.get(selectedEvent.getId()));
     }

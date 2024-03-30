@@ -1,5 +1,4 @@
 package view.components.main;
-
 import be.Event;
 import bll.EventManagementLogic;
 import bll.ILogicManager;
@@ -12,7 +11,6 @@ import javafx.concurrent.ScheduledService;
 import javafx.concurrent.Task;
 import javafx.util.Duration;
 import view.components.listeners.Displayable;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -21,7 +19,7 @@ public class EventsObservable {
     private final List<Displayable> eventDisplayer;
     private final Model model;
     private final ILogicManager evmLogic;
-    private final int periodTime = 60;
+    private final int periodTime = 300;
     private ScheduledService<ObservableMap<Integer, Event>> scheduledService;
 
     public EventsObservable(Model model) throws EventException {

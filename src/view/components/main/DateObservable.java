@@ -15,7 +15,7 @@ public class DateObservable {
     private final List<Displayable> eventDisplayer;
     private final Model model;
     private final int executionInterval = 60;
-    private ScheduledService<Void> eventStatusService;
+    private ScheduledService<Boolean> eventStatusService;
 
     public DateObservable(Model model) {
         this.eventDisplayer = new ArrayList<>();
@@ -40,14 +40,14 @@ public class DateObservable {
     }
 
     public void startDateService() {
-        this.eventStatusService = new ScheduledService<Void>() {
+        this.eventStatusService = new ScheduledService<Boolean>() {
             @Override
-            protected Task<Void> createTask() {
-                return new Task<Void>() {
+            protected Task<Boolean> createTask() {
+                return new Task<Boolean>() {
                     @Override
-                    protected Void call() throws Exception {
+                    protected Boolean call() throws Exception {
                         System.out.println("executed");
-                        return null;
+                        return model.compareEventDatesWithCurrentDate();
                     }
                 };
             }
@@ -55,14 +55,15 @@ public class DateObservable {
         eventStatusService.setDelay(Duration.seconds(10));
         eventStatusService.setPeriod(Duration.seconds(executionInterval));
         eventStatusService.setOnSucceeded((event) -> {
-            callDisplayable();
+            if(eventStatusService.getValue()) {
+                callDisplayable();
+            }
         });
         eventStatusService.setOnFailed((event) -> {
             EventException cause = (EventException) eventStatusService.getException();
             ExceptionLogger.getInstance().getLogger().log(Level.SEVERE, cause.getMessage());
             ExceptionHandler.erorrAlertMessage(ErrorCode.FAILED_UPDATE_STATUS.getValue());
         });
-        eventStatusService.start();
+        eventStatusService.restart();
     }
-
 }
