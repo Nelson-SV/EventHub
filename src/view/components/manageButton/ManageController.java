@@ -11,6 +11,7 @@ import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -42,6 +43,7 @@ public class ManageController implements Initializable {
         this.editWindow.setDisable(false);
         model.setSelectedEvent(this.eventId);
         EventManagementController manageEventController = new EventManagementController(editWindow,thirdLayout);
+        manageEventController.setAlignment(Pos.CENTER);
         model.setCoordinatorsDisplayer(manageEventController);
         editWindow.getChildren().clear();
         editWindow.getChildren().add(manageEventController);

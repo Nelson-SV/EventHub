@@ -188,7 +188,23 @@ public class Model {
         System.out.println("In edit");
         return  evmLogic.isEditValid(selectedEvent);
     }
+    /**returns the event with the corresponding id , from the coordinatorEvents map
+     * @param eventId the id of the required event */
+    public Event getEventById(int eventId){
+        return coordinatorEvents.get(eventId);
+    }
 
+    /**
+     * delete an event from the database
+     *
+     * @param eventId the id of the event that will be deleted
+     */
+    public void deleteEvent(int eventId) throws EventException {
+        boolean deleted =  evmLogic.deleteEvent(eventId);
+        if(deleted){
+            this.coordinatorEvents.remove(eventId);
+        }
+    }
     public boolean isModified(Map<Integer,List<Integer>> assignedCoordinators){
         return evmLogic.isModifyed(assignedCoordinators,selectedEvent,coordinatorEvents.get(selectedEvent.getId()));
     }
@@ -198,7 +214,6 @@ public class Model {
     /**save the edit operation performed on the current selected event*/
     public void saveEditEventOperation(List<User> assignedCoordinators) throws EventException {
         HashMap<Integer,List<Integer>> assignedCoordinatorsMap = new HashMap<>();
-        System.out.println(selectedEvent);
         assignedCoordinatorsMap.put(selectedEvent.getId(),assignedCoordinators.stream().map(User::getUserId).collect(Collectors.toList()));
         boolean isModified=evmLogic.isModifyed(assignedCoordinatorsMap,selectedEvent,coordinatorEvents.get(selectedEvent.getId()));
         if(!isModified){

@@ -3,3 +3,10 @@ INFO: Logger initialized
 .......................................
 Mar 23, 2024 2:37:03 PM Main main
 WARNING: TESt
+Mar 30, 2024 5:06:18 PM exceptions.ExceptionLogger <init>
+INFO: Logger initialized 
+.......................................
+Mar 30, 2024 5:06:18 PM view.components.main.EventsObservable lambda$startService$2
+SEVERE: The TCP/IP connection to the host EASV-DB4, port 1433 has failed. Error: "EASV-DB4. Verify the connection properties. Make sure that an instance of SQL Server is running on the host and accepting TCP/IP connections at the port. Make sure that TCP connections to the port are not blocked by a firewall.".
+Mar 30, 2024 5:06:21 PM view.components.deleteEvent.DeleteButtonController lambda$initializeDeleteService$3
+SEVERE: The TCP/IP connection to the host EASV-DB4, port 1433 has failed. Error: "EASV-DB4. Verify the connection properties. Make sure that an instance of SQL Server is running on the host and accepting TCP/IP connections at the port. Make sure that TCP connections to the port are not blocked by a firewall.".

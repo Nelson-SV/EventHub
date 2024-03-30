@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
+import view.components.deleteEvent.DeleteButton;
 import view.components.manageButton.ManageAction;
 
 import java.net.URL;
@@ -44,16 +45,20 @@ public class EventDescription implements Initializable {
     @FXML
     private ManageAction manageAction;
     @FXML
+    private DeleteButton deleteButton;
+    @FXML
     private Event event;
-    public EventDescription(Event event, ManageAction manageAction) {
+    public EventDescription(Event event, ManageAction manageAction, DeleteButton deleteButton) {
         this.manageAction = manageAction;
         this.event = event;
+        this.deleteButton= deleteButton;
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         bindViewToModel(event);
         this.eventActions.getChildren().add(manageAction);
+        this.eventActions.getChildren().add(deleteButton);
         initializeEventStatus(eventStatus,EventStatusCalculator.calculateStatus(event));
     }
 

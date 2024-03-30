@@ -21,6 +21,8 @@ public class ConfirmationWindowController {
     private Label eventStartDate;
     @FXML
     private Label eventLocation;
+    @FXML
+    private Label errorMessage;
     private final StackPane secondLayout;
 
     public ConfirmationWindowController(OperationHandler operationHandler, StackPane secondLayout) {
@@ -59,7 +61,9 @@ public class ConfirmationWindowController {
     public void setEventLocation(String eventLocation) {
         this.eventLocation.setText(eventLocation);
     }
-
+    public void setErrorMessage(String message){
+        this.errorMessage.setText(message);
+    }
     @FXML
     private void cancelOperation(ActionEvent event) {
         CommonMethods.closeWindow(event, this.secondLayout);
@@ -69,4 +73,5 @@ public class ConfirmationWindowController {
     private void confirmOperation(ActionEvent event) {
         operationHandler.performOperation();
     }
+
 }

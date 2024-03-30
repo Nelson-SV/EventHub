@@ -199,4 +199,12 @@ public class EventManagementLogic implements ILogicManager {
     private List<Event> convertToEvent(List<EventStatus> events){
         return events.stream().map(EventStatus::getEventDTO).toList();
     }
+
+    /**delete an event from the database
+     * @param eventId the id of the event*/
+    @Override
+    public boolean deleteEvent(int eventId) throws EventException {
+        return eventData.deleteEvent(eventId);
+    }
+
 }

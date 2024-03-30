@@ -5,25 +5,66 @@ import exceptions.EventException;
 import exceptions.ExceptionHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import view.components.listeners.OperationHandler;
 
 import java.beans.EventHandler;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class ConfirmationWindow extends VBox {
     @FXML
     private VBox confirmationWindow;
+    private ConfirmationWindowController confirmationWindowController;
 
     public ConfirmationWindow(OperationHandler operationHandler, StackPane secondaryLayout) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("ConfirmationWindow.fxml"));
-        loader.setController(new ConfirmationWindowController(operationHandler,secondaryLayout));
+        confirmationWindowController = new ConfirmationWindowController(operationHandler, secondaryLayout);
+        loader.setController(confirmationWindowController);
         try {
-            confirmationWindow=loader.load();
+            confirmationWindow = loader.load();
             this.getChildren().add(confirmationWindow);
         } catch (IOException e) {
             ExceptionHandler.erorrAlertMessage(ErrorCode.LOADING_FXML_FAILED.getValue());
         }
     }
+
+    public Label getConfirmationTitle() {
+        return confirmationWindowController.getConfirmationTitle();
+    }
+
+    public void setConfirmationTitle(String confirmationTitle) {
+        confirmationWindowController.setConfirmationTitle(confirmationTitle);
+    }
+
+    public Label getEntityTitle() {
+        return confirmationWindowController.getEntityTitle();
+    }
+
+    public void setEntityTitle(String entityTitle) {
+        confirmationWindowController.setEntityTitle(entityTitle);
+    }
+
+    public Label getEventStartDate() {
+        return confirmationWindowController.getEventStartDate();
+    }
+
+    public void setEventStartDate(LocalDate startDate) {
+        confirmationWindowController.setEventStartDate(startDate);
+    }
+
+    public Label getEventLocation() {
+        return confirmationWindowController.getEventLocation();
+    }
+
+    public void setEventLocation(String eventLocation) {
+        confirmationWindowController.setEventLocation(eventLocation);
+    }
+    public void setErrorMessage(String errorMessage){
+        confirmationWindowController.setErrorMessage(errorMessage);
+    }
+
 }

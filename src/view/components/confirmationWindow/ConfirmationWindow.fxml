@@ -8,7 +8,7 @@
 <?import javafx.scene.shape.SVGPath?>
 <?import javafx.scene.text.Font?>
 
-<VBox fx:id="confirmationWindow" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="180.0" prefWidth="740.0" styleClass="confirmationMain" stylesheets="@ConfirmationSkin.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<VBox fx:id="confirmationWindow" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="210.0" prefWidth="740.0" styleClass="confirmationMain" stylesheets="@ConfirmationSkin.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <HBox alignment="CENTER" prefHeight="130.0" spacing="40.0">
          <children>
@@ -27,10 +27,19 @@
             </VBox>
          </children>
       </HBox>
+      <HBox alignment="CENTER" prefHeight="30.0">
+         <children>
+            <Label fx:id="errorMessage">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+         </children>
+      </HBox>
       <HBox alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="40.0" spacing="30.0">
          <children>
             <MFXButton buttonType="RAISED" depthLevel="LEVEL3" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#cancelOperation" prefHeight="30.0" prefWidth="80.0" rippleColor="#427972" styleClass="cancelButton" text="Cancel" />
-            <MFXButton buttonType="RAISED" depthLevel="LEVEL3" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#confirmOperation" prefHeight="30.0" prefWidth="80.0" rippleColor="#a64b54" text="Confirm">
+            <MFXButton buttonType="RAISED" depthLevel="LEVEL3" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#confirmOperation" prefHeight="30.0" prefWidth="80.0" rippleColor="#a64b54" styleClass="saveButton" text="Confirm">
                <HBox.margin>
                   <Insets right="20.0" />
                </HBox.margin>
