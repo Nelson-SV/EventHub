@@ -30,7 +30,7 @@ public class AdminController implements Initializable, InitializationErrorListen
     @FXML
     private VBox adminPageDisplayer;
     @FXML
-    private StackPane secondaryLayout,thirdLayout;
+    private StackPane adminSecondaryLayout,adminThirdLayout;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -61,7 +61,7 @@ public class AdminController implements Initializable, InitializationErrorListen
 
     private void initializeStartingPage(){
         adminPageDisplayer.getChildren().clear();
-        adminPageDisplayer.getChildren().add(new AdminEventPage(this.adminModel,secondaryLayout,thirdLayout));
+        adminPageDisplayer.getChildren().add(new AdminEventPage(this.adminModel,adminSecondaryLayout,adminThirdLayout));
     }
 
 }

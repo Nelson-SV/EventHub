@@ -133,3 +133,37 @@ Mar 31, 2024 9:07:52 PM view.admin.eventsPage.eventDescription.EventDescription 
 SEVERE: 
 /D:/computer_science/sco/compolsory/tiketSystem/EventHub/out/production/file/view/admin/eventsPage/eventDescription/EventDescription.fxml
 
+Mar 31, 2024 9:15:21 PM exceptions.ExceptionLogger <init>
+INFO: Logger initialized 
+.......................................
+Mar 31, 2024 9:15:21 PM view.admin.eventsPage.eventDescription.EventDescription <init>
+SEVERE: 
+/D:/computer_science/sco/compolsory/tiketSystem/EventHub/out/production/file/view/admin/eventsPage/eventDescription/EventDescription.fxml
+
+Mar 31, 2024 9:15:21 PM view.admin.eventsPage.eventDescription.EventDescription <init>
+SEVERE: 
+/D:/computer_science/sco/compolsory/tiketSystem/EventHub/out/production/file/view/admin/eventsPage/eventDescription/EventDescription.fxml
+
+Mar 31, 2024 9:15:21 PM view.admin.eventsPage.eventDescription.EventDescription <init>
+SEVERE: 
+/D:/computer_science/sco/compolsory/tiketSystem/EventHub/out/production/file/view/admin/eventsPage/eventDescription/EventDescription.fxml
+
+Mar 31, 2024 9:15:21 PM view.admin.eventsPage.eventDescription.EventDescription <init>
+SEVERE: 
+/D:/computer_science/sco/compolsory/tiketSystem/EventHub/out/production/file/view/admin/eventsPage/eventDescription/EventDescription.fxml
+
+Mar 31, 2024 9:15:21 PM view.admin.eventsPage.eventDescription.EventDescription <init>
+SEVERE: 
+/D:/computer_science/sco/compolsory/tiketSystem/EventHub/out/production/file/view/admin/eventsPage/eventDescription/EventDescription.fxml
+
+Mar 31, 2024 9:15:21 PM view.admin.eventsPage.eventDescription.EventDescription <init>
+SEVERE: 
+/D:/computer_science/sco/compolsory/tiketSystem/EventHub/out/production/file/view/admin/eventsPage/eventDescription/EventDescription.fxml
+
+Mar 31, 2024 10:51:37 PM exceptions.ExceptionLogger <init>
+INFO: Logger initialized 
+.......................................
+Mar 31, 2024 10:51:37 PM view.admin.eventsPage.AdminEventPage <init>
+SEVERE: 
+/D:/computer_science/sco/compolsory/tiketSystem/EventHub/out/production/file/view/admin/eventsPage/AdminEventPage.fxml
+

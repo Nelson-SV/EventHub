@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import view.admin.eventsPage.assignComponent.AssignButton;
 import view.admin.eventsPage.eventDescription.EventController;
 import view.admin.eventsPage.eventDescription.EventDescription;
 import view.admin.mainAdmin.AdminModel;
@@ -49,7 +50,7 @@ public class AdminPageController implements Initializable, Displayable {
                 eventsContainer.getChildren().clear();
                 adminModel.sortedEventsList()
                         .forEach(e ->eventsContainer .getChildren()
-                                .add(new EventDescription(e,new DeleteButton(secondaryLayout,thirdLayout,adminModel,e.getEventDTO().getId()))));
+                                .add(new EventDescription(e,new AssignButton(adminModel,secondaryLayout,thirdLayout,e.getEventDTO().getId()),new DeleteButton(secondaryLayout,thirdLayout,adminModel,e.getEventDTO().getId()))));
             });
         }
     }

@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
+import view.admin.eventsPage.assignComponent.AssignButton;
 import view.components.deleteEvent.DeleteButton;
 import view.components.eventsPage.manageButton.ManageAction;
 import java.net.URL;
@@ -38,20 +39,21 @@ public class EventController implements Initializable {
     @FXML
     private HBox eventActions;
     @FXML
-    private ManageAction manageAction;
+    private AssignButton assignButton;
     @FXML
     private DeleteButton deleteButton;
 
     private EventStatus event;
-    public EventController(EventStatus event, DeleteButton deleteButton) {
+    public EventController(EventStatus event,AssignButton assignButton, DeleteButton deleteButton) {
         this.event = event;
         this.deleteButton= deleteButton;
+        this.assignButton=assignButton;
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         bindViewToModel(event);
-        this.eventActions.getChildren().add(manageAction);
+         this.eventActions.getChildren().add(assignButton);
         this.eventActions.getChildren().add(deleteButton);
         initializeEventStatus(eventStatus, event.getStatus());
     }

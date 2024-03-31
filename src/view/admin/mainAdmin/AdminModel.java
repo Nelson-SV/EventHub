@@ -74,7 +74,6 @@ public class AdminModel implements CommonModel {
 
     @Override
     public Event getEventById(int eventId) {
-        //To be implemented
-        return null;
+        return allEvents.get(eventId).getEventDTO();
     }
 }

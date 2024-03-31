@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
@@ -15,18 +16,28 @@
    <children>
       <GridPane maxHeight="30.0" maxWidth="1072.0" prefHeight="30.0" prefWidth="1072.0">
          <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="238.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="266.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="208.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="208.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="150.0" />
          </columnConstraints>
          <rowConstraints>
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <TextField fx:id="searchEventButton" maxHeight="30.0" maxWidth="312.0"  prefHeight="30.0" prefWidth="312.0" promptText="Search events..." styleClass="searchBox">
+            <TextField fx:id="searchEventButton" maxHeight="30.0" maxWidth="238.0" prefHeight="30.0" prefWidth="238.0" promptText="Search events..." styleClass="searchBox">
                <GridPane.margin>
                   <Insets bottom="5.0" />
                </GridPane.margin>
             </TextField>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="5.0" GridPane.columnIndex="1">
+               <children>
+                  <MFXButton fx:id="ongoingEvents" text="Ongoing" />
+                  <MFXButton fx:id="upcomingEvents" text="Upcoming" />
+                  <MFXButton fx:id="finalizedEvents" text="Finalized" />
+               </children>
+            </HBox>
          </children>
       </GridPane>
       <HBox fillHeight="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="30.0" minWidth="536.0" prefHeight="30.0" prefWidth="1076.0" styleClass="eventsHeader">
@@ -36,12 +47,12 @@
                   <Font size="16.0" />
                </font>
             </Label>
-            <Label alignment="CENTER" layoutX="386.0" layoutY="10.0" maxHeight="30.0" maxWidth="200.0" minHeight="30.0" minWidth="60.0" prefHeight="30.0" prefWidth="200.0" text="Coordinators" />
+            <Label alignment="CENTER" layoutX="386.0" layoutY="10.0" maxHeight="30.0" maxWidth="200.0" minHeight="30.0" minWidth="60.0" prefHeight="30.0" prefWidth="150.0" text="Coordinators" />
             <Label alignment="CENTER" maxHeight="30.0" maxWidth="152.0" minHeight="30.0" minWidth="60.0" prefHeight="30.0" prefWidth="152.0" text="Status" HBox.hgrow="ALWAYS" />
             <Label alignment="CENTER" maxHeight="30.0" maxWidth="112.0" minHeight="30.0" minWidth="60.0" prefHeight="30.0" prefWidth="112.0" text="Tickets" HBox.hgrow="ALWAYS" />
-            <Label alignment="CENTER" maxHeight="30.0" maxWidth="112.0" minHeight="30.0" minWidth="60.0" prefHeight="30.0" prefWidth="112.0" text="Date" HBox.hgrow="ALWAYS" />
+            <Label alignment="CENTER" maxHeight="30.0" maxWidth="152.0" minHeight="30.0" minWidth="60.0" prefHeight="30.0" prefWidth="152.0" text="Date" HBox.hgrow="ALWAYS" />
             <Label alignment="CENTER" minHeight="30.0" minWidth="60.0" prefHeight="30.0" prefWidth="112.0" text="Time" />
-            <Label alignment="CENTER" maxHeight="30.0" maxWidth="150.0" minHeight="30.0" minWidth="106.0" prefHeight="30.0" prefWidth="150.0" text="Actions" HBox.hgrow="ALWAYS" />
+            <Label alignment="CENTER" maxHeight="30.0" maxWidth="156.0" minHeight="30.0" minWidth="106.0" prefHeight="30.0" prefWidth="156.0" text="Actions" HBox.hgrow="ALWAYS" />
          </children>
       </HBox>
       <ScrollPane fx:id="eventsView" hbarPolicy="NEVER" maxWidth="1076.0" minHeight="242.0" minWidth="536.0" prefHeight="480.0" prefWidth="1076.0" styleClass="eventsView" vbarPolicy="ALWAYS">
