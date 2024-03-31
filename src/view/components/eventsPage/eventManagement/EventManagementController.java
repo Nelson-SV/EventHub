@@ -1,6 +1,5 @@
-package view.components.eventManagement;
+package view.components.eventsPage.eventManagement;
 
-import be.Event;
 import be.User;
 import exceptions.ErrorCode;
 import exceptions.EventException;
@@ -11,7 +10,6 @@ import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXDatePicker;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
-import javafx.beans.binding.StringBinding;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;

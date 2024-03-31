@@ -1,4 +1,4 @@
-package view.components.manageButton;
+package view.components.eventsPage.manageButton;
 import exceptions.ErrorCode;
 import exceptions.ExceptionHandler;
 import javafx.fxml.FXMLLoader;

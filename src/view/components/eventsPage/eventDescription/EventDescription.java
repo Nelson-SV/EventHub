@@ -1,7 +1,6 @@
-package view.components.eventDescription;
+package view.components.eventsPage.eventDescription;
 
 import be.Event;
-import be.EventStatus;
 import be.Status;
 import bll.EventStatusCalculator;
 import javafx.beans.binding.StringBinding;
@@ -10,11 +9,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import view.components.deleteEvent.DeleteButton;
-import view.components.manageButton.ManageAction;
+import view.components.eventsPage.manageButton.ManageAction;
 
 import java.net.URL;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;

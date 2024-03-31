@@ -12,7 +12,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
-import view.components.events.CreateEventController;
+import view.components.eventsPage.eventManagement.eventCreation.CreateEventController;
 
 import java.io.IOException;
 

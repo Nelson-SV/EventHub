@@ -1,4 +1,4 @@
-package view.components.manageButton;
+package view.components.eventsPage.manageButton;
 
 import be.User;
 import exceptions.ErrorCode;
@@ -6,7 +6,6 @@ import exceptions.EventException;
 import exceptions.ExceptionHandler;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
@@ -15,7 +14,7 @@ import javafx.geometry.Pos;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import view.components.eventManagement.EventManagementController;
+import view.components.eventsPage.eventManagement.EventManagementController;
 import view.components.main.Model;
 import java.net.URL;
 import java.util.List;

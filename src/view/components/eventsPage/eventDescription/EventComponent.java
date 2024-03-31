@@ -1,12 +1,11 @@
-package view.components.eventDescription;
+package view.components.eventsPage.eventDescription;
 import be.Event;
 import exceptions.ErrorCode;
-import exceptions.EventException;
 import exceptions.ExceptionHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.HBox;
 import view.components.deleteEvent.DeleteButton;
-import view.components.manageButton.ManageAction;
+import view.components.eventsPage.manageButton.ManageAction;
 import java.io.IOException;
 
 public class EventComponent extends HBox {
