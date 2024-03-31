@@ -4,8 +4,10 @@ import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
+import view.admin.eventsPage.AdminEventPage;
 import view.components.listeners.InitializationErrorListener;
 import view.utility.NavigationHoverControl;
 import java.net.URL;
@@ -27,6 +29,8 @@ public class AdminController implements Initializable, InitializationErrorListen
     private Rectangle eventsLine;
     @FXML
     private VBox adminPageDisplayer;
+    @FXML
+    private StackPane secondaryLayout,thirdLayout;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -34,6 +38,7 @@ public class AdminController implements Initializable, InitializationErrorListen
             adminModel = new AdminModel();
             NavigationHoverControl navigationHoverControl = new NavigationHoverControl(eventsLine, sellingLine, ticketingLine, eventsNavButton, usersNavButton, statsNavButton);
             navigationHoverControl.initializeNavButtons();
+            initializeStartingPage();
         } catch (EventException e) {
             System.out.println(e.getMessage());
             initializationError = true;
@@ -56,8 +61,7 @@ public class AdminController implements Initializable, InitializationErrorListen
 
     private void initializeStartingPage(){
         adminPageDisplayer.getChildren().clear();
-      //  adminPageDisplayer.getChildren().add();
-
+        adminPageDisplayer.getChildren().add(new AdminEventPage(this.adminModel,secondaryLayout,thirdLayout));
     }
 
 }

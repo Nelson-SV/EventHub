@@ -35,7 +35,7 @@ public class AdminModel implements CommonModel {
     }
     /**retrieves all the events from the database*/
     public void initializeEvents() throws EventException {
-       allEvents=adminLogic.getEventsWithStatus();
+       allEvents = adminLogic.getEventsWithStatus();
     }
     /**retrieves the coordinators from the database*/
     public Task<List<User>> initializeEventCoordinators(int eventId) throws EventException {

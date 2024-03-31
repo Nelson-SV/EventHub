@@ -7,10 +7,9 @@
 <?import javafx.scene.text.Font?>
 <?import org.controlsfx.control.CheckComboBox?>
 
-
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="120.0" prefWidth="1072.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<HBox fx:id="eventContainer" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="120.0" prefWidth="1072.0" stylesheets="@EventDescription.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <VBox alignment="CENTER_LEFT" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="60.0" minWidth="260.0" prefHeight="120.0" prefWidth="238.0" styleClass="componentBackgroundColor,eventName" stylesheets="@../../../components/eventsPage/eventDescription/EventDescription.css">
+      <VBox alignment="CENTER_LEFT" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="60.0" minWidth="260.0" prefHeight="120.0" prefWidth="238.0" styleClass="componentBackgroundColor,eventName">
          <children>
             <Label fx:id="eventName" text="Beer Tasting" VBox.vgrow="ALWAYS">
                <font>
@@ -32,17 +31,17 @@
             <CheckComboBox prefWidth="200.0" title="Coordinators" />
          </children>
       </VBox>
-      <VBox alignment="CENTER" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="30.0" minWidth="60.0" prefHeight="120.0" prefWidth="152.0" styleClass="componentBackgroundColor" stylesheets="@../../../components/eventsPage/eventDescription/EventDescription.css">
+      <VBox alignment="CENTER" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="30.0" minWidth="60.0" prefHeight="120.0" prefWidth="152.0" styleClass="componentBackgroundColor">
          <children>
             <Label fx:id="eventStatus" alignment="BOTTOM_RIGHT" styleClass="eventStatus" VBox.vgrow="ALWAYS" />
          </children>
       </VBox>
-      <VBox alignment="CENTER" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="60.0" minWidth="60.0" prefHeight="120.0" prefWidth="112.0" styleClass="componentBackgroundColor,avTickets" stylesheets="@../../../components/eventsPage/eventDescription/EventDescription.css">
+      <VBox alignment="CENTER" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="60.0" minWidth="60.0" prefHeight="120.0" prefWidth="112.0" styleClass="componentBackgroundColor,avTickets">
          <children>
             <Label fx:id="eventTickets" text="25/125" VBox.vgrow="ALWAYS" />
          </children>
       </VBox>
-      <VBox alignment="CENTER" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="60.0" minWidth="60.0" prefHeight="120.0" prefWidth="112.0" styleClass="componentBackgroundColor ,dates" stylesheets="@../../../components/eventsPage/eventDescription/EventDescription.css">
+      <VBox alignment="CENTER" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="60.0" minWidth="60.0" prefHeight="120.0" prefWidth="112.0" styleClass="componentBackgroundColor ,dates">
          <children>
             <HBox alignment="CENTER" prefHeight="120.0" prefWidth="112.0" stylesheets="@../../../components/eventsPage/eventDescription/EventDescription.css">
                <children>

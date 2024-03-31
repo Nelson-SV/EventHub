@@ -66,7 +66,7 @@ public class ConfirmationWindowController {
     }
     @FXML
     private void cancelOperation(ActionEvent event) {
-        CommonMethods.closeWindow(event, this.secondLayout);
+        CommonMethods.closeWindow(event,this.secondLayout);
     }
 
     @FXML

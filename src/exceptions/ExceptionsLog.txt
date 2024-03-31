@@ -17,3 +17,119 @@ Mar 31, 2024 1:18:18 AM view.components.main.EventsObservable lambda$startServic
 SEVERE: The TCP/IP connection to the host EASV-DB4, port 1433 has failed. Error: "EASV-DB4. Verify the connection properties. Make sure that an instance of SQL Server is running on the host and accepting TCP/IP connections at the port. Make sure that TCP connections to the port are not blocked by a firewall.".
 Mar 31, 2024 1:18:22 AM view.components.deleteEvent.DeleteButtonController lambda$initializeDeleteService$3
 SEVERE: The TCP/IP connection to the host EASV-DB4, port 1433 has failed. Error: "EASV-DB4. Verify the connection properties. Make sure that an instance of SQL Server is running on the host and accepting TCP/IP connections at the port. Make sure that TCP connections to the port are not blocked by a firewall.".
+Mar 31, 2024 8:29:37 PM exceptions.ExceptionLogger <init>
+INFO: Logger initialized 
+.......................................
+Mar 31, 2024 8:29:37 PM view.admin.eventsPage.AdminEventPage <init>
+SEVERE: Error resolving onAction='#searchEvent', either the event handler is not in the Namespace or there is an error in the script.
+/D:/computer_science/sco/compolsory/tiketSystem/EventHub/out/production/file/view/admin/eventsPage/AdminEventPage.fxml:30
+
+Mar 31, 2024 8:31:30 PM exceptions.ExceptionLogger <init>
+INFO: Logger initialized 
+.......................................
+Mar 31, 2024 8:31:30 PM view.admin.eventsPage.AdminEventPage <init>
+SEVERE: Error resolving onAction='#searchEvent', either the event handler is not in the Namespace or there is an error in the script.
+/D:/computer_science/sco/compolsory/tiketSystem/EventHub/out/production/file/view/admin/eventsPage/AdminEventPage.fxml:30
+
+Mar 31, 2024 8:40:31 PM exceptions.ExceptionLogger <init>
+INFO: Logger initialized 
+.......................................
+Mar 31, 2024 8:40:31 PM view.admin.eventsPage.AdminEventPage <init>
+SEVERE: Error resolving onAction='#searchEvent', either the event handler is not in the Namespace or there is an error in the script.
+/D:/computer_science/sco/compolsory/tiketSystem/EventHub/out/production/file/view/admin/eventsPage/AdminEventPage.fxml:30
+
+Mar 31, 2024 8:49:38 PM exceptions.ExceptionLogger <init>
+INFO: Logger initialized 
+.......................................
+Mar 31, 2024 8:49:38 PM view.admin.eventsPage.AdminEventPage <init>
+SEVERE: Error resolving onAction='#searchAdminEvent', either the event handler is not in the Namespace or there is an error in the script.
+/D:/computer_science/sco/compolsory/tiketSystem/EventHub/out/production/file/view/admin/eventsPage/AdminEventPage.fxml:29
+
+Mar 31, 2024 8:52:31 PM exceptions.ExceptionLogger <init>
+INFO: Logger initialized 
+.......................................
+Mar 31, 2024 8:52:31 PM view.admin.eventsPage.AdminEventPage <init>
+SEVERE: Error resolving onAction='#searchAdminEvent', either the event handler is not in the Namespace or there is an error in the script.
+/D:/computer_science/sco/compolsory/tiketSystem/EventHub/out/production/file/view/admin/eventsPage/AdminEventPage.fxml:29
+
+Mar 31, 2024 9:03:51 PM exceptions.ExceptionLogger <init>
+INFO: Logger initialized 
+.......................................
+Mar 31, 2024 9:03:51 PM view.admin.eventsPage.eventDescription.EventDescription <init>
+SEVERE: 
+/D:/computer_science/sco/compolsory/tiketSystem/EventHub/out/production/file/view/admin/eventsPage/eventDescription/EventDescription.fxml
+
+Mar 31, 2024 9:03:51 PM view.admin.eventsPage.eventDescription.EventDescription <init>
+SEVERE: 
+/D:/computer_science/sco/compolsory/tiketSystem/EventHub/out/production/file/view/admin/eventsPage/eventDescription/EventDescription.fxml
+
+Mar 31, 2024 9:03:51 PM view.admin.eventsPage.eventDescription.EventDescription <init>
+SEVERE: 
+/D:/computer_science/sco/compolsory/tiketSystem/EventHub/out/production/file/view/admin/eventsPage/eventDescription/EventDescription.fxml
+
+Mar 31, 2024 9:03:51 PM view.admin.eventsPage.eventDescription.EventDescription <init>
+SEVERE: 
+/D:/computer_science/sco/compolsory/tiketSystem/EventHub/out/production/file/view/admin/eventsPage/eventDescription/EventDescription.fxml
+
+Mar 31, 2024 9:03:52 PM view.admin.eventsPage.eventDescription.EventDescription <init>
+SEVERE: 
+/D:/computer_science/sco/compolsory/tiketSystem/EventHub/out/production/file/view/admin/eventsPage/eventDescription/EventDescription.fxml
+
+Mar 31, 2024 9:03:52 PM view.admin.eventsPage.eventDescription.EventDescription <init>
+SEVERE: 
+/D:/computer_science/sco/compolsory/tiketSystem/EventHub/out/production/file/view/admin/eventsPage/eventDescription/EventDescription.fxml
+
+Mar 31, 2024 9:06:17 PM exceptions.ExceptionLogger <init>
+INFO: Logger initialized 
+.......................................
+Mar 31, 2024 9:06:17 PM view.admin.eventsPage.eventDescription.EventDescription <init>
+SEVERE: 
+/D:/computer_science/sco/compolsory/tiketSystem/EventHub/out/production/file/view/admin/eventsPage/eventDescription/EventDescription.fxml
+
+Mar 31, 2024 9:06:17 PM view.admin.eventsPage.eventDescription.EventDescription <init>
+SEVERE: 
+/D:/computer_science/sco/compolsory/tiketSystem/EventHub/out/production/file/view/admin/eventsPage/eventDescription/EventDescription.fxml
+
+Mar 31, 2024 9:06:17 PM view.admin.eventsPage.eventDescription.EventDescription <init>
+SEVERE: 
+/D:/computer_science/sco/compolsory/tiketSystem/EventHub/out/production/file/view/admin/eventsPage/eventDescription/EventDescription.fxml
+
+Mar 31, 2024 9:06:17 PM view.admin.eventsPage.eventDescription.EventDescription <init>
+SEVERE: 
+/D:/computer_science/sco/compolsory/tiketSystem/EventHub/out/production/file/view/admin/eventsPage/eventDescription/EventDescription.fxml
+
+Mar 31, 2024 9:06:17 PM view.admin.eventsPage.eventDescription.EventDescription <init>
+SEVERE: 
+/D:/computer_science/sco/compolsory/tiketSystem/EventHub/out/production/file/view/admin/eventsPage/eventDescription/EventDescription.fxml
+
+Mar 31, 2024 9:06:17 PM view.admin.eventsPage.eventDescription.EventDescription <init>
+SEVERE: 
+/D:/computer_science/sco/compolsory/tiketSystem/EventHub/out/production/file/view/admin/eventsPage/eventDescription/EventDescription.fxml
+
+Mar 31, 2024 9:07:52 PM exceptions.ExceptionLogger <init>
+INFO: Logger initialized 
+.......................................
+Mar 31, 2024 9:07:52 PM view.admin.eventsPage.eventDescription.EventDescription <init>
+SEVERE: 
+/D:/computer_science/sco/compolsory/tiketSystem/EventHub/out/production/file/view/admin/eventsPage/eventDescription/EventDescription.fxml
+
+Mar 31, 2024 9:07:52 PM view.admin.eventsPage.eventDescription.EventDescription <init>
+SEVERE: 
+/D:/computer_science/sco/compolsory/tiketSystem/EventHub/out/production/file/view/admin/eventsPage/eventDescription/EventDescription.fxml
+
+Mar 31, 2024 9:07:52 PM view.admin.eventsPage.eventDescription.EventDescription <init>
+SEVERE: 
+/D:/computer_science/sco/compolsory/tiketSystem/EventHub/out/production/file/view/admin/eventsPage/eventDescription/EventDescription.fxml
+
+Mar 31, 2024 9:07:52 PM view.admin.eventsPage.eventDescription.EventDescription <init>
+SEVERE: 
+/D:/computer_science/sco/compolsory/tiketSystem/EventHub/out/production/file/view/admin/eventsPage/eventDescription/EventDescription.fxml
+
+Mar 31, 2024 9:07:52 PM view.admin.eventsPage.eventDescription.EventDescription <init>
+SEVERE: 
+/D:/computer_science/sco/compolsory/tiketSystem/EventHub/out/production/file/view/admin/eventsPage/eventDescription/EventDescription.fxml
+
+Mar 31, 2024 9:07:52 PM view.admin.eventsPage.eventDescription.EventDescription <init>
+SEVERE: 
+/D:/computer_science/sco/compolsory/tiketSystem/EventHub/out/production/file/view/admin/eventsPage/eventDescription/EventDescription.fxml
+
