@@ -1,5 +1,8 @@
 .loadingComponent{
-    -fx-background-color: rgba(0, 0, 0, 0.5);
+    /*-fx-background-color: rgba(0, 0, 0, 0.5);*/
+    -fx-background-color: #F8F0E5;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
 }
 
 .loadingComponent>.label{

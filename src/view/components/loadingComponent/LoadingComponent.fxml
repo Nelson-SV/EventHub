@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import io.github.palexdev.materialfx.controls.MFXProgressSpinner?>
-<?import java.net.URL?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.paint.Color?>
 
-
-<VBox fx:id="loadingComponent" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="20.0" minWidth="30.0" prefHeight="400.0" prefWidth="600.0" spacing="10.0" styleClass="loadingComponent" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<VBox fx:id="loadingComponent" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="20.0" minWidth="30.0" prefHeight="210.0" prefWidth="740.0" spacing="10.0" styleClass="loadingComponent" stylesheets="@LoadingComponentSkin.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <MFXProgressSpinner>
          <color4>
@@ -23,10 +21,6 @@
             <Color red="1.0" green="1.0" blue="1.0" />
          </color3>
       </MFXProgressSpinner>
-      <Label text="Performing operation"  fx:id="actionMessage"/>
+      <Label fx:id="actionMessage" text="Performing operation" />
    </children>
-   <stylesheets>
-      <URL value="@../eventManagement/EventManagementskining.css" />
-      <URL value="@LoadingComponentSkin.css" />
-   </stylesheets>
 </VBox>

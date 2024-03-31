@@ -61,12 +61,8 @@
                 <Insets bottom="30.0" />
             </StackPane.margin>
         </VBox>
-        <StackPane fx:id="secondaryLayout" style="-fx-background-color: rgba(0, 0, 0, 0.5);" visible="false" alignment="CENTER" />
-        <StackPane fx:id="thirdLayout" layoutX="10.0" layoutY="10.0" style="-fx-background-color: rgba(0, 0, 0, 0.5);" visible="false" alignment="CENTER">
-            <padding>
-                <Insets bottom="30.0" left="120.0" right="120.0" top="120.0" />
-            </padding>
-        </StackPane>
+        <StackPane fx:id="secondaryLayout" alignment="CENTER" style="-fx-background-color: rgba(0, 0, 0, 0.5);" visible="false" />
+        <StackPane fx:id="thirdLayout" alignment="CENTER" layoutX="10.0" layoutY="10.0" style="-fx-background-color: rgba(0, 0, 0, 0.5);" visible="false" />
 
     </children>
 </StackPane>
