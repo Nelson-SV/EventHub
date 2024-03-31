@@ -19,6 +19,7 @@ import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
@@ -244,6 +245,7 @@ public class EventManagementController extends GridPane implements Initializable
     private void initializeLoadingView() {
         this.thirdLayout.getChildren().clear();
         loadingComponent = new LoadingComponent();
+        loadingComponent.setAlignment(Pos.CENTER);
         this.thirdLayout.getChildren().add(loadingComponent);
         this.thirdLayout.setVisible(true);
         this.thirdLayout.setDisable(false);

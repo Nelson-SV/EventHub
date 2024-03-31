@@ -10,11 +10,12 @@ import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import view.components.SellingTickets.SellingViewController;
 import view.components.eventsPage.EventsPageController;
+import view.components.listeners.InitializationErrorListener;
 import view.utility.NavigationHoverControl;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class MainController implements Initializable {
+public class MainController implements Initializable , InitializationErrorListener {
     private boolean initializationError = false;
     private Model model;
     @FXML
