@@ -4,7 +4,8 @@ public enum Status {
 
     UPCOMING("UPCOMING"),
     FINALIZED("FINALIZED"),
-    ONGOING("ONGOING");
+    ONGOING("ONGOING"),
+    ALL("ALL");
 private  final String status;
 
     public String getValue() {

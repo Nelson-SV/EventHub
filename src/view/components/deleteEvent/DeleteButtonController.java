@@ -16,6 +16,7 @@ import view.components.confirmationWindow.ConfirmationWindow;
 import view.components.listeners.OperationHandler;
 import view.components.loadingComponent.LoadingActions;
 import view.components.loadingComponent.LoadingComponent;
+import view.components.main.CommonModel;
 import view.components.main.Model;
 import view.utility.CommonMethods;
 import java.net.URL;
@@ -27,12 +28,12 @@ public class DeleteButtonController implements OperationHandler, Initializable {
     private VBox deleteOperation;
     private StackPane secondaryLayout;
     private StackPane thirdLayout;
-    private Model model;
+    private CommonModel model;
     private int eventId;
     private Service<Void> deleteEventService;
     private LoadingComponent loadingComponent;
     private ConfirmationWindow confirmationWindow;
-    public DeleteButtonController(StackPane secondaryLayout, StackPane thirdLayout, Model model, int eventId) {
+    public DeleteButtonController(StackPane secondaryLayout, StackPane thirdLayout, CommonModel model, int eventId) {
         this.secondaryLayout = secondaryLayout;
         this.thirdLayout = thirdLayout;
         this.model = model;

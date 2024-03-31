@@ -10,7 +10,7 @@ import view.components.listeners.Displayable;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class Model {
+public class Model implements  CommonModel {
 //TODO
 // 1.when an event is deleted if succesful from the db remove it from the list
 // 2.maybe we use a map instead of a list where the eventId will be the key;
@@ -147,7 +147,7 @@ public class Model {
     }
 
     /**
-     * sorts the events with the least amount pff time remaining until it starts first
+     * sorts the events with the least amount of time remaining until it starts first
      */
     public List<Event> sortedEventsList() {
         return evmLogic.getSortedEventsByStatus(coordinatorEvents.values());
@@ -185,7 +185,7 @@ public class Model {
 
 
     public boolean isEditValid(){
-        System.out.println("In edit");
+
         return  evmLogic.isEditValid(selectedEvent);
     }
     /**returns the event with the corresponding id , from the coordinatorEvents map

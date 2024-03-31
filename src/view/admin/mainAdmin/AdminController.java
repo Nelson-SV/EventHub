@@ -4,6 +4,7 @@ import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import view.components.listeners.InitializationErrorListener;
 import view.utility.NavigationHoverControl;
@@ -24,6 +25,8 @@ public class AdminController implements Initializable, InitializationErrorListen
     private Rectangle ticketingLine;
     @FXML
     private Rectangle eventsLine;
+    @FXML
+    private VBox adminPageDisplayer;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -50,4 +53,11 @@ public class AdminController implements Initializable, InitializationErrorListen
 
     public void createSpecialTicket(ActionEvent event) {
     }
+
+    private void initializeStartingPage(){
+        adminPageDisplayer.getChildren().clear();
+      //  adminPageDisplayer.getChildren().add();
+
+    }
+
 }

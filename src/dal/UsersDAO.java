@@ -1,19 +1,17 @@
 package dal;
-
 import be.Role;
 import be.User;
 import exceptions.ErrorCode;
 import exceptions.EventException;
-import javafx.concurrent.Service;
+import exceptions.ExceptionLogger;
 import javafx.concurrent.Task;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.logging.Level;
 
 public class UsersDAO {
     private ConnectionManager connectionManager;
@@ -47,6 +45,7 @@ public class UsersDAO {
                         }
                     }
                 } catch (SQLException | EventException e) {
+                    ExceptionLogger.getInstance().getLogger().log(Level.SEVERE,e.getMessage());
                     System.out.println(e.getMessage()+e.getCause()+ErrorCode.OPERATION_DB_FAILED);
                    // throw new EventException(e.getMessage(), e.getCause(), ErrorCode.OPERATION_DB_FAILED);
                 };
