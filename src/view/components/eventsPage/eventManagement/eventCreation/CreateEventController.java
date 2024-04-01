@@ -1,5 +1,4 @@
-package view.components.events;
-
+package view.components.eventsPage.eventManagement.eventCreation;
 import be.Event;
 import exceptions.ErrorCode;
 import exceptions.EventException;
@@ -9,7 +8,6 @@ import io.github.palexdev.materialfx.controls.MFXDatePicker;
 import io.github.palexdev.materialfx.controls.MFXScrollPane;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.TextArea;
@@ -21,7 +19,6 @@ import view.components.main.Model;
 import view.components.ticketsGeneration.TicketsGeneration;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;

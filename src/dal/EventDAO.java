@@ -288,8 +288,6 @@ public class EventDAO {
     }
 
     private void insertCoordinators(int eventId, Map<Integer, List<Integer>> assignedCoordinators, Connection conn) throws SQLException {
-        System.out.println(eventId);
-        System.out.println(assignedCoordinators.get(eventId));
         if (assignedCoordinators.get(eventId).isEmpty()) {
             return;
         }
@@ -303,6 +301,28 @@ public class EventDAO {
             psmt.executeBatch();
         }
     }
+
+    public boolean deleteEvent(int eventId) throws EventException {
+        boolean succeeded = false;
+        String sql = "DELETE FROM Event WHERE EventId=?";
+        try (Connection conn = connectionManager.getConnection()) {
+            conn.setAutoCommit(false);
+            conn.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
+            try (PreparedStatement psmt = conn.prepareStatement(sql)) {
+                psmt.setInt(1, eventId);
+                psmt.executeUpdate();
+                conn.commit();
+                succeeded = true;
+            } catch (SQLException e) {
+                conn.rollback();
+                throw new EventException(e.getMessage(), e.getCause(), ErrorCode.OPERATION_DB_FAILED);
+            }
+        } catch (SQLException e) {
+            ExceptionLogger.getInstance().getLogger().log(Level.SEVERE, e.getMessage(), e);
+        }
+        return succeeded;
+    }
+
 }
 
 

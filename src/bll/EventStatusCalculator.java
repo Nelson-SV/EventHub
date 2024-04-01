@@ -1,11 +1,10 @@
 package bll;
-
 import be.Event;
 import be.EventStatus;
 import be.Status;
-
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Collection;
 
 public class EventStatusCalculator {
     public static Status calculateStatus(EventStatus event) {
@@ -79,5 +78,26 @@ public class EventStatusCalculator {
             status = Status.ONGOING;
         }
         return status;
+    }
+
+    private static boolean isStatusChanged(Event event) {
+        boolean hasStarted = !LocalDateTime.of(event.getStartDate(), event.getStartTime()).isBefore(LocalDateTime.now());
+        LocalDateTime endDateTime;
+        if (event.getEndDate() != null) {
+            endDateTime = LocalDateTime.of(event.getEndDate(), event.getEndTime() != null ? event.getEndTime() : LocalTime.MAX);
+        } else {
+            endDateTime = LocalDateTime.of(event.getStartDate(), event.getEndTime() != null ? event.getEndTime() : LocalTime.MAX);
+        }
+        boolean hasEnded = !endDateTime.isBefore(LocalDateTime.now());
+        return hasStarted || hasEnded;
+    }
+
+    public static boolean isStatusChanged(Collection<Event> events){
+        for(Event event:events){
+            if(isStatusChanged(event)){
+                return true;
+            }
+        }
+        return false;
     }
 }

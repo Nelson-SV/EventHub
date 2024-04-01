@@ -13,11 +13,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import view.components.eventDescription.EventComponent;
-import view.components.events.CreateEventController;
+import view.components.deleteEvent.DeleteButton;
+import view.components.eventsPage.eventDescription.EventComponent;
+import view.components.eventsPage.eventManagement.eventCreation.CreateEventController;
 import view.components.listeners.Displayable;
 import view.components.main.Model;
-import view.components.manageButton.ManageAction;
+import view.components.eventsPage.manageButton.ManageAction;
 
 import java.io.IOException;
 import java.net.URL;
@@ -52,11 +53,16 @@ public class EventsPageController extends VBox implements Displayable, Initializ
      */
     @Override
     public void displayEvents() {
-        Platform.runLater(() -> {
-            mainEventContainer.getChildren().clear();
-            model.sortedEventsList().forEach(e -> mainEventContainer.getChildren().add(new EventComponent(e, new ManageAction(this.secondaryLayout, thirdLayout, e.getId(), model))));
-        });
 
+        if(mainEventContainer.getScene()!=null){
+            Platform.runLater(() -> {
+                mainEventContainer.getChildren().clear();
+                model.sortedEventsList()
+                        .forEach(e -> mainEventContainer.getChildren()
+                                .add(new EventComponent(e, new ManageAction(this.secondaryLayout, thirdLayout, e.getId(), model),new DeleteButton(secondaryLayout,thirdLayout,model,e.getId()))));
+            });
+
+        }
     }
 
     @FXML

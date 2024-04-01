@@ -1,0 +1,5 @@
+.deleteContainer:hover{
+    -fx-background-color:#C5D4E6;
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+}

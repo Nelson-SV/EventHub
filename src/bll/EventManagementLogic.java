@@ -1,5 +1,4 @@
 package bll;
-
 import be.Event;
 import be.EventStatus;
 import be.Status;
@@ -10,7 +9,6 @@ import exceptions.EventException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableMap;
 import javafx.concurrent.Task;
-
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
@@ -56,26 +54,31 @@ public class EventManagementLogic implements ILogicManager {
     public boolean isEditValid(Event selectedEvent) {
         boolean endDateValid = true;
         boolean endTimeValid = true;
-        if (selectedEvent.getEndDate() != null) {
-            endDateValid = isEndDateValid(selectedEvent.startDateProperty().get(), selectedEvent.endDateProperty().get());
+        LocalDate startDate = selectedEvent.startDateProperty().get();
+        LocalDate endDate = selectedEvent.getEndDate();
+        LocalTime startTime = selectedEvent.startTimeProperty().get();
+        LocalTime endTime = selectedEvent.getEndTime();
+        if (endDate != null) {
+            endDateValid = isEndDateValid(startDate, endDate);
         }
-        if (selectedEvent.getEndTime() != null) {
-            endTimeValid = isEndTimeValid(selectedEvent.startTimeProperty().get(), selectedEvent.endTimeProperty().get());
+        if (endTime != null) {
+            endTimeValid = isEndTimeValid(startTime, endTime, startDate, endDate);
         }
+
         return isNameValid(selectedEvent.getName()) &&
-                !isStartDateNull(selectedEvent.getStartDate())
-                && !isStartTimeNull(selectedEvent.getStartTime())
-                && !isLocationEmpty(selectedEvent.getLocation())
-                && endDateValid
-                && endTimeValid;
+                isStartDateValid(startDate) &&
+                !isStartTimeNull(startTime) &&
+                !isLocationEmpty(selectedEvent.getLocation()) &&
+                endDateValid &&
+                endTimeValid;
     }
 
     private boolean isNameValid(String name) {
         return !name.isEmpty();
     }
 
-    private boolean isStartDateNull(LocalDate startDate) {
-        return startDate == null;
+    private boolean isStartDateValid(LocalDate startDate) {
+        return startDate != null && !startDate.isBefore(LocalDate.now());
     }
 
     private boolean isStartTimeNull(LocalTime startTime) {
@@ -83,11 +86,19 @@ public class EventManagementLogic implements ILogicManager {
     }
 
     private boolean isEndDateValid(LocalDate startDate, LocalDate endDate) {
-        return startDate.isBefore(endDate);
+        return !startDate.isAfter(endDate);
     }
 
-    private boolean isEndTimeValid(LocalTime startTime, LocalTime endTime) {
-        return startTime.isBefore(endTime);
+    private boolean isEndTimeValid(LocalTime startTime, LocalTime endTime, LocalDate startDate, LocalDate endDate) {
+        if (endDate != null) {
+            if (startDate.isEqual(endDate)) {
+                return startTime.isBefore(endTime);
+            } else {
+                return startTime.isBefore(endTime);
+            }
+        } else {
+            return true;
+        }
     }
 
     private boolean isLocationEmpty(String location) {
@@ -188,4 +199,12 @@ public class EventManagementLogic implements ILogicManager {
     private List<Event> convertToEvent(List<EventStatus> events){
         return events.stream().map(EventStatus::getEventDTO).toList();
     }
+
+    /**delete an event from the database
+     * @param eventId the id of the event*/
+    @Override
+    public boolean deleteEvent(int eventId) throws EventException {
+        return eventData.deleteEvent(eventId);
+    }
+
 }

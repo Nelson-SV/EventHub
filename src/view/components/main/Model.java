@@ -1,5 +1,4 @@
 package view.components.main;
-
 import be.*;
 import bll.*;
 import exceptions.EventException;
@@ -8,24 +7,20 @@ import javafx.collections.*;
 import javafx.concurrent.Task;
 import view.components.listeners.CoordinatorsDisplayer;
 import view.components.listeners.Displayable;
-import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class Model {
+public class Model implements  CommonModel {
 //TODO
 // 1.when an event is deleted if succesful from the db remove it from the list
 // 2.maybe we use a map instead of a list where the eventId will be the key;
 // 3.add an observable object that will hold the current selected event to be managed
 
     private Displayable eventsDisplayer;
+    private EventsObservable eventsObservable;
+    private DateObservable dateObservable;
     private CustomerManager customerManager;
     private CoordinatorsDisplayer coordinatorsDisplayer;
-
-
-
-
 
     /**
      * Holds the events for a given user
@@ -65,6 +60,8 @@ public class Model {
 
 
     private Model() throws EventException, TicketException {
+        initializeEventsObservable();
+        initializeEventDateObservable();
         eventManager = new EventManager();
         ticketManager = new TicketManager();
         coordinatorEvents = FXCollections.observableHashMap();
@@ -73,6 +70,15 @@ public class Model {
         evmLogic = new EventManagementLogic();
         addedTickets = new ArrayList<>();
         initializeEventsMap();
+    }
+
+    private void initializeEventsObservable() throws EventException {
+        eventsObservable= new EventsObservable(this);
+        eventsObservable.startService();
+    }
+    private void initializeEventDateObservable(){
+        dateObservable= new DateObservable(this);
+        dateObservable.startDateService();
     }
 
     /**
@@ -95,12 +101,12 @@ public class Model {
 
 
 
+
     /**
      * initialize the events map
      */
     public void initializeEventsMap() throws EventException {
         coordinatorEvents = evmLogic.getEvents();
-
     }
 
 
@@ -132,6 +138,8 @@ public class Model {
      */
     public void setEventsDisplayer(Displayable eventsDisplayer) {
         this.eventsDisplayer = eventsDisplayer;
+        this.eventsObservable.addDisplayable(this.eventsDisplayer);
+        this.dateObservable.addDisplayable(this.eventsDisplayer);
     }
 
     public Displayable getEventsDisplayer() {
@@ -139,15 +147,10 @@ public class Model {
     }
 
     /**
-     * sorts the events with the least amount pff time remaining until it starts first
+     * sorts the events with the least amount of time remaining until it starts first
      */
     public List<Event> sortedEventsList() {
-
         return evmLogic.getSortedEventsByStatus(coordinatorEvents.values());
-//        Collection<Event> events = coordinatorEvents.values();
-//        return events.stream()
-//                .sorted(Comparator.comparing(event -> Math.abs(ChronoUnit.DAYS.between(LocalDate.now(), event.getStartDate()))))
-//                .collect(Collectors.toList());
     }
 
     /**updates the view that is displaying the coordinators*/
@@ -182,8 +185,34 @@ public class Model {
 
 
     public boolean isEditValid(){
+
         return  evmLogic.isEditValid(selectedEvent);
     }
+    /**returns the event with the corresponding id , from the coordinatorEvents map
+     * @param eventId the id of the required event */
+    public Event getEventById(int eventId){
+        return coordinatorEvents.get(eventId);
+    }
+
+    /**
+     * delete an event from the database
+     *
+     * @param eventId the id of the event that will be deleted
+     */
+    public void deleteEvent(int eventId) throws EventException {
+        boolean deleted =  evmLogic.deleteEvent(eventId);
+        if(deleted){
+            this.coordinatorEvents.remove(eventId);
+        }
+    }
+
+    /**
+     * compares the dates of the events with the current date,
+     * in order to rerender the view*/
+    public boolean compareEventDatesWithCurrentDate(){
+        return EventStatusCalculator.isStatusChanged(coordinatorEvents.values());
+    }
+
 
     public boolean isModified(Map<Integer,List<Integer>> assignedCoordinators){
         return evmLogic.isModifyed(assignedCoordinators,selectedEvent,coordinatorEvents.get(selectedEvent.getId()));
@@ -194,7 +223,6 @@ public class Model {
     /**save the edit operation performed on the current selected event*/
     public void saveEditEventOperation(List<User> assignedCoordinators) throws EventException {
         HashMap<Integer,List<Integer>> assignedCoordinatorsMap = new HashMap<>();
-        System.out.println(selectedEvent);
         assignedCoordinatorsMap.put(selectedEvent.getId(),assignedCoordinators.stream().map(User::getUserId).collect(Collectors.toList()));
         boolean isModified=evmLogic.isModifyed(assignedCoordinatorsMap,selectedEvent,coordinatorEvents.get(selectedEvent.getId()));
         if(!isModified){
@@ -206,6 +234,13 @@ public class Model {
         }
     }
 
+    public ObservableMap<Integer, Event> getCoordinatorEvents() {
+        return coordinatorEvents;
+    }
+
+    public void setCoordinatorEvents(ObservableMap<Integer, Event> coordinatorEvents) {
+        this.coordinatorEvents = coordinatorEvents;
+    }
 
 
 
@@ -241,14 +276,6 @@ public class Model {
     }
 
 
-    public ObservableMap<Integer, Event> getCoordinatorEvents() {
-        return coordinatorEvents;
-    }
-
-
-    public void setCoordinatorEvents(ObservableMap<Integer, Event> coordinatorEvents) {
-        this.coordinatorEvents = coordinatorEvents;
-    }
 
         /*
     public List<Ticket> addTicket(Ticket ticket) throws TicketException {

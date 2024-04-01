@@ -1,0 +1,44 @@
+.saveAssignButton{
+    -fx-background-color: #2A9D8F;
+    -fx-text-fill: #102c57;
+}
+
+.cancelAssignButton{
+    -fx-background-color: #E63946;
+    -fx-text-fill: #102c57;
+}
+
+.mainAssignContainer{
+    -fx-background-color: #F8F0E5;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+}
+
+.coordinatorsContainer{
+    -fx-background-color: #F8F0E5;
+}
+.coordinatorsView> .viewport{
+    -fx-background-color: #F8F0E5;
+}
+.coordinatorsView > .scroll-bar:vertical {
+    -fx-background-color: #102c57;
+    -fx-background-radius: 0 0 10 0;
+    -fx-border-radius: 0 0 10 0;
+}
+
+.coordinatorsView > .scroll-bar:vertical > .thumb {
+    -fx-background-color: #F8F0E5;
+}
+
+.coordinatorsView > .viewport {
+    -fx-background-color: #F8F0E5;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+}
+
+.coordinatorsView {
+    -fx-background-color: #F8F0E5;
+    -fx-border-color: #102c57;
+    -fx-background-radius: 0 0 10 10;
+    -fx-border-radius: 0 0 10 10;
+}

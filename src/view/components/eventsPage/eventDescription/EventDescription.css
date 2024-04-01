@@ -1,0 +1,81 @@
+.componentBackgroundColor {
+    -fx-background-color: #E5EDF8;
+}
+
+.label {
+    -fx-text-fill: #102c57;
+    -fx-font-size: 12;
+}
+
+
+/*Create the red color for the ended events*/
+/*this color will be used for the ended events*/
+/*-fx-background-color: #E77565;*/
+.eventStatus {
+    -fx-text-fill: #102c57;
+    -fx-background-radius: 2;
+    -fx-font-size: 16;
+}
+
+
+.eventComponentContainer {
+    -fx-background-radius: 10;
+    -fx-border-color: #102c57;
+    -fx-border-width: 2;
+    -fx-border-radius: 10;
+}
+
+.eventName > .label {
+    -fx-text-fill: #102c57;
+    -fx-font-weight: 600;
+    -fx-font-size: 16;
+}
+
+.eventName {
+    -fx-background-radius: 10 0 0 10;
+}
+
+.dates {
+    -fx-text-fill: #102c57;
+    -fx-font-weight: 600;
+    -fx-font-size:13;
+}
+
+
+.avTickets {
+    -fx-text-fill: #102c57;
+    -fx-font-weight: 600;
+    -fx-font-size: 14;
+}
+
+
+.eventAction {
+    -fx-background-radius: 0 10 10 0;
+    -fx-alignment: bottom-center;
+}
+
+.delimiter {
+    -fx-text-fill: #121212;
+    -fx-font-weight: 600;
+    -fx-font-size: 18;
+}
+
+.active {
+    -fx-effect: dropshadow(gaussian, rgb(99, 227, 64), 15, 0.2, 0, 0);
+}
+
+.ongoing {
+    -fx-effect: dropshadow(gaussian, rgba(231, 101, 215, 1), 15, 0.2, 0, 0);
+}
+
+.ended {
+    -fx-effect: dropshadow(gaussian, rgb(231, 48, 24), 15, 0.2, 0, 0);
+}
+
+
+
+
+
+
+
+

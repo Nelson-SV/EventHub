@@ -29,4 +29,5 @@ public interface ILogicManager {
     ObservableMap<Integer, EventStatus> getEventsWithStatus(Map<Integer, Event> coordinatorEvents);
 
     List<Event> getSortedEventsByStatus(Collection<Event> events);
+    boolean deleteEvent(int eventId) throws EventException;
 }

@@ -1,7 +1,6 @@
-package view.components.eventDescription;
+package view.components.eventsPage.eventDescription;
 
 import be.Event;
-import be.EventStatus;
 import be.Status;
 import bll.EventStatusCalculator;
 import javafx.beans.binding.StringBinding;
@@ -9,11 +8,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
-import view.components.manageButton.ManageAction;
+import view.components.deleteEvent.DeleteButton;
+import view.components.eventsPage.manageButton.ManageAction;
 
 import java.net.URL;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
@@ -44,16 +43,20 @@ public class EventDescription implements Initializable {
     @FXML
     private ManageAction manageAction;
     @FXML
+    private DeleteButton deleteButton;
+    @FXML
     private Event event;
-    public EventDescription(Event event, ManageAction manageAction) {
+    public EventDescription(Event event, ManageAction manageAction, DeleteButton deleteButton) {
         this.manageAction = manageAction;
         this.event = event;
+        this.deleteButton= deleteButton;
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         bindViewToModel(event);
         this.eventActions.getChildren().add(manageAction);
+        this.eventActions.getChildren().add(deleteButton);
         initializeEventStatus(eventStatus,EventStatusCalculator.calculateStatus(event));
     }
 
@@ -103,6 +106,7 @@ public class EventDescription implements Initializable {
                 return startDateTime.format(DateTimeFormatter.ofPattern("HH:mm"));
             }
         };
+
         StringBinding eventEndTimeBinding = new StringBinding() {
             {
                 super.bind(event.endTimeProperty());

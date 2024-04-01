@@ -10,11 +10,12 @@ import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import view.components.SellingTickets.SellingViewController;
 import view.components.eventsPage.EventsPageController;
+import view.components.listeners.InitializationErrorListener;
 import view.utility.NavigationHoverControl;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class MainController implements Initializable {
+public class MainController implements Initializable , InitializationErrorListener {
     private boolean initializationError = false;
     private Model model;
     @FXML
@@ -35,6 +36,8 @@ public class MainController implements Initializable {
     private StackPane mainLayout;
     @FXML
     private VBox pageDisplayer;
+    @FXML
+    private VBox eventsPageController;
 
 
     @FXML
@@ -70,17 +73,18 @@ public class MainController implements Initializable {
 
     @FXML
     private void navigateEventsPage(ActionEvent actionEvent) {
-        EventsPageController eventsPageController = new EventsPageController(secondaryLayout, thirdLayout);
-        pageDisplayer.getChildren().clear();
-        pageDisplayer.getChildren().add(eventsPageController);
+        if(!pageDisplayer.getChildren().contains(eventsPageController)){
+            eventsPageController= new EventsPageController(secondaryLayout,thirdLayout);
+            pageDisplayer.getChildren().clear();
+            pageDisplayer.getChildren().add(eventsPageController);
+        }
     }
 
     private void initializeMainPageEvents() {
-        EventsPageController eventsPageController = new EventsPageController(secondaryLayout, thirdLayout);
+        eventsPageController = new EventsPageController(secondaryLayout, thirdLayout);
         pageDisplayer.getChildren().clear();
         pageDisplayer.getChildren().add(eventsPageController);
     }
-
     public VBox getPageDisplayer() {
         return pageDisplayer;
     }

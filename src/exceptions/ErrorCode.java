@@ -6,6 +6,8 @@ public enum ErrorCode {
     OPERATION_DB_FAILED("Operation failed,please verify your network connection, or try again"),
     LOADING_FXML_FAILED("Operation failed, problems reading files, please try again or restart the application"),
     FAILED_TO_LOAD_EVENTS("Failed to load events, please try again or restart the application"),
+    FAILED_UPDATE_EVENTS("Failed to retrieve the latest events modifications, please check your network connection"),
+    FAILED_UPDATE_STATUS("Failed to update the status, please use the start date/time, end date/time values"),
     ;
 
 
