@@ -21,6 +21,7 @@ import view.components.main.CommonModel;
 import view.utility.CommonMethods;
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 public class DeleteButtonController implements OperationHandler, Initializable {
@@ -114,7 +115,7 @@ public class DeleteButtonController implements OperationHandler, Initializable {
     deleteEventService.setOnFailed((event)->{
         loadingComponent.setAction(LoadingActions.FAIL.getActionValue());
         pauseTransition.setOnFinished((ev)->{
-            ExceptionLogger.getInstance().getLogger().log(Level.SEVERE,deleteEventService.getException().getMessage());
+            ExceptionLogger.getInstance().getLogger().log(Level.SEVERE, Arrays.toString(deleteEventService.getException().getStackTrace()));
             CommonMethods.closeWindow(thirdLayout);
               confirmationWindow.setErrorMessage(ErrorCode.OPERATION_DB_FAILED.getValue());
         });

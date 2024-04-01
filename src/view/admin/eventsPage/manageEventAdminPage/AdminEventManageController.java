@@ -27,14 +27,14 @@ public class AdminEventManageController implements Initializable {
     @FXML
     private VBox assignedCoordinatorsContainer;
 
-    private StackPane secondaryLayout, thirdLayout,fourthLayout;
+    private StackPane secondaryLayout, thirdLayout, fourthLayout;
     private AdminModel adminModel;
 
-    public AdminEventManageController(StackPane secondaryLayout, StackPane thirdLayout,StackPane fourthLayout, AdminModel model) {
+    public AdminEventManageController(StackPane secondaryLayout, StackPane thirdLayout, StackPane fourthLayout, AdminModel model) {
         this.secondaryLayout = secondaryLayout;
         this.thirdLayout = thirdLayout;
         this.adminModel = model;
-        this.fourthLayout=fourthLayout;
+        this.fourthLayout = fourthLayout;
     }
 
 
@@ -53,15 +53,17 @@ public class AdminEventManageController implements Initializable {
     }
 
     public void displayEventCoordinators() {
-        if(managePageContainer.getScene()!=null){
+        if (managePageContainer.getScene() != null) {
+            assignedCoordinatorsContainer.getChildren().clear();
             adminModel.getEventAssignedCoordinators().forEach(user -> {
-                DeleteButton deleteButton = new DeleteButton(thirdLayout,fourthLayout,adminModel,user.getUserId(), DeleteOperation.DELETE_USER);
-                AssignedCoordinatorComponent assignedCoordinatorComponent = new AssignedCoordinatorComponent(user.getFirstName(),user.getLastName());
+                DeleteButton deleteButton = new DeleteButton(thirdLayout, fourthLayout, adminModel, user.getUserId(), DeleteOperation.DELETE_USER);
+                AssignedCoordinatorComponent assignedCoordinatorComponent = new AssignedCoordinatorComponent(user.getFirstName(), user.getLastName());
                 assignedCoordinatorComponent.getAssignComponentContainer().getChildren().add(deleteButton);
                 assignedCoordinatorsContainer.getChildren().add(assignedCoordinatorComponent);
             });
         }
     }
+
     public void displayAllCoordinators() {
         System.out.println("setThem");
     }

@@ -317,6 +317,7 @@ public class EventDAO {
                 throw new EventException(e.getMessage(), e.getCause(), ErrorCode.OPERATION_DB_FAILED);
             }
         } catch (SQLException e) {
+            e.printStackTrace();
             ExceptionLogger.getInstance().getLogger().log(Level.SEVERE, e.getMessage(), e);
         }
         return succeeded;
