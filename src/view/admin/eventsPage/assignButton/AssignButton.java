@@ -8,7 +8,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import view.admin.mainAdmin.AdminModel;
-
 import java.io.IOException;
 import java.util.logging.Level;
 

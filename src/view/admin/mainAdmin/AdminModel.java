@@ -20,6 +20,8 @@ public class AdminModel implements CommonModel {
     private IAdminLogic adminLogic;
     private Displayable eventsDisplayer;
 
+    private EventStatus selectedEvent;
+
     /**holds all the events in the system*/
     private ObservableMap<Integer, EventStatus> allEvents;
 
@@ -75,5 +77,10 @@ public class AdminModel implements CommonModel {
     @Override
     public Event getEventById(int eventId) {
         return allEvents.get(eventId).getEventDTO();
+    }
+
+
+    public void setSelectedEvent(int eventId){
+        this.selectedEvent=allEvents.get(eventId);
     }
 }

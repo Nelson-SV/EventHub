@@ -1,9 +1,12 @@
 package view.admin.eventsPage.assignButton;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import view.admin.eventsPage.manageEventAdminPage.AdminEventManagePage;
 import view.admin.mainAdmin.AdminModel;
+import view.utility.CommonMethods;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -23,5 +26,12 @@ public class AssignController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        assignedContainer.addEventHandler(MouseEvent.MOUSE_CLICKED, this::showManagementPage);
+    }
+
+    private void showManagementPage(MouseEvent mouseEvent){
+        adminModel.setSelectedEvent(this.eventId);
+        AdminEventManagePage adminEventManagePage = new AdminEventManagePage(secondaryLayout,thirdLayout,adminModel);
+        CommonMethods.showSecondaryLayout(secondaryLayout,adminEventManagePage);
     }
 }
