@@ -71,8 +71,8 @@
       </VBox>
       <HBox alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="60.0" prefWidth="520.0" spacing="13.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
          <children>
-            <MFXButton buttonType="RAISED" onAction="#saveChanges" prefHeight="30.0" prefWidth="65.0" rippleColor="#427972" styleClass="saveAssignButton" text="Save" />
-            <MFXButton buttonType="RAISED" onAction="#cancelChanges" prefHeight="30.0" prefWidth="65.0" rippleColor="#a64b54" styleClass="cancelAssignButton" text="Cancel">
+            <MFXButton fx:id="saveButton" buttonType="RAISED" prefHeight="30.0" prefWidth="65.0" rippleColor="#427972" styleClass="saveAssignButton" text="Save" />
+            <MFXButton fx:id="cancelButton" buttonType="RAISED" prefHeight="30.0" prefWidth="65.0" rippleColor="#a64b54" styleClass="cancelAssignButton" text="Cancel">
                <HBox.margin>
                   <Insets right="13.0" />
                </HBox.margin>

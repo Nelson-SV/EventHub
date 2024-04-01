@@ -24,8 +24,7 @@ public class AdminEventPage extends VBox {
             adminEventPage=loader.load();
             this.getChildren().add(adminEventPage);
         } catch (IOException e) {
-            e.printStackTrace();
-            ExceptionLogger.getInstance().getLogger().log(Level.SEVERE, e.getMessage());
+            //ExceptionLogger.getInstance().getLogger().log(Level.SEVERE, e.getMessage());
             ExceptionHandler.erorrAlertMessage(ErrorCode.LOADING_FXML_FAILED.getValue());
         }
 

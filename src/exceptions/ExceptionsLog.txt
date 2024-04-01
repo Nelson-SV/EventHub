@@ -248,3 +248,57 @@ Apr 01, 2024 1:02:59 PM view.admin.eventsPage.assignButton.AssignButton <init>
 SEVERE: 
 /D:/computer_science/sco/compolsory/tiketSystem/EventHub/out/production/file/view/admin/eventsPage/assignButton/AssignComponent.fxml
 
+Apr 01, 2024 1:06:20 PM exceptions.ExceptionLogger <init>
+INFO: Logger initialized 
+.......................................
+Apr 01, 2024 1:06:20 PM view.admin.eventsPage.assignButton.AssignButton <init>
+SEVERE: 
+/D:/computer_science/sco/compolsory/tiketSystem/EventHub/out/production/file/view/admin/eventsPage/assignButton/AssignComponent.fxml
+
+Apr 01, 2024 1:06:20 PM view.admin.eventsPage.assignButton.AssignButton <init>
+SEVERE: 
+/D:/computer_science/sco/compolsory/tiketSystem/EventHub/out/production/file/view/admin/eventsPage/assignButton/AssignComponent.fxml
+
+Apr 01, 2024 1:06:21 PM view.admin.eventsPage.assignButton.AssignButton <init>
+SEVERE: 
+/D:/computer_science/sco/compolsory/tiketSystem/EventHub/out/production/file/view/admin/eventsPage/assignButton/AssignComponent.fxml
+
+Apr 01, 2024 1:06:21 PM view.admin.eventsPage.assignButton.AssignButton <init>
+SEVERE: 
+/D:/computer_science/sco/compolsory/tiketSystem/EventHub/out/production/file/view/admin/eventsPage/assignButton/AssignComponent.fxml
+
+Apr 01, 2024 1:06:21 PM view.admin.eventsPage.assignButton.AssignButton <init>
+SEVERE: 
+/D:/computer_science/sco/compolsory/tiketSystem/EventHub/out/production/file/view/admin/eventsPage/assignButton/AssignComponent.fxml
+
+Apr 01, 2024 1:06:21 PM view.admin.eventsPage.assignButton.AssignButton <init>
+SEVERE: 
+/D:/computer_science/sco/compolsory/tiketSystem/EventHub/out/production/file/view/admin/eventsPage/assignButton/AssignComponent.fxml
+
+Apr 01, 2024 1:09:57 PM exceptions.ExceptionLogger <init>
+INFO: Logger initialized 
+.......................................
+Apr 01, 2024 1:09:57 PM view.admin.eventsPage.assignButton.AssignButton <init>
+SEVERE: 
+/D:/computer_science/sco/compolsory/tiketSystem/EventHub/out/production/file/view/admin/eventsPage/assignButton/AssignComponent.fxml
+
+Apr 01, 2024 1:09:57 PM view.admin.eventsPage.assignButton.AssignButton <init>
+SEVERE: 
+/D:/computer_science/sco/compolsory/tiketSystem/EventHub/out/production/file/view/admin/eventsPage/assignButton/AssignComponent.fxml
+
+Apr 01, 2024 1:09:57 PM view.admin.eventsPage.assignButton.AssignButton <init>
+SEVERE: 
+/D:/computer_science/sco/compolsory/tiketSystem/EventHub/out/production/file/view/admin/eventsPage/assignButton/AssignComponent.fxml
+
+Apr 01, 2024 1:09:57 PM view.admin.eventsPage.assignButton.AssignButton <init>
+SEVERE: 
+/D:/computer_science/sco/compolsory/tiketSystem/EventHub/out/production/file/view/admin/eventsPage/assignButton/AssignComponent.fxml
+
+Apr 01, 2024 1:09:57 PM view.admin.eventsPage.assignButton.AssignButton <init>
+SEVERE: 
+/D:/computer_science/sco/compolsory/tiketSystem/EventHub/out/production/file/view/admin/eventsPage/assignButton/AssignComponent.fxml
+
+Apr 01, 2024 1:09:57 PM view.admin.eventsPage.assignButton.AssignButton <init>
+SEVERE: 
+/D:/computer_science/sco/compolsory/tiketSystem/EventHub/out/production/file/view/admin/eventsPage/assignButton/AssignComponent.fxml
+

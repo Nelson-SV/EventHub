@@ -1,22 +1,28 @@
 package view.admin.eventsPage.manageEventAdminPage;
+
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import view.admin.eventsPage.AdminPageController;
 import view.admin.mainAdmin.AdminModel;
 
 import java.io.IOException;
 
-public class AdminEventManagePage extends GridPane {
+public class AdminEventManagePage  {
+    @FXML
+     private GridPane managePageContainer;
     public AdminEventManagePage(StackPane secondaryLayout, StackPane thirdLayout, AdminModel model) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("AdminEventManagePage.fxml"));
-        loader.setRoot(this);
-        loader.setController(new AdminPageController(model,secondaryLayout,thirdLayout));
+        loader.setController(new AdminEventManageController(secondaryLayout, thirdLayout, model));
         try {
-            loader.load();
+            managePageContainer=loader.load();
         } catch (IOException e) {
-            e.printStackTrace();
             throw new RuntimeException(e);
         }
+    }
+    public GridPane getRoot() {
+        return managePageContainer;
     }
 }
