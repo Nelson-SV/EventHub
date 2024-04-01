@@ -1,5 +1,7 @@
 package view.components.eventsPage;
 
+import be.DeleteOperation;
+import be.Event;
 import exceptions.ErrorCode;
 import exceptions.EventException;
 import exceptions.ExceptionHandler;
@@ -14,6 +16,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import view.components.deleteEvent.DeleteButton;
+import view.components.deleteEvent.DeleteButtonController;
 import view.components.eventsPage.eventDescription.EventComponent;
 import view.components.eventsPage.eventManagement.eventCreation.CreateEventController;
 import view.components.listeners.Displayable;
@@ -53,18 +56,30 @@ public class EventsPageController extends VBox implements Displayable, Initializ
      */
     @Override
     public void displayEvents() {
-
         if(mainEventContainer.getScene()!=null){
             Platform.runLater(() -> {
                 mainEventContainer.getChildren().clear();
                 model.sortedEventsList()
-                        .forEach(e -> mainEventContainer.getChildren()
-                                .add(new EventComponent(e, new ManageAction(this.secondaryLayout, thirdLayout, e.getId(), model),new DeleteButton(secondaryLayout,thirdLayout,model,e.getId()))));
-            });
+                        .forEach(e ->
+                                {
+                                    ManageAction manageAction = new ManageAction(secondaryLayout,thirdLayout,e.getId(),model);
+                                    DeleteButton deleteButton = new DeleteButton(secondaryLayout,thirdLayout,model,e.getId(), DeleteOperation.DELETE_EVENT);
+                                    EventComponent eventComponent = new EventComponent(e,manageAction,deleteButton);
+                                    mainEventContainer.getChildren().add(eventComponent);
+                                }
+                        );
 
+            });
         }
     }
 
+
+//    private void initializeConfirmationWindowForEvent(Event event,DeleteButton deleteButton){
+//        deleteButton.setConfirmationEntityTitle("This operation will remove the event permanently!");
+//        deleteButton.setConfirmationEntityTitle(event.getName());
+//        deleteButton.setConfirmationWindowEntityStartDate(event.getStartDate());
+//        deleteButton.setConfirmationWindowEntityLocation(event.getLocation());
+//    }
     @FXML
     private void createEvent(ActionEvent actionEvent) {
         this.secondaryLayout.setVisible(true);

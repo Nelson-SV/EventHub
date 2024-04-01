@@ -185,9 +185,26 @@ public class Model implements  CommonModel {
 
 
     public boolean isEditValid(){
-
         return  evmLogic.isEditValid(selectedEvent);
     }
+
+
+
+    /**
+     * delete operation to be performed  */
+    @Override
+    public void performDeleteOperation(int entityId, DeleteOperation deleteOperation) throws EventException {
+       switch (deleteOperation){
+           case DELETE_EVENT -> this.deleteEvent(entityId);
+           case DELETE_USER -> this.deleteUser(entityId);
+       }
+    }
+
+
+    private void deleteUser(int entityId) {
+        //To be implemented
+    }
+
     /**returns the event with the corresponding id , from the coordinatorEvents map
      * @param eventId the id of the required event */
     public Event getEventById(int eventId){
@@ -199,7 +216,7 @@ public class Model implements  CommonModel {
      *
      * @param eventId the id of the event that will be deleted
      */
-    public void deleteEvent(int eventId) throws EventException {
+    private void deleteEvent(int eventId) throws EventException {
         boolean deleted =  evmLogic.deleteEvent(eventId);
         if(deleted){
             this.coordinatorEvents.remove(eventId);

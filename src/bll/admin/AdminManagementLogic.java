@@ -1,4 +1,5 @@
 package bll.admin;
+
 import be.EventStatus;
 import be.Status;
 import be.User;
@@ -11,6 +12,7 @@ import exceptions.EventException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableMap;
 import javafx.concurrent.Task;
+
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -19,13 +21,14 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class AdminManagementLogic  implements IAdminLogic {
-private EventDAO eventDAO;
-private UsersDAO usersDAO;
-private IAdminDao adminDao;
+public class AdminManagementLogic implements IAdminLogic {
+    private EventDAO eventDAO;
+    private UsersDAO usersDAO;
+    private IAdminDao adminDao;
+
     public AdminManagementLogic() throws EventException {
-        this.eventDAO =new EventDAO();
-        this.usersDAO= new UsersDAO();
+        this.eventDAO = new EventDAO();
+        this.usersDAO = new UsersDAO();
         this.adminDao = new AdminDao();
     }
 
@@ -36,17 +39,16 @@ private IAdminDao adminDao;
     @Override
     public ObservableMap<Integer, EventStatus> getEventsWithStatus() throws EventException {
         ObservableMap<Integer, EventStatus> eventsWithStatus = adminDao.getAllEvents();
-        eventsWithStatus.values().forEach(item->item.setStatus(computeEventStatus(item)));
+        eventsWithStatus.values().forEach(item -> item.setStatus(computeEventStatus(item)));
         return eventsWithStatus;
     }
 
 
-
-
     @Override
-    public Task<List<User>> getEventCoordinators(int eventId) throws EventException {
-        return usersDAO.getEventUsers(eventId);
+    public List<User> getEventCoordinators(int eventId) throws EventException {
+        return usersDAO.getEventCoordinators(eventId);
     }
+
 
     /**
      * compute the status off the current based on the start date, time, end date, time
@@ -57,61 +59,70 @@ private IAdminDao adminDao;
         return EventStatusCalculator.calculateStatus(event);
     }
     //TODO to be deleted if not needed anymore
+
     /**
-     *sort the events by the status and startDate  */
-    public List<EventStatus> getSortedEventsByStatus(Collection<EventStatus> events){
+     * sort the events by the status and startDate
+     */
+    public List<EventStatus> getSortedEventsByStatus(Collection<EventStatus> events) {
         List<EventStatus> sortedEvents = new ArrayList<>();
         //sort ongoing events
         List<EventStatus> ongoingEvents = sortOngoing(events);
         //sort upcoming events
-        List<EventStatus> upcomingEvents= sortUpcoming(events);
+        List<EventStatus> upcomingEvents = sortUpcoming(events);
         //sort finalized events
-        List<EventStatus> finalizedEvents= sortFinalized(events);
+        List<EventStatus> finalizedEvents = sortFinalized(events);
 
         sortedEvents.addAll(ongoingEvents);
         sortedEvents.addAll(upcomingEvents);
         sortedEvents.addAll(finalizedEvents);
-      return sortedEvents;
+        return sortedEvents;
     }
 
-/**sorts the events by status ahead, and store them in a map ,by status*/
-    public ObservableMap<Status,List<EventStatus>> setSortedEventsByStatus(Collection<EventStatus> events){
-        ObservableMap<Status,List<EventStatus>> eventsByStatus = FXCollections.observableHashMap();
+    /**
+     * sorts the events by status ahead, and store them in a map ,by status
+     */
+    public ObservableMap<Status, List<EventStatus>> setSortedEventsByStatus(Collection<EventStatus> events) {
+        ObservableMap<Status, List<EventStatus>> eventsByStatus = FXCollections.observableHashMap();
         List<EventStatus> sortedEvents = new ArrayList<>();
         //sort ongoing events
         List<EventStatus> ongoingEvents = sortOngoing(events);
         //sort upcoming events
-        List<EventStatus> upcomingEvents= sortUpcoming(events);
+        List<EventStatus> upcomingEvents = sortUpcoming(events);
         //sort finalized events
-        List<EventStatus> finalizedEvents=sortFinalized(events);
+        List<EventStatus> finalizedEvents = sortFinalized(events);
 
         sortedEvents.addAll(ongoingEvents);
         sortedEvents.addAll(upcomingEvents);
         sortedEvents.addAll(finalizedEvents);
 
-        eventsByStatus.put(Status.ONGOING,ongoingEvents);
-        eventsByStatus.put(Status.UPCOMING,upcomingEvents);
-        eventsByStatus.put(Status.FINALIZED,finalizedEvents);
-        eventsByStatus.put(Status.ALL,sortedEvents);
+        eventsByStatus.put(Status.ONGOING, ongoingEvents);
+        eventsByStatus.put(Status.UPCOMING, upcomingEvents);
+        eventsByStatus.put(Status.FINALIZED, finalizedEvents);
+        eventsByStatus.put(Status.ALL, sortedEvents);
         return eventsByStatus;
     }
 
-    private List<EventStatus> sortOngoing(Collection<EventStatus> events){
-        List<EventStatus> ongoing = events.stream().filter((item)->item.getStatus().getValue().equals(Status.ONGOING.getValue())).toList();
+    @Override
+    public boolean unassignUser(int entityId, int eventId) throws EventException {
+        return usersDAO.unassignUser(entityId, eventId);
+    }
+
+    private List<EventStatus> sortOngoing(Collection<EventStatus> events) {
+        List<EventStatus> ongoing = events.stream().filter((item) -> item.getStatus().getValue().equals(Status.ONGOING.getValue())).toList();
         return sortByStartingDate(ongoing);
     }
 
-    private List<EventStatus> sortUpcoming(Collection<EventStatus> events){
-        List<EventStatus> upcoming = events.stream().filter((item)->item.getStatus().getValue().equals(Status.UPCOMING.getValue())).toList();
+    private List<EventStatus> sortUpcoming(Collection<EventStatus> events) {
+        List<EventStatus> upcoming = events.stream().filter((item) -> item.getStatus().getValue().equals(Status.UPCOMING.getValue())).toList();
         return sortByStartingDate(upcoming);
     }
 
-    private List<EventStatus> sortFinalized(Collection<EventStatus> events){
-        List<EventStatus> finalized = events.stream().filter((item)->item.getStatus().getValue().equals(Status.FINALIZED.getValue())).toList();
+    private List<EventStatus> sortFinalized(Collection<EventStatus> events) {
+        List<EventStatus> finalized = events.stream().filter((item) -> item.getStatus().getValue().equals(Status.FINALIZED.getValue())).toList();
         return sortByStartingDate(finalized);
     }
 
-    private List<EventStatus> sortByStartingDate(List<EventStatus> events){
+    private List<EventStatus> sortByStartingDate(List<EventStatus> events) {
         return events.stream()
                 .sorted(Comparator.comparing(event -> Math.abs(ChronoUnit.DAYS.between(LocalDate.now(), event.getEventDTO().getStartDate()))))
                 .collect(Collectors.toList());

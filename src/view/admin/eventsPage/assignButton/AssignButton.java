@@ -10,9 +10,9 @@ import java.io.IOException;
 
 public class AssignButton  extends  VBox{
     private VBox assignContainer;
-    public AssignButton(AdminModel adminModel, StackPane secondaryLayout,StackPane thirdLayout,int eventId) {
+    public AssignButton(AdminModel adminModel, StackPane secondaryLayout,StackPane thirdLayout,StackPane adminFourthLayout,int eventId) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("AssignComponent.fxml"));
-        loader.setController(new AssignController(adminModel,secondaryLayout,thirdLayout,eventId));
+        loader.setController(new AssignController(adminModel,secondaryLayout,thirdLayout,adminFourthLayout,eventId));
         try {
             assignContainer=loader.load();
             this.getChildren().add(assignContainer);

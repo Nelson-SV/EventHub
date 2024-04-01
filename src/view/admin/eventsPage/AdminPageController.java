@@ -1,4 +1,5 @@
 package view.admin.eventsPage;
+import be.DeleteOperation;
 import exceptions.ErrorCode;
 import exceptions.EventException;
 import exceptions.ExceptionHandler;
@@ -26,13 +27,14 @@ public class AdminPageController implements Initializable, Displayable {
     @FXML
     private VBox adminEventPage;
 
-    private StackPane secondaryLayout,thirdLayout;
+    private StackPane secondaryLayout,thirdLayout,adminFourthLayout;
     private Service<Void> getEvents;
 
-    public AdminPageController(AdminModel adminModel, StackPane secondaryLayout,StackPane thirdLayout) {
+    public AdminPageController(AdminModel adminModel, StackPane secondaryLayout,StackPane thirdLayout,StackPane adminFourthLayout) {
         this.adminModel= adminModel;
         this.secondaryLayout=secondaryLayout;
         this.thirdLayout=thirdLayout;
+        this.adminFourthLayout=adminFourthLayout;
         adminModel.setEventsDisplayer(this);
     }
 
@@ -48,7 +50,7 @@ public class AdminPageController implements Initializable, Displayable {
                 eventsContainer.getChildren().clear();
                 adminModel.sortedEventsList()
                         .forEach(e ->eventsContainer .getChildren()
-                                .add(new EventDescription(e,new AssignButton(adminModel,secondaryLayout,thirdLayout,e.getEventDTO().getId()),new DeleteButton(secondaryLayout,thirdLayout,adminModel,e.getEventDTO().getId()))));
+                                .add(new EventDescription(e,new AssignButton(adminModel,secondaryLayout,thirdLayout,adminFourthLayout,e.getEventDTO().getId()),new DeleteButton(secondaryLayout,thirdLayout,adminModel,e.getEventDTO().getId(), DeleteOperation.DELETE_EVENT))));
             });
         }
     }

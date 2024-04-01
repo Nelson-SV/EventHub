@@ -1,14 +1,12 @@
 package view.admin.mainAdmin;
-import be.Event;
-import be.EventStatus;
-import be.Status;
-import be.User;
+import be.*;
 import bll.admin.AdminManagementLogic;
 import bll.admin.IAdminLogic;
 import exceptions.EventException;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
-import javafx.concurrent.Task;
+import view.admin.listeners.AdminCoordinatorsDisplayer;
 import view.components.listeners.Displayable;
 import view.components.main.CommonModel;
 import java.util.List;
@@ -19,13 +17,15 @@ import java.util.List;
 public class AdminModel implements CommonModel {
     private IAdminLogic adminLogic;
     private Displayable eventsDisplayer;
-
+    private AdminCoordinatorsDisplayer coordinatorsDisplayer;
     private EventStatus selectedEvent;
 
     /**holds all the events in the system*/
     private ObservableMap<Integer, EventStatus> allEvents;
-
     private ObservableMap<Status,List<EventStatus>> sortedEventsByStatus;
+
+    /**holds the coordinators of the current selected event */
+    private ObservableList<User> eventAssignedCoordinators;
 
     /*** holds the coordinators for all the events*/
     private ObservableMap<Integer, List<User>> eventCoordinators;
@@ -34,15 +34,21 @@ public class AdminModel implements CommonModel {
         this.adminLogic = new AdminManagementLogic();
         this.allEvents= FXCollections.observableHashMap();
         this.eventCoordinators=FXCollections.observableHashMap();
+        this.eventAssignedCoordinators=FXCollections.observableArrayList();
     }
     /**retrieves all the events from the database*/
     public void initializeEvents() throws EventException {
        allEvents = adminLogic.getEventsWithStatus();
     }
+
     /**retrieves the coordinators from the database*/
-    public Task<List<User>> initializeEventCoordinators(int eventId) throws EventException {
-       return adminLogic.getEventCoordinators(eventId);
+     public void initializeEventCoordinators(int eventId) throws EventException {
+         eventAssignedCoordinators.setAll(adminLogic.getEventCoordinators(eventId));
+         System.out.println(eventAssignedCoordinators.size() + " executed");
     }
+
+
+
     /**
      * sorts the events with the least amount of time remaining until it starts first
      */
@@ -68,10 +74,35 @@ public class AdminModel implements CommonModel {
     public Displayable getEventsDisplayer() {
         return eventsDisplayer;
     }
+    private void deleteEvent(int eventId) throws EventException {
+        //To be implemented;
+    }
+
+    private void deleteUser(int entityId)throws EventException{
+        if(adminLogic.unassignUser(entityId,selectedEvent.getEventDTO().getId())){
+            System.out.println("delete operation successfully");
+            this.selectedEvent.setCoordinatorCount(selectedEvent.getCoordinatorCount()-1);
+            this.eventAssignedCoordinators.setAll(eventAssignedCoordinators.stream().filter(e->e.getUserId()!=entityId).toList());
+        }else{
+            System.out.println("delete operation unsuccessfully");
+        }
+    }
+
+    public AdminCoordinatorsDisplayer getCoordinatorsDisplayer() {
+        return coordinatorsDisplayer;
+    }
+
+    public void setCoordinatorsDisplayer(AdminCoordinatorsDisplayer coordinatorsDisplayer) {
+        this.coordinatorsDisplayer = coordinatorsDisplayer;
+    }
 
     @Override
-    public void deleteEvent(int eventId) throws EventException {
-        //To be implemented
+    public void performDeleteOperation(int entityId, DeleteOperation deleteOperation) throws EventException {
+        switch(deleteOperation){
+            case DELETE_EVENT -> this.deleteEvent(entityId);
+            case DELETE_USER -> this.deleteUser(entityId);
+        }
+
     }
 
     @Override
@@ -79,8 +110,14 @@ public class AdminModel implements CommonModel {
         return allEvents.get(eventId).getEventDTO();
     }
 
-
     public void setSelectedEvent(int eventId){
         this.selectedEvent=allEvents.get(eventId);
     }
+    /**returns the eventAssignedCoordinators*/
+    public ObservableList<User> getEventAssignedCoordinators() {
+        return eventAssignedCoordinators;
+    }
+
+
+
 }

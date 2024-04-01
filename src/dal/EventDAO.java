@@ -260,7 +260,6 @@ public class EventDAO {
                 }
                 psmt.setString(7, selectedEvent.getLocation());
                 psmt.setInt(8, selectedEvent.getId());
-
                 psmt.executeUpdate();
             }
             insertCoordinators(selectedEvent.getId(), assignedCoordinators, conn);
