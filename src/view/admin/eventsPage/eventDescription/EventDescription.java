@@ -7,7 +7,7 @@ import exceptions.ExceptionLogger;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.HBox;
-import view.admin.eventsPage.assignComponent.AssignButton;
+import view.admin.eventsPage.assignButton.AssignButton;
 import view.components.deleteEvent.DeleteButton;
 
 import java.io.IOException;

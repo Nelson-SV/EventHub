@@ -6,9 +6,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
-import view.admin.eventsPage.assignComponent.AssignButton;
+import view.admin.eventsPage.assignButton.AssignButton;
 import view.components.deleteEvent.DeleteButton;
-import view.components.eventsPage.manageButton.ManageAction;
+
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -39,6 +39,8 @@ public class EventController implements Initializable {
     @FXML
     private HBox eventActions;
     @FXML
+    private Label coordinatorsNumber;
+    @FXML
     private AssignButton assignButton;
     @FXML
     private DeleteButton deleteButton;
@@ -62,10 +64,10 @@ public class EventController implements Initializable {
         this.eventName.textProperty().bind(event.getEventDTO().nameProperty());
         this.eventLocation.textProperty().bind(event.getEventDTO().descriptionProperty());
         this.eventTickets.textProperty().bind(event.getEventDTO().availableTicketsProperty().asString());
-        bindDates(event, eventStart, eventEnd, startTime, endTime);
+        bindDates(event,coordinatorsNumber, eventStart, eventEnd, startTime, endTime);
     }
 
-    private void bindDates(EventStatus event, Label startDate, Label endDate, Label startTime, Label endTime) {
+    private void bindDates(EventStatus event,Label coordinatorsNumber , Label startDate, Label endDate, Label startTime, Label endTime) {
         StringBinding eventStartBinding = new StringBinding() {
             {
                 super.bind(event.getEventDTO().startDateProperty());
@@ -120,6 +122,7 @@ public class EventController implements Initializable {
                 return "N/A";
             }
         };
+        coordinatorsNumber.textProperty().bind(event.coordinatorCountProperty().asString());
         startDate.textProperty().bind(eventStartBinding);
         endDate.textProperty().bind(eventEndBinding);
         startTime.textProperty().bind(eventStartTimeBinding);

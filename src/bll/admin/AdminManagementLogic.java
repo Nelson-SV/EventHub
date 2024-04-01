@@ -1,11 +1,12 @@
 package bll.admin;
-import be.Event;
 import be.EventStatus;
 import be.Status;
 import be.User;
 import bll.EventStatusCalculator;
 import dal.EventDAO;
 import dal.UsersDAO;
+import dal.admindal.AdminDao;
+import dal.admindal.IAdminDao;
 import exceptions.EventException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableMap;
@@ -21,9 +22,11 @@ import java.util.stream.Collectors;
 public class AdminManagementLogic  implements IAdminLogic {
 private EventDAO eventDAO;
 private UsersDAO usersDAO;
+private IAdminDao adminDao;
     public AdminManagementLogic() throws EventException {
         this.eventDAO =new EventDAO();
         this.usersDAO= new UsersDAO();
+        this.adminDao = new AdminDao();
     }
 
     /**
@@ -32,15 +35,13 @@ private UsersDAO usersDAO;
      */
     @Override
     public ObservableMap<Integer, EventStatus> getEventsWithStatus() throws EventException {
-        ObservableMap<Integer,Event> events =  eventDAO.getEvents();
-        ObservableMap<Integer, EventStatus> eventsWithStatus = FXCollections.observableHashMap();
-        events.values().stream().map((EventStatus::new))
-                .forEach((item) -> {
-                    item.setStatus(computeEventStatus(item));
-                    eventsWithStatus.put(item.getEventDTO().getId(), item);
-                });
+        ObservableMap<Integer, EventStatus> eventsWithStatus = adminDao.getAllEvents();
+        eventsWithStatus.values().forEach(item->item.setStatus(computeEventStatus(item)));
         return eventsWithStatus;
     }
+
+
+
 
     @Override
     public Task<List<User>> getEventCoordinators(int eventId) throws EventException {

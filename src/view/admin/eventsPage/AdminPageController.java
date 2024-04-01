@@ -2,6 +2,7 @@ package view.admin.eventsPage;
 import exceptions.ErrorCode;
 import exceptions.EventException;
 import exceptions.ExceptionHandler;
+import exceptions.ExceptionLogger;
 import javafx.application.Platform;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
@@ -9,17 +10,14 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import view.admin.eventsPage.assignComponent.AssignButton;
-import view.admin.eventsPage.eventDescription.EventController;
+import view.admin.eventsPage.assignButton.AssignButton;
 import view.admin.eventsPage.eventDescription.EventDescription;
 import view.admin.mainAdmin.AdminModel;
 import view.components.deleteEvent.DeleteButton;
-import view.components.eventsPage.eventDescription.EventComponent;
-import view.components.eventsPage.manageButton.ManageAction;
 import view.components.listeners.Displayable;
-import java.awt.event.ActionEvent;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
 
 public class AdminPageController implements Initializable, Displayable {
     private AdminModel adminModel;
@@ -69,7 +67,10 @@ public class AdminPageController implements Initializable, Displayable {
             }
         };
         getEvents.setOnSucceeded(event -> displayEvents());
-        getEvents.setOnFailed(event -> ExceptionHandler.erorrAlertMessage(ErrorCode.FAILED_TO_LOAD_EVENTS.getValue()));
+        getEvents.setOnFailed(event ->{
+            ExceptionLogger.getInstance().getLogger().log(Level.SEVERE,getEvents.getException().getMessage());
+            ExceptionHandler.erorrAlertMessage(ErrorCode.FAILED_TO_LOAD_EVENTS.getValue());
+                });
         getEvents.restart();
     }
 

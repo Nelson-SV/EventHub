@@ -1,4 +1,4 @@
-package view.admin.eventsPage.assignComponent;
+package view.admin.eventsPage.assignButton;
 
 import exceptions.ErrorCode;
 import exceptions.ExceptionHandler;
