@@ -1,16 +1,14 @@
 package view.admin.eventsPage.manageEventAdminPage;
 
 import be.DeleteOperation;
-import be.User;
 import io.github.palexdev.materialfx.controls.MFXButton;
-import javafx.application.Platform;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import view.admin.eventsPage.assignCoordinatorView.AssignCoordinatorComponent;
 import view.admin.eventsPage.assignedCoordinatorView.AssignedCoordinatorComponent;
 import view.admin.mainAdmin.AdminModel;
 import view.components.deleteEvent.DeleteButton;
@@ -26,6 +24,8 @@ public class AdminEventManageController implements Initializable {
     private MFXButton cancelButton;
     @FXML
     private VBox assignedCoordinatorsContainer;
+    @FXML
+    private VBox allCoordinatorsContainer;
 
     private StackPane secondaryLayout, thirdLayout, fourthLayout;
     private AdminModel adminModel;
@@ -65,6 +65,11 @@ public class AdminEventManageController implements Initializable {
     }
 
     public void displayAllCoordinators() {
-        System.out.println("setThem");
+        if (managePageContainer.getScene() != null) {
+            adminModel.getAllCoordinators().forEach((elem) -> {
+                AssignCoordinatorComponent assignCoordinatorComponent = new AssignCoordinatorComponent(elem.getUserId(), elem.getFirstName(), elem.getLastName());
+                allCoordinatorsContainer.getChildren().add(assignCoordinatorComponent);
+            });
+        }
     }
 }

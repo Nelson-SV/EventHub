@@ -4,17 +4,10 @@ INFO: Logger initialized
 Mar 23, 2024 2:37:03 PM Main main
 WARNING: TESt
 Mar 30, 2024 5:06:18 PM exceptions.ExceptionLogger <init>
-INFO: Logger initialized 
-.......................................
-Mar 30, 2024 5:06:18 PM view.components.main.EventsObservable lambda$startService$2
-SEVERE: The TCP/IP connection to the host EASV-DB4, port 1433 has failed. Error: "EASV-DB4. Verify the connection properties. Make sure that an instance of SQL Server is running on the host and accepting TCP/IP connections at the port. Make sure that TCP connections to the port are not blocked by a firewall.".
+
 Mar 30, 2024 5:06:21 PM view.components.deleteEvent.DeleteButtonController lambda$initializeDeleteService$3
 SEVERE: The TCP/IP connection to the host EASV-DB4, port 1433 has failed. Error: "EASV-DB4. Verify the connection properties. Make sure that an instance of SQL Server is running on the host and accepting TCP/IP connections at the port. Make sure that TCP connections to the port are not blocked by a firewall.".
 Mar 31, 2024 1:18:18 AM exceptions.ExceptionLogger <init>
-INFO: Logger initialized 
-.......................................
-Mar 31, 2024 1:18:18 AM view.components.main.EventsObservable lambda$startService$2
-SEVERE: The TCP/IP connection to the host EASV-DB4, port 1433 has failed. Error: "EASV-DB4. Verify the connection properties. Make sure that an instance of SQL Server is running on the host and accepting TCP/IP connections at the port. Make sure that TCP connections to the port are not blocked by a firewall.".
 Mar 31, 2024 1:18:22 AM view.components.deleteEvent.DeleteButtonController lambda$initializeDeleteService$3
 SEVERE: The TCP/IP connection to the host EASV-DB4, port 1433 has failed. Error: "EASV-DB4. Verify the connection properties. Make sure that an instance of SQL Server is running on the host and accepting TCP/IP connections at the port. Make sure that TCP connections to the port are not blocked by a firewall.".
 Mar 31, 2024 8:29:37 PM exceptions.ExceptionLogger <init>
@@ -327,3 +320,18 @@ INFO: Logger initialized
 .......................................
 Apr 02, 2024 1:00:18 AM view.components.deleteEvent.DeleteButtonController lambda$initializeDeleteService$3
 SEVERE: java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+Apr 02, 2024 8:24:32 PM exceptions.ExceptionLogger <init>
+INFO: Logger initialized 
+.......................................
+Apr 02, 2024 8:24:32 PM view.components.deleteEvent.DeleteButtonController lambda$initializeDeleteService$3
+SEVERE: [dal.UsersDAO.unassignUser(UsersDAO.java:101), bll.admin.AdminManagementLogic.unassignUser(AdminManagementLogic.java:107), view.admin.mainAdmin.AdminModel.deleteUser(AdminModel.java:98), view.admin.mainAdmin.AdminModel.performDeleteOperation(AdminModel.java:121), view.components.deleteEvent.DeleteButtonController$1$1.call(DeleteButtonController.java:101), view.components.deleteEvent.DeleteButtonController$1$1.call(DeleteButtonController.java:98), javafx.graphics/javafx.concurrent.Task$TaskCallable.call(Task.java:1399), java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317), javafx.graphics/javafx.concurrent.Service.lambda$executeTask$6(Service.java:724), java.base/java.security.AccessController.doPrivileged(AccessController.java:400), javafx.graphics/javafx.concurrent.Service.lambda$executeTask$7(Service.java:723), java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144), java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642), java.base/java.lang.Thread.run(Thread.java:1583)]
+Apr 02, 2024 8:28:09 PM exceptions.ExceptionLogger <init>
+INFO: Logger initialized 
+.......................................
+Apr 02, 2024 8:28:09 PM view.components.deleteEvent.DeleteButtonController lambda$initializeDeleteService$3
+SEVERE: [dal.UsersDAO.unassignUser(UsersDAO.java:100), bll.admin.AdminManagementLogic.unassignUser(AdminManagementLogic.java:107), view.admin.mainAdmin.AdminModel.deleteUser(AdminModel.java:98), view.admin.mainAdmin.AdminModel.performDeleteOperation(AdminModel.java:121), view.components.deleteEvent.DeleteButtonController$1$1.call(DeleteButtonController.java:101), view.components.deleteEvent.DeleteButtonController$1$1.call(DeleteButtonController.java:98), javafx.graphics/javafx.concurrent.Task$TaskCallable.call(Task.java:1399), java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317), javafx.graphics/javafx.concurrent.Service.lambda$executeTask$6(Service.java:724), java.base/java.security.AccessController.doPrivileged(AccessController.java:400), javafx.graphics/javafx.concurrent.Service.lambda$executeTask$7(Service.java:723), java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144), java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642), java.base/java.lang.Thread.run(Thread.java:1583)]
+Apr 02, 2024 10:31:12 PM exceptions.ExceptionLogger <init>
+INFO: Logger initialized 
+.......................................
+Apr 02, 2024 10:31:12 PM view.components.deleteEvent.DeleteButtonController lambda$initializeDeleteService$3
+SEVERE: [dal.UsersDAO.unassignUser(UsersDAO.java:100), bll.admin.AdminManagementLogic.unassignUser(AdminManagementLogic.java:107), view.admin.mainAdmin.AdminModel.deleteUser(AdminModel.java:114), view.admin.mainAdmin.AdminModel.performDeleteOperation(AdminModel.java:137), view.components.deleteEvent.DeleteButtonController$1$1.call(DeleteButtonController.java:101), view.components.deleteEvent.DeleteButtonController$1$1.call(DeleteButtonController.java:98), javafx.graphics/javafx.concurrent.Task$TaskCallable.call(Task.java:1399), java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317), javafx.graphics/javafx.concurrent.Service.lambda$executeTask$6(Service.java:724), java.base/java.security.AccessController.doPrivileged(AccessController.java:400), javafx.graphics/javafx.concurrent.Service.lambda$executeTask$7(Service.java:723), java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144), java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642), java.base/java.lang.Thread.run(Thread.java:1583)]

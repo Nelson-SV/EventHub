@@ -22,4 +22,6 @@ public interface IAdminLogic {
     ObservableMap<Status,List<EventStatus>> setSortedEventsByStatus(Collection<EventStatus> events);
 
     boolean unassignUser(int entityId, int eventId) throws EventException;
+
+    List<User> getAllCoordinators(int eventId) throws EventException;
 }

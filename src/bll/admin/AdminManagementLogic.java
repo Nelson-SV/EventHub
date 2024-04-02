@@ -107,6 +107,11 @@ public class AdminManagementLogic implements IAdminLogic {
         return usersDAO.unassignUser(entityId, eventId);
     }
 
+    @Override
+    public List<User> getAllCoordinators(int eventId) throws EventException {
+        return usersDAO.getAllEvents(eventId);
+    }
+
     private List<EventStatus> sortOngoing(Collection<EventStatus> events) {
         List<EventStatus> ongoing = events.stream().filter((item) -> item.getStatus().getValue().equals(Status.ONGOING.getValue())).toList();
         return sortByStartingDate(ongoing);
