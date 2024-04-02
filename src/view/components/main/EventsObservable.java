@@ -73,6 +73,6 @@ public class EventsObservable {
             ExceptionLogger.getInstance().getLogger().log(Level.SEVERE, cause.getMessage());
             ExceptionHandler.erorrAlertMessage(ErrorCode.FAILED_UPDATE_EVENTS.getValue());
         });
-        scheduledService.start();
+        scheduledService.restart();
     }
 }
