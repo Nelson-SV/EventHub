@@ -97,7 +97,6 @@ public class UsersDAO {
             }
             succeeded = true;
         } catch (SQLException |EventException e) {
-            e.printStackTrace();
             throw new EventException(e.getMessage());
         }
         return succeeded;
