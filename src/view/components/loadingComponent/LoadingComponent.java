@@ -27,7 +27,6 @@ public class LoadingComponent extends VBox {
             this.getChildren().add(loadingComponent);
             this.setAlignment(Pos.CENTER);
         } catch (IOException e) {
-            e.printStackTrace();
             ExceptionHandler.erorrAlertMessage(ErrorCode.LOADING_FXML_FAILED.getValue());
         }
     }

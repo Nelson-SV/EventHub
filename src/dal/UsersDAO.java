@@ -128,8 +128,6 @@ public class UsersDAO {
             e.printStackTrace();
             throw new EventException(e.getMessage(), e.getCause(), ErrorCode.OPERATION_DB_FAILED);
         }
-        System.out.println(eventId);
-        coordinators.forEach(System.out::println);
         return coordinators;
     }
 

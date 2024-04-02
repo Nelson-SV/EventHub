@@ -61,7 +61,6 @@ public class AdminEventManageController implements Initializable {
     public void saveChanges(ActionEvent event) {
         getSelectedUsers();
         initializeAssignOperationService();
-        System.out.println("saveOperation");
     }
 
     private void cancelChanges(ActionEvent event) {
