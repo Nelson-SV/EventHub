@@ -36,6 +36,10 @@ public class AdminModel implements CommonModel {
      */
     private ObservableList<User> eventAssignedCoordinators;
 
+    /***/
+    private ObservableList<User> allCoordinators;
+
+    //TODO delete if not used
     /*** holds the coordinators for all the events*/
     private ObservableMap<Integer, List<User>> eventCoordinators;
 
@@ -44,6 +48,11 @@ public class AdminModel implements CommonModel {
         this.allEvents = FXCollections.observableHashMap();
         this.eventCoordinators = FXCollections.observableHashMap();
         this.eventAssignedCoordinators = FXCollections.observableArrayList();
+        this.allCoordinators=FXCollections.observableArrayList();
+    }
+
+    public ObservableList<User> getAllCoordinators() {
+        return allCoordinators;
     }
 
     /**
@@ -54,12 +63,19 @@ public class AdminModel implements CommonModel {
     }
 
     /**
-     * retrieves the coordinators from the database
+     * retrieves the coordinators for an event  from the database
      */
     public void initializeEventCoordinators(int eventId) throws EventException {
         eventAssignedCoordinators.setAll(adminLogic.getEventCoordinators(eventId));
         System.out.println(eventAssignedCoordinators.size() + " executed");
     }
+
+    /**retrieves all the coordinators in the system except the ones that are already assigned to this event*/
+    public void initialiazeAllCoordinators(int entityId) throws EventException{
+        allCoordinators.setAll(adminLogic.getAllCoordinators(entityId));
+    }
+
+
 
 
     /**

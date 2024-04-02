@@ -1,5 +1,4 @@
 package dal.admindal;
-
 import be.Event;
 import be.EventStatus;
 import dal.ConnectionManager;

@@ -1,4 +1,4 @@
-package view.components.main;
+package view.components.eventsObservers;
 import be.Event;
 import bll.EventManagementLogic;
 import bll.ILogicManager;
@@ -10,12 +10,15 @@ import javafx.collections.ObservableMap;
 import javafx.concurrent.ScheduledService;
 import javafx.concurrent.Task;
 import javafx.util.Duration;
+import view.components.eventsObservers.DateObserver;
 import view.components.listeners.Displayable;
+import view.components.main.Model;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 
-public class EventsObservable {
+public class EventsObservable  implements DateObserver {
     private final List<Displayable> eventDisplayer;
     private final Model model;
     private final ILogicManager evmLogic;
