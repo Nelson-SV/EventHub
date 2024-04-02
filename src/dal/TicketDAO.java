@@ -150,6 +150,22 @@ public class TicketDAO {
             throw new EventException(e.getMessage(), e.getCause(), ErrorCode.OPERATION_DB_FAILED);        }
     }
 
+    public void deductSpecialQuantity(int id, int quantity) throws EventException {
+        Connection conn = null;
+        try {
+            conn = connectionManager.getConnection();
+            String sql = "UPDATE SpecialTickets SET Quantity = Quantity - ? WHERE ID = ?";
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setInt(1, quantity);
+            statement.setInt(2, id);
+            int rowsUpdated = statement.executeUpdate();
+            if (rowsUpdated == 0) {
+                throw new SQLException("No ticket found with ID: " + id);
+            }
+        } catch (SQLException | EventException e) {
+            throw new EventException(e.getMessage(), e.getCause(), ErrorCode.OPERATION_DB_FAILED);        }
+    }
+
     public void insertSoldTicket(int ticketID, int customerID) throws EventException {
         Connection conn = null;
         try {
@@ -171,7 +187,7 @@ public class TicketDAO {
         Connection conn = null;
         try {
             conn = connectionManager.getConnection();
-            String sql = "INSERT INTO SoldTickets (SpecialTicketID, CustomerID) VALUES (?, ?)";
+            String sql = "INSERT INTO SoldTickets (SpecialTicketId, CustomerID) VALUES (?, ?)";
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setInt(1, ticketID);
             statement.setInt(2, customerID);

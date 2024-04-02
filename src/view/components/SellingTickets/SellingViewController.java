@@ -207,13 +207,14 @@ public class SellingViewController implements Initializable {
 
         for (Ticket item : allSelectedTickets.getItems()) {
 
-            model.deductTicketQuantity(item.getId(), item.getQuantity());
             boolean isSpecial = item.getSpecial();
             if(isSpecial){
                 //call method for special ticket
+                model.deductSpecialQuantity(item.getId(), item.getQuantity());
                 model.insertSoldSpecialTicket(item.getId(), customerId);
             }else{
                 //call method for normal ticket
+                model.deductTicketQuantity(item.getId(), item.getQuantity());
                 model.insertSoldTicket(item.getId(),customerId);
             }
             // call ticket dao method

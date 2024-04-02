@@ -287,12 +287,16 @@ public class Model implements  CommonModel {
         ticketManager.deductQuantity(id,quantity);
     }
 
+    public void deductSpecialQuantity(int id, int quantity) throws EventException{
+        ticketManager.deductSpecialQuantity(id,quantity);
+    }
+
     public void insertSoldTicket(int ticketId, int customerId) throws EventException{
         ticketManager.insertSoldTicket(ticketId,customerId);
     }
 
     public void insertSoldSpecialTicket(int ticketId, int customerId) throws EventException{
-        ticketManager.insertSoldTicket(ticketId,customerId);
+        ticketManager.insertSoldSpecialTicket(ticketId,customerId);
     }
 
     public Integer getEventIdByName(String eventName) {
