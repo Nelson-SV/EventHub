@@ -3,7 +3,6 @@ package view.components.main;
 import be.*;
 import bll.*;
 import exceptions.EventException;
-import exceptions.TicketException;
 import javafx.collections.*;
 import javafx.concurrent.Task;
 import view.components.eventsObservers.DateObservable;
@@ -55,7 +54,7 @@ public class Model implements CommonModel {
     private List<Ticket> addedTickets;
     private static Model instance;
 
-    public static Model getInstance() throws EventException, TicketException {
+    public static Model getInstance() throws EventException {
         if (instance == null) {
             instance = new Model();
         }
@@ -63,7 +62,7 @@ public class Model implements CommonModel {
     }
 
 
-    private Model() throws EventException, TicketException {
+    private Model() throws EventException {
         initializeEventsObservable();
         initializeEventDateObservable();
         eventManager = new EventManager();
@@ -331,7 +330,7 @@ public class Model implements CommonModel {
 
 
         /*
-    public List<Ticket> addTicket(Ticket ticket) throws TicketException {
+    public List<Ticket> addTicket(Ticket ticket) {
         Integer inserted = ticketManager.addTicket(ticket);
         if (inserted != null) {
             ticket.setId(inserted);

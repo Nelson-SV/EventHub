@@ -1,6 +1,5 @@
 package view.components.main;
 import exceptions.EventException;
-import exceptions.TicketException;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -50,7 +49,7 @@ public class MainController implements Initializable , InitializationErrorListen
             NavigationHoverControl navigationHoverControl = new NavigationHoverControl(eventsLine, sellingLine, ticketingLine, eventsNavButton, sellingNavButton, specialTicketNavButton);
             navigationHoverControl.initializeNavButtons();
             initializeMainPageEvents();
-        } catch (EventException | TicketException e) {
+        } catch (EventException e) {
             initializationError = true;
         }
 
