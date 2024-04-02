@@ -197,7 +197,12 @@ public class Model implements  CommonModel {
        switch (deleteOperation){
            case DELETE_EVENT -> this.deleteEvent(entityId);
            case DELETE_USER -> this.deleteUser(entityId);
+           case DELETE_TICKET -> this.deleteTicket(entityId);
        }
+    }
+
+    private void deleteTicket(int entityId) {
+
     }
 
 

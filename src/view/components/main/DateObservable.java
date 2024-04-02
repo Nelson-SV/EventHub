@@ -46,7 +46,6 @@ public class DateObservable {
                 return new Task<Boolean>() {
                     @Override
                     protected Boolean call() throws Exception {
-                        System.out.println("executed");
                         return model.compareEventDatesWithCurrentDate();
                     }
                 };
@@ -56,6 +55,7 @@ public class DateObservable {
         eventStatusService.setPeriod(Duration.seconds(executionInterval));
         eventStatusService.setOnSucceeded((event) -> {
             if(eventStatusService.getValue()) {
+                System.out.println("executed");
                 callDisplayable();
             }
         });

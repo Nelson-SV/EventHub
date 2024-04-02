@@ -29,6 +29,7 @@
     -fx-border-width: 2;
 }
 
+
 .invalidInput:error{
     -fx-background-color: #E1EBF2;
     -fx-background-radius: 5;

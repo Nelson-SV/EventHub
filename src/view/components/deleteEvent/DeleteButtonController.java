@@ -1,6 +1,7 @@
 package view.components.deleteEvent;
 import be.DeleteOperation;
 import exceptions.ErrorCode;
+import exceptions.EventException;
 import exceptions.ExceptionLogger;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
@@ -96,7 +97,7 @@ public class DeleteButtonController implements OperationHandler, Initializable {
             protected Task<Void> createTask() {
                 return new Task<Void>() {
                     @Override
-                    protected Void call() throws Exception {
+                    protected Void call() throws EventException {
                         model.performDeleteOperation(eventId, performedDeleteOperation);
                         return null;
                     }
