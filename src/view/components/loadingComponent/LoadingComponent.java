@@ -4,6 +4,7 @@ import exceptions.ErrorCode;
 import exceptions.ExceptionHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 
@@ -24,6 +25,7 @@ public class LoadingComponent extends VBox {
         try{
             loadingComponent=loader.load();
             this.getChildren().add(loadingComponent);
+            this.setAlignment(Pos.CENTER);
         } catch (IOException e) {
             e.printStackTrace();
             ExceptionHandler.erorrAlertMessage(ErrorCode.LOADING_FXML_FAILED.getValue());

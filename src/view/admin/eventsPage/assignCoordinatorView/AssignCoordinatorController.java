@@ -39,7 +39,6 @@ public class AssignCoordinatorController implements Initializable {
     private void addCheckListener(MFXCheckbox checkBox){
         checkBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
             this.checkBoxValue[0]=newValue;
-            System.out.println("Element checked + " + entityId);
         });
     }
 

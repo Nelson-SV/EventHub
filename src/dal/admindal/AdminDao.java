@@ -60,7 +60,6 @@ public class AdminDao implements IAdminDao {
                 }
             }
         } catch (exceptions.EventException | SQLException e) {
-            e.printStackTrace();
             throw new EventException(e.getMessage(), e.getCause(), ErrorCode.OPERATION_DB_FAILED);
         }
         return events;
