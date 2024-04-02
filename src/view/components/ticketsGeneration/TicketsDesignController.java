@@ -37,7 +37,7 @@ public class TicketsDesignController extends FlowPane {
     private ImageView qrCode, logoImg, barCode;
 
     public TicketsDesignController() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("TicketsDesignCreation.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("TicketsDesignComponent.fxml"));
         loader.setController(this);
         try{
             ticketPane = loader.load();
