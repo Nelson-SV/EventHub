@@ -134,6 +134,56 @@ public class TicketDAO {
         return tickets;
     }
 
+    public void deductQuantity(int id, int quantity) throws EventException {
+        Connection conn = null;
+        try {
+            conn = connectionManager.getConnection();
+            String sql = "UPDATE Ticket SET Quantity = Quantity - ? WHERE ID = ?";
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setInt(1, quantity);
+            statement.setInt(2, id);
+            int rowsUpdated = statement.executeUpdate();
+            if (rowsUpdated == 0) {
+                throw new SQLException("No ticket found with ID: " + id);
+            }
+        } catch (SQLException | EventException e) {
+            throw new EventException(e.getMessage(), e.getCause(), ErrorCode.OPERATION_DB_FAILED);        }
+    }
+
+    public void insertSoldTicket(int ticketID, int customerID) throws EventException {
+        Connection conn = null;
+        try {
+            conn = connectionManager.getConnection();
+            String sql = "INSERT INTO SoldTickets (TicketID, CustomerID) VALUES (?, ?)";
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setInt(1, ticketID);
+            statement.setInt(2, customerID);
+            int rowsInserted = statement.executeUpdate();
+            if (rowsInserted == 0) {
+                throw new SQLException("Failed to insert ticket: " + ticketID + " for customer: " + customerID);
+            }
+        } catch (SQLException e) {
+            throw new EventException(e.getMessage(), e.getCause(), ErrorCode.OPERATION_DB_FAILED);
+        }
+    }
+
+    public void insertSoldSpecialTicket(int ticketID, int customerID) throws EventException {
+        Connection conn = null;
+        try {
+            conn = connectionManager.getConnection();
+            String sql = "INSERT INTO SoldTickets (SpecialTicketID, CustomerID) VALUES (?, ?)";
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setInt(1, ticketID);
+            statement.setInt(2, customerID);
+            int rowsInserted = statement.executeUpdate();
+            if (rowsInserted == 0) {
+                throw new SQLException("Failed to insert ticket: " + ticketID + " for customer: " + customerID);
+            }
+        } catch (SQLException e) {
+            throw new EventException(e.getMessage(), e.getCause(), ErrorCode.OPERATION_DB_FAILED);
+        }
+    }
+
 
 
 }

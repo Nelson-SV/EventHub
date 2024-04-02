@@ -24,4 +24,16 @@ public class TicketManager {
         return ticketD.retrieveSpecialTicketsForEventOrNot(eventId);
     }
 
+    public void deductQuantity(int id, int quantity) throws EventException {
+        ticketD.deductQuantity(id, quantity);
+    }
+
+    public void insertSoldTicket(int ticketId, int customerId) throws EventException{
+        ticketD.insertSoldTicket(ticketId,customerId);
+    }
+
+    public void insertSoldSpecialTicket(int ticketId, int customerId) throws EventException{
+        ticketD.insertSoldTicket(ticketId,customerId);
+    }
+
 }

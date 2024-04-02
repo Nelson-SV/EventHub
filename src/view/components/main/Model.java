@@ -63,6 +63,7 @@ public class Model implements  CommonModel {
         initializeEventsObservable();
         initializeEventDateObservable();
         eventManager = new EventManager();
+        customerManager = new CustomerManager();
         ticketManager = new TicketManager();
         coordinatorEvents = FXCollections.observableHashMap();
         coordinatorEventsWithStatus= FXCollections.observableHashMap();
@@ -265,6 +266,17 @@ public class Model implements  CommonModel {
         return specialTickets; // Return the tickets for the specified event
     }
 
+    public void deductTicketQuantity(int id, int quantity) throws EventException {
+        ticketManager.deductQuantity(id,quantity);
+    }
+
+    public void insertSoldTicket(int ticketId, int customerId) throws EventException{
+        ticketManager.insertSoldTicket(ticketId,customerId);
+    }
+
+    public void insertSoldSpecialTicket(int ticketId, int customerId) throws EventException{
+        ticketManager.insertSoldTicket(ticketId,customerId);
+    }
 
     public Integer getEventIdByName(String eventName) {
         for (Event event : coordinatorEvents.values()) {

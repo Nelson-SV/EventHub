@@ -8,11 +8,14 @@ public class Ticket {
     private String eventName;
     private String ticketType;
     private int quantity;
+    private int purchaseQuantity;
     private BigDecimal ticketPrice;
     private String startDate;
     private String customerName;
     private String customerEmail;
     private String UUID;
+
+    private Boolean special;
 
 
     public Ticket(int id, String eventName, String ticketType, BigDecimal ticketPrice,  String startDate, String customerName, String customerEmail, String UUID, int quantity) {
@@ -45,6 +48,14 @@ public class Ticket {
         this.ticketType = ticketType;
         this.quantity = quantity;
         this.ticketPrice = ticketPrice;
+    }
+
+    // Copy constructor
+    public Ticket(Ticket other) {
+        this.id = other.id;
+        this.ticketType = other.ticketType;
+        this.purchaseQuantity = other.quantity;
+        this.ticketPrice = other.ticketPrice;
     }
 
     public int getId() {
@@ -91,6 +102,10 @@ public class Ticket {
         return startDate;
     }
 
+    public Boolean getSpecial(){return special;}
+
+    public void setSpecial(Boolean type){special = type;}
+
     public void setStartDate(String startDate) {
         this.startDate = startDate;
     }
@@ -121,16 +136,10 @@ public class Ticket {
 
     @Override
     public String toString() {
-        return "Ticket{" +
-                "id=" + id +
-                ", eventName='" + eventName + '\'' +
-                ", ticketType='" + ticketType + '\'' +
+        return ticketType +
                 ", quantity=" + quantity +
-                ", ticketPrice=" + ticketPrice +
-                ", startDate='" + startDate + '\'' +
-                ", customerName='" + customerName + '\'' +
-                ", customerEmail='" + customerEmail + '\'' +
-                ", UUID='" + UUID + '\'' +
-                '}';
+                ", Price=" + ticketPrice
+                ;
     }
 }
+
