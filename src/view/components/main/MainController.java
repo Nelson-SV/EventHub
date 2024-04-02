@@ -10,6 +10,7 @@ import javafx.scene.shape.Rectangle;
 import view.components.SellingTickets.SellingViewController;
 import view.components.eventsPage.EventsPageController;
 import view.components.listeners.InitializationErrorListener;
+import view.components.specialTickets.SpecialTicketsController;
 import view.utility.NavigationHoverControl;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -56,7 +57,9 @@ public class MainController implements Initializable , InitializationErrorListen
     }
 
     public void createSpecialTicket(ActionEvent actionEvent) {
-
+        SpecialTicketsController specialTicketsController = new SpecialTicketsController(pageDisplayer, model);
+        pageDisplayer.getChildren().clear();
+        pageDisplayer.getChildren().add(specialTicketsController.getRoot());
     }
 
     public boolean isInitializationError() {
