@@ -1,4 +1,5 @@
 package view.components.deleteEvent;
+import be.DeleteOperation;
 import exceptions.ErrorCode;
 import exceptions.ExceptionLogger;
 import javafx.animation.PauseTransition;
@@ -17,12 +18,12 @@ import view.components.listeners.OperationHandler;
 import view.components.loadingComponent.LoadingActions;
 import view.components.loadingComponent.LoadingComponent;
 import view.components.main.CommonModel;
-import view.components.main.Model;
 import view.utility.CommonMethods;
 import java.net.URL;
+import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
-
 public class DeleteButtonController implements OperationHandler, Initializable {
     @FXML
     private VBox deleteOperation;
@@ -33,16 +34,17 @@ public class DeleteButtonController implements OperationHandler, Initializable {
     private Service<Void> deleteEventService;
     private LoadingComponent loadingComponent;
     private ConfirmationWindow confirmationWindow;
-    public DeleteButtonController(StackPane secondaryLayout, StackPane thirdLayout, CommonModel model, int eventId) {
+    private DeleteOperation performedDeleteOperation;
+    public DeleteButtonController(StackPane secondaryLayout, StackPane thirdLayout, CommonModel model, int eventId,DeleteOperation deleteOperation) {
         this.secondaryLayout = secondaryLayout;
         this.thirdLayout = thirdLayout;
         this.model = model;
         this.eventId = eventId;
+        this.performedDeleteOperation = deleteOperation;
     }
 
     @Override
-    public void performOperation()
-    {
+    public void performOperation() {
         initializeLoadingComponent();
         initializeDeleteService();
     }
@@ -50,20 +52,29 @@ public class DeleteButtonController implements OperationHandler, Initializable {
 
     private void initializeDeleteOperation() {
         secondaryLayout.getChildren().clear();
-        secondaryLayout.getChildren().add(initializeConfirmationWindow());
+        confirmationWindow= new ConfirmationWindow(this,secondaryLayout);
+        secondaryLayout.getChildren().add(confirmationWindow);
         secondaryLayout.setDisable(false);
         secondaryLayout.setVisible(true);
     }
 
-    private ConfirmationWindow initializeConfirmationWindow() {
-        confirmationWindow = new ConfirmationWindow(this, secondaryLayout);
-        confirmationWindow.setEntityTitle(model.getEventById(this.eventId).getName());
-        confirmationWindow.setEventStartDate(model.getEventById(this.eventId).getStartDate());
-        confirmationWindow.setEventLocation(model.getEventById(this.eventId).getLocation());
-        confirmationWindow.setAlignment(Pos.CENTER);
-        return confirmationWindow;
-    }
 
+    //TODO discuss if we need them otherwise, delete them
+//    public void setConfirmationWindowMessage(String message){
+//        this.confirmationWindow.setConfirmationTitle(message);
+//    }
+//
+//    public void setConfirmationEntityTitle(String entityTitle){
+//        this.confirmationWindow.setEntityTitle(entityTitle);
+//    }
+//
+//    public void setConfirmationWindowEntityStartDate(LocalDate startDate){
+//             this.confirmationWindow.setEventStartDate(startDate);
+//    }
+//
+//    public void setConfirmationWindowEntityLocation(String location){
+//        this.confirmationWindow.setEventLocation(location);
+//    }
 
     private void initializeLoadingComponent(){
         loadingComponent= new LoadingComponent();
@@ -78,8 +89,6 @@ public class DeleteButtonController implements OperationHandler, Initializable {
     private void addEventHandler(MouseEvent event) {
         initializeDeleteOperation();
     }
-
-
     private void initializeDeleteService(){
         PauseTransition pauseTransition = new PauseTransition(Duration.millis(500));
         deleteEventService = new Service<Void>() {
@@ -88,7 +97,7 @@ public class DeleteButtonController implements OperationHandler, Initializable {
                 return new Task<Void>() {
                     @Override
                     protected Void call() throws Exception {
-                        model.deleteEvent(eventId);
+                        model.performDeleteOperation(eventId, performedDeleteOperation);
                         return null;
                     }
                 };
@@ -106,7 +115,7 @@ public class DeleteButtonController implements OperationHandler, Initializable {
     deleteEventService.setOnFailed((event)->{
         loadingComponent.setAction(LoadingActions.FAIL.getActionValue());
         pauseTransition.setOnFinished((ev)->{
-            ExceptionLogger.getInstance().getLogger().log(Level.SEVERE,deleteEventService.getException().getMessage());
+            ExceptionLogger.getInstance().getLogger().log(Level.SEVERE, Arrays.toString(deleteEventService.getException().getStackTrace()));
             CommonMethods.closeWindow(thirdLayout);
               confirmationWindow.setErrorMessage(ErrorCode.OPERATION_DB_FAILED.getValue());
         });

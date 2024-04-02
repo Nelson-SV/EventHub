@@ -260,7 +260,6 @@ public class EventDAO {
                 }
                 psmt.setString(7, selectedEvent.getLocation());
                 psmt.setInt(8, selectedEvent.getId());
-
                 psmt.executeUpdate();
             }
             insertCoordinators(selectedEvent.getId(), assignedCoordinators, conn);
@@ -318,6 +317,7 @@ public class EventDAO {
                 throw new EventException(e.getMessage(), e.getCause(), ErrorCode.OPERATION_DB_FAILED);
             }
         } catch (SQLException e) {
+            e.printStackTrace();
             ExceptionLogger.getInstance().getLogger().log(Level.SEVERE, e.getMessage(), e);
         }
         return succeeded;

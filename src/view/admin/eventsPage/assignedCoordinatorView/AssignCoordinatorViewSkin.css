@@ -1,0 +1,10 @@
+.assignComponentParent{
+    -fx-background-color: #E5EDF8;
+    -fx-border-color: #102c57;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+}
+.label{
+    -fx-text-fill: #102c57;
+    -fx-font-size: 14;
+}

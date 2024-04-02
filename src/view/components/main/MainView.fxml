@@ -63,6 +63,7 @@
         </VBox>
         <StackPane fx:id="secondaryLayout" alignment="CENTER" style="-fx-background-color: rgba(0, 0, 0, 0.5);" visible="false" />
         <StackPane fx:id="thirdLayout" alignment="CENTER" layoutX="10.0" layoutY="10.0" style="-fx-background-color: rgba(0, 0, 0, 0.5);" visible="false" />
+      <StackPane fx:id="fourthLayout" style="-fx-background-color: rgba(0, 0, 0, 0.5);" visible="false" />
 
     </children>
 </StackPane>

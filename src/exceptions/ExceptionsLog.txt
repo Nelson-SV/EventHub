@@ -302,3 +302,28 @@ Apr 01, 2024 1:09:57 PM view.admin.eventsPage.assignButton.AssignButton <init>
 SEVERE: 
 /D:/computer_science/sco/compolsory/tiketSystem/EventHub/out/production/file/view/admin/eventsPage/assignButton/AssignComponent.fxml
 
+Apr 02, 2024 12:45:57 AM exceptions.ExceptionLogger <init>
+INFO: Logger initialized 
+.......................................
+Apr 02, 2024 12:45:57 AM view.components.deleteEvent.DeleteButtonController lambda$initializeDeleteService$3
+SEVERE: java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+Apr 02, 2024 12:51:41 AM exceptions.ExceptionLogger <init>
+INFO: Logger initialized 
+.......................................
+Apr 02, 2024 12:51:41 AM view.components.deleteEvent.DeleteButtonController lambda$initializeDeleteService$3
+SEVERE: java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+Apr 02, 2024 12:56:00 AM exceptions.ExceptionLogger <init>
+INFO: Logger initialized 
+.......................................
+Apr 02, 2024 12:56:00 AM view.components.deleteEvent.DeleteButtonController lambda$initializeDeleteService$3
+SEVERE: java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+Apr 02, 2024 12:57:43 AM exceptions.ExceptionLogger <init>
+INFO: Logger initialized 
+.......................................
+Apr 02, 2024 12:57:43 AM view.components.deleteEvent.DeleteButtonController lambda$initializeDeleteService$3
+SEVERE: java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+Apr 02, 2024 1:00:18 AM exceptions.ExceptionLogger <init>
+INFO: Logger initialized 
+.......................................
+Apr 02, 2024 1:00:18 AM view.components.deleteEvent.DeleteButtonController lambda$initializeDeleteService$3
+SEVERE: java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
