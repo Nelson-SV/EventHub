@@ -7,4 +7,5 @@ public interface SortSubject {
     String getIdentificationId();
     void changePerformedOperationToDefault();
     void changePerformedOperationToSort();
+    void setSelected(boolean val);
 }

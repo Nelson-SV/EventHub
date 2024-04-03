@@ -44,13 +44,14 @@ public class ShortcutButton extends MFXButton implements SortSubject, Initializa
 
     @Override
     public void changeToAll() {
+        //isSelected=false;
         this.shortcutButton.setText(ALL_TEXT);
     }
 
     @Override
     public void changeToSort() {
+       // isSelected=false;
         this.shortcutButton.setText(sortOperationText);
-        isSelected = false;
     }
 
     public boolean isSelected() {
@@ -76,12 +77,22 @@ public class ShortcutButton extends MFXButton implements SortSubject, Initializa
     public void initialize(URL location, ResourceBundle resources) {
         this.shortcutButton.setText(sortOperationText);
         this.operationToBePerformed = sortByStatus;
-        this.shortcutButton.setOnAction((event) ->
-        {
-            isSelected = true;
+        this.shortcutButton.setOnAction(event -> {
+            Status currentOperation = this.operationToBePerformed;
+            isSelected = !isSelected;
             sortCommander.setLatestSelected(identificcationId);
-            sortCommander.performSortOperation(this.operationToBePerformed);
-
+            sortCommander.performSortOperation(currentOperation);
+            if (isSelected) {
+                changeToAll();
+                changePerformedOperationToDefault();
+            } else {
+                changeToSort();
+                changePerformedOperationToSort();
+            }
         });
+    }
+    @Override
+    public void setSelected(boolean val) {
+        isSelected = val;
     }
 }
