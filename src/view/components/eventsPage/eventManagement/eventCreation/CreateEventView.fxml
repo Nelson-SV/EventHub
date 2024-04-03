@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<MFXScrollPane fx:id="editScrolPane" fitToHeight="true" fitToWidth="true" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="622.0" prefWidth="1076.0" style="-fx-background-color: #EADBC8FF; -fx-background-radius: 10;" stylesheets="@event.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<MFXScrollPane fx:id="editScrolPane" fitToHeight="true" fitToWidth="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="622.0" prefWidth="1076.0" style="-fx-background-color: #EADBC8FF; -fx-background-radius: 10;" stylesheets="@event.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <content>
       <VBox prefHeight="710.0" prefWidth="1074.0" spacing="30.0" style="-fx-border-radius: 10;">
          <children>
