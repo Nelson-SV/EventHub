@@ -5,6 +5,7 @@ import be.User;
 import exceptions.ErrorCode;
 import exceptions.EventException;
 import exceptions.ExceptionLogger;
+import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 
 import java.sql.Connection;
@@ -81,7 +82,7 @@ public class UsersDAO {
                 }
             }
         } catch (SQLException | EventException e) {
-            throw new EventException(e.getMessage(), e.getCause(), ErrorCode.OPERATION_DB_FAILED);
+            throw new EventException(e.getMessage(), e, ErrorCode.OPERATION_DB_FAILED);
         }
         return evCoord;
     }
@@ -97,9 +98,83 @@ public class UsersDAO {
             }
             succeeded = true;
         } catch (SQLException |EventException e) {
-            e.printStackTrace();
             throw new EventException(e.getMessage());
         }
         return succeeded;
     }
+
+    public List<User> getAllEvents(int eventId) throws EventException {
+        List<User> coordinators = new ArrayList<>();
+        String sql = "SELECT U.UserId,U.FirstName,U.LastName,U.Role FROM USERS AS U " +
+                "Where U.Role Like ? " +
+                "AND U.UserId NOT IN (SELECT us.UserId FROM Users us join UsersEvents ue ON us.UserId=ue.UserId  join Event e ON e.EventId=ue.EventId WHERE e.EventId=?)";
+
+        try (Connection conn = connectionManager.getConnection()) {
+            try (PreparedStatement psmt = conn.prepareStatement(sql)) {
+                psmt.setString(1, Role.EVENT_COORDINATOR.getValue());
+                psmt.setInt(2, eventId);
+                ResultSet rs = psmt.executeQuery();
+                while (rs.next()) {
+                    int userId = rs.getInt(1);
+                    String firstName = rs.getString(2);
+                    String lastName = rs.getString(3);
+                    String role = rs.getString(4);
+                    User user = new User(firstName, lastName, role);
+                    user.setUserId(userId);
+                    coordinators.add(user);
+                }
+            }
+        } catch (SQLException | EventException e) {
+            e.printStackTrace();
+            throw new EventException(e.getMessage(), e.getCause(), ErrorCode.OPERATION_DB_FAILED);
+        }
+        return coordinators;
+    }
+
+    public boolean assignCoordinatorsToEvent(ObservableList<Integer> selectedUsers, int eventId) throws EventException {
+        final int maxRetries = 1;
+        int currentTry = 0;
+        boolean succeeded = false;
+        String sql = "INSERT INTO UsersEvents VALUES(?,?)";
+        while (currentTry <= maxRetries && !succeeded) {
+            Connection conn = null;
+            try {
+                conn = connectionManager.getConnection();
+                conn.setAutoCommit(false);
+                conn.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
+                try (PreparedStatement psmt = conn.prepareStatement(sql)) {
+                    for (Integer userId : selectedUsers) {
+                        psmt.setInt(1, userId);
+                        psmt.setInt(2, eventId);
+                        psmt.addBatch();
+                    }
+                    psmt.executeBatch();
+                    conn.commit();
+                    succeeded = true;
+                }
+            } catch (SQLException | EventException e) {
+                if (conn != null) {
+                    try {
+                        conn.rollback();
+                    } catch (SQLException exc) {
+                        ExceptionLogger.getInstance().getLogger().log(Level.WARNING, "Rollback failed: " + exc.getMessage(), exc);
+                    }
+                }
+                if (currentTry == maxRetries) {
+                    throw new EventException( e.getMessage(), e, ErrorCode.OPERATION_DB_FAILED);
+                }
+            } finally {
+                if (conn != null) {
+                    try {
+                        conn.close();
+                    } catch (SQLException e) {
+                        ExceptionLogger.getInstance().getLogger().log(Level.WARNING, "Failed to close connection: " + e.getMessage(), e);
+                    }
+                }
+            }
+            currentTry++;
+        }
+        return succeeded;
+    }
+
 }

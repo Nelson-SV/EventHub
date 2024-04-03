@@ -1,4 +1,4 @@
-package view.components.main;
+package view.components.eventsObservers;
 import exceptions.ErrorCode;
 import exceptions.EventException;
 import exceptions.ExceptionHandler;
@@ -7,11 +7,13 @@ import javafx.concurrent.ScheduledService;
 import javafx.concurrent.Task;
 import javafx.util.Duration;
 import view.components.listeners.Displayable;
+import view.components.main.Model;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 
-public class DateObservable {
+public class DateObservable  implements DateObserver{
     private final List<Displayable> eventDisplayer;
     private final Model model;
     private final int executionInterval = 60;
@@ -39,7 +41,7 @@ public class DateObservable {
         }));
     }
 
-    public void startDateService() {
+    public void startService() {
         this.eventStatusService = new ScheduledService<Boolean>() {
             @Override
             protected Task<Boolean> createTask() {

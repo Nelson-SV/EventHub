@@ -5,6 +5,7 @@ import be.EventStatus;
 import be.Status;
 import be.User;
 import exceptions.EventException;
+import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
 import javafx.concurrent.Task;
 
@@ -22,4 +23,8 @@ public interface IAdminLogic {
     ObservableMap<Status,List<EventStatus>> setSortedEventsByStatus(Collection<EventStatus> events);
 
     boolean unassignUser(int entityId, int eventId) throws EventException;
+
+    List<User> getAllCoordinators(int eventId) throws EventException;
+
+    boolean assignCoordinatorsToEvent(ObservableList<Integer> selectedUsers, int id) throws  EventException;
 }

@@ -13,7 +13,7 @@ import java.util.ResourceBundle;
 
 public class AssignedCoordinatorController implements Initializable {
     @FXML
-    private HBox assignComponentContainer;
+    private HBox assignedComponentContainer;
     @FXML
     private Label firstName;
 

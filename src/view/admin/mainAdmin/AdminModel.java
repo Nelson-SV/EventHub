@@ -36,6 +36,15 @@ public class AdminModel implements CommonModel {
      */
     private ObservableList<User> eventAssignedCoordinators;
 
+    /**
+     * holds all the coordinators in the system ,without the current selected event ones
+     */
+    private final ObservableList<User> allCoordinators;
+    /**
+     * holds all the selected coordinator that will be assigned to the selected event
+     */
+    private ObservableList<Integer> selectedUsers;
+    //TODO delete if not used
     /*** holds the coordinators for all the events*/
     private ObservableMap<Integer, List<User>> eventCoordinators;
 
@@ -44,6 +53,11 @@ public class AdminModel implements CommonModel {
         this.allEvents = FXCollections.observableHashMap();
         this.eventCoordinators = FXCollections.observableHashMap();
         this.eventAssignedCoordinators = FXCollections.observableArrayList();
+        this.allCoordinators = FXCollections.observableArrayList();
+    }
+
+    public ObservableList<User> getAllCoordinators() {
+        return allCoordinators;
     }
 
     /**
@@ -54,11 +68,18 @@ public class AdminModel implements CommonModel {
     }
 
     /**
-     * retrieves the coordinators from the database
+     * retrieves the coordinators for an event  from the database
      */
     public void initializeEventCoordinators(int eventId) throws EventException {
         eventAssignedCoordinators.setAll(adminLogic.getEventCoordinators(eventId));
         System.out.println(eventAssignedCoordinators.size() + " executed");
+    }
+
+    /**
+     * retrieves all the coordinators in the system except the ones that are already assigned to this event
+     */
+    public void initialiazeAllCoordinators(int entityId) throws EventException {
+        allCoordinators.setAll(adminLogic.getAllCoordinators(entityId));
     }
 
 
@@ -97,13 +118,24 @@ public class AdminModel implements CommonModel {
     private void deleteUser(int entityId) throws EventException {
         if (adminLogic.unassignUser(entityId, selectedEvent.getEventDTO().getId())) {
             System.out.println("delete operation successfully");
-            Platform.runLater(()->  this.selectedEvent.setCoordinatorCount(selectedEvent.getCoordinatorCount() - 1));
-            List<User> removedUser = eventAssignedCoordinators.stream().filter(e->e.getUserId()!=entityId).toList();
+            Platform.runLater(() -> this.selectedEvent.setCoordinatorCount(selectedEvent.getCoordinatorCount() - 1));
+            List<User> removedUser = eventAssignedCoordinators.stream().filter(e -> e.getUserId() != entityId).toList();
             this.eventAssignedCoordinators.setAll(removedUser);
             refreshEventCoordinators();
         } else {
             System.out.println("delete operation unsuccessfully");
         }
+    }
+
+    /**
+     * decrease the number off the coordinators in order to reflect the remove operation in the event view
+     */
+    private void decreaseEventCoordinators() {
+        Platform.runLater(() -> this.selectedEvent.setCoordinatorCount(selectedEvent.getCoordinatorCount() - 1));
+    }
+
+    private void increaseEventCoordinators(int amount) {
+        Platform.runLater(() -> this.selectedEvent.setCoordinatorCount(selectedEvent.getCoordinatorCount() + amount));
     }
 
     public AdminCoordinatorsDisplayer getCoordinatorsDisplayer() {
@@ -140,6 +172,28 @@ public class AdminModel implements CommonModel {
 
     private void refreshEventCoordinators() {
         Platform.runLater(() -> this.coordinatorsDisplayer.displayEventCoordinators());
+    }
+
+
+    public void addSelectedUser(int entityId) {
+        if (selectedUsers == null) {
+            this.selectedUsers = FXCollections.observableArrayList();
+        }
+        this.selectedUsers.add(entityId);
+    }
+
+
+    //To be implemented
+    //empty the selectedUsers or set it back to null
+    public void saveSelectedCoordinators() throws EventException {
+        if (selectedUsers.isEmpty()) {
+            return;
+        }
+        boolean saved = adminLogic.assignCoordinatorsToEvent(selectedUsers, selectedEvent.getEventDTO().getId());
+        if (saved) {
+            increaseEventCoordinators(selectedUsers.size());
+            selectedUsers = null;
+        }
     }
 
 

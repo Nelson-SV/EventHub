@@ -56,6 +56,7 @@ public class AssignController implements Initializable {
                   @Override
                   protected List<User> call() throws EventException {
                       adminModel.initializeEventCoordinators(eventId);
+                      adminModel.initialiazeAllCoordinators(eventId);
                       return null;
                   }
               };
@@ -63,11 +64,15 @@ public class AssignController implements Initializable {
         };
         eventCoordinatorsService.setOnSucceeded((event)->{
             adminModel.getCoordinatorsDisplayer().displayEventCoordinators();
+            adminModel.getCoordinatorsDisplayer().displayAllCoordinators();
         });
         eventCoordinatorsService.setOnFailed((event -> {
-            Throwable cause = eventCoordinatorsService.getException().getCause();
-            ExceptionHandler.erorrAlertMessage(cause.getMessage());
+            Throwable exception = eventCoordinatorsService.getException();
+            Throwable cause = exception.getCause();
+             String errorMessage = (cause != null) ? cause.getMessage() : exception.getMessage();
+            ExceptionHandler.erorrAlertMessage(errorMessage);
         }));
+
     if(eventCoordinatorsService.isRunning()){
         eventCoordinatorsService.cancel();
     }

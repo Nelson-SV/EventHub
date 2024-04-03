@@ -10,6 +10,7 @@ import dal.admindal.AdminDao;
 import dal.admindal.IAdminDao;
 import exceptions.EventException;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
 import javafx.concurrent.Task;
 
@@ -105,6 +106,18 @@ public class AdminManagementLogic implements IAdminLogic {
     @Override
     public boolean unassignUser(int entityId, int eventId) throws EventException {
         return usersDAO.unassignUser(entityId, eventId);
+    }
+
+
+
+    @Override
+    public List<User> getAllCoordinators(int eventId) throws EventException {
+        return usersDAO.getAllEvents(eventId);
+    }
+
+    @Override
+    public boolean assignCoordinatorsToEvent(ObservableList<Integer> selectedUsers, int eventId) throws EventException {
+        return usersDAO.assignCoordinatorsToEvent(selectedUsers,eventId);
     }
 
     private List<EventStatus> sortOngoing(Collection<EventStatus> events) {
