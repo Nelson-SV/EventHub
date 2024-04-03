@@ -1,0 +1,11 @@
+.eventTicketsAmount:error{
+    -fx-border-color: red;
+    -fx-border-width: 2;
+    -fx-border-radius: 5;
+}
+
+.specialTicketsAmount:error{
+    -fx-border-color: red;
+    -fx-border-width: 2;
+    -fx-border-radius: 5;
+}

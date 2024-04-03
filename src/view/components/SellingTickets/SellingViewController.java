@@ -13,6 +13,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
+import javafx.css.PseudoClass;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -56,6 +57,7 @@ public class SellingViewController implements Initializable {
     private ListView<Ticket> allSelectedTickets;
     @FXML
     private Label totalPrice;
+    private static final PseudoClass ERROR_PSEUDO_CLASS = PseudoClass.getPseudoClass("error");
 
     public SellingViewController(VBox vbox, Model model) {
         this.model=model;
@@ -87,6 +89,18 @@ public class SellingViewController implements Initializable {
         //update total price based on changes
         allSelectedTickets.getItems().addListener((ListChangeListener<Ticket>) change -> {
             updateTotalPrice();
+        });
+
+        // Add event handler for eventTicketsAmount text field
+        eventTicketsAmount.textProperty().addListener((observable, oldValue, newValue) -> {
+            // Clear the error pseudo-class state when user starts typing
+            eventTicketsAmount.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, false);
+        });
+
+       // Add event handler for specialTicketsAmount text field
+        specialTicketsAmount.textProperty().addListener((observable, oldValue, newValue) -> {
+            // Clear the error pseudo-class state when user starts typing
+            specialTicketsAmount.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, false);
         });
     }
 
@@ -133,21 +147,31 @@ public class SellingViewController implements Initializable {
         String amountOfEventTickets = eventTicketsAmount.getText();
 
         if (selectedTicketInfo != null && !amountOfEventTickets.isEmpty()) {
+            int selectedQuantity = Integer.parseInt(amountOfEventTickets); // Parse selected quantity
 
-           BigDecimal ticketPrice = selectedTicketInfo.getTicketPrice();
+            // Check if selected quantity does not exceed available inventory
+            if (selectedQuantity <= selectedTicketInfo.getQuantity()) {
+                BigDecimal ticketPrice = selectedTicketInfo.getTicketPrice();
 
-           int selectedQuantity = Integer.parseInt(amountOfEventTickets); // Parse selected quantity
-           BigDecimal totalPrice = ticketPrice.multiply(BigDecimal.valueOf(selectedQuantity));
-           selectedTicketInfo.setTicketPrice(totalPrice);
-           selectedTicketInfo.setQuantity(selectedQuantity);
-           selectedTicketInfo.setSpecial(false); //since this is a normal ticket
-           allSelectedTickets.getItems().add(selectedTicketInfo);
+                BigDecimal totalPrice = ticketPrice.multiply(BigDecimal.valueOf(selectedQuantity));
+                selectedTicketInfo.setTicketPrice(totalPrice);
+                selectedTicketInfo.setQuantity(selectedQuantity);
+                selectedTicketInfo.setSpecial(false); //since this is a normal ticket
+                allSelectedTickets.getItems().add(selectedTicketInfo);
 
-           allEventTickets.getSelectionModel().clearSelection();
-           eventTicketsAmount.clear();
+                allEventTickets.getSelectionModel().clearSelection();
+                eventTicketsAmount.clear();
+            } else {
+                eventTicketsAmount.clear();
+                eventTicketsAmount.setText("overMax");
+                eventTicketsAmount.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, true);
+
+            }
         } else {
+            eventTicketsAmount.clear();
+            eventTicketsAmount.setText("empty");
+            eventTicketsAmount.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, true);
         }
-
 
     }
     public void addSpecialTickets(ActionEvent actionEvent){
@@ -155,18 +179,30 @@ public class SellingViewController implements Initializable {
         String amountOfEventTickets = specialTicketsAmount.getText();
 
         if (selectedSpecialTicketInfo != null && !amountOfEventTickets.isEmpty()) {
-            BigDecimal ticketPrice = selectedSpecialTicketInfo.getTicketPrice();
-
             int selectedQuantity = Integer.parseInt(amountOfEventTickets); // Parse selected quantity
-            BigDecimal totalPrice = ticketPrice.multiply(BigDecimal.valueOf(selectedQuantity));
-            selectedSpecialTicketInfo.setTicketPrice(totalPrice);
-            selectedSpecialTicketInfo.setQuantity(selectedQuantity);
-            selectedSpecialTicketInfo.setSpecial(true); //since this is a special ticket
-            allSelectedTickets.getItems().add(selectedSpecialTicketInfo);
 
-            specialTickets.getSelectionModel().clearSelection();
-            specialTicketsAmount.clear();
+            // Check if selected quantity does not exceed available inventory
+            if (selectedQuantity <= selectedSpecialTicketInfo.getQuantity()) {
+                BigDecimal ticketPrice = selectedSpecialTicketInfo.getTicketPrice();
+                BigDecimal totalPrice = ticketPrice.multiply(BigDecimal.valueOf(selectedQuantity));
+                selectedSpecialTicketInfo.setTicketPrice(totalPrice);
+                selectedSpecialTicketInfo.setQuantity(selectedQuantity);
+                selectedSpecialTicketInfo.setSpecial(true); //since this is a special ticket
+                allSelectedTickets.getItems().add(selectedSpecialTicketInfo);
+
+                specialTickets.getSelectionModel().clearSelection();
+                specialTicketsAmount.clear();
+                //specialTicketsAmount.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, false);
+            } else {
+                specialTicketsAmount.clear();
+                specialTicketsAmount.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, true);
+                specialTicketsAmount.setText("overMax");
+
+            }
         } else {
+            specialTicketsAmount.clear();
+            specialTicketsAmount.setText("empty");
+            specialTicketsAmount.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, true);
         }
 
     }
@@ -206,6 +242,7 @@ public class SellingViewController implements Initializable {
 
         for (Ticket item : allSelectedTickets.getItems()) {
 
+
             boolean isSpecial = item.getSpecial();
             if(isSpecial){
                 //call method for special ticket
@@ -223,6 +260,8 @@ public class SellingViewController implements Initializable {
 
 
     }
+
+
 
 
 
