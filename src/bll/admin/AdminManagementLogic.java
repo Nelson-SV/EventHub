@@ -64,7 +64,7 @@ public class AdminManagementLogic implements IAdminLogic {
     /**
      * sort the events by the status and startDate
      */
-    public List<EventStatus> getSortedEventsByStatus(Collection<EventStatus> events) {
+    public List<EventStatus> getAllSortedEventsByStatus(Collection<EventStatus> events) {
         List<EventStatus> sortedEvents = new ArrayList<>();
         //sort ongoing events
         List<EventStatus> ongoingEvents = sortOngoing(events);
@@ -82,32 +82,22 @@ public class AdminManagementLogic implements IAdminLogic {
     /**
      * sorts the events by status ahead, and store them in a map ,by status
      */
-    public ObservableMap<Status, List<EventStatus>> setSortedEventsByStatus(Collection<EventStatus> events) {
-        ObservableMap<Status, List<EventStatus>> eventsByStatus = FXCollections.observableHashMap();
-        List<EventStatus> sortedEvents = new ArrayList<>();
-        //sort ongoing events
-        List<EventStatus> ongoingEvents = sortOngoing(events);
-        //sort upcoming events
-        List<EventStatus> upcomingEvents = sortUpcoming(events);
-        //sort finalized events
-        List<EventStatus> finalizedEvents = sortFinalized(events);
-
-        sortedEvents.addAll(ongoingEvents);
-        sortedEvents.addAll(upcomingEvents);
-        sortedEvents.addAll(finalizedEvents);
-
-        eventsByStatus.put(Status.ONGOING, ongoingEvents);
-        eventsByStatus.put(Status.UPCOMING, upcomingEvents);
-        eventsByStatus.put(Status.FINALIZED, finalizedEvents);
-        eventsByStatus.put(Status.ALL, sortedEvents);
-        return eventsByStatus;
+    public List<EventStatus> getSortedEventsByStatus(Collection<EventStatus> events, Status status) {
+        List<EventStatus> sorted = new ArrayList<>();
+        switch (status) {
+            case Status.UPCOMING -> sorted = sortUpcoming(events);
+            case Status.ONGOING -> sorted = sortOngoing(events);
+            case Status.FINALIZED -> sorted = sortFinalized(events);
+            case Status.ALL -> sorted = getAllSortedEventsByStatus(events);
+        }
+        return sorted;
     }
+
 
     @Override
     public boolean unassignUser(int entityId, int eventId) throws EventException {
         return usersDAO.unassignUser(entityId, eventId);
     }
-
 
 
     @Override
@@ -117,27 +107,34 @@ public class AdminManagementLogic implements IAdminLogic {
 
     @Override
     public boolean assignCoordinatorsToEvent(ObservableList<Integer> selectedUsers, int eventId) throws EventException {
-        return usersDAO.assignCoordinatorsToEvent(selectedUsers,eventId);
+        return usersDAO.assignCoordinatorsToEvent(selectedUsers, eventId);
     }
 
     private List<EventStatus> sortOngoing(Collection<EventStatus> events) {
         List<EventStatus> ongoing = events.stream().filter((item) -> item.getStatus().getValue().equals(Status.ONGOING.getValue())).toList();
-        return sortByStartingDate(ongoing);
+        return sortByStartingDateAndTime(ongoing);
     }
 
     private List<EventStatus> sortUpcoming(Collection<EventStatus> events) {
         List<EventStatus> upcoming = events.stream().filter((item) -> item.getStatus().getValue().equals(Status.UPCOMING.getValue())).toList();
-        return sortByStartingDate(upcoming);
+        return sortByStartingDateAndTime(upcoming);
     }
 
     private List<EventStatus> sortFinalized(Collection<EventStatus> events) {
         List<EventStatus> finalized = events.stream().filter((item) -> item.getStatus().getValue().equals(Status.FINALIZED.getValue())).toList();
-        return sortByStartingDate(finalized);
+        return sortByStartingDateAndTime(finalized);
     }
 
-    private List<EventStatus> sortByStartingDate(List<EventStatus> events) {
+//    private List<EventStatus> sortByStartingDate(List<EventStatus> events) {
+//        return events.stream()
+//                .sorted(Comparator.comparing(event -> Math.abs(ChronoUnit.DAYS.between(LocalDate.now(), event.getEventDTO().getStartDate()))))
+//                .collect(Collectors.toList());
+//    }
+
+    private List<EventStatus> sortByStartingDateAndTime(List<EventStatus> events) {
         return events.stream()
-                .sorted(Comparator.comparing(event -> Math.abs(ChronoUnit.DAYS.between(LocalDate.now(), event.getEventDTO().getStartDate()))))
+                .sorted(Comparator.comparing((EventStatus event) -> event.getEventDTO().getStartDate())
+                        .thenComparing(event -> event.getEventDTO().getStartTime()))
                 .collect(Collectors.toList());
     }
 

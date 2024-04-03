@@ -116,6 +116,7 @@ public class EventManagementController extends GridPane implements Initializable
         EditEventValidator.addTimeTextEmptyChecker(startTime);
         EditEventValidator.addDateTextEmptyChecker(startDate);
         EditEventValidator.addTimeValidityChecker(endTime);
+        EditEventValidator.addTimeValidityChecker(startTime);
         EditEventValidator.addDateValidityChecker(endDate);
     }
 

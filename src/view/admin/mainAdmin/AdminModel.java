@@ -6,22 +6,31 @@ import bll.admin.IAdminLogic;
 import exceptions.EventException;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
+import org.controlsfx.control.tableview2.filter.filtereditor.SouthFilter;
 import view.admin.listeners.AdminCoordinatorsDisplayer;
+import view.admin.listeners.SortCommander;
+import view.admin.listeners.SortObserver;
+import view.admin.listeners.SortSubject;
 import view.components.listeners.Displayable;
 import view.components.main.CommonModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * We will use dependency injection instead off the singleton design pattern,
  * this will allow us to  test the controllers in isolation
  */
-public class AdminModel implements CommonModel {
+public class AdminModel implements CommonModel, SortCommander, SortObserver {
     private IAdminLogic adminLogic;
     private Displayable eventsDisplayer;
+    private List<SortSubject> observers;
+    /**
+     * hold the id of the latest shortcut button pressed
+     */
+    private String latestPressed;
     private AdminCoordinatorsDisplayer coordinatorsDisplayer;
     private EventStatus selectedEvent;
 
@@ -29,7 +38,17 @@ public class AdminModel implements CommonModel {
      * holds all the events in the system
      */
     private ObservableMap<Integer, EventStatus> allEvents;
-    private ObservableMap<Status, List<EventStatus>> sortedEventsByStatus;
+
+    /**
+     * holds the events sorted by status
+     */
+    private List<EventStatus> sortedEventsByStatus;
+
+
+    /**
+     * the collection that is displayed on the screen
+     */
+    private List<EventStatus> currentDisplayedEvents;
 
     /**
      * holds the coordinators of the current selected event
@@ -54,6 +73,8 @@ public class AdminModel implements CommonModel {
         this.eventCoordinators = FXCollections.observableHashMap();
         this.eventAssignedCoordinators = FXCollections.observableArrayList();
         this.allCoordinators = FXCollections.observableArrayList();
+        this.currentDisplayedEvents = new ArrayList<>();
+        this.observers = new ArrayList<>();
     }
 
     public ObservableList<User> getAllCoordinators() {
@@ -65,6 +86,7 @@ public class AdminModel implements CommonModel {
      */
     public void initializeEvents() throws EventException {
         allEvents = adminLogic.getEventsWithStatus();
+        initializeSortedEventsToBeDisplayed();
     }
 
     /**
@@ -82,20 +104,28 @@ public class AdminModel implements CommonModel {
         allCoordinators.setAll(adminLogic.getAllCoordinators(entityId));
     }
 
+    /**
+     * sort the events by status in order relative to the current LocalDateTime
+     */
+
+    private void initializeSortedEventsToBeDisplayed() {
+        this.currentDisplayedEvents = adminLogic.getAllSortedEventsByStatus(this.allEvents.values());
+    }
+
+//THE FOLLOWING METHODS ARE RELATED TO THE SORTING OPERATIONS
 
     /**
      * sorts the events with the least amount of time remaining until it starts first
      */
     public List<EventStatus> sortedEventsList() {
-        return adminLogic.getSortedEventsByStatus(this.allEvents.values());
+        return this.currentDisplayedEvents;
     }
 
-
     /**
-     * sort the events based on their status
+     * returns the selected Events
      */
-    public void setSortedEventsByStatus() {
-        sortedEventsByStatus = adminLogic.setSortedEventsByStatus(allEvents.values());
+    private void sortEventsByStatus(Status status) {
+        currentDisplayedEvents = adminLogic.getSortedEventsByStatus(allEvents.values(), status);
     }
 
     /**
@@ -103,8 +133,6 @@ public class AdminModel implements CommonModel {
      */
     public void setEventsDisplayer(Displayable eventsDisplayer) {
         this.eventsDisplayer = eventsDisplayer;
-//        this.eventsObservable.addDisplayable(this.eventsDisplayer);
-//        this.dateObservable.addDisplayable(this.eventsDisplayer);
     }
 
     public Displayable getEventsDisplayer() {
@@ -174,7 +202,6 @@ public class AdminModel implements CommonModel {
         Platform.runLater(() -> this.coordinatorsDisplayer.displayEventCoordinators());
     }
 
-
     public void addSelectedUser(int entityId) {
         if (selectedUsers == null) {
             this.selectedUsers = FXCollections.observableArrayList();
@@ -182,10 +209,8 @@ public class AdminModel implements CommonModel {
         this.selectedUsers.add(entityId);
     }
 
-//TODO change the name to reflect the operations
-    //To be implemented
-    //empty the selectedUsers or set it back to null
-    public void saveSelectedCoordinators() throws EventException {
+    //TODO change the name to reflect the operations
+    public void saveSelectedCoordinatorsAndClearSelectedUsersList() throws EventException {
         if (selectedUsers.isEmpty()) {
             return;
         }
@@ -197,4 +222,45 @@ public class AdminModel implements CommonModel {
     }
 
 
+    //TODO
+    @Override
+    public void performSortOperation(Status status) {
+        sortEventsByStatus(status);
+        notifySubjects();
+        eventsDisplayer.displayEvents();
+    }
+
+
+    @Override
+    public void addSubject(SortSubject subject) {
+        this.observers.add(subject);
+    }
+
+    @Override
+    public void removeSubject(SortSubject subject) {
+        this.observers.remove(subject);
+    }
+
+
+    // TODO
+    @Override
+    public void notifySubjects() {
+        for (SortSubject sortSubject : observers) {
+            if (sortSubject.isSelected() && !sortSubject.getIdentificationId().equals(latestPressed)) {
+                sortSubject.changeToSort();
+                sortSubject.changePerformedOperationToSort();
+            } else if (sortSubject.isSelected() && sortSubject.getIdentificationId().equals(latestPressed)) {
+                sortSubject.changeToAll();
+                sortSubject.changePerformedOperationToDefault();
+            } else {
+                sortSubject.changeToSort();
+                sortSubject.changePerformedOperationToSort();
+            }
+        }
+    }
+
+    @Override
+    public void setLatestSelected(String latestPressedId) {
+        this.latestPressed = latestPressedId;
+    }
 }
