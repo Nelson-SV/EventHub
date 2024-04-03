@@ -25,12 +25,41 @@ Label {
     -fx-font-weight: bold; /* Make text bold */
 }
 
-.invalid-field {
+.startDate:error{
+    -fx-border-color: red;
+    -fx-border-width: 2;
+}
+.startTime:error{
     -fx-border-color: red;
     -fx-border-width: 2;
 }
 
-.valid-field {
-    -fx-border-color: #cecdcd;
+
+.invalidInput:error{
+    -fx-background-color: #E1EBF2;
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+    -fx-text-fill: #5585b5;
+    -fx-font-size: 12;
+    -fx-text-overrun: elipsis;
+    -fx-font-weight:bold;
+}
+
+
+.eventName:error{
+    -fx-border-color: red;
+    -fx-border-width: 2;
+}
+
+.eventLocation:error{
+    -fx-border-color: red;
+    -fx-border-width: 2;
+}
+.endDate:error{
+    -fx-border-color: red;
+    -fx-border-width: 2;
+}
+.endTime:error{
+    -fx-border-color: red;
     -fx-border-width: 2;
 }

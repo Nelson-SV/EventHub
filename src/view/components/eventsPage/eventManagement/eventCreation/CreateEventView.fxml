@@ -12,9 +12,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<MFXScrollPane fx:id="editScrolPane" fitToHeight="true" fitToWidth="true" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1076.0" style="-fx-background-color: #EADBC8FF; -fx-background-radius: 10;" stylesheets="@event.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<MFXScrollPane fx:id="editScrolPane" fitToHeight="true" fitToWidth="true" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="622.0" prefWidth="1076.0" style="-fx-background-color: #EADBC8FF; -fx-background-radius: 10;" stylesheets="@event.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <content>
-      <VBox prefHeight="822.0" prefWidth="1062.0" spacing="30.0" style="-fx-border-radius: 10;">
+      <VBox prefHeight="710.0" prefWidth="1074.0" spacing="30.0" style="-fx-border-radius: 10;">
          <children>
             <HBox prefHeight="38.0" prefWidth="927.0">
                <VBox.margin>
@@ -99,26 +99,6 @@
                   </HBox>
                </children>
             </VBox>
-            <VBox prefHeight="83.0" prefWidth="927.0" style="-fx-background-color: white;" VBox.vgrow="ALWAYS">
-               <VBox.margin>
-                  <Insets left="150.0" right="150.0" />
-               </VBox.margin>
-               <children>
-                  <HBox prefHeight="60.0" prefWidth="947.0">
-                     <children>
-                        <VBox prefHeight="78.0" prefWidth="127.0" />
-                        <VBox layoutX="10.0" layoutY="10.0" prefHeight="78.0" prefWidth="127.0" />
-                        <VBox layoutX="137.0" layoutY="10.0" prefHeight="78.0" prefWidth="127.0" />
-                        <VBox prefHeight="200.0" prefWidth="100.0" />
-                     </children>
-                  </HBox>
-                  <HBox prefHeight="49.0" prefWidth="907.0">
-                     <children>
-                        <VBox prefHeight="78.0" prefWidth="127.0" />
-                     </children>
-                  </HBox>
-               </children>
-            </VBox>
             <VBox prefHeight="47.0" prefWidth="927.0" style="-fx-background-color: white;" VBox.vgrow="ALWAYS">
                <VBox.margin>
                   <Insets left="150.0" right="150.0" />
@@ -136,8 +116,9 @@
                   </HBox>
                </children>
             </VBox>
-            <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="30.0">
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="30.0">
                <children>
+                  <TextArea fx:id="invalidInput" disable="true" editable="false" prefHeight="40.0" prefWidth="395.0" styleClass="invalidInput" visible="false" wrapText="true" />
                   <Button mnemonicParsing="false" onAction="#cancel" prefHeight="25.0" prefWidth="119.0" style="-fx-background-radius: 20; -fx-background-color: #5585b5;" text="Cancel" textFill="WHITE" />
                   <Button mnemonicParsing="false" onAction="#saveEvent" prefHeight="25.0" prefWidth="130.0" style="-fx-background-radius: 20; -fx-background-color: #42b883;" text="Save Event" textFill="#fff8f8" />
                </children>
