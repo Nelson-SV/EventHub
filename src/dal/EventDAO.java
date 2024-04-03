@@ -7,7 +7,6 @@ import be.User;
 import exceptions.ErrorCode;
 import exceptions.EventException;
 import exceptions.ExceptionLogger;
-import exceptions.TicketException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableMap;
 
@@ -70,7 +69,7 @@ public class EventDAO {
             }
             conn.commit();
 
-        } catch (EventException | SQLException | TicketException e) {
+        } catch (EventException | SQLException e) {
             if (conn != null) {
                 try {
                     conn.rollback();
@@ -101,7 +100,7 @@ public class EventDAO {
         }
     }
 
-    public List<Integer> insertTicket(List<Ticket> tickets, Connection conn) throws TicketException, SQLException {
+    public List<Integer> insertTicket(List<Ticket> tickets, Connection conn) throws SQLException, EventException {
         List<Integer> ticketIds = new ArrayList<>();
         String ticketSql = "INSERT INTO Ticket (Type, Quantity, Price) VALUES (?, ?, ?)";
         try (PreparedStatement ticketStatement = conn.prepareStatement(ticketSql, Statement.RETURN_GENERATED_KEYS)) {
@@ -116,7 +115,7 @@ public class EventDAO {
                     if (generatedKeys.next()) {
                         ticketIds.add(generatedKeys.getInt(1));
                     } else {
-                        throw new TicketException(ErrorCode.OPERATION_DB_FAILED);
+                        throw new EventException(ErrorCode.OPERATION_DB_FAILED);
                     }
                 }
             }

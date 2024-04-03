@@ -1,11 +1,9 @@
 package view.components.eventsPage;
 
 import be.DeleteOperation;
-import be.Event;
 import exceptions.ErrorCode;
 import exceptions.EventException;
 import exceptions.ExceptionHandler;
-import exceptions.TicketException;
 import javafx.application.Platform;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
@@ -17,7 +15,6 @@ import javafx.geometry.Pos;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import view.components.deleteEvent.DeleteButton;
-import view.components.deleteEvent.DeleteButtonController;
 import view.components.eventsPage.eventDescription.EventComponent;
 import view.components.eventsPage.eventManagement.eventCreation.CreateEventController;
 import view.components.listeners.Displayable;
@@ -102,7 +99,7 @@ public class EventsPageController extends VBox implements Displayable, Initializ
             model = Model.getInstance();
             model.setEventsDisplayer(this);
             initializeEvents();
-        } catch (EventException | TicketException e) {
+        } catch (EventException e) {
 
             ExceptionHandler.erorrAlertMessage(e.getMessage());
         }

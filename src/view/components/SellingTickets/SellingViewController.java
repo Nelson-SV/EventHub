@@ -7,7 +7,6 @@ import dal.TicketDAO;
 import exceptions.ErrorCode;
 import exceptions.EventException;
 import exceptions.ExceptionHandler;
-import exceptions.TicketException;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXScrollPane;
 import javafx.collections.FXCollections;
