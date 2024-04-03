@@ -27,26 +27,4 @@ public class ExceptionHandler {
         alert.setContentText(errorMessage);
         alert.show();
     }
-
-    /*
-
-    public static void infoError(TicketException ticketException) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setContentText(ticketException.getErrorCode().getValue()+"\\n"+ticketException.getMessage());
-        alert.show();
-    }
-
-    public static void warningError(TicketException ticketException) {
-        Alert alert = new Alert(Alert.AlertType.WARNING);
-        alert.setContentText(ticketException.getErrorCode().getValue()+"\\n"+ticketException.getMessage());
-        alert.show();
-    }
-
-    public static void errorAlert(TicketException ticketException) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setContentText(ticketException.getErrorCode().getValue()+"\\n"+ticketException.getMessage());
-        alert.show();
-    }
-
-     */
 }

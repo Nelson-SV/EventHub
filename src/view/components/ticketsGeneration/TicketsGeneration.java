@@ -2,7 +2,6 @@ package view.components.ticketsGeneration;
 
 import be.Ticket;
 import exceptions.EventException;
-import exceptions.TicketException;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -61,7 +60,7 @@ public class TicketsGeneration {
     }
 
     @FXML
-    private void addTickets(ActionEvent actionEvent) throws EventException, TicketException {
+    private void addTickets(ActionEvent actionEvent) throws EventException {
 
         Ticket ticket = new Ticket(ticketTypeTF.getText(), Integer.parseInt(ticketQuantityTF.getText()), new BigDecimal(ticketPriceTF.getText()));
 
@@ -83,7 +82,9 @@ public class TicketsGeneration {
         model.getNewTicket(ticket);
 
 
-        remove.setOnAction(event -> { createEventController.hBoxTickets.getChildren().remove(vBox);
+        remove.setOnAction(event -> {
+            createEventController.hBoxTickets.getChildren().remove(vBox);
+            model.removeTicket(ticket);
         });
 
         closeWindow();

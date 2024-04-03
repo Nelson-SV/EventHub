@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<MFXScrollPane fx:id="editScrolPane" fitToHeight="true" fitToWidth="true" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="622.0" prefWidth="1076.0" style="-fx-background-color: #EADBC8FF; -fx-background-radius: 10;" stylesheets="@event.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<MFXScrollPane fx:id="editScrolPane" fitToHeight="true" fitToWidth="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="622.0" prefWidth="1076.0" style="-fx-background-color: #EADBC8FF; -fx-background-radius: 10;" stylesheets="@event.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <content>
       <VBox prefHeight="710.0" prefWidth="1074.0" spacing="30.0" style="-fx-border-radius: 10;">
          <children>
@@ -44,7 +44,7 @@
                         <VBox prefHeight="71.0" prefWidth="219.0">
                            <children>
                               <Label text="Name  *" />
-                              <TextField fx:id="eventName" />
+                              <TextField fx:id="eventName" styleClass="eventName" />
                            </children>
                         </VBox>
                      </children>
@@ -66,7 +66,7 @@
                         <VBox prefHeight="200.0" prefWidth="100.0">
                            <children>
                               <Label text="End date  " />
-                              <MFXDatePicker fx:id="endDate" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="129.0" />
+                              <MFXDatePicker fx:id="endDate" styleClass="endDate" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="129.0" />
                            </children>
                         </VBox>
                         <VBox prefHeight="200.0" prefWidth="100.0">
@@ -92,7 +92,7 @@
                         <VBox prefHeight="76.0" prefWidth="455.0">
                            <children>
                               <Label text="Location  *" />
-                              <TextArea fx:id="eventLocation" prefHeight="91.0" prefWidth="113.0" />
+                              <TextArea fx:id="eventLocation"  prefHeight="91.0" prefWidth="113.0" />
                            </children>
                         </VBox>
                      </children>
