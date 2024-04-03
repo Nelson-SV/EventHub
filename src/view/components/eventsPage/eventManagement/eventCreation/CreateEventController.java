@@ -17,6 +17,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import view.components.main.Model;
 import view.components.ticketsGeneration.TicketsGeneration;
+import view.utility.EditEventValidator;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -57,7 +58,7 @@ public class CreateEventController {
         endTime.setItems(FXCollections.observableArrayList(generateTimeOptions()));
 
 
-        eventName.textProperty().addListener((observable, oldValue, newValue) -> {
+        /*eventName.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.isEmpty()) {
                 markFieldAsValid(eventName);
             }
@@ -79,8 +80,34 @@ public class CreateEventController {
             if (!newValue.isEmpty()) {
                 markFieldAsValid(eventLocation);
             }
-        });
+        });*/
 
+
+        EditEventValidator.initializeDateFormat(startDate);
+        EditEventValidator.initializeDateFormat(endDate);
+        EditEventValidator.addEventListeners(eventName, startDate, startTime, endDate, endTime, eventLocation);
+        addToolTipsForDates();
+        addDatesValidityChecker();
+
+    }
+    /**
+     * add validity checker for the dates
+     */
+    private void addDatesValidityChecker() {
+        EditEventValidator.addTimeTextEmptyChecker(startTime);
+        EditEventValidator.addDateTextEmptyChecker(startDate);
+        EditEventValidator.addTimeValidityChecker(endTime);
+        EditEventValidator.addDateValidityChecker(endDate);
+    }
+
+    /**
+     * add tooltips for the dates
+     */
+    private void addToolTipsForDates() {
+        EditEventValidator.addTimeToolTip(startTime);
+        EditEventValidator.addDateToolTip(startDate);
+        EditEventValidator.addDateToolTip(endDate);
+        EditEventValidator.addTimeToolTip(endTime);
     }
 
     public CreateEventController(StackPane stackPane, StackPane thirdLayout ,Model model) {
@@ -119,7 +146,9 @@ public class CreateEventController {
     }
 
     public void saveEvent(ActionEvent actionEvent){
-        if (isEventValid()) {
+       /* if (isEventValid()) {*/
+        boolean isEventValid = EditEventValidator.isEventValid(eventName, startDate, startTime, endDate, endTime, eventLocation);
+        if (isEventValid) {
             String name = eventName.getText();
             LocalDate startD = startDate.getValue();
             LocalTime startT = startTime.getValue();
@@ -152,7 +181,8 @@ public class CreateEventController {
     }
 
 
-    private void markFieldAsInvalid(TextInputControl field) {
+
+   /* private void markFieldAsInvalid(TextInputControl field) {
         field.getStyleClass().add("invalid-field");
     }
 
@@ -191,7 +221,7 @@ public class CreateEventController {
             markFieldAsValid(eventLocation);
         }
         return isValid;
-    }
+    }*/
 
 
 }
