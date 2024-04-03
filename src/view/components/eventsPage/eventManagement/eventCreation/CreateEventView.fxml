@@ -54,13 +54,13 @@
                         <VBox prefHeight="50.0" prefWidth="100.0">
                            <children>
                               <Label text="Start date  *" />
-                              <MFXDatePicker fx:id="startDate" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="120.0" styleClass="date-picker" />
+                              <MFXDatePicker fx:id="startDate"  minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="120.0" styleClass="startDate" />
                            </children>
                         </VBox>
                         <VBox prefHeight="200.0" prefWidth="100.0">
                            <children>
                               <Label text="Start  time  *" />
-                              <MFXComboBox fx:id="startTime" allowEdit="true" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="120.0" />
+                              <MFXComboBox fx:id="startTime" styleClass="startTime" allowEdit="true" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="120.0" />
                            </children>
                         </VBox>
                         <VBox prefHeight="200.0" prefWidth="100.0">
@@ -72,7 +72,7 @@
                         <VBox prefHeight="200.0" prefWidth="100.0">
                            <children>
                               <Label text="End time" />
-                              <MFXComboBox fx:id="endTime" allowEdit="true" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="120.0" />
+                              <MFXComboBox fx:id="endTime" styleClass="endTime" allowEdit="true" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="120.0" />
                            </children>
                         </VBox>
                      </children>
@@ -92,7 +92,7 @@
                         <VBox prefHeight="76.0" prefWidth="455.0">
                            <children>
                               <Label text="Location  *" />
-                              <TextArea fx:id="eventLocation"  prefHeight="91.0" prefWidth="113.0" />
+                              <TextArea fx:id="eventLocation"  styleClass="eventLocation" prefHeight="91.0" prefWidth="113.0" />
                            </children>
                         </VBox>
                      </children>
