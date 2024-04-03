@@ -38,6 +38,7 @@ public class MainController implements Initializable , InitializationErrorListen
     private VBox pageDisplayer;
     @FXML
     private VBox eventsPageController;
+    private  boolean sellingDisplayed;
 
 
     @FXML
@@ -66,9 +67,13 @@ public class MainController implements Initializable , InitializationErrorListen
 
     @FXML
     private void selling(ActionEvent actionEvent) {
-        SellingViewController sellingViewController = new SellingViewController(pageDisplayer, model);
-        pageDisplayer.getChildren().clear();
-        pageDisplayer.getChildren().add(sellingViewController.getRoot());
+
+        if(!sellingDisplayed){
+            SellingViewController sellingViewController = new SellingViewController(pageDisplayer, model);
+            pageDisplayer.getChildren().clear();
+            pageDisplayer.getChildren().add(sellingViewController.getRoot());
+            sellingDisplayed=true;
+        }
     }
 
     @FXML
@@ -77,6 +82,7 @@ public class MainController implements Initializable , InitializationErrorListen
             eventsPageController= new EventsPageController(secondaryLayout,thirdLayout);
             pageDisplayer.getChildren().clear();
             pageDisplayer.getChildren().add(eventsPageController);
+            sellingDisplayed=false;
         }
     }
 

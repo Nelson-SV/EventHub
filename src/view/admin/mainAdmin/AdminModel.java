@@ -182,7 +182,7 @@ public class AdminModel implements CommonModel {
         this.selectedUsers.add(entityId);
     }
 
-
+//TODO change the name to reflect the operations
     //To be implemented
     //empty the selectedUsers or set it back to null
     public void saveSelectedCoordinators() throws EventException {

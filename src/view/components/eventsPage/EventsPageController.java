@@ -13,6 +13,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import view.components.deleteEvent.DeleteButton;
@@ -87,6 +88,7 @@ public class EventsPageController extends VBox implements Displayable, Initializ
         CreateEventController createEventController = new CreateEventController(secondaryLayout, thirdLayout, model);
         secondaryLayout.getChildren().clear();
         secondaryLayout.getChildren().add(createEventController.getRoot());
+        StackPane.setAlignment(createEventController.getRoot(), Pos.CENTER);
     }
 
     @FXML
