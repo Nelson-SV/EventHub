@@ -82,7 +82,9 @@ public class TicketsGeneration {
         model.getNewTicket(ticket);
 
 
-        remove.setOnAction(event -> { createEventController.hBoxTickets.getChildren().remove(vBox);
+        remove.setOnAction(event -> {
+            createEventController.hBoxTickets.getChildren().remove(vBox);
+            model.removeTicket(ticket);
         });
 
         closeWindow();

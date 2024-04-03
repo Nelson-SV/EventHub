@@ -93,6 +93,7 @@ public class Model implements CommonModel {
      */
     public void addEvent(Event event) throws EventException {
         Integer inserted = eventManager.addEvent(event, addedTickets);
+        addedTickets.clear();
         if (inserted != null) {
             event.setId(inserted);
             coordinatorEvents.put(inserted, event);
@@ -102,6 +103,10 @@ public class Model implements CommonModel {
     public List<Ticket> getNewTicket(Ticket ticket) {
         addedTickets.add(ticket);
         return addedTickets;
+    }
+
+    public void removeTicket(Ticket ticket) {
+        addedTickets.remove(ticket);
     }
 
 
