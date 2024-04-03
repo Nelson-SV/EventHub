@@ -93,7 +93,6 @@ public class AdminManagementLogic implements IAdminLogic {
         return sorted;
     }
 
-
     @Override
     public boolean unassignUser(int entityId, int eventId) throws EventException {
         return usersDAO.unassignUser(entityId, eventId);
@@ -108,6 +107,11 @@ public class AdminManagementLogic implements IAdminLogic {
     @Override
     public boolean assignCoordinatorsToEvent(ObservableList<Integer> selectedUsers, int eventId) throws EventException {
         return usersDAO.assignCoordinatorsToEvent(selectedUsers, eventId);
+    }
+
+    @Override
+    public boolean deleteEvent(int eventId) throws EventException {
+        return eventDAO.deleteEvent(eventId);
     }
 
     private List<EventStatus> sortOngoing(Collection<EventStatus> events) {

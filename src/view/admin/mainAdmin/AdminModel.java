@@ -8,7 +8,6 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
-import org.controlsfx.control.tableview2.filter.filtereditor.SouthFilter;
 import view.admin.listeners.AdminCoordinatorsDisplayer;
 import view.admin.listeners.SortCommander;
 import view.admin.listeners.SortObserver;
@@ -140,7 +139,12 @@ public class AdminModel implements CommonModel, SortCommander, SortObserver {
     }
 
     private void deleteEvent(int eventId) throws EventException {
-        //To be implemented;
+        boolean removed = adminLogic.deleteEvent(eventId);
+        if (removed) {
+            this.allEvents.remove(eventId);
+            sortEventsByStatus(Status.ALL);
+            Platform.runLater(() -> this.getEventsDisplayer().displayEvents());
+        }
     }
 
     private void deleteUser(int entityId) throws EventException {
@@ -222,7 +226,7 @@ public class AdminModel implements CommonModel, SortCommander, SortObserver {
     }
 
 
-    //TODO
+
     @Override
     public void performSortOperation(Status status) {
         sortEventsByStatus(status);
@@ -241,26 +245,20 @@ public class AdminModel implements CommonModel, SortCommander, SortObserver {
         this.observers.remove(subject);
     }
 
-
-    // TODO
     @Override
     public void notifySubjects() {
         for (SortSubject sortSubject : observers) {
             if (sortSubject.isSelected() && !sortSubject.getIdentificationId().equals(latestPressed)) {
                 sortSubject.changeToSort();
                 sortSubject.changePerformedOperationToSort();
-            } else if (sortSubject.isSelected() && sortSubject.getIdentificationId().equals(latestPressed)) {
-                sortSubject.changeToAll();
-                sortSubject.changePerformedOperationToDefault();
-            } else {
-                sortSubject.changeToSort();
-                sortSubject.changePerformedOperationToSort();
             }
         }
     }
+
 
     @Override
     public void setLatestSelected(String latestPressedId) {
         this.latestPressed = latestPressedId;
     }
+
 }

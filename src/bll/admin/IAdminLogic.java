@@ -22,4 +22,6 @@ public interface IAdminLogic {
     List<User> getAllCoordinators(int eventId) throws EventException;
 
     boolean assignCoordinatorsToEvent(ObservableList<Integer> selectedUsers, int id) throws  EventException;
+
+    boolean deleteEvent(int eventId) throws EventException;
 }
