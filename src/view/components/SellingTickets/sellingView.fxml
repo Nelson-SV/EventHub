@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
 <?import io.github.palexdev.materialfx.controls.MFXComboBox?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
@@ -91,7 +92,7 @@
                         <VBox prefHeight="57.0" prefWidth="220.0">
                            <children>
                               <Label text="Event tickets" />
-                              <MFXComboBox fx:id="allEventTickets" alignment="TOP_LEFT" prefHeight="41.0" prefWidth="216.0" promptText="Select ticket" />
+                              <MFXComboBox fx:id="allEventTickets" styleClass="allEventTickets" alignment="TOP_LEFT" prefHeight="41.0" prefWidth="216.0" promptText="Select ticket" />
                            </children>
                         </VBox>
                         <VBox prefHeight="57.0" prefWidth="67.0">
@@ -103,7 +104,7 @@
                         <VBox prefHeight="70.0" prefWidth="100.0">
                            <children>
                               <Text strokeType="OUTSIDE" strokeWidth="0.0" />
-                              <Button fx:id="AddEventTickets" mnemonicParsing="false" onAction="#addEventTicket" prefHeight="36.0" prefWidth="47.0" style="-fx-border-color: #5585b5; -fx-border-radius: 7; -fx-background-color: transparent;" text="add" />
+                              <MFXButton fx:id="AddEventTickets" onAction="#addEventTicket" prefHeight="39.0" prefWidth="56.0" rippleColor="#5585b5" style="-fx-border-radius: 7; -fx-border-color: #5585b5; -fx-background-color: transparent;" text="add" />
                            </children>
                         </VBox>
                      </children>
@@ -113,7 +114,7 @@
                         <VBox prefHeight="57.0" prefWidth="221.0">
                            <children>
                               <Label text="Special tickets" />
-                              <MFXComboBox fx:id="specialTickets" alignment="TOP_LEFT" prefHeight="40.0" prefWidth="217.0" promptText="Select special ticket" />
+                              <MFXComboBox fx:id="specialTickets" styleClass="specialTickets" alignment="TOP_LEFT" prefHeight="40.0" prefWidth="217.0" promptText="Select special ticket" />
                            </children>
                         </VBox>
                         <VBox prefHeight="57.0" prefWidth="65.0">
@@ -125,7 +126,7 @@
                         <VBox prefHeight="200.0" prefWidth="100.0">
                            <children>
                               <Text strokeType="OUTSIDE" strokeWidth="0.0" />
-                              <Button fx:id="AddSpecialTickets" mnemonicParsing="false" onAction="#addSpecialTickets" prefHeight="36.0" prefWidth="47.0" style="-fx-border-color: #5585b5; -fx-border-radius: 7; -fx-background-color: transparent;" text="add" />
+                              <MFXButton fx:id="AddSpecialTickets" onAction="#addSpecialTickets" prefHeight="37.0" prefWidth="55.0" rippleColor="#5585b5" style="-fx-border-color: #5585b5; -fx-border-radius: 7; -fx-background-color: transparent;" text="add" />
                            </children>
                         </VBox>
                      </children>
@@ -172,14 +173,15 @@
             </VBox>
          </children>
       </HBox>
-      <HBox alignment="CENTER" fillHeight="false" prefHeight="123.0" prefWidth="1020.0" VBox.vgrow="ALWAYS">
+      <HBox alignment="CENTER" fillHeight="false" prefHeight="123.0" prefWidth="1020.0" spacing="40.0" VBox.vgrow="ALWAYS">
          <VBox.margin>
             <Insets bottom="10.0" left="130.0" right="130.0" />
          </VBox.margin>
          <children>
-            <Button mnemonicParsing="false" onAction="#sell" prefHeight="41.0" prefWidth="163.0" style="-fx-background-color: #42b883; -fx-background-radius: 10;" text="Sell/Print">
+            <MFXButton onAction="#cancel" prefHeight="42.0" prefWidth="142.0" rippleColor="#5585b5" style="-fx-border-color: #5585b5; -fx-background-color: transparent; -fx-border-radius: 7;" text="Cancel" />
+            <MFXButton onAction="#sell" prefHeight="38.0" prefWidth="161.0" rippleColor="#19573a" style="-fx-background-color: #42b883; -fx-background-radius: 10;" text="Sell/Print">
                <graphic>
-                  <ImageView fitHeight="34.0" fitWidth="57.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="33.0" fitWidth="34.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../../resources/images/print.png" />
                      </image>
@@ -187,7 +189,8 @@
                </graphic>
                <font>
                   <Font name="System Bold" size="12.0" />
-               </font></Button>
+               </font>
+            </MFXButton>
          </children>
       </HBox>
    </children>

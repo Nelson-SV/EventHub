@@ -142,9 +142,15 @@ public class SellingViewController implements Initializable {
 
 
 
+
     public void addEventTicket(ActionEvent actionEvent){
         Ticket selectedTicketInfo = new Ticket((Ticket) allEventTickets.getSelectionModel().getSelectedItem());
         String amountOfEventTickets = eventTicketsAmount.getText();
+        if (selectedTicketInfo == null) {
+            allEventTickets.setText("Select ticket");
+            allEventTickets.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, true);
+            return; // Exit the method since no item is selected
+        }
 
         if (selectedTicketInfo != null && !amountOfEventTickets.isEmpty()) {
             int selectedQuantity = Integer.parseInt(amountOfEventTickets); // Parse selected quantity
@@ -177,6 +183,11 @@ public class SellingViewController implements Initializable {
     public void addSpecialTickets(ActionEvent actionEvent){
         Ticket selectedSpecialTicketInfo = (Ticket) specialTickets.getSelectionModel().getSelectedItem();
         String amountOfEventTickets = specialTicketsAmount.getText();
+        if (selectedSpecialTicketInfo == null) {
+            specialTickets.setText("Select ticket");
+            specialTickets.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, true);
+            return; // Exit the method since no item is selected
+        }
 
         if (selectedSpecialTicketInfo != null && !amountOfEventTickets.isEmpty()) {
             int selectedQuantity = Integer.parseInt(amountOfEventTickets); // Parse selected quantity
@@ -192,11 +203,11 @@ public class SellingViewController implements Initializable {
 
                 specialTickets.getSelectionModel().clearSelection();
                 specialTicketsAmount.clear();
-                //specialTicketsAmount.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, false);
             } else {
                 specialTicketsAmount.clear();
-                specialTicketsAmount.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, true);
                 specialTicketsAmount.setText("overMax");
+                specialTicketsAmount.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, true);
+
 
             }
         } else {
@@ -260,6 +271,8 @@ public class SellingViewController implements Initializable {
 
 
     }
+
+    public void cancel (ActionEvent actionEvent){}
 
 
 
