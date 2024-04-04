@@ -31,11 +31,11 @@
                   <Insets bottom="5.0" />
                </GridPane.margin>
             </TextField>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="5.0" GridPane.columnIndex="1">
+            <HBox fx:id="shortcutContainer" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="5.0" GridPane.columnIndex="1">
                <children>
-                  <MFXButton fx:id="ongoingEvents" text="Ongoing" />
-                  <MFXButton fx:id="upcomingEvents" text="Upcoming" />
-                  <MFXButton fx:id="finalizedEvents" text="Finalized" />
+<!--                  <MFXButton fx:id="ongoingEvents" text="Ongoing" />-->
+<!--                  <MFXButton fx:id="upcomingEvents" text="Upcoming" />-->
+<!--                  <MFXButton fx:id="finalizedEvents" text="Finalized" />-->
                </children>
             </HBox>
          </children>

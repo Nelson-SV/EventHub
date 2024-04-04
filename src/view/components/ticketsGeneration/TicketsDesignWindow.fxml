@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<!--        fx:controller="view.components.ticketsGeneration.TicketsGeneration"-->
+<!--        fx:controller="view.components.ticketsGeneration.TicketsGenerationControllerGenerationController"-->
 
 <MFXScrollPane fx:id="scrollPane" maxHeight="600.0" maxWidth="800.0" minHeight="600.0" minWidth="800.0" prefHeight="600.0" prefWidth="800.0" styleClass="scrollPane" stylesheets="TicketsGeneration.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <content>

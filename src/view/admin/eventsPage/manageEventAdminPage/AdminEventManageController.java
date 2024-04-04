@@ -109,7 +109,7 @@ public class AdminEventManageController implements Initializable {
                 return new Task<Void>() {
                     @Override
                     protected Void call() throws EventException {
-                        adminModel.saveSelectedCoordinators();
+                        adminModel.saveSelectedCoordinatorsAndClearSelectedUsersList();
                         return null;
                     }
                 };
