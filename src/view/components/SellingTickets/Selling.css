@@ -20,3 +20,24 @@
     -fx-border-width: 2;
     -fx-border-radius: 5;
 }
+
+.name:error {
+    -fx-border-color: red;
+    -fx-border-width: 2;
+    -fx-border-radius: 5;
+}
+.lastName:error {
+    -fx-border-color: red;
+    -fx-border-width: 2;
+    -fx-border-radius: 5;
+}
+.email:error {
+    -fx-border-color: red;
+    -fx-border-width: 2;
+    -fx-border-radius: 5;
+}
+.allSelectedTickets:error{
+    -fx-border-color: red;
+    -fx-border-width: 2;
+    -fx-border-radius: 5;
+}

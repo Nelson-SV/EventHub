@@ -24,6 +24,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import view.components.main.Model;
+import view.utility.SellingValidator;
+import view.utility.TicketValidator;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -102,6 +104,15 @@ public class SellingViewController implements Initializable {
             // Clear the error pseudo-class state when user starts typing
             specialTicketsAmount.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, false);
         });
+        // Add event handler for eventTicketsAmount text field
+        eventTicketsAmount.textProperty().addListener((observable, oldValue, newValue) -> {
+            // Clear the error pseudo-class state when user starts typing
+            eventTicketsAmount.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, false);
+        });
+
+        SellingValidator.emailToolTip(email);
+        SellingValidator.addSellingListeners(eventTicketsAmount, specialTicketsAmount);
+        SellingValidator.addSellingListeners2(name, lastName, email, allSelectedTickets, specialTickets, allEventTickets);
     }
 
     private void loadTicketsInfo(){
@@ -144,7 +155,7 @@ public class SellingViewController implements Initializable {
 
 
     public void addEventTicket(ActionEvent actionEvent){
-        Ticket selectedTicketInfo = new Ticket((Ticket) allEventTickets.getSelectionModel().getSelectedItem());
+        Ticket selectedTicketInfo = ((Ticket) allEventTickets.getSelectionModel().getSelectedItem());
         String amountOfEventTickets = eventTicketsAmount.getText();
         if (selectedTicketInfo == null) {
             allEventTickets.setText("Select ticket");
@@ -192,30 +203,41 @@ public class SellingViewController implements Initializable {
         if (selectedSpecialTicketInfo != null && !amountOfEventTickets.isEmpty()) {
             int selectedQuantity = Integer.parseInt(amountOfEventTickets); // Parse selected quantity
 
-            // Check if selected quantity does not exceed available inventory
-            if (selectedQuantity <= selectedSpecialTicketInfo.getQuantity()) {
-                BigDecimal ticketPrice = selectedSpecialTicketInfo.getTicketPrice();
-                BigDecimal totalPrice = ticketPrice.multiply(BigDecimal.valueOf(selectedQuantity));
-                selectedSpecialTicketInfo.setTicketPrice(totalPrice);
-                selectedSpecialTicketInfo.setQuantity(selectedQuantity);
-                selectedSpecialTicketInfo.setSpecial(true); //since this is a special ticket
-                allSelectedTickets.getItems().add(selectedSpecialTicketInfo);
+            if (!isTicketAlreadyAdded(selectedSpecialTicketInfo)) {
+                //the ticket is not in listview, so add the ticket
+                // Check if selected quantity does not exceed available inventory
+                if (selectedQuantity <= selectedSpecialTicketInfo.getQuantity()) {
+                    BigDecimal ticketPrice = selectedSpecialTicketInfo.getTicketPrice();
+                    BigDecimal totalPrice = ticketPrice.multiply(BigDecimal.valueOf(selectedQuantity));
+                    selectedSpecialTicketInfo.setTicketPrice(totalPrice);
+                    selectedSpecialTicketInfo.setQuantity(selectedQuantity);
+                    selectedSpecialTicketInfo.setSpecial(true); //since this is a special ticket
+                    allSelectedTickets.getItems().add(selectedSpecialTicketInfo);
 
-                specialTickets.getSelectionModel().clearSelection();
-                specialTicketsAmount.clear();
-            } else {
-                specialTicketsAmount.clear();
-                specialTicketsAmount.setText("overMax");
-                specialTicketsAmount.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, true);
-
-
+                    specialTickets.getSelectionModel().clearSelection();
+                    specialTicketsAmount.clear();
+                } else {
+                    specialTicketsAmount.clear();
+                    specialTicketsAmount.setText("overMax");
+                    specialTicketsAmount.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, true);
+                }
             }
+
         } else {
             specialTicketsAmount.clear();
             specialTicketsAmount.setText("empty");
             specialTicketsAmount.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, true);
         }
+    }
 
+    private boolean isTicketAlreadyAdded(Ticket ticket) {
+        // Check if the ticket is already in the list
+        for (Ticket item : allSelectedTickets.getItems()) {
+            if (item.getId() == ticket.getId()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void updateTotalPrice() {
@@ -238,35 +260,38 @@ public class SellingViewController implements Initializable {
 
 
     public void sell(ActionEvent actionEvent) throws EventException {
-        String customerName = name.getText();
-        String customerLastName = lastName.getText();
-        String customerEmail = email.getText();
+        boolean isSellingValid = SellingValidator.isSellingValid(name, lastName, email, allSelectedTickets);
+        if(isSellingValid) {
+            String customerName = name.getText();
+            String customerLastName = lastName.getText();
+            String customerEmail = email.getText();
 
-        Customer customer = new Customer(customerName, customerLastName, customerEmail);
-        model.addCustomer(customer); // possibly return the id here
+            Customer customer = new Customer(customerName, customerLastName, customerEmail);
+            model.addCustomer(customer); // possibly return the id here
 
-        // get customer ID
-        int customerId = customer.getId();
+            // get customer ID
+            int customerId = customer.getId();
 
-        //minus the quantity
-        //create sold ticket
+            //minus the quantity
+            //create sold ticket
 
-        for (Ticket item : allSelectedTickets.getItems()) {
+            for (Ticket item : allSelectedTickets.getItems()) {
 
 
-            boolean isSpecial = item.getSpecial();
-            if(isSpecial){
-                //call method for special ticket
-                model.deductSpecialQuantity(item.getId(), item.getQuantity());
-                model.insertSoldSpecialTicket(item.getId(), customerId);
-            }else{
-                //call method for normal ticket
-                model.deductTicketQuantity(item.getId(), item.getQuantity());
-                model.insertSoldTicket(item.getId(),customerId);
+                boolean isSpecial = item.getSpecial();
+                if (isSpecial) {
+                    //call method for special ticket
+                    model.deductSpecialQuantity(item.getId(), item.getQuantity());
+                    model.insertSoldSpecialTicket(item.getId(), customerId);
+                } else {
+                    //call method for normal ticket
+                    model.deductTicketQuantity(item.getId(), item.getQuantity());
+                    model.insertSoldTicket(item.getId(), customerId);
+                }
+                // call ticket dao method
+
+
             }
-            // call ticket dao method
-
-
         }
 
 
