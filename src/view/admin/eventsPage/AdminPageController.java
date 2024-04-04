@@ -23,6 +23,7 @@ import view.admin.eventsPage.assignButton.AssignButton;
 import view.admin.eventsPage.eventDescription.EventDescription;
 import view.admin.eventsPage.shortcutButton.ShortcutButton;
 import view.admin.mainAdmin.AdminModel;
+import view.admin.usersPage.usersDescription.UserDescriptionComponent;
 import view.components.deleteEvent.DeleteButton;
 import view.components.listeners.Displayable;
 import java.net.URL;
@@ -123,6 +124,7 @@ public class AdminPageController implements Initializable, Displayable {
         if (eventsContainer.getScene() != null) {
             Platform.runLater(() -> {
                 eventsContainer.getChildren().clear();
+                eventsContainer.getChildren().add(new UserDescriptionComponent(adminModel,secondaryLayout,thirdLayout,adminFourthLayout));
                 adminModel.sortedEventsList()
                         .forEach(e -> eventsContainer.getChildren()
                                 .add(new EventDescription(e, new AssignButton(adminModel, secondaryLayout, thirdLayout, adminFourthLayout, e.getEventDTO().getId()), new DeleteButton(secondaryLayout, thirdLayout, adminModel, e.getEventDTO().getId(), DeleteOperation.DELETE_EVENT))));
