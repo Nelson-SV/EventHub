@@ -34,7 +34,7 @@ public class TicketValidator {
         } else {
             try {
                 BigDecimal price = new BigDecimal(priceTF.getText());
-                if (price.compareTo(BigDecimal.ZERO) <= 0) {
+                if (price.compareTo(BigDecimal.ZERO) < 0) {
                     priceTF.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, true);
                     isValid = false;
                     ExceptionHandler.errorAlertMessage("Price should be equal or greater than 0.");
@@ -51,21 +51,21 @@ public class TicketValidator {
         if (quantityTF.getText().isEmpty()) {
             quantityTF.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, true);
             isValid = false;
-            ExceptionHandler.errorAlertMessage("Quantity should be equal or greater than 0.");
+            ExceptionHandler.errorAlertMessage("Quantity should be greater than 0.");
         } else {
             try {
                 int quantity = Integer.parseInt(quantityTF.getText());
                 if (quantity <= 0) {
                     quantityTF.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, true);
                     isValid = false;
-                    ExceptionHandler.errorAlertMessage("Quantity should be equal or greater than 0.");
+                    ExceptionHandler.errorAlertMessage("Quantity should be greater than 0.");
                 } else {
                     quantityTF.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, false);
                 }
             } catch (NumberFormatException e) {
                 quantityTF.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, true);
                 isValid = false;
-                ExceptionHandler.errorAlertMessage("Quantity should be equal or greater than 0.");
+                ExceptionHandler.errorAlertMessage("Quantity should be greater than 0.");
             }
         }
 
@@ -85,7 +85,7 @@ public class TicketValidator {
 
         priceTF.textProperty().addListener((observable, oldValue, newValue) -> {
             try {
-                if (newValue.isEmpty() || new BigDecimal(newValue).compareTo(BigDecimal.ZERO) <= 0) {
+                if (newValue.isEmpty() || new BigDecimal(newValue).compareTo(BigDecimal.ZERO) < 0) {
                     priceTF.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, true);
                 } else {
                     priceTF.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, false);
