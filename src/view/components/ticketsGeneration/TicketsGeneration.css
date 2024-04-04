@@ -54,3 +54,17 @@
     -fx-background-color: #F16F73;
 }
 
+.ticketTypeTF:error{
+    -fx-border-color: red;
+    -fx-border-width: 2;
+}
+
+.ticketPriceTF:error{
+    -fx-border-color: red;
+    -fx-border-width: 2;
+}
+
+.ticketQuantityTF:error{
+    -fx-border-color: red;
+    -fx-border-width: 2;
+}
