@@ -118,7 +118,7 @@ public class CreateEventController {
             this.thirdLayout = thirdLayout;
             this.model=model;
         } catch (IOException e) {
-            ExceptionHandler.erorrAlertMessage(ErrorCode.LOADING_FXML_FAILED.getValue());
+            ExceptionHandler.errorAlertMessage(ErrorCode.LOADING_FXML_FAILED.getValue());
         }
     }
 
@@ -137,6 +137,12 @@ public class CreateEventController {
         TicketsGenerationController ticketsGenerationController = new TicketsGenerationController(stackPane, thirdLayout,  this, model);
         thirdLayout.getChildren().add(ticketsGenerationController.getRoot());
     }
+/*
+    public void editTicket(ActionEvent actionEvent, Ticket selectedTicket) {
+        addTicket(actionEvent, selectedTicket);
+    }
+
+ */
 
     private void showThirdLayout() {
         thirdLayout.getChildren().clear();
@@ -160,7 +166,7 @@ public class CreateEventController {
                 model.addEvent(event);
                 closeWindow(actionEvent);
             } catch (EventException e) {
-                ExceptionHandler.erorrAlertMessage(e.getErrorCode().getValue());
+                ExceptionHandler.errorAlertMessage(e.getErrorCode().getValue());
            }
         }
     }

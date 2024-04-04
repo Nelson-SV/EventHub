@@ -70,7 +70,7 @@ public class AssignController implements Initializable {
             Throwable exception = eventCoordinatorsService.getException();
             Throwable cause = exception.getCause();
              String errorMessage = (cause != null) ? cause.getMessage() : exception.getMessage();
-            ExceptionHandler.erorrAlertMessage(errorMessage);
+            ExceptionHandler.errorAlertMessage(errorMessage);
         }));
 
     if(eventCoordinatorsService.isRunning()){

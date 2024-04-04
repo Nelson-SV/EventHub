@@ -10,7 +10,6 @@ import javafx.collections.ObservableMap;
 import javafx.concurrent.ScheduledService;
 import javafx.concurrent.Task;
 import javafx.util.Duration;
-import view.components.eventsObservers.DateObserver;
 import view.components.listeners.Displayable;
 import view.components.main.Model;
 
@@ -74,7 +73,7 @@ public class EventsObservable  implements DateObserver {
         scheduledService.setOnFailed((event) -> {
             EventException cause = (EventException) scheduledService.getException();
             ExceptionLogger.getInstance().getLogger().log(Level.SEVERE, cause.getMessage());
-            ExceptionHandler.erorrAlertMessage(ErrorCode.FAILED_UPDATE_EVENTS.getValue());
+            ExceptionHandler.errorAlertMessage(ErrorCode.FAILED_UPDATE_EVENTS.getValue());
         });
         scheduledService.restart();
     }

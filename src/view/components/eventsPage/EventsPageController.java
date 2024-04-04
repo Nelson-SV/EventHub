@@ -101,7 +101,7 @@ public class EventsPageController extends VBox implements Displayable, Initializ
             initializeEvents();
         } catch (EventException e) {
 
-            ExceptionHandler.erorrAlertMessage(e.getMessage());
+            ExceptionHandler.errorAlertMessage(e.getMessage());
         }
     }
 
@@ -119,7 +119,7 @@ public class EventsPageController extends VBox implements Displayable, Initializ
             }
         };
         getEvents.setOnSucceeded(event -> displayEvents());
-        getEvents.setOnFailed(event -> ExceptionHandler.erorrAlertMessage(ErrorCode.FAILED_TO_LOAD_EVENTS.getValue()));
+        getEvents.setOnFailed(event -> ExceptionHandler.errorAlertMessage(ErrorCode.FAILED_TO_LOAD_EVENTS.getValue()));
         getEvents.restart();
     }
 }
