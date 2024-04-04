@@ -113,7 +113,7 @@
             <children>
                 <HBox alignment="CENTER" prefHeight="60.0" prefWidth="450.0" spacing="300.0">
                     <children>
-                        <Label alignment="CENTER" prefWidth="60.0" text="Tikets" textFill="#5585b5">
+                        <Label alignment="CENTER" prefWidth="60.0" text="Tickets" textFill="#5585b5">
                             <font>
                                 <Font name="System Bold" size="18.0" />
                             </font>

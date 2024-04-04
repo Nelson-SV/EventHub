@@ -9,6 +9,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
@@ -43,6 +44,8 @@ public class TicketsGenerationController {
     private Model model;
     @FXML
     private Ticket selectedTicket;
+    @FXML
+    private VBox selectedVbox;
 
 
 
@@ -80,7 +83,7 @@ public class TicketsGenerationController {
             Hyperlink ticketType = new Hyperlink(ticket.getTicketType());
             ticketType.setTextFill(BLACK);
             ticketType.setUnderline(true);
-            ticketType.setOnMouseClicked(event -> editTicket(ticket));
+            ticketType.setOnMouseClicked(event -> editTicket(ticket, ticketType.getParent()));
 
             Label ticketQuantity = new Label(ticket.getQuantity() + "");
             ticketQuantity.setTextFill(BLACK);
@@ -92,28 +95,39 @@ public class TicketsGenerationController {
             vBox.setAlignment(Pos.CENTER);
             vBox.setSpacing(10);
 
+            if (selectedTicket  != ticket && selectedTicket != null){
+                removeTicket(selectedVbox, selectedTicket);
+            }
             createEventController.hBoxTickets.setAlignment(Pos.CENTER_LEFT);
             createEventController.hBoxTickets.getChildren().add(0, vBox);
 
             model.getNewTicket(ticket);
 
             remove.setOnAction(event -> {
-                createEventController.hBoxTickets.getChildren().remove(vBox);
-                model.removeTicket(ticket);
+                removeTicket(vBox, ticket);
             });
+
+
             closeWindow();
         }
 
     }
 
-    private void editTicket(Ticket ticket) {
-        // Check if a ticket is selected for editing
-        if (ticket != null) {
-            //createEventController.editTicket(new ActionEvent(), ticket);
-            // Populate text fields with ticket information
-            ticketTypeTF.setText(ticket.getTicketType());
-            ticketQuantityTF.setText(String.valueOf(ticket.getQuantity()));
-            ticketPriceTF.setText(ticket.getTicketPrice().toString());
+    private void removeTicket(VBox selectedVbox, Ticket selectedTicket) {
+        createEventController.hBoxTickets.getChildren().remove(selectedVbox);
+        model.removeTicket(selectedTicket);
+    }
+
+    private void editTicket(Ticket ticket, Parent parent) {
+        selectedTicket = ticket;
+        selectedVbox = (VBox) parent;
+
+        if (selectedTicket != null) {
+            createEventController.editTicket(this);
+
+            ticketTypeTF.setText(selectedTicket.getTicketType());
+            ticketQuantityTF.setText(String.valueOf(selectedTicket.getQuantity()));
+            ticketPriceTF.setText(selectedTicket.getTicketPrice().toString());
         }
     }
 

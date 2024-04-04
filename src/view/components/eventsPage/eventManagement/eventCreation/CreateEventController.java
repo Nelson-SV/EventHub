@@ -1,5 +1,6 @@
 package view.components.eventsPage.eventManagement.eventCreation;
 import be.Event;
+import be.Ticket;
 import exceptions.ErrorCode;
 import exceptions.EventException;
 import exceptions.ExceptionHandler;
@@ -137,12 +138,13 @@ public class CreateEventController {
         TicketsGenerationController ticketsGenerationController = new TicketsGenerationController(stackPane, thirdLayout,  this, model);
         thirdLayout.getChildren().add(ticketsGenerationController.getRoot());
     }
-/*
-    public void editTicket(ActionEvent actionEvent, Ticket selectedTicket) {
-        addTicket(actionEvent, selectedTicket);
+
+    public void editTicket(TicketsGenerationController ticketsGeneration) {
+        showThirdLayout();
+        thirdLayout.getChildren().add(ticketsGeneration.getRoot());
     }
 
- */
+
 
     private void showThirdLayout() {
         thirdLayout.getChildren().clear();
