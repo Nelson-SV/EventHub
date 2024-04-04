@@ -248,7 +248,7 @@ public class AdminModel implements CommonModel, SortCommander, SortObserver {
     @Override
     public void performSortOperation(Status status) {
         currentActiveFilter=status;
-        if(currentActiveFilterList.isEmpty()){
+        if(currentActiveFilterList!=null&&currentActiveFilterList.isEmpty()){
             notifySubjects();
             return;
         }
@@ -300,9 +300,12 @@ public class AdminModel implements CommonModel, SortCommander, SortObserver {
 
     /**revert the events list to display all events (cancel the search filter)*/
     public  void cancelSearchEventFilter(){
-        currentActiveFilter=Status.ALL;
-        latestShortcutButtonPressed=null;
-        notifySubjects();
+
+
+
+//        currentActiveFilter=Status.ALL;
+//        latestShortcutButtonPressed=null;
+//        notifySubjects();
         currentDisplayedEvents=sortEventsByStatus(currentActiveFilter);
         Platform.runLater(()->eventsDisplayer.displayEvents());
     }
