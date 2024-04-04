@@ -85,3 +85,14 @@
 .eventParent {
     -fx-background-color: #F8F0E5;
 }
+
+.revertFilter{
+    -fx-background-radius: 10 0 0 10;
+    -fx-border-color: #102C57;
+    -fx-border-width: 2 0 2 2;
+    -fx-border-radius: 10 0 0 10;
+
+}
+.revertFilter:hover{
+    -fx-background-color: #C5D4E6;
+}
