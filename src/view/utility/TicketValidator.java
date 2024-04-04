@@ -3,6 +3,7 @@ package view.utility;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import javafx.css.PseudoClass;
 import javafx.scene.control.Tooltip;
+import exceptions.ExceptionHandler;
 
 import java.math.BigDecimal;
 
@@ -21,23 +22,53 @@ public class TicketValidator {
         if (typeTF.getText().isEmpty()) {
             typeTF.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, true);
             isValid = false;
+            ExceptionHandler.errorAlertMessage("This field cannot be empty.");
         } else {
             typeTF.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, false);
         }
 
-        if (priceTF.getText().isEmpty() || new BigDecimal(priceTF.getText()).compareTo(BigDecimal.ZERO) <= 0) {
+        if (priceTF.getText().isEmpty()) {
             priceTF.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, true);
             isValid = false;
+            ExceptionHandler.errorAlertMessage("Price should be equal or greater than 0.");
         } else {
-            priceTF.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, false);
+            try {
+                BigDecimal price = new BigDecimal(priceTF.getText());
+                if (price.compareTo(BigDecimal.ZERO) <= 0) {
+                    priceTF.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, true);
+                    isValid = false;
+                    ExceptionHandler.errorAlertMessage("Price should be equal or greater than 0.");
+                } else {
+                    priceTF.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, false);
+                }
+            } catch (NumberFormatException e) {
+                priceTF.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, true);
+                isValid = false;
+                ExceptionHandler.errorAlertMessage("Price should be equal or greater than 0.");
+            }
         }
 
-        if (quantityTF.getText().isEmpty() || Integer.parseInt(quantityTF.getText()) <= 0) {
+        if (quantityTF.getText().isEmpty()) {
             quantityTF.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, true);
             isValid = false;
+            ExceptionHandler.errorAlertMessage("Quantity should be equal or greater than 0.");
         } else {
-            quantityTF.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, false);
+            try {
+                int quantity = Integer.parseInt(quantityTF.getText());
+                if (quantity <= 0) {
+                    quantityTF.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, true);
+                    isValid = false;
+                    ExceptionHandler.errorAlertMessage("Quantity should be equal or greater than 0.");
+                } else {
+                    quantityTF.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, false);
+                }
+            } catch (NumberFormatException e) {
+                quantityTF.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, true);
+                isValid = false;
+                ExceptionHandler.errorAlertMessage("Quantity should be equal or greater than 0.");
+            }
         }
+
         return isValid;
     }
 
