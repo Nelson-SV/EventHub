@@ -3,7 +3,6 @@ package view.admin.eventsPage.eventDescription;
 import be.EventStatus;
 import exceptions.ErrorCode;
 import exceptions.ExceptionHandler;
-import exceptions.ExceptionLogger;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.HBox;
@@ -11,7 +10,6 @@ import view.admin.eventsPage.assignButton.AssignButton;
 import view.components.deleteEvent.DeleteButton;
 
 import java.io.IOException;
-import java.util.logging.Level;
 
 
 public class EventDescription extends HBox {
@@ -26,7 +24,7 @@ public class EventDescription extends HBox {
             this.getChildren().add(eventContainer);
         } catch (IOException e) {
           //  ExceptionLogger.getInstance().getLogger().log(Level.SEVERE,e.getMessage());
-            ExceptionHandler.erorrAlertMessage(ErrorCode.LOADING_FXML_FAILED.getValue());
+            ExceptionHandler.errorAlertMessage(ErrorCode.LOADING_FXML_FAILED.getValue());
         }
     }
 }

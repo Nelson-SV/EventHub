@@ -22,7 +22,7 @@ public class DeleteButton extends VBox {
             this.deleteOperation = loader.load();
             this.getChildren().add(this.deleteOperation);
         } catch (IOException e) {
-            ExceptionHandler.erorrAlertMessage(ErrorCode.LOADING_FXML_FAILED.getValue());
+            ExceptionHandler.errorAlertMessage(ErrorCode.LOADING_FXML_FAILED.getValue());
         }
     }
 

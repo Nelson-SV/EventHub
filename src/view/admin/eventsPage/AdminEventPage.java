@@ -2,16 +2,13 @@ package view.admin.eventsPage;
 
 import exceptions.ErrorCode;
 import exceptions.ExceptionHandler;
-import exceptions.ExceptionLogger;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import view.admin.mainAdmin.AdminController;
 import view.admin.mainAdmin.AdminModel;
 
 import java.io.IOException;
-import java.util.logging.Level;
 
 public class AdminEventPage extends VBox {
     @FXML
@@ -25,7 +22,7 @@ public class AdminEventPage extends VBox {
             this.getChildren().add(adminEventPage);
         } catch (IOException e) {
             e.printStackTrace();
-            ExceptionHandler.erorrAlertMessage(ErrorCode.LOADING_FXML_FAILED.getValue());
+            ExceptionHandler.errorAlertMessage(ErrorCode.LOADING_FXML_FAILED.getValue());
         }
 
     }

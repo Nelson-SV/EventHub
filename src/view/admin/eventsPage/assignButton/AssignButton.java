@@ -1,7 +1,6 @@
 package view.admin.eventsPage.assignButton;
 import exceptions.ErrorCode;
 import exceptions.ExceptionHandler;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -19,7 +18,7 @@ public class AssignButton  extends  VBox{
         } catch (IOException e) {
             e.printStackTrace();
            // ExceptionLogger.getInstance().getLogger().log(Level.SEVERE,e.getMessage());
-            ExceptionHandler.erorrAlertMessage(ErrorCode.LOADING_FXML_FAILED.getValue());
+            ExceptionHandler.errorAlertMessage(ErrorCode.LOADING_FXML_FAILED.getValue());
         }
     }
 }

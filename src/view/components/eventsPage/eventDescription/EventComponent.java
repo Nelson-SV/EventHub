@@ -20,7 +20,7 @@ public class EventComponent extends HBox {
            this.getChildren().add(eventContainer);
         } catch (IOException e) {
             e.printStackTrace();
-            ExceptionHandler.erorrAlertMessage(ErrorCode.LOADING_FXML_FAILED.getValue());
+            ExceptionHandler.errorAlertMessage(ErrorCode.LOADING_FXML_FAILED.getValue());
         }
     }
 }

@@ -130,7 +130,7 @@ public class AdminEventManageController implements Initializable {
             Throwable exception = performAssignOperation.getException();
             Throwable cause = exception.getCause();
             String message =  cause!=null?cause.getMessage():exception.getMessage();
-            ExceptionHandler.erorrAlertMessage(message);
+            ExceptionHandler.errorAlertMessage(message);
             Platform.runLater(() -> {
                 loadingComponent.setAction(LoadingActions.FAIL.getActionValue());
                 PauseTransition pauseTransition = new PauseTransition(Duration.millis(500));
@@ -144,7 +144,7 @@ public class AdminEventManageController implements Initializable {
         try {
             performAssignOperation.restart();
         } catch (Exception ex) {
-            ExceptionHandler.erorrAlertMessage("Failed to start the operation: " + ex.getMessage());
+            ExceptionHandler.errorAlertMessage("Failed to start the operation: " + ex.getMessage());
             CommonMethods.closeWindow(thirdLayout);
         }
     }

@@ -340,3 +340,8 @@ INFO: Logger initialized
 .......................................
 Apr 02, 2024 10:58:12 PM view.admin.eventsPage.AdminPageController lambda$initializeEvents$3
 SEVERE: The TCP/IP connection to the host EASV-DB4, port 1433 has failed. Error: "EASV-DB4. Verify the connection properties. Make sure that an instance of SQL Server is running on the host and accepting TCP/IP connections at the port. Make sure that TCP connections to the port are not blocked by a firewall.".
+Apr 04, 2024 4:24:50 PM exceptions.ExceptionLogger <init>
+INFO: Logger initialized 
+.......................................
+Apr 04, 2024 4:24:50 PM view.components.eventsObservers.EventsObservable lambda$startService$2
+SEVERE: The TCP/IP connection to the host EASV-DB4, port 1433 has failed. Error: "EASV-DB4. Verify the connection properties. Make sure that an instance of SQL Server is running on the host and accepting TCP/IP connections at the port. Make sure that TCP connections to the port are not blocked by a firewall.".

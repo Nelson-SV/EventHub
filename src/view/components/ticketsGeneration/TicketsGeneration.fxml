@@ -38,7 +38,7 @@
       </VBox>
       <VBox alignment="CENTER_LEFT" prefHeight="80.0" prefWidth="270.0">
          <children>
-            <Label text="Price" />
+            <Label text="Price *" />
             <MFXTextField fx:id="ticketPriceTF" floatMode="DISABLED" prefHeight="30.0" prefWidth="250.0" styleClass="ticketPriceTF" />
          </children>
       </VBox>
