@@ -40,6 +40,7 @@ public class AdminController implements Initializable, InitializationErrorListen
             navigationHoverControl.initializeNavButtons();
             initializeStartingPage();
         } catch (EventException e) {
+            e.printStackTrace();
             initializationError = true;
         }
     }
