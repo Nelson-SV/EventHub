@@ -10,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.StackPane;
@@ -40,6 +41,8 @@ public class TicketsGenerationController {
     private List<Ticket> newTickets;
     @FXML
     private Model model;
+    @FXML
+    private Ticket selectedTicket;
 
 
 
@@ -53,7 +56,7 @@ public class TicketsGenerationController {
             this.createEventController = createEventController;
             this.model = model;
         } catch (IOException e) {
-            ExceptionHandler.erorrAlertMessage(ErrorCode.LOADING_FXML_FAILED.getValue());
+            ExceptionHandler.errorAlertMessage(ErrorCode.LOADING_FXML_FAILED.getValue());
         }
     }
 
@@ -74,8 +77,11 @@ public class TicketsGenerationController {
         if(isTicketValid) {
             Ticket ticket = new Ticket(ticketTypeTF.getText(), Integer.parseInt(ticketQuantityTF.getText()), new BigDecimal(ticketPriceTF.getText()));
 
-            Label ticketType = new Label(ticket.getTicketType());
+            Hyperlink ticketType = new Hyperlink(ticket.getTicketType());
             ticketType.setTextFill(BLACK);
+            ticketType.setUnderline(true);
+            ticketType.setOnMouseClicked(event -> editTicket(ticket));
+
             Label ticketQuantity = new Label(ticket.getQuantity() + "");
             ticketQuantity.setTextFill(BLACK);
 
@@ -91,7 +97,6 @@ public class TicketsGenerationController {
 
             model.getNewTicket(ticket);
 
-
             remove.setOnAction(event -> {
                 createEventController.hBoxTickets.getChildren().remove(vBox);
                 model.removeTicket(ticket);
@@ -101,7 +106,16 @@ public class TicketsGenerationController {
 
     }
 
-
+    private void editTicket(Ticket ticket) {
+        // Check if a ticket is selected for editing
+        if (ticket != null) {
+            //createEventController.editTicket(new ActionEvent(), ticket);
+            // Populate text fields with ticket information
+            ticketTypeTF.setText(ticket.getTicketType());
+            ticketQuantityTF.setText(String.valueOf(ticket.getQuantity()));
+            ticketPriceTF.setText(ticket.getTicketPrice().toString());
+        }
+    }
 
     @FXML
     private void cancelAction(ActionEvent actionEvent) {

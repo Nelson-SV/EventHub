@@ -1,17 +1,13 @@
 package view.components.SellingTickets;
 
 import be.Customer;
-import be.Event;
 import be.Ticket;
-import dal.TicketDAO;
 import exceptions.ErrorCode;
 import exceptions.EventException;
 import exceptions.ExceptionHandler;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
-import io.github.palexdev.materialfx.controls.MFXScrollPane;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
-import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
 import javafx.css.PseudoClass;
 import javafx.event.ActionEvent;
@@ -21,7 +17,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import view.components.main.Model;
 
@@ -29,7 +24,6 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class SellingViewController implements Initializable {
 
@@ -67,7 +61,7 @@ public class SellingViewController implements Initializable {
             box=loader.load();
             this.vBox = vbox;
         } catch (IOException e) {
-            ExceptionHandler.erorrAlertMessage(ErrorCode.LOADING_FXML_FAILED.getValue());
+            ExceptionHandler.errorAlertMessage(ErrorCode.LOADING_FXML_FAILED.getValue());
         }
 
     }

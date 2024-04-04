@@ -85,7 +85,7 @@ public class EventManagementController extends GridPane implements Initializable
             this.thirdLayout = thirdLayout;
             this.getChildren().add(managementRoot);
         } catch (IOException e) {
-            ExceptionHandler.erorrAlertMessage(ErrorCode.LOADING_FXML_FAILED.getValue());
+            ExceptionHandler.errorAlertMessage(ErrorCode.LOADING_FXML_FAILED.getValue());
         }
     }
 
@@ -295,7 +295,7 @@ public class EventManagementController extends GridPane implements Initializable
         });
         service.setOnFailed((e) -> {
             Throwable cause = service.getException();
-            ExceptionHandler.erorrAlertMessage(cause.getMessage());
+            ExceptionHandler.errorAlertMessage(cause.getMessage());
             Platform.runLater(() -> {
                 loadingComponent.setAction(LoadingActions.FAIL.getActionValue());
                 PauseTransition pauseTransition = new PauseTransition(Duration.millis(500));

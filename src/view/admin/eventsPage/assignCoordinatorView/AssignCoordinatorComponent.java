@@ -4,7 +4,7 @@ import exceptions.ExceptionHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+
 import java.io.IOException;
 
 public class AssignCoordinatorComponent extends HBox {
@@ -20,7 +20,7 @@ public class AssignCoordinatorComponent extends HBox {
           this.getChildren().add(assignCoordinatorContainer);
         } catch (IOException e) {
             e.printStackTrace();
-            ExceptionHandler.erorrAlertMessage(ErrorCode.LOADING_FXML_FAILED.getValue());
+            ExceptionHandler.errorAlertMessage(ErrorCode.LOADING_FXML_FAILED.getValue());
         }
     }
 

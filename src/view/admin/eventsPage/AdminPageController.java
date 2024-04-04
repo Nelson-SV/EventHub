@@ -10,7 +10,6 @@ import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.application.Platform;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.HBox;
@@ -106,7 +105,7 @@ public class AdminPageController implements Initializable, Displayable {
         getEvents.setOnSucceeded(event -> displayEvents());
         getEvents.setOnFailed(event -> {
             ExceptionLogger.getInstance().getLogger().log(Level.SEVERE, getEvents.getException().getMessage());
-            ExceptionHandler.erorrAlertMessage(ErrorCode.FAILED_TO_LOAD_EVENTS.getValue());
+            ExceptionHandler.errorAlertMessage(ErrorCode.FAILED_TO_LOAD_EVENTS.getValue());
         });
         getEvents.restart();
     }

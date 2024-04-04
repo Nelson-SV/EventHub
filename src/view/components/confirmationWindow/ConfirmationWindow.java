@@ -26,7 +26,7 @@ public class ConfirmationWindow extends VBox {
             this.getChildren().add(confirmationWindow);
             this.setAlignment(Pos.CENTER);
         } catch (IOException e) {
-            ExceptionHandler.erorrAlertMessage(ErrorCode.LOADING_FXML_FAILED.getValue());
+            ExceptionHandler.errorAlertMessage(ErrorCode.LOADING_FXML_FAILED.getValue());
         }
     }
 
