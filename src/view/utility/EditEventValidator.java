@@ -183,6 +183,7 @@ public class EditEventValidator {
      */
     public static void addTimeValidityChecker(MFXComboBox<LocalTime> time) {
         time.textProperty().addListener(((observable, oldValue, newValue) -> {
+            System.out.println(newValue +"new value");
             if (!newValue.isEmpty()) {
                 PauseTransition pauseTransition = new PauseTransition(Duration.millis(100));
                 pauseTransition.setOnFinished((e) -> {
