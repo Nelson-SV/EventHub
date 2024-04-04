@@ -27,6 +27,5 @@ public class AdminEventPage extends VBox {
             e.printStackTrace();
             ExceptionHandler.erorrAlertMessage(ErrorCode.LOADING_FXML_FAILED.getValue());
         }
-
     }
 }
