@@ -22,7 +22,7 @@ public class ExceptionHandler {
         alert.show();
     }
 
-    public static void erorrAlertMessage(String errorMessage){
+    public static void errorAlertMessage(String errorMessage){
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setContentText(errorMessage);
         alert.show();
