@@ -12,11 +12,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TextInputControl;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import view.components.main.Model;
-import view.components.ticketsGeneration.TicketsGeneration;
+import view.components.ticketsGeneration.TicketsGenerationController;
 import view.utility.EditEventValidator;
 
 import java.io.IOException;
@@ -135,8 +134,8 @@ public class CreateEventController {
 
     public void addTicket(ActionEvent actionEvent) {
         showThirdLayout();
-        TicketsGeneration ticketsGeneration = new TicketsGeneration(stackPane, thirdLayout,  this, model);
-        thirdLayout.getChildren().add(ticketsGeneration.getRoot());
+        TicketsGenerationController ticketsGenerationController = new TicketsGenerationController(stackPane, thirdLayout,  this, model);
+        thirdLayout.getChildren().add(ticketsGenerationController.getRoot());
     }
 
     private void showThirdLayout() {

@@ -1,7 +1,9 @@
 package view.components.ticketsGeneration;
 
 import be.Ticket;
+import exceptions.ErrorCode;
 import exceptions.EventException;
+import exceptions.ExceptionHandler;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -14,6 +16,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import view.components.eventsPage.eventManagement.eventCreation.CreateEventController;
 import view.components.main.Model;
+import view.utility.TicketValidator;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -22,7 +25,7 @@ import java.util.List;
 
 import static javafx.scene.paint.Color.*;
 
-public class TicketsGeneration {
+public class TicketsGenerationController {
 
     @FXML
     private FlowPane ticketTypeFlowPane;
@@ -40,7 +43,7 @@ public class TicketsGeneration {
 
 
 
-    public TicketsGeneration(StackPane secondaryLayout, StackPane thirdLayout, CreateEventController createEventController, Model model) {
+    public TicketsGenerationController(StackPane secondaryLayout, StackPane thirdLayout, CreateEventController createEventController, Model model) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("TicketsGeneration.fxml"));
         loader.setController(this);
         try {
@@ -50,44 +53,52 @@ public class TicketsGeneration {
             this.createEventController = createEventController;
             this.model = model;
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            ExceptionHandler.erorrAlertMessage(ErrorCode.LOADING_FXML_FAILED.getValue());
         }
     }
 
     @FXML
     private void initialize() {
         newTickets = new ArrayList<>();
+        TicketValidator.addTicketListeners(ticketTypeTF, ticketPriceTF, ticketQuantityTF);
+
+        TicketValidator.addTypeToolTip(ticketTypeTF);
+        TicketValidator.addPriceToolTip(ticketPriceTF);
+        TicketValidator.addQuantityToolTip(ticketQuantityTF);
     }
 
     @FXML
     private void addTickets(ActionEvent actionEvent) throws EventException {
+        boolean isTicketValid = TicketValidator.isTicketValid(ticketTypeTF, ticketPriceTF, ticketQuantityTF );
 
-        Ticket ticket = new Ticket(ticketTypeTF.getText(), Integer.parseInt(ticketQuantityTF.getText()), new BigDecimal(ticketPriceTF.getText()));
+        if(isTicketValid) {
+            Ticket ticket = new Ticket(ticketTypeTF.getText(), Integer.parseInt(ticketQuantityTF.getText()), new BigDecimal(ticketPriceTF.getText()));
 
-        Label ticketType = new Label(ticket.getTicketType());
-        ticketType.setTextFill(BLACK);
-        Label ticketQuantity = new Label(ticket.getQuantity() + "");
-        ticketQuantity.setTextFill(BLACK);
+            Label ticketType = new Label(ticket.getTicketType());
+            ticketType.setTextFill(BLACK);
+            Label ticketQuantity = new Label(ticket.getQuantity() + "");
+            ticketQuantity.setTextFill(BLACK);
 
-        Button remove = new Button("Remove");
-        remove.setTextFill(RED);
+            Button remove = new Button("Remove");
+            remove.setTextFill(RED);
 
-        VBox vBox = new VBox(ticketType, ticketQuantity, remove);
-        vBox.setAlignment(Pos.CENTER);
-        vBox.setSpacing(10);
+            VBox vBox = new VBox(ticketType, ticketQuantity, remove);
+            vBox.setAlignment(Pos.CENTER);
+            vBox.setSpacing(10);
 
-        createEventController.hBoxTickets.setAlignment(Pos.CENTER_LEFT);
-        createEventController.hBoxTickets.getChildren().add(0, vBox);
+            createEventController.hBoxTickets.setAlignment(Pos.CENTER_LEFT);
+            createEventController.hBoxTickets.getChildren().add(0, vBox);
 
-        model.getNewTicket(ticket);
+            model.getNewTicket(ticket);
 
 
-        remove.setOnAction(event -> {
-            createEventController.hBoxTickets.getChildren().remove(vBox);
-            model.removeTicket(ticket);
-        });
+            remove.setOnAction(event -> {
+                createEventController.hBoxTickets.getChildren().remove(vBox);
+                model.removeTicket(ticket);
+            });
+            closeWindow();
+        }
 
-        closeWindow();
     }
 
 

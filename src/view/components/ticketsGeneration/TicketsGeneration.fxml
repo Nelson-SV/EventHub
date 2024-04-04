@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<FlowPane fx:id="ticketTypeFlowPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="260.0" prefWidth="570.0" style="-fx-background-color: white; -fx-background-radius: 10;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<FlowPane fx:id="ticketTypeFlowPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="260.0" prefWidth="570.0" style="-fx-background-color: white; -fx-background-radius: 10;" stylesheets="@TicketsGeneration.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <HBox prefHeight="50.0" prefWidth="570.0">
          <children>
@@ -30,7 +30,7 @@
       <VBox alignment="CENTER_LEFT" prefHeight="80.0" prefWidth="300.0">
          <children>
             <Label text="Ticket type *" />
-            <MFXTextField fx:id="ticketTypeTF" floatMode="DISABLED" prefHeight="30.0" prefWidth="250.0" promptText="e.g. General Admission" />
+            <MFXTextField fx:id="ticketTypeTF" floatMode="DISABLED" prefHeight="30.0" prefWidth="250.0" styleClass="ticketTypeTF" />
          </children>
          <padding>
             <Insets left="15.0" />
@@ -39,13 +39,13 @@
       <VBox alignment="CENTER_LEFT" prefHeight="80.0" prefWidth="270.0">
          <children>
             <Label text="Price" />
-            <MFXTextField fx:id="ticketPriceTF" floatMode="DISABLED" prefHeight="30.0" prefWidth="250.0" promptText="e.g. 500 dkk" />
+            <MFXTextField fx:id="ticketPriceTF" floatMode="DISABLED" prefHeight="30.0" prefWidth="250.0" styleClass="ticketPriceTF" />
          </children>
       </VBox>
       <VBox alignment="CENTER_LEFT" prefHeight="80.0" prefWidth="570.0">
          <children>
             <Label text="Quantity *" />
-            <MFXTextField fx:id="ticketQuantityTF" floatMode="DISABLED" prefHeight="30.0" prefWidth="250.0" promptText="e.g. 200" />
+            <MFXTextField fx:id="ticketQuantityTF" floatMode="DISABLED" prefHeight="30.0" prefWidth="250.0" styleClass="ticketQuantityTF" />
          </children>
          <padding>
             <Insets left="15.0" />
