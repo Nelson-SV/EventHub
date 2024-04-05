@@ -183,7 +183,7 @@
                <graphic>
                   <ImageView fitHeight="33.0" fitWidth="34.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../../../resourcesEvent/usersimages/print.png" />
+                        <Image url="@../../../../resourcesEvent/usersImages/print.png" />
                      </image>
                   </ImageView>
                </graphic>

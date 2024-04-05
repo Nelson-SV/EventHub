@@ -9,11 +9,12 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Rectangle;
 import view.admin.mainAdmin.AdminModel;
+
 import java.net.URL;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
-public class UserDescriptionController  implements Initializable {
+public class UserDescriptionController implements Initializable {
     @FXML
     private HBox userContainer;
     @FXML
@@ -31,11 +32,11 @@ public class UserDescriptionController  implements Initializable {
     @FXML
     private HBox actionsContainer;
     private AdminModel model;
-    private StackPane secondaryLayout,thirdLayout,fourthLayout;
+    private StackPane secondaryLayout, thirdLayout, fourthLayout;
 
-    public UserDescriptionController(AdminModel model,StackPane secondaryLayout,StackPane thirdLayout,StackPane fourthLayout ) {
+    public UserDescriptionController(AdminModel model, StackPane secondaryLayout, StackPane thirdLayout, StackPane fourthLayout) {
         this.model = model;
-        this.secondaryLayout= secondaryLayout;
+        this.secondaryLayout = secondaryLayout;
         this.thirdLayout = thirdLayout;
         this.fourthLayout = fourthLayout;
     }
@@ -43,19 +44,23 @@ public class UserDescriptionController  implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-makeTheImageRound();
+        makeTheImageRound();
     }
-    private void makeTheImageRound(){
-       // Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("../../../../resources/Image 1.png")));
-        Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/resourcesEvent/usersimages/print.png")));
 
-      //  Image image = new Image("../../../../resources/images/Image 1.png");
+    private void makeTheImageRound() {
+        Image image = null;
+        try {
+            image= new Image(Objects.requireNonNull(getClass().getResourceAsStream("/usersImages/im.png")));
+        } catch (NullPointerException e) {
+                   image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/usersImages/default.png")));
+        }
         userImageContainer.setImage(image);
-        Rectangle rectangle =new Rectangle(userImageContainer.getFitWidth(),userImageContainer.getFitHeight());
-        rectangle.setArcHeight(10);
-        rectangle.setArcWidth(10);
+        userImageContainer.setPreserveRatio(false);
+        double width = userImageContainer.getFitWidth();
+        double height = userImageContainer.getFitHeight();
+        Rectangle rectangle = new Rectangle(width, height);
+        rectangle.setArcHeight(width / 2);
+        rectangle.setArcWidth(height / 2);
         userImageContainer.setClip(rectangle);
     }
-
-
 }
