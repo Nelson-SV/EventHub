@@ -6,7 +6,6 @@
 <?import io.github.palexdev.materialfx.controls.MFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -15,20 +14,21 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<GridPane alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="722.0" style="-fx-background-color: #F8F0E5; -fx-background-radius: 10;" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/20.0.1">
+<GridPane fx:id="addUserContainerComponent" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="722.0" styleClass="createContainer" stylesheets="@CreateUserSkin.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="361.0" />
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="361.0" />
   </columnConstraints>
   <rowConstraints>
     <RowConstraints fillHeight="false" maxHeight="-Infinity" minHeight="10.0" prefHeight="362.0" vgrow="SOMETIMES" />
+      <RowConstraints />
   </rowConstraints>
    <children>
-      <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="320.0" prefWidth="362.0" style="-fx-background-color: #F8F0E5;" GridPane.rowSpan="2">
+      <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="320.0" prefWidth="362.0" GridPane.rowSpan="2">
          <children>
             <HBox prefHeight="30.0" prefWidth="200.0">
                <children>
-                  <Label text="New user">
+                  <Label styleClass="newUserHeader" text="New user">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
@@ -68,18 +68,18 @@
             <Insets left="71.0" />
          </padding>
       </VBox>
-      <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="320.0" prefWidth="362.0" spacing="10.0" GridPane.columnIndex="1">
+      <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="320.0" prefWidth="362.0" GridPane.columnIndex="1">
          <children>
-            <ImageView fx:id="addUserIamgeView" fitHeight="190.0" fitWidth="190.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../../../../../resourcesEvent/usersImages/default.png" />
-               </image>
-            </ImageView>
-            <MFXButton fx:id="uploadImage" buttonType="RAISED" prefHeight="30.0" prefWidth="100.0" style="-fx-background-color: #E5EDF8; -fx-text-fill: #102c57;" text="Upload image" />
+            <Label fx:id="errorUpload" maxHeight="-Infinity" prefHeight="12.0" text="Failed to load image!"  visible="false"/>
+            <ImageView fx:id="addUserImageView" fitHeight="190.0" fitWidth="190.0" pickOnBounds="true" preserveRatio="true" />
+            <MFXButton fx:id="uploadImage" buttonType="RAISED" prefHeight="30.0" prefWidth="100.0" styleClass="uploadImageBtn" text="Upload image">
+               <VBox.margin>
+                  <Insets top="5.0" />
+               </VBox.margin></MFXButton>
             <HBox alignment="CENTER" prefHeight="70.0" prefWidth="362.0" spacing="20.0">
                <children>
-                  <MFXButton fx:id="saveUser" buttonType="RAISED" maxHeight="-Infinity" prefHeight="30.0" prefWidth="60.0" style="-fx-background-color: #2A9D8F; -fx-text-fill: #102c57;" text="Save" />
-                  <MFXButton fx:id="cancelUser" buttonType="RAISED" maxHeight="-Infinity" prefHeight="30.0" prefWidth="60.0" style="-fx-background-color: #E63946; -fx-text-fill: #102c57;" text="Cancel" />
+                  <MFXButton fx:id="saveUser" buttonType="RAISED" maxHeight="-Infinity" prefHeight="30.0" prefWidth="60.0" styleClass="saveUserBtn" text="Save" />
+                  <MFXButton fx:id="cancelUser" buttonType="RAISED" maxHeight="-Infinity" prefHeight="30.0" prefWidth="60.0" styleClass="cancelUserBtn" text="Cancel" />
                </children>
             </HBox>
          </children>

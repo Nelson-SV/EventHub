@@ -230,7 +230,6 @@ public class AdminModel implements CommonModel, SortCommander, SortObserver {
         this.selectedUsers.add(entityId);
     }
 
-    //TODO change the name to reflect the operations
     public void saveSelectedCoordinatorsAndClearSelectedUsersList() throws EventException {
         if (selectedUsers.isEmpty()) {
             return;
@@ -243,8 +242,7 @@ public class AdminModel implements CommonModel, SortCommander, SortObserver {
     }
 
 
-
-
+    // Related to the sorting and searching functionality
     @Override
     public void performSortOperation(Status status) {
         currentActiveFilter=status;
@@ -300,12 +298,6 @@ public class AdminModel implements CommonModel, SortCommander, SortObserver {
 
     /**revert the events list to display all events (cancel the search filter)*/
     public  void cancelSearchEventFilter(){
-
-
-
-//        currentActiveFilter=Status.ALL;
-//        latestShortcutButtonPressed=null;
-//        notifySubjects();
         currentDisplayedEvents=sortEventsByStatus(currentActiveFilter);
         Platform.runLater(()->eventsDisplayer.displayEvents());
     }
@@ -313,5 +305,12 @@ public class AdminModel implements CommonModel, SortCommander, SortObserver {
     public void setFilterActive(boolean filterActive) {
         isFilterActive = filterActive;
     }
+
+    //Here ends the part that take care of the sort and search functionality
+
+
+
+    //User management operations
+
 
 }
