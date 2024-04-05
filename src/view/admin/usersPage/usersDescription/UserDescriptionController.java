@@ -1,6 +1,5 @@
 package view.admin.usersPage.usersDescription;
 
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -44,31 +43,19 @@ public class UserDescriptionController  implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        System.out.println("initialized executed");
-        makeTheImageRound();
+makeTheImageRound();
     }
-//    private void makeTheImageRound(){
-//        Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/usersImages/print.png")));
-//        userImageContainer.setImage(image);
-//        Rectangle rectangle =new Rectangle(userImageContainer.getFitWidth(),userImageContainer.getFitHeight());
-//        rectangle.setArcHeight(10);
-//        rectangle.setArcWidth(10);
-//        userImageContainer.setClip(rectangle);
-//    }
-
     private void makeTheImageRound(){
-        Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/usersImages/MugShot.jpg")));
+       // Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("../../../../resources/Image 1.png")));
+        Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/resourcesEvent/usersimages/print.png")));
+
+      //  Image image = new Image("../../../../resources/images/Image 1.png");
         userImageContainer.setImage(image);
-         userImageContainer.setPreserveRatio(false);
-         double width = userImageContainer.getFitWidth() ;
-         double height = userImageContainer.getFitHeight() ;
-         Platform.runLater(()->{ Rectangle rectangle = new Rectangle(width,height);
-             rectangle.setArcHeight(width / 2);
-             rectangle.setArcWidth(height / 2);
-             userImageContainer.setClip(rectangle);});
-
+        Rectangle rectangle =new Rectangle(userImageContainer.getFitWidth(),userImageContainer.getFitHeight());
+        rectangle.setArcHeight(10);
+        rectangle.setArcWidth(10);
+        userImageContainer.setClip(rectangle);
     }
-
 
 
 }
