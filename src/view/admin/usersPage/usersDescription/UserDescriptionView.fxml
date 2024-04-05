@@ -1,20 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="70.0" prefWidth="1056.0" style="-fx-background-color: #E5EDF8; -fx-border-color: #102c57; -fx-background-radius: 10; -fx-border-radius: 10; -fx-border-width: 2;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+
+<HBox  maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="52.0" prefWidth="1056.0" style="-fx-background-color: #E5EDF8; -fx-border-color: #102c57; -fx-background-radius: 10; -fx-border-radius: 10; -fx-border-width: 2;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <HBox fx:id="userContainer" alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="424.0" spacing="20.0">
+      <HBox fx:id="userContainer" alignment="CENTER" prefHeight="50.0" prefWidth="424.0" spacing="20.0">
          <children>
-            <ImageView fx:id="userImageContainer" fitHeight="60.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS">
-               <HBox.margin>
-                  <Insets left="10.0" />
-               </HBox.margin></ImageView>
-            <Label fx:id="userName" minWidth="100.0" text="this will be the user name" textFill="#102c57" HBox.hgrow="ALWAYS">
+            <ImageView fx:id="userImageContainer" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS" />
+            <Label fx:id="userName" maxWidth="-Infinity" minWidth="100.0" prefWidth="300.0" text="this will be the user name" textFill="#102c57" HBox.hgrow="ALWAYS">
                <font>
                   <Font name="System Bold" size="16.0" />
                </font>

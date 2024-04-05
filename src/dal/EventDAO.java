@@ -10,6 +10,7 @@ import exceptions.ExceptionLogger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableMap;
 
+import javax.swing.text.DefaultEditorKit;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -28,9 +29,11 @@ public class EventDAO {
     public Integer insertEvent(Event event, List<Ticket> tickets) throws EventException {
         Integer eventId = null;
         Connection conn = null;
+
         try {
             conn = connectionManager.getConnection();
             conn.setAutoCommit(false);
+            conn.commit();
             String sql = "INSERT INTO Event (Start_date, Name, Description, AvTickets, End_Date, Start_Time, End_Time, Location) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             statement.setDate(1, java.sql.Date.valueOf(event.getStartDate()));
