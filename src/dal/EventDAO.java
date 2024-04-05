@@ -127,6 +127,9 @@ public class EventDAO {
     public ObservableMap<Integer, Event> getEvents() throws EventException {
         return retrieveEvents();
     }
+    public ObservableMap<Integer, Event> getAllEvents() throws EventException {
+        return retrieveEvents();
+    }
 
 
     //TODO

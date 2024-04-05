@@ -29,6 +29,7 @@ public class EventManagementLogic implements ILogicManager {
         return eventData.getEvents();
     }
 
+
     @Override
     public Task<List<User>> getevCoord(int eventId) {
         return usersDao.getEventUsers(eventId);
