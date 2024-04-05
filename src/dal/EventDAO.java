@@ -118,7 +118,9 @@ public class EventDAO {
                         throw new EventException(ErrorCode.OPERATION_DB_FAILED);
                     }
                 }
+                ticketStatement.addBatch();
             }
+            ticketStatement.executeBatch();
         }
         return ticketIds;
     }
