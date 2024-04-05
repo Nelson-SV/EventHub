@@ -1,5 +1,4 @@
 package view.admin.mainAdmin;
-
 import be.*;
 import bll.admin.AdminManagementLogic;
 import bll.admin.IAdminLogic;
@@ -14,7 +13,6 @@ import view.admin.listeners.SortObserver;
 import view.admin.listeners.SortSubject;
 import view.components.listeners.Displayable;
 import view.components.main.CommonModel;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,29 +23,41 @@ import java.util.List;
 public class AdminModel implements CommonModel, SortCommander, SortObserver {
     private IAdminLogic adminLogic;
     private Displayable eventsDisplayer;
+
+    /**holds the sort subjects, 'shortcut buttons'*/
     private List<SortSubject> observers;
     /**
      * hold the id of the latest shortcut button pressed
      */
-    private String latestPressed;
+    private String latestShortcutButtonPressed;
+    /**holds the current shortcut filter*/
+    private Status currentActiveFilter=Status.ALL;
     private AdminCoordinatorsDisplayer coordinatorsDisplayer;
     private EventStatus selectedEvent;
+
 
     /**
      * holds all the events in the system
      */
     private ObservableMap<Integer, EventStatus> allEvents;
-
-    /**
-     * holds the events sorted by status
+    /**holds the  current sorted list off events. When a shortcut button is pressed and the search filter
+     * will be applied only for the sorted events by status
      */
-    private List<EventStatus> sortedEventsByStatus;
-
-
+    private List<EventStatus> currentSortedListEvents;
     /**
      * the collection that is displayed on the screen
      */
     private List<EventStatus> currentDisplayedEvents;
+    /**
+     * check If Filter Is Active in order to determine what list to sort when the sortButton is pressed */
+    private boolean isFilterActive;
+
+
+
+    /**
+     *store the search results off the current search filter */
+    private List<EventStatus> currentActiveFilterList;
+
 
     /**
      * holds the coordinators of the current selected event
@@ -109,6 +119,7 @@ public class AdminModel implements CommonModel, SortCommander, SortObserver {
 
     private void initializeSortedEventsToBeDisplayed() {
         this.currentDisplayedEvents = adminLogic.getAllSortedEventsByStatus(this.allEvents.values());
+    this.currentSortedListEvents=currentDisplayedEvents;
     }
 
 //THE FOLLOWING METHODS ARE RELATED TO THE SORTING OPERATIONS
@@ -121,11 +132,17 @@ public class AdminModel implements CommonModel, SortCommander, SortObserver {
     }
 
     /**
-     * returns the selected Events
+     * sorts the selected Events by status;
      */
-    private void sortEventsByStatus(Status status) {
-        currentDisplayedEvents = adminLogic.getSortedEventsByStatus(allEvents.values(), status);
+    private List<EventStatus> sortEventsByStatus(Status status) {
+        return adminLogic.getSortedEventsByStatus(allEvents.values(), status);
     }
+    /**
+     *sort a specific list by status*/
+    private List<EventStatus> sortSpecificEventsByStatus(List<EventStatus> events,Status status){
+        return adminLogic.getSortedEventsByStatus(events,status);
+    }
+
 
     /**
      * Sets the Event Displayer responsible for displaying the events
@@ -142,7 +159,7 @@ public class AdminModel implements CommonModel, SortCommander, SortObserver {
         boolean removed = adminLogic.deleteEvent(eventId);
         if (removed) {
             this.allEvents.remove(eventId);
-            sortEventsByStatus(Status.ALL);
+            currentDisplayedEvents=sortEventsByStatus(Status.ALL);
             Platform.runLater(() -> this.getEventsDisplayer().displayEvents());
         }
     }
@@ -227,9 +244,20 @@ public class AdminModel implements CommonModel, SortCommander, SortObserver {
 
 
 
+
     @Override
     public void performSortOperation(Status status) {
-        sortEventsByStatus(status);
+        currentActiveFilter=status;
+        if(currentActiveFilterList!=null&&currentActiveFilterList.isEmpty()){
+            notifySubjects();
+            return;
+        }
+        if(isFilterActive){
+            currentSortedListEvents=sortSpecificEventsByStatus(currentActiveFilterList,status);
+        }else{
+            currentSortedListEvents = sortEventsByStatus(status);
+        }
+        currentDisplayedEvents=currentSortedListEvents;
         notifySubjects();
         eventsDisplayer.displayEvents();
     }
@@ -248,7 +276,8 @@ public class AdminModel implements CommonModel, SortCommander, SortObserver {
     @Override
     public void notifySubjects() {
         for (SortSubject sortSubject : observers) {
-            if (sortSubject.isSelected() && !sortSubject.getIdentificationId().equals(latestPressed)) {
+            if (sortSubject.isSelected() && !sortSubject.getIdentificationId().equals(latestShortcutButtonPressed)) {
+                sortSubject.setSelected(false);
                 sortSubject.changeToSort();
                 sortSubject.changePerformedOperationToSort();
             }
@@ -258,7 +287,31 @@ public class AdminModel implements CommonModel, SortCommander, SortObserver {
 
     @Override
     public void setLatestSelected(String latestPressedId) {
-        this.latestPressed = latestPressedId;
+        this.latestShortcutButtonPressed = latestPressedId;
+    }
+
+    /**search for the even by name*/
+    public void searchForEvent(String eventName){
+        currentActiveFilterList =adminLogic.getSearchedEvents(eventName,currentSortedListEvents);
+        currentDisplayedEvents = currentActiveFilterList;
+        Platform.runLater(()->eventsDisplayer.displayEvents());
+    }
+
+
+    /**revert the events list to display all events (cancel the search filter)*/
+    public  void cancelSearchEventFilter(){
+
+
+
+//        currentActiveFilter=Status.ALL;
+//        latestShortcutButtonPressed=null;
+//        notifySubjects();
+        currentDisplayedEvents=sortEventsByStatus(currentActiveFilter);
+        Platform.runLater(()->eventsDisplayer.displayEvents());
+    }
+
+    public void setFilterActive(boolean filterActive) {
+        isFilterActive = filterActive;
     }
 
 }

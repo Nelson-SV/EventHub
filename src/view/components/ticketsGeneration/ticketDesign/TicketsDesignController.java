@@ -1,4 +1,4 @@
-package view.components.ticketsGeneration;
+package view.components.ticketsGeneration.ticketDesign;
 
 import be.Ticket;
 import io.github.palexdev.materialfx.controls.MFXButton;

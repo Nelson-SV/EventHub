@@ -24,4 +24,6 @@ public interface IAdminLogic {
     boolean assignCoordinatorsToEvent(ObservableList<Integer> selectedUsers, int id) throws  EventException;
 
     boolean deleteEvent(int eventId) throws EventException;
+
+    List<EventStatus> getSearchedEvents(String eventName,List<EventStatus> events);
 }
