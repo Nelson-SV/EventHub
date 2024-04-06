@@ -1,4 +1,5 @@
 package view.admin.mainAdmin;
+
 import be.*;
 import bll.admin.AdminManagementLogic;
 import bll.admin.IAdminLogic;
@@ -13,6 +14,8 @@ import view.admin.listeners.SortObserver;
 import view.admin.listeners.SortSubject;
 import view.components.listeners.Displayable;
 import view.components.main.CommonModel;
+
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,17 +24,28 @@ import java.util.List;
  * this will allow us to  test the controllers in isolation
  */
 public class AdminModel implements CommonModel, SortCommander, SortObserver {
+
+
+    private final static ObservableList<String> roles = FXCollections.observableArrayList();
     private IAdminLogic adminLogic;
     private Displayable eventsDisplayer;
 
-    /**holds the sort subjects, 'shortcut buttons'*/
+    private File uploadedImage;
+
+
+
+    /**
+     * holds the sort subjects, 'shortcut buttons'
+     */
     private List<SortSubject> observers;
     /**
      * hold the id of the latest shortcut button pressed
      */
     private String latestShortcutButtonPressed;
-    /**holds the current shortcut filter*/
-    private Status currentActiveFilter=Status.ALL;
+    /**
+     * holds the current shortcut filter
+     */
+    private Status currentActiveFilter = Status.ALL;
     private AdminCoordinatorsDisplayer coordinatorsDisplayer;
     private EventStatus selectedEvent;
 
@@ -40,7 +54,8 @@ public class AdminModel implements CommonModel, SortCommander, SortObserver {
      * holds all the events in the system
      */
     private ObservableMap<Integer, EventStatus> allEvents;
-    /**holds the  current sorted list off events. When a shortcut button is pressed and the search filter
+    /**
+     * holds the  current sorted list off events. When a shortcut button is pressed and the search filter
      * will be applied only for the sorted events by status
      */
     private List<EventStatus> currentSortedListEvents;
@@ -49,13 +64,14 @@ public class AdminModel implements CommonModel, SortCommander, SortObserver {
      */
     private List<EventStatus> currentDisplayedEvents;
     /**
-     * check If Filter Is Active in order to determine what list to sort when the sortButton is pressed */
+     * check If Filter Is Active in order to determine what list to sort when the sortButton is pressed
+     */
     private boolean isFilterActive;
 
 
-
     /**
-     *store the search results off the current search filter */
+     * store the search results off the current search filter
+     */
     private List<EventStatus> currentActiveFilterList;
 
 
@@ -84,6 +100,7 @@ public class AdminModel implements CommonModel, SortCommander, SortObserver {
         this.allCoordinators = FXCollections.observableArrayList();
         this.currentDisplayedEvents = new ArrayList<>();
         this.observers = new ArrayList<>();
+        roles.setAll(adminLogic.getRoles());
     }
 
     public ObservableList<User> getAllCoordinators() {
@@ -119,7 +136,7 @@ public class AdminModel implements CommonModel, SortCommander, SortObserver {
 
     private void initializeSortedEventsToBeDisplayed() {
         this.currentDisplayedEvents = adminLogic.getAllSortedEventsByStatus(this.allEvents.values());
-    this.currentSortedListEvents=currentDisplayedEvents;
+        this.currentSortedListEvents = currentDisplayedEvents;
     }
 
 //THE FOLLOWING METHODS ARE RELATED TO THE SORTING OPERATIONS
@@ -137,10 +154,12 @@ public class AdminModel implements CommonModel, SortCommander, SortObserver {
     private List<EventStatus> sortEventsByStatus(Status status) {
         return adminLogic.getSortedEventsByStatus(allEvents.values(), status);
     }
+
     /**
-     *sort a specific list by status*/
-    private List<EventStatus> sortSpecificEventsByStatus(List<EventStatus> events,Status status){
-        return adminLogic.getSortedEventsByStatus(events,status);
+     * sort a specific list by status
+     */
+    private List<EventStatus> sortSpecificEventsByStatus(List<EventStatus> events, Status status) {
+        return adminLogic.getSortedEventsByStatus(events, status);
     }
 
 
@@ -159,7 +178,7 @@ public class AdminModel implements CommonModel, SortCommander, SortObserver {
         boolean removed = adminLogic.deleteEvent(eventId);
         if (removed) {
             this.allEvents.remove(eventId);
-            currentDisplayedEvents=sortEventsByStatus(Status.ALL);
+            currentDisplayedEvents = sortEventsByStatus(Status.ALL);
             Platform.runLater(() -> this.getEventsDisplayer().displayEvents());
         }
     }
@@ -245,17 +264,17 @@ public class AdminModel implements CommonModel, SortCommander, SortObserver {
     // Related to the sorting and searching functionality
     @Override
     public void performSortOperation(Status status) {
-        currentActiveFilter=status;
-        if(currentActiveFilterList!=null&&currentActiveFilterList.isEmpty()){
+        currentActiveFilter = status;
+        if (currentActiveFilterList != null && currentActiveFilterList.isEmpty()) {
             notifySubjects();
             return;
         }
-        if(isFilterActive){
-            currentSortedListEvents=sortSpecificEventsByStatus(currentActiveFilterList,status);
-        }else{
+        if (isFilterActive) {
+            currentSortedListEvents = sortSpecificEventsByStatus(currentActiveFilterList, status);
+        } else {
             currentSortedListEvents = sortEventsByStatus(status);
         }
-        currentDisplayedEvents=currentSortedListEvents;
+        currentDisplayedEvents = currentSortedListEvents;
         notifySubjects();
         eventsDisplayer.displayEvents();
     }
@@ -288,26 +307,44 @@ public class AdminModel implements CommonModel, SortCommander, SortObserver {
         this.latestShortcutButtonPressed = latestPressedId;
     }
 
-    /**search for the even by name*/
-    public void searchForEvent(String eventName){
-        currentActiveFilterList =adminLogic.getSearchedEvents(eventName,currentSortedListEvents);
+    /**
+     * search for the even by name
+     */
+    public void searchForEvent(String eventName) {
+        currentActiveFilterList = adminLogic.getSearchedEvents(eventName, currentSortedListEvents);
         currentDisplayedEvents = currentActiveFilterList;
-        Platform.runLater(()->eventsDisplayer.displayEvents());
+        Platform.runLater(() -> eventsDisplayer.displayEvents());
     }
 
 
-    /**revert the events list to display all events (cancel the search filter)*/
-    public  void cancelSearchEventFilter(){
-        currentDisplayedEvents=sortEventsByStatus(currentActiveFilter);
-        Platform.runLater(()->eventsDisplayer.displayEvents());
+    /**
+     * revert the events list to display all events (cancel the search filter)
+     */
+    public void cancelSearchEventFilter() {
+        currentDisplayedEvents = sortEventsByStatus(currentActiveFilter);
+        Platform.runLater(() -> eventsDisplayer.displayEvents());
     }
 
     public void setFilterActive(boolean filterActive) {
         isFilterActive = filterActive;
     }
 
-    //Here ends the part that take care of the sort and search functionality
 
+
+    //Here ends the part that take care of the sort and search functionality
+    public ObservableList<String> getRoles(){
+        return roles;
+    }
+    public File getUploadedImage() {
+        return uploadedImage;
+    }
+
+    public void setUploadedImage(File uploadedImage) {
+        this.uploadedImage = uploadedImage;
+    }
+    public boolean isUnique(File file){
+        return adminLogic.fileExists(file);
+    }
 
 
     //User management operations
