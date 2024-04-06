@@ -1,6 +1,7 @@
 package bll.admin;
 
 import be.EventStatus;
+import be.Role;
 import be.Status;
 import be.User;
 import bll.EventStatusCalculator;
@@ -14,12 +15,13 @@ import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
 import javafx.concurrent.Task;
 
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class AdminManagementLogic implements IAdminLogic {
@@ -31,6 +33,11 @@ public class AdminManagementLogic implements IAdminLogic {
         this.eventDAO = new EventDAO();
         this.usersDAO = new UsersDAO();
         this.adminDao = new AdminDao();
+    }
+
+
+    public List<String> getRoles() {
+        return Arrays.stream(Role.values()).map(Role::getValue).toList();
     }
 
     /**
@@ -116,7 +123,7 @@ public class AdminManagementLogic implements IAdminLogic {
 
     @Override
     public List<EventStatus> getSearchedEvents(String eventName, List<EventStatus> events) {
-        return events.stream().filter(e->e.getEventDTO().getName().toLowerCase().contains(eventName)).toList();
+        return events.stream().filter(e -> e.getEventDTO().getName().toLowerCase().contains(eventName)).toList();
     }
 
     private List<EventStatus> sortOngoing(Collection<EventStatus> events) {
@@ -145,6 +152,13 @@ public class AdminManagementLogic implements IAdminLogic {
                 .sorted(Comparator.comparing((EventStatus event) -> event.getEventDTO().getStartDate())
                         .thenComparing(event -> event.getEventDTO().getStartTime()))
                 .collect(Collectors.toList());
+    }
+
+    //user management actions
+    public boolean fileExists(File file) {
+        Path uploadedImagesPath = Paths.get(System.getProperty("user.dir"), "uploadImages", "userUploadedImages");
+        Path targetFilePath = uploadedImagesPath.resolve(file.getName());
+        return Files.exists(targetFilePath);
     }
 
 }

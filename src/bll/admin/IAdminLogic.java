@@ -7,6 +7,7 @@ import exceptions.EventException;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
 
+import java.io.File;
 import java.util.Collection;
 import java.util.List;
 
@@ -26,4 +27,7 @@ public interface IAdminLogic {
     boolean deleteEvent(int eventId) throws EventException;
 
     List<EventStatus> getSearchedEvents(String eventName,List<EventStatus> events);
+
+    List<String> getRoles();
+    boolean fileExists(File file);
 }

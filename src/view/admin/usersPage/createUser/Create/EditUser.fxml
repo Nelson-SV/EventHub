@@ -37,30 +37,30 @@
             </HBox>
             <VBox maxHeight="-Infinity" prefHeight="70.0" prefWidth="219.0">
                <children>
-                  <Label text="First name *">
+                  <Label text="First name *" >
                      <font>
                         <Font size="14.0" />
                      </font>
                   </Label>
-                  <MFXTextField fx:id="firstName" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" prefWidth="219.0" />
+                  <MFXTextField fx:id="firstName" styleClass="firstName" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" prefWidth="219.0" />
                </children>
             </VBox>
             <VBox prefHeight="70.0" prefWidth="100.0">
                <children>
                   <Label text="Last Name *" />
-                  <MFXTextField fx:id="lastName" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" prefWidth="219.0" />
+                  <MFXTextField fx:id="lastName" styleClass="lastName" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" prefWidth="219.0" />
                </children>
             </VBox>
             <VBox prefHeight="70.0" prefWidth="100.0">
                <children>
                   <Label text="Role *" />
-                  <MFXComboBox fx:id="userRoles" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" prefWidth="219.0" promptText="Select role" />
+                  <MFXComboBox fx:id="userRoles"  styleClass="userRoles" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" prefWidth="219.0" promptText="Select role" />
                </children>
             </VBox>
             <VBox prefHeight="70.0" prefWidth="219.0">
                <children>
                   <Label text="Password *" />
-                  <MFXPasswordField fx:id="password" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" prefWidth="219.0" />
+                  <MFXPasswordField fx:id="password" styleClass="userPassword" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" prefWidth="219.0" />
                </children>
             </VBox>
          </children>

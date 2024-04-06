@@ -24,3 +24,21 @@
     -fx-background-color: #E63946;
     -fx-text-fill: #102c57;
 }
+
+.firstName:error{
+    -fx-border-color: red;
+    -fx-border-width: 2;
+}
+.lastName:error{
+    -fx-border-color: red;
+    -fx-border-width: 2;
+}
+.userRoles:error{
+    -fx-border-color: red;
+    -fx-border-width: 2;
+}
+
+.userPassword:error{
+    -fx-border-color: red;
+    -fx-border-width: 2;
+}
