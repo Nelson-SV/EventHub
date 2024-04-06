@@ -1,26 +1,35 @@
 package dal;
 
+import be.Event;
 import be.Role;
 import be.User;
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import exceptions.ErrorCode;
 import exceptions.EventException;
 import exceptions.ExceptionLogger;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 
 public class UsersDAO {
     private ConnectionManager connectionManager;
+    private FileHandler fileHandler;
+    private Cloudinary cloudinary;
 
     public UsersDAO() throws EventException {
         this.connectionManager = new ConnectionManager();
+        this.fileHandler = new FileHandler();
+        this.cloudinary = new CloudinaryApp().getCloudinary();
     }
 
     public Task<List<User>> getEventUsers(int eventId) {
@@ -88,7 +97,7 @@ public class UsersDAO {
     }
 
     public boolean unassignUser(int entityId, int eventId) throws EventException {
-        boolean succeeded=false;
+        boolean succeeded = false;
         String sql = "DELETE FROM UsersEvents WHERE  EventId=? AND UserId=?";
         try (Connection conn = connectionManager.getConnection()) {
             try (PreparedStatement psmt = conn.prepareStatement(sql)) {
@@ -97,7 +106,7 @@ public class UsersDAO {
                 psmt.executeUpdate();
             }
             succeeded = true;
-        } catch (SQLException |EventException e) {
+        } catch (SQLException | EventException e) {
             throw new EventException(e.getMessage());
         }
         return succeeded;
@@ -161,7 +170,7 @@ public class UsersDAO {
                     }
                 }
                 if (currentTry == maxRetries) {
-                    throw new EventException( e.getMessage(), e, ErrorCode.OPERATION_DB_FAILED);
+                    throw new EventException(e.getMessage(), e, ErrorCode.OPERATION_DB_FAILED);
                 }
             } finally {
                 if (conn != null) {
@@ -176,5 +185,125 @@ public class UsersDAO {
         }
         return succeeded;
     }
+    public User saveUserWithCustomImage(User user, File uploadedFile) throws EventException {
+        String sql = "INSERT INTO Users VALUES(?,?,?,?,?)";
+            Connection conn = null;
+            String filePublicId = null;
+            try {
+                conn = connectionManager.getConnection();
+                conn.setAutoCommit(false);
+                conn.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
+                String[] results=uploadImage(uploadedFile);
+                filePublicId=results[1];
+                PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                pstmt.setString(1, user.getFirstName());
+                pstmt.setString(2, user.getPassword());
+                pstmt.setString(3, user.getLastName());
+                pstmt.setString(4, results[0]);
+                pstmt.setString(5, user.getRole());
+                int affectedRows = pstmt.executeUpdate();
+                if (affectedRows == 0) {
+                    throw new EventException(ErrorCode.OPERATION_DB_FAILED);
+                }
+                try (ResultSet generatedKeys = pstmt.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        user.setUserId(generatedKeys.getInt(1));
+                    } else {
+                        throw new EventException(ErrorCode.OPERATION_DB_FAILED);
+                    }
+                }
+                conn.commit();
+                return user;
+            } catch (SQLException e) {
+                if (conn != null) {
+                    try {
+                        conn.rollback();
+                    } catch (SQLException ex) {
+                       ExceptionLogger.getInstance().getLogger().log(Level.SEVERE,ex.getMessage());
+                    }
+                    distroyFile(filePublicId);
+                }
+            } finally {
+                if (conn != null) {
+                    try {
+                        conn.close();
+                    } catch (SQLException e) {
+                      ExceptionLogger.getInstance().getLogger().log(Level.SEVERE,e.getMessage());
+                    }
+                }
+            }
 
+        return null;
+    }
+
+    private String[] uploadImage(File file) throws EventException {
+        String[] uploadedImage =  new String[2];
+        try {
+            Map uploadResult = cloudinary.uploader().upload(file, ObjectUtils.emptyMap());
+            String url = (String) uploadResult.get("url");
+            String publicId = (String)uploadResult.get("public_id");
+            System.out.println("Uploaded image URL: " + url);
+            uploadedImage[0]=url;
+            uploadedImage[1]=publicId;
+            return  uploadedImage;
+        } catch (Exception e) {
+           // e.printStackTrace();
+            throw  new EventException(e.getMessage(),e,ErrorCode.COPY_FAILED);
+        }
+    }
+    private void distroyFile(String filePublicId) throws EventException {
+        try {
+            Map result = cloudinary.uploader().destroy(filePublicId, ObjectUtils.emptyMap());
+            System.out.println(result);
+        } catch (Exception e) {
+          //  e.printStackTrace();
+            throw new EventException(e.getMessage(),e,ErrorCode.COPY_FAILED);
+        }
+    }
+
+    public User saveUserWithDefaultImage(User user) throws EventException {
+        String sql = "INSERT INTO Users VALUES(?,?,?,?,?)";
+        Connection conn = null;
+        try {
+            conn = connectionManager.getConnection();
+            conn.setAutoCommit(false);
+            conn.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
+            PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            pstmt.setString(1, user.getFirstName());
+            pstmt.setString(2, user.getPassword());
+            pstmt.setString(3, user.getLastName());
+            pstmt.setString(4, user.getUserImageUrl());
+            pstmt.setString(5, user.getRole());
+            int affectedRows = pstmt.executeUpdate();
+            if (affectedRows == 0) {
+                throw new EventException(ErrorCode.OPERATION_DB_FAILED);
+            }
+            try (ResultSet generatedKeys = pstmt.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    user.setUserId(generatedKeys.getInt(1));
+                } else {
+                    throw new EventException(ErrorCode.OPERATION_DB_FAILED);
+                }
+            }
+            conn.commit();
+            return user;
+        } catch (SQLException e) {
+            if (conn != null) {
+                try {
+                    conn.rollback();
+                } catch (SQLException ex) {
+                    ExceptionLogger.getInstance().getLogger().log(Level.SEVERE,ex.getMessage());
+                }
+            }
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    ExceptionLogger.getInstance().getLogger().log(Level.SEVERE,e.getMessage());
+                }
+            }
+        }
+        return null;
+    }
 }

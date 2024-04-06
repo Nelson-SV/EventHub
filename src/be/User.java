@@ -10,6 +10,10 @@ public class User {
     private SimpleStringProperty role;
     private SimpleIntegerProperty userId;
 
+
+    private SimpleStringProperty password;
+    private SimpleStringProperty userImageUrl;
+
     public User(String firstName, String lastName, String role) {
         this.firstName = new SimpleStringProperty(firstName);
         this.lastName = new SimpleStringProperty(lastName);
@@ -17,9 +21,58 @@ public class User {
         this.userId = new SimpleIntegerProperty();
     }
 
+    public User(String firstName, String lastName, String role, String password, String userImageUrl) {
+        this(firstName, lastName, role);
+        this.password = new SimpleStringProperty(password);
+        this.userImageUrl = new SimpleStringProperty(userImageUrl);
+    }
+
+    public User(String firstName, String lastName, String role, String password) {
+        this(firstName, lastName, role);
+        this.password = new SimpleStringProperty(password);
+    }
+
+
+    public String getPassword() {
+        return password.get();
+    }
+
+    public SimpleStringProperty passwordProperty() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password.set(password);
+    }
+
+
+    public String getRole() {
+        return role.get();
+    }
+
+    public SimpleStringProperty roleProperty() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role.set(role);
+    }
+
+    public String getUserImageUrl() {
+        return userImageUrl.get();
+    }
+
+    public SimpleStringProperty userImageUrlProperty() {
+        return userImageUrl;
+    }
+
+    public void setUserImageUrl(String userImageUrl) {
+        this.userImageUrl.set(userImageUrl);
+    }
+
     @Override
     public String toString() {
-        return firstName.get() + " "+lastName.get();
+        return firstName.get() + " " + lastName.get();
 
     }
 

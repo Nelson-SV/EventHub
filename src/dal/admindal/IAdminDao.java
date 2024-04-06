@@ -1,6 +1,7 @@
 package dal.admindal;
 
 import be.EventStatus;
+import be.User;
 import javafx.collections.ObservableMap;
 import org.w3c.dom.events.EventException;
 

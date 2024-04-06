@@ -30,7 +30,13 @@ public class AdminModel implements CommonModel, SortCommander, SortObserver {
     private IAdminLogic adminLogic;
     private Displayable eventsDisplayer;
 
+
+    //User management  setup
     private File uploadedImage;
+
+    private static final String defaultImage= "default.png";
+   /**holds the users in the system with the password and image */
+    private final ObservableMap<Integer,User> usersInTheSystem;
 
 
 
@@ -81,13 +87,14 @@ public class AdminModel implements CommonModel, SortCommander, SortObserver {
     private ObservableList<User> eventAssignedCoordinators;
 
     /**
-     * holds all the coordinators in the system ,without the current selected event ones
+     * holds all the coordinators in the system ,without the current selected event ones,without the password ,and image fields
      */
     private final ObservableList<User> allCoordinators;
     /**
-     * holds all the selected coordinator that will be assigned to the selected event
+     * holds all the selected coordinator that will be assigned to the selected event,without the password and the image fields
      */
     private ObservableList<Integer> selectedUsers;
+
     //TODO delete if not used
     /*** holds the coordinators for all the events*/
     private ObservableMap<Integer, List<User>> eventCoordinators;
@@ -101,6 +108,7 @@ public class AdminModel implements CommonModel, SortCommander, SortObserver {
         this.currentDisplayedEvents = new ArrayList<>();
         this.observers = new ArrayList<>();
         roles.setAll(adminLogic.getRoles());
+        this.usersInTheSystem = FXCollections.observableHashMap();
     }
 
     public ObservableList<User> getAllCoordinators() {
@@ -344,6 +352,25 @@ public class AdminModel implements CommonModel, SortCommander, SortObserver {
     }
     public boolean isUnique(File file){
         return adminLogic.fileExists(file);
+    }
+
+    public void saveUser(String firstName, String lastName, String userRole, String password) throws EventException {
+
+        if(uploadedImage!=null){
+            User user =  new User(firstName,lastName,userRole,password);
+            User insertedUser = adminLogic.saveUserWithImage(user,uploadedImage);
+            if(insertedUser!=null){
+                this.usersInTheSystem.put(insertedUser.getUserId(),insertedUser);
+            }
+        }else{
+            User user =  new User(firstName,lastName,userRole,password,defaultImage);
+            User insertedUser = adminLogic.saveUserWithDefaultImage(user);
+            if(insertedUser!=null){
+                this.usersInTheSystem.put(insertedUser.getUserId(),insertedUser);
+            }
+        }
+
+        //refresh the  collection that is displaying the users;
     }
 
 

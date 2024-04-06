@@ -25,6 +25,4 @@ public class UploadedImageLoader extends Task<Image> {
         }
         return image;
     }
-
-
 }

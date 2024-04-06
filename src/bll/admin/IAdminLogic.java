@@ -30,4 +30,9 @@ public interface IAdminLogic {
 
     List<String> getRoles();
     boolean fileExists(File file);
+
+    User saveUserWithImage(User user,File uploadedImage) throws EventException;
+
+    User saveUserWithDefaultImage(User user) throws  EventException;
+
 }

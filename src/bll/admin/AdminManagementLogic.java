@@ -161,4 +161,14 @@ public class AdminManagementLogic implements IAdminLogic {
         return Files.exists(targetFilePath);
     }
 
+    @Override
+    public User saveUserWithImage(User user,File uploadedImage) throws EventException {
+        return usersDAO.saveUserWithCustomImage(user,uploadedImage);
+    }
+
+    @Override
+    public User saveUserWithDefaultImage(User user) throws EventException {
+        return usersDAO.saveUserWithDefaultImage(user);
+    }
+
 }
