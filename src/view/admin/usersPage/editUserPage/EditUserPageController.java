@@ -1,4 +1,5 @@
-package view.admin.usersPage.createUser.Create;
+package view.admin.usersPage.editUserPage;
+
 import dal.FileHandler;
 import exceptions.ErrorCode;
 import exceptions.ExceptionHandler;
@@ -27,15 +28,17 @@ import view.components.loadingComponent.LoadingComponent;
 import view.utility.CommonMethods;
 import view.utility.ImageLoadingHandler;
 import view.utility.UserManagementValidator;
+
 import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class CreateUserController implements Initializable {
+public class EditUserPageController implements Initializable {
+
     @FXML
-    private GridPane addUserContainerComponent;
+    private GridPane editUserContainerComponent;
     @FXML
     private MFXTextField firstName;
     @FXML
@@ -45,6 +48,8 @@ public class CreateUserController implements Initializable {
     @FXML
     private MFXPasswordField password;
     @FXML
+    private Label errorUpload;
+    @FXML
     private ImageView addUserImageView;
     @FXML
     private MFXButton uploadImage;
@@ -52,39 +57,58 @@ public class CreateUserController implements Initializable {
     private MFXButton saveUser;
     @FXML
     private MFXButton cancelUser;
-    @FXML
-    private Label errorUpload;
-    private StackPane secondaryLayout, thirdLayout;
+
+    private StackPane secondaryLayout, thirdLayout, fourthLayout;
     private AdminModel adminModel;
     private ImageLoader imageLoader;
     private ImageLoadingHandler imageLoadingHandler;
     private ImageCopyHandler imageCopyHandler;
     private Service<Void> saveService;
     private LoadingComponent loadingComponent;
-    private static final String defaultImageName="default.png";
+    private static final String defaultImageName = "default.png";
 
-    public CreateUserController(StackPane secondaryLayout, StackPane thirdLayout, AdminModel adminModel) {
+    public EditUserPageController(StackPane secondaryLayout, StackPane thirdLayout, StackPane fourthLayout, AdminModel adminModel, int userId) {
         this.thirdLayout = thirdLayout;
         this.adminModel = adminModel;
         this.secondaryLayout = secondaryLayout;
+        this.fourthLayout = fourthLayout;
         imageLoader = new ImageLoader(defaultImageName);
     }
+
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         UserManagementValidator.addNameValueListener(firstName);
-        initializeImageLoader();
+
         addCancelAction();
         UserManagementValidator.addNameValueListener(firstName);
         UserManagementValidator.addNameValueListener(lastName);
-        populateRolesValues(userRoles);
         UserManagementValidator.addRoleValueListener(userRoles);
         UserManagementValidator.addPasswordValidator(password);
+        populateRolesValues(userRoles);
+        populateFieldsWithUserData(firstName, lastName, userRoles, password);
         addOnSaveAction(saveUser);
         addLoadImageBtnAction();
     }
+    private void addCancelAction() {
+        this.cancelUser.setOnAction((event -> {
+            adminModel.setUploadedImage(null);
+            CommonMethods.closeWindow(this.secondaryLayout);
+        }));
+    }
+    private void populateFieldsWithUserData(MFXTextField firstName, MFXTextField lastName, MFXComboBox<String> roles, MFXPasswordField password) {
+        firstName.textProperty().bindBidirectional(adminModel.getSelectedUserToEdit().firstNameProperty());
+        lastName.textProperty().bindBidirectional(adminModel.getSelectedUserToEdit().lastNameProperty());
+        roles.textProperty().bindBidirectional(adminModel.getSelectedUserToEdit().roleProperty());
+        password.textProperty().bindBidirectional(adminModel.getSelectedUserToEdit().passwordProperty());
+        imageLoader.setImageLocation(adminModel.getSelectedUserToEdit().getUserImageUrl());
+        initializeImageLoader();
+    }
 
-    //TOdo remove the printStacktrace
-    //load the user or default image
+    private void populateRolesValues(MFXComboBox<String> userRoles) {
+        userRoles.setItems(adminModel.getRoles());
+     }
+
     private void initializeImageLoader() {
         imageLoader.getServiceLoader().setOnSucceeded((event -> {
             errorUpload.setVisible(false);
@@ -95,45 +119,6 @@ public class CreateUserController implements Initializable {
             errorUpload.setVisible(true);
         });
         imageLoader.getServiceLoader().restart();
-    }
-
-
-    //TODO revize the action about the file handler
-    private void addCancelAction() {
-        this.cancelUser.setOnAction((event -> {
-            FileHandler fileHandler = new FileHandler();
-            fileHandler.cloudinarySettings();
-            adminModel.setUploadedImage(null);
-            CommonMethods.closeWindow(this.secondaryLayout);
-        }));
-    }
-
-    private void populateRolesValues(MFXComboBox<String> userRoles) {
-        userRoles.setItems(adminModel.getRoles());
-    }
-
-    private void addOnSaveAction(MFXButton saveBtn) {
-        saveBtn.setOnAction((event) -> {
-            validateAndSave();
-        });
-    }
-
-    private void validateAndSave() {
-        boolean isRoleValid = UserManagementValidator.isRoleValid(userRoles);
-        boolean isFirstNameValid = UserManagementValidator.isNameValid(firstName);
-        boolean isLastNameValid = UserManagementValidator.isNameValid(lastName);
-        boolean isPasswordValid = UserManagementValidator.isPasswordValid(password);
-        if (isRoleValid && isFirstNameValid && isLastNameValid && isPasswordValid) {
-            startSaveService();
-            loadingComponent = new LoadingComponent();
-            CommonMethods.showSecondaryLayout(thirdLayout,loadingComponent);
-        }
-    }
-
-
-    //TODO remove if not need , used to save the image to local
-    private void saveImage() {
-        imageCopyHandler = new ImageCopyHandler(adminModel.getUploadedImage());
     }
 
     private void addLoadImageBtnAction() {
@@ -147,10 +132,10 @@ public class CreateUserController implements Initializable {
         this.imageLoadingHandler = new ImageLoadingHandler(stage);
         File file = imageLoadingHandler.openFileChooser();
         if (file != null) {
-                UploadedImageLoader uploadedImageLoader = getUploadedImageLoader(file);
-                ExecutorService executorService = Executors.newSingleThreadExecutor();
-                executorService.execute(uploadedImageLoader);
-                executorService.shutdown();
+            UploadedImageLoader uploadedImageLoader = getUploadedImageLoader(file);
+            ExecutorService executorService = Executors.newSingleThreadExecutor();
+            executorService.execute(uploadedImageLoader);
+            executorService.shutdown();
         }
     }
 
@@ -170,7 +155,24 @@ public class CreateUserController implements Initializable {
         return uploadedImageLoader;
     }
 
-//Todo call the model to display the new user added;
+    private void addOnSaveAction(MFXButton saveBtn) {
+        saveBtn.setOnAction((event) -> {
+            validateAndSave();
+        });
+    }
+    private void validateAndSave() {
+        boolean isRoleValid = UserManagementValidator.isRoleValid(userRoles);
+        boolean isFirstNameValid = UserManagementValidator.isNameValid(firstName);
+        boolean isLastNameValid = UserManagementValidator.isNameValid(lastName);
+        boolean isPasswordValid = UserManagementValidator.isPasswordValid(password);
+        if (isRoleValid && isFirstNameValid && isLastNameValid && isPasswordValid) {
+            //startSaveService();
+            System.out.println(adminModel.getSelectedUserToEdit());
+            //loadingComponent = new LoadingComponent();
+            //CommonMethods.showSecondaryLayout(thirdLayout,loadingComponent);
+        }
+    }
+
     private void startSaveService() {
         saveService = new Service<Void>() {
             @Override
@@ -179,21 +181,23 @@ public class CreateUserController implements Initializable {
                     @Override
                     protected Void call() throws Exception {
                         System.out.println("called");
-                        adminModel.saveUser(firstName.getText(), lastName.getText(), userRoles.getSelectionModel().getSelectedItem(), password.getText());
+                      //  adminModel.saveUser(firstName.getText(), lastName.getText(), userRoles.getSelectionModel().getSelectedItem(), password.getText());
+                        adminModel.editUser();
+
                         return null;
                     }
                 };
             }
         };
         saveService.setOnSucceeded((event -> {
-                loadingComponent.setAction(LoadingActions.SUCCES.getActionValue());
-                PauseTransition pauseTransition = new PauseTransition(Duration.millis(500));
-                pauseTransition.setOnFinished((ev) -> {
-                    CommonMethods.closeWindow(secondaryLayout);
-                    CommonMethods.closeWindow(thirdLayout);
-                   // Platform.runLater(()->model.getEventsDisplayer().displayEvents());
-                });
-                pauseTransition.play();
+            loadingComponent.setAction(LoadingActions.SUCCES.getActionValue());
+            PauseTransition pauseTransition = new PauseTransition(Duration.millis(500));
+            pauseTransition.setOnFinished((ev) -> {
+                CommonMethods.closeWindow(secondaryLayout);
+                CommonMethods.closeWindow(thirdLayout);
+                // Platform.runLater(()->model.getEventsDisplayer().displayEvents());
+            });
+            pauseTransition.play();
         }));
         saveService.setOnFailed(event -> {
             loadingComponent.setAction(LoadingActions.FAIL.getActionValue());
@@ -208,4 +212,5 @@ public class CreateUserController implements Initializable {
         });
         saveService.restart();
     }
+
 }

@@ -33,13 +33,19 @@ public class AdminModel implements CommonModel, SortCommander, SortObserver {
 
     //User management  setup
     private File uploadedImage;
-
-    private static final String defaultImage= "default.png";
-   /**holds the users in the system with the password and image */
-    private ObservableMap<Integer,User> usersInTheSystem;
-    /**Users sorted by role*/
+    private User selectedUserToEdit;
+    private static final String defaultImage = "default.png";
+    /**
+     * holds the users in the system with the password and image
+     */
+    private ObservableMap<Integer, User> usersInTheSystem;
+    /**
+     * Users sorted by role
+     */
     private ObservableList<User> sortedUsersByLastName;
-    /**the current displayed users on the view */
+    /**
+     * the current displayed users on the view
+     */
     private ObservableList<User> displayedUsers;
 
     /**
@@ -111,8 +117,8 @@ public class AdminModel implements CommonModel, SortCommander, SortObserver {
         this.observers = new ArrayList<>();
         roles.setAll(adminLogic.getRoles());
         this.usersInTheSystem = FXCollections.observableHashMap();
-        this.sortedUsersByLastName =FXCollections.observableArrayList();
-        this.displayedUsers= FXCollections.observableArrayList();
+        this.sortedUsersByLastName = FXCollections.observableArrayList();
+        this.displayedUsers = FXCollections.observableArrayList();
     }
 
     public ObservableList<User> getAllCoordinators() {
@@ -347,11 +353,14 @@ public class AdminModel implements CommonModel, SortCommander, SortObserver {
     }
 
 
-
     //Here ends the part that take care of the sort and search functionality
-    public ObservableList<String> getRoles(){
+
+
+    //Here starts the user management behaviour
+    public ObservableList<String> getRoles() {
         return roles;
     }
+
     public File getUploadedImage() {
         return uploadedImage;
     }
@@ -359,22 +368,23 @@ public class AdminModel implements CommonModel, SortCommander, SortObserver {
     public void setUploadedImage(File uploadedImage) {
         this.uploadedImage = uploadedImage;
     }
-    public boolean isUnique(File file){
+
+    public boolean isUnique(File file) {
         return adminLogic.fileExists(file);
     }
 
     public void saveUser(String firstName, String lastName, String userRole, String password) throws EventException {
-        if(uploadedImage!=null){
-            User user =  new User(firstName,lastName,userRole,password);
-            User insertedUser = adminLogic.saveUserWithImage(user,uploadedImage);
-            if(insertedUser!=null){
-                this.usersInTheSystem.put(insertedUser.getUserId(),insertedUser);
+        if (uploadedImage != null) {
+            User user = new User(firstName, lastName, userRole, password);
+            User insertedUser = adminLogic.saveUserWithImage(user, uploadedImage);
+            if (insertedUser != null) {
+                this.usersInTheSystem.put(insertedUser.getUserId(), insertedUser);
             }
-        }else{
-            User user =  new User(firstName,lastName,userRole,password,defaultImage);
+        } else {
+            User user = new User(firstName, lastName, userRole, password, defaultImage);
             User insertedUser = adminLogic.saveUserWithDefaultImage(user);
-            if(insertedUser!=null){
-                this.usersInTheSystem.put(insertedUser.getUserId(),insertedUser);
+            if (insertedUser != null) {
+                this.usersInTheSystem.put(insertedUser.getUserId(), insertedUser);
             }
         }
         //refresh the  collection that is displaying the users;
@@ -382,23 +392,45 @@ public class AdminModel implements CommonModel, SortCommander, SortObserver {
 
 
     public void getAllUsersWithFullInfo() throws EventException {
-        this.usersInTheSystem= adminLogic.getAllUsersWithFullData();
+        this.usersInTheSystem = adminLogic.getAllUsersWithFullData();
         sortDisplayedUsersByLastName();
         this.displayedUsers = sortedUsersByLastName;
     }
 
-    /**sort users by last name in alphabetically order*/
-    private void sortDisplayedUsersByLastName(){
+    /**
+     * sort users by last name in alphabetically order
+     */
+    private void sortDisplayedUsersByLastName() {
         this.sortedUsersByLastName.setAll(adminLogic.sortedUsersByLastName(this.usersInTheSystem.values()));
     }
 
-    public ObservableList<User> getUsersToDisplay(){
+    public ObservableList<User> getUsersToDisplay() {
         return this.displayedUsers;
     }
-    //TODO to be implemented
-    private void getSortedUserByRole(){
-        this.sortedUsersByLastName =adminLogic.sortUserByRole(usersInTheSystem.values());
+
+    public User getUserById(int userId) {
+        return usersInTheSystem.get(userId);
     }
 
-    //User management operations
+    public void setSelectedUserToEdit(User user) {
+        this.selectedUserToEdit = new User(user);
+        System.out.println(selectedUserToEdit.getUserImageUrl());
+
+    }
+
+    public User getSelectedUserToEdit() {
+        return this.selectedUserToEdit;
+    }
+
+
+    //TODO to be implemented
+    private void getSortedUserByRole() {
+        this.sortedUsersByLastName = adminLogic.sortUserByRole(usersInTheSystem.values());
+    }
+
+
+    public void editUser() throws EventException {
+     boolean editSuccessful= adminLogic.editUserOperation(this.selectedUserToEdit,uploadedImage,this.getUserById(selectedUserToEdit.getUserId()));
+
+    }
 }

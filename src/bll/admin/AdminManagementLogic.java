@@ -186,4 +186,15 @@ public class AdminManagementLogic implements IAdminLogic {
       return values.stream().sorted(Comparator.comparing(User::getLastName)).collect(Collectors.toList());
     }
 
+    @Override
+    public boolean editUserOperation(User selectedUserToEdit, File uploadedImage,User uneditedUser) throws EventException {
+        if(uploadedImage==null){
+            if(selectedUserToEdit.equals(uneditedUser)){
+                return false;
+            }
+        }
+        return usersDAO.editUserOperation(selectedUserToEdit,uploadedImage);
+    }
+
+
 }

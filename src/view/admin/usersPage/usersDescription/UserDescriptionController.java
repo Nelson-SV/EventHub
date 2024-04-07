@@ -6,6 +6,7 @@ import javafx.beans.binding.Bindings;
 import javafx.beans.binding.StringBinding;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -13,6 +14,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Rectangle;
 import view.admin.mainAdmin.AdminModel;
+import view.admin.usersPage.editUseOpener.OpenEditButton;
 import view.admin.usersPage.threads.ImageLoader;
 import view.components.confirmationWindow.ConfirmationWindow;
 import view.components.deleteEvent.DeleteButton;
@@ -113,9 +115,10 @@ public class UserDescriptionController implements Initializable {
     }
 
     private void deleteOperation(HBox actions) {
+        OpenEditButton openEditButton = new OpenEditButton(adminModel,secondaryLayout,thirdLayout,fourthLayout,user.getUserId());
+        openEditButton.getRoot().setAlignment(Pos.CENTER);
         DeleteButton deleteButton = new DeleteButton(secondaryLayout, thirdLayout, adminModel, user.getUserId(), DeleteOperation.DELETE_USER_PERMANENT);
-        actions.getChildren().add(deleteButton);
+        deleteButton.setAlignment(Pos.CENTER);
+        actions.getChildren().addAll(openEditButton.getRoot(),deleteButton);
     }
-
-
 }

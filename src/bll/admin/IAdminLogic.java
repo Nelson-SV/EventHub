@@ -1,5 +1,6 @@
 package bll.admin;
 
+import be.Event;
 import be.EventStatus;
 import be.Status;
 import be.User;
@@ -39,4 +40,6 @@ public interface IAdminLogic {
 
     ObservableList<User> sortUserByRole(Collection<User> values);
     List<User> sortedUsersByLastName(Collection<User> values);
+
+    boolean editUserOperation(User selectedUserToEdit, File uploadedImage,User unEditedUser) throws EventException;
 }

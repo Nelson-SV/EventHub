@@ -82,14 +82,14 @@
       </GridPane>
       <HBox fillHeight="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="30.0" minWidth="536.0" prefHeight="30.0" prefWidth="1076.0" styleClass="eventsHeader">
          <children>
-            <Label alignment="CENTER" maxHeight="30.0" maxWidth="-Infinity" minHeight="30.0" minWidth="200.0" prefHeight="30.0" prefWidth="424.0" text="User Name" HBox.hgrow="ALWAYS">
+            <Label alignment="CENTER" maxHeight="30.0" maxWidth="-Infinity" minHeight="30.0" minWidth="200.0" prefHeight="30.0" prefWidth="419.0" text="User Name" HBox.hgrow="ALWAYS">
                <font>
                   <Font size="16.0" />
                </font>
             </Label>
-            <Label alignment="CENTER" layoutX="386.0" layoutY="10.0" maxHeight="30.0" maxWidth="-Infinity" minHeight="30.0" minWidth="60.0" prefHeight="30.0" prefWidth="250.0" text="Events" />
-            <Label alignment="CENTER" maxHeight="30.0" maxWidth="152.0" minHeight="30.0" minWidth="60.0" prefHeight="30.0" prefWidth="152.0" text="Role" HBox.hgrow="ALWAYS" />
-            <Label alignment="CENTER" maxHeight="30.0" maxWidth="-Infinity" minHeight="30.0" minWidth="106.0" prefHeight="30.0" prefWidth="250.0" text="Actions" HBox.hgrow="ALWAYS" />
+            <Label alignment="CENTER" layoutX="386.0" layoutY="10.0" maxHeight="30.0" maxWidth="-Infinity" minHeight="30.0" minWidth="60.0" prefHeight="30.0" prefWidth="245.0" text="Events" />
+            <Label alignment="CENTER" maxHeight="30.0" maxWidth="-Infinity" minHeight="30.0" minWidth="60.0" prefHeight="30.0" prefWidth="147.0" text="Role" HBox.hgrow="ALWAYS" />
+            <Label alignment="CENTER" maxHeight="30.0" maxWidth="-Infinity" minHeight="30.0" minWidth="106.0" prefHeight="30.0" prefWidth="245.0" text="Actions" HBox.hgrow="ALWAYS" />
          </children>
       </HBox>
       <ScrollPane fx:id="usersView" hbarPolicy="NEVER" maxWidth="1076.0" minHeight="242.0" minWidth="536.0" prefHeight="480.0" prefWidth="1076.0" styleClass="eventsView" vbarPolicy="ALWAYS">

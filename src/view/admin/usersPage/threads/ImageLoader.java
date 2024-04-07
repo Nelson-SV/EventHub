@@ -52,8 +52,6 @@ public class ImageLoader {
             }
         };
     }
-
-
     public Service<Image> getServiceLoader() {
         return serviceLoader;
     }

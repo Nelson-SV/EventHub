@@ -347,4 +347,52 @@ return fullUsers;
         }
         return null;
     }
+
+    public boolean editUserOperation(User selectedUserToEdit, File uploadedImage)  {
+        public User saveUserWithDefaultImage(User user) throws EventException {
+            String sql = "UPDATE Users VALUES(?,?,?,?,?)";
+            Connection conn = null;
+            try {
+                conn = connectionManager.getConnection();
+                conn.setAutoCommit(false);
+                conn.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
+                PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                pstmt.setString(1, user.getFirstName());
+                pstmt.setString(2, user.getPassword());
+                pstmt.setString(3, user.getLastName());
+                pstmt.setString(4, user.getUserImageUrl());
+                pstmt.setString(5, user.getRole());
+                int affectedRows = pstmt.executeUpdate();
+                if (affectedRows == 0) {
+                    throw new EventException(ErrorCode.OPERATION_DB_FAILED);
+                }
+                try (ResultSet generatedKeys = pstmt.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        user.setUserId(generatedKeys.getInt(1));
+                    } else {
+                        throw new EventException(ErrorCode.OPERATION_DB_FAILED);
+                    }
+                }
+                conn.commit();
+                return user;
+            } catch (SQLException e) {
+                if (conn != null) {
+                    try {
+                        conn.rollback();
+                    } catch (SQLException ex) {
+                        ExceptionLogger.getInstance().getLogger().log(Level.SEVERE,ex.getMessage());
+                    }
+                }
+            } finally {
+                if (conn != null) {
+                    try {
+                        conn.close();
+                    } catch (SQLException e) {
+                        ExceptionLogger.getInstance().getLogger().log(Level.SEVERE,e.getMessage());
+                    }
+                }
+            }
+            return null;
+        }
+    }
 }
