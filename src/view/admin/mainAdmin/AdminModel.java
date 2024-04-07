@@ -8,16 +8,14 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
-import view.admin.listeners.AdminCoordinatorsDisplayer;
-import view.admin.listeners.SortCommander;
-import view.admin.listeners.SortObserver;
-import view.admin.listeners.SortSubject;
+import view.admin.listeners.*;
 import view.components.listeners.Displayable;
 import view.components.main.CommonModel;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * We will use dependency injection instead off the singleton design pattern,
@@ -32,7 +30,13 @@ public class AdminModel implements CommonModel, SortCommander, SortObserver {
 
 
     //User management  setup
+    /**
+     * the actual controller that is displaying the users
+     */
+    private UsersDisplayer usersDisplayer;
     private File uploadedImage;
+
+
     private User selectedUserToEdit;
     private static final String defaultImage = "default.png";
     /**
@@ -378,16 +382,15 @@ public class AdminModel implements CommonModel, SortCommander, SortObserver {
             User user = new User(firstName, lastName, userRole, password);
             User insertedUser = adminLogic.saveUserWithImage(user, uploadedImage);
             if (insertedUser != null) {
-                this.usersInTheSystem.put(insertedUser.getUserId(), insertedUser);
+                updateUsersMapSortedListDisplayedUsers(insertedUser);
             }
         } else {
             User user = new User(firstName, lastName, userRole, password, defaultImage);
             User insertedUser = adminLogic.saveUserWithDefaultImage(user);
             if (insertedUser != null) {
-                this.usersInTheSystem.put(insertedUser.getUserId(), insertedUser);
+                updateUsersMapSortedListDisplayedUsers(insertedUser);
             }
         }
-        //refresh the  collection that is displaying the users;
     }
 
 
@@ -414,8 +417,6 @@ public class AdminModel implements CommonModel, SortCommander, SortObserver {
 
     public void setSelectedUserToEdit(User user) {
         this.selectedUserToEdit = new User(user);
-        System.out.println(selectedUserToEdit.getUserImageUrl());
-
     }
 
     public User getSelectedUserToEdit() {
@@ -430,7 +431,26 @@ public class AdminModel implements CommonModel, SortCommander, SortObserver {
 
 
     public void editUser() throws EventException {
-     boolean editSuccessful= adminLogic.editUserOperation(this.selectedUserToEdit,uploadedImage,this.getUserById(selectedUserToEdit.getUserId()));
+        User editedUser = adminLogic.editUserOperation(this.selectedUserToEdit, uploadedImage, this.getUserById(selectedUserToEdit.getUserId()));
+        if (editedUser != null) {
+            updateUsersMapSortedListDisplayedUsers(editedUser);
+        }
+    }
+/**updates the users map with the latest user updates
+ * sort the list in alphabetically order and updates the displayed users
+ * @param user the newly created or updated user */
+    private void updateUsersMapSortedListDisplayedUsers(User user) {
+        this.usersInTheSystem.put(user.getUserId(), user);
+        sortDisplayedUsersByLastName();
+        this.displayedUsers=sortedUsersByLastName;
+        this.uploadedImage = null;
+    }
 
+    public UsersDisplayer getUsersDisplayer() {
+        return usersDisplayer;
+    }
+
+    public void setUsersDisplayer(UsersDisplayer usersDisplayer) {
+        this.usersDisplayer = usersDisplayer;
     }
 }

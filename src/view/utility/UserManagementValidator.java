@@ -25,7 +25,7 @@ public class UserManagementValidator {
     }
 
     public static boolean isRoleValid(MFXComboBox<String> roles) {
-        boolean notSelected = roles.getSelectedIndex() == -1;
+        boolean notSelected = roles.getValue()==null;
         roles.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, notSelected);
         return !notSelected;
     }

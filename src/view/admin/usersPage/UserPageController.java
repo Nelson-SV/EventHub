@@ -1,10 +1,7 @@
 package view.admin.usersPage;
-
-import be.DeleteOperation;
 import exceptions.ErrorCode;
 import exceptions.ExceptionHandler;
 import javafx.application.Platform;
-import javafx.collections.ObservableList;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
@@ -17,20 +14,14 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import view.admin.eventsPage.assignButton.AssignButton;
-import view.admin.eventsPage.eventDescription.EventDescription;
 import view.admin.listeners.UsersDisplayer;
 import view.admin.mainAdmin.AdminModel;
 import view.admin.usersPage.createUser.Create.CreateUserComponent;
 import view.admin.usersPage.usersDescription.UserDescriptionComponent;
-import view.components.deleteEvent.DeleteButton;
 import view.utility.CommonMethods;
-
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.stream.Collectors;
 
 public class UserPageController implements Initializable, UsersDisplayer {
     @FXML
@@ -56,9 +47,8 @@ public class UserPageController implements Initializable, UsersDisplayer {
         this.thirdLayout = thirdLayout;
         this.fourthLayout = fourthLayout;
         this.adminModel = model;
+        adminModel.setUsersDisplayer(this);
     }
-
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         addOnActionCreateUser(createUser);

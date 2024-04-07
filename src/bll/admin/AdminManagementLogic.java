@@ -187,14 +187,12 @@ public class AdminManagementLogic implements IAdminLogic {
     }
 
     @Override
-    public boolean editUserOperation(User selectedUserToEdit, File uploadedImage,User uneditedUser) throws EventException {
+    public User editUserOperation(User selectedUserToEdit, File uploadedImage,User uneditedUser) throws EventException {
         if(uploadedImage==null){
             if(selectedUserToEdit.equals(uneditedUser)){
-                return false;
+                return selectedUserToEdit;
             }
         }
         return usersDAO.editUserOperation(selectedUserToEdit,uploadedImage);
     }
-
-
 }

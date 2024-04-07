@@ -41,5 +41,5 @@ public interface IAdminLogic {
     ObservableList<User> sortUserByRole(Collection<User> values);
     List<User> sortedUsersByLastName(Collection<User> values);
 
-    boolean editUserOperation(User selectedUserToEdit, File uploadedImage,User unEditedUser) throws EventException;
+    User editUserOperation(User selectedUserToEdit, File uploadedImage,User unEditedUser) throws EventException;
 }

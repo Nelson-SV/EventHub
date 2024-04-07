@@ -1,10 +1,12 @@
 package view.utility;
+
 import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.animation.PauseTransition;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,7 +15,7 @@ public class NavigationHoverControl {
 
     private final Rectangle sellingLine;
 
-    private  final Rectangle ticketsLine;
+    private  Rectangle ticketsLine;
 
     private final Rectangle eventsLine;
 
@@ -21,7 +23,7 @@ public class NavigationHoverControl {
 
     private final MFXButton sellingNavButton;
 
-    private final MFXButton ticketingNavButton;
+    private  MFXButton ticketingNavButton;
 
     private final static Color INITIAL_COLOR = Color.web("#DAC0A3");
     private final static Color HOVER_COLOR = Color.web("#102C57");
@@ -37,22 +39,31 @@ public class NavigationHoverControl {
         this.eventsNavButton = eNButton;
         this.sellingNavButton = sNButton;
         this.ticketingNavButton = tNButton;
-
+    }
+    public NavigationHoverControl(Rectangle eL, Rectangle sL,MFXButton eNButton, MFXButton sNButton){
+        this.eventsLine = eL;
+        this.sellingLine = sL;
+        this.eventsNavButton = eNButton;
+        this.sellingNavButton = sNButton;
     }
 
     public void initializeNavButtons() {
         eventsLine.fillProperty().bind(eventColor);
         sellingLine.fillProperty().bind(sellingColor);
-        ticketsLine.fillProperty().bind(ticketingColor);
+        if (ticketsLine != null) {
+            ticketsLine.fillProperty().bind(ticketingColor);
+        }
 
         addOnHoverListener(eventsNavButton, eventColor);
         addOnExitListener(eventsNavButton, eventColor);
 
         addOnHoverListener(sellingNavButton, sellingColor);
         addOnExitListener(sellingNavButton, sellingColor);
+        if (ticketingNavButton != null) {
+            addOnHoverListener(ticketingNavButton, ticketingColor);
+            addOnExitListener(ticketingNavButton, ticketingColor);
+        }
 
-        addOnHoverListener(ticketingNavButton, ticketingColor);
-        addOnExitListener(ticketingNavButton, ticketingColor);
     }
 
     private void addOnHoverListener(MFXButton button, SimpleObjectProperty<Color> color) {

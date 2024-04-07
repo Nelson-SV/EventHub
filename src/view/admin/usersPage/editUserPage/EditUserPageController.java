@@ -8,6 +8,7 @@ import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXPasswordField;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import javafx.animation.PauseTransition;
+import javafx.application.Platform;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
@@ -100,6 +101,7 @@ public class EditUserPageController implements Initializable {
         firstName.textProperty().bindBidirectional(adminModel.getSelectedUserToEdit().firstNameProperty());
         lastName.textProperty().bindBidirectional(adminModel.getSelectedUserToEdit().lastNameProperty());
         roles.textProperty().bindBidirectional(adminModel.getSelectedUserToEdit().roleProperty());
+        roles.valueProperty().bindBidirectional(adminModel.getSelectedUserToEdit().roleProperty());
         password.textProperty().bindBidirectional(adminModel.getSelectedUserToEdit().passwordProperty());
         imageLoader.setImageLocation(adminModel.getSelectedUserToEdit().getUserImageUrl());
         initializeImageLoader();
@@ -166,10 +168,9 @@ public class EditUserPageController implements Initializable {
         boolean isLastNameValid = UserManagementValidator.isNameValid(lastName);
         boolean isPasswordValid = UserManagementValidator.isPasswordValid(password);
         if (isRoleValid && isFirstNameValid && isLastNameValid && isPasswordValid) {
-            //startSaveService();
-            System.out.println(adminModel.getSelectedUserToEdit());
-            //loadingComponent = new LoadingComponent();
-            //CommonMethods.showSecondaryLayout(thirdLayout,loadingComponent);
+            startSaveService();
+            loadingComponent = new LoadingComponent();
+            CommonMethods.showSecondaryLayout(thirdLayout,loadingComponent);
         }
     }
 
@@ -180,10 +181,7 @@ public class EditUserPageController implements Initializable {
                 return new Task<Void>() {
                     @Override
                     protected Void call() throws Exception {
-                        System.out.println("called");
-                      //  adminModel.saveUser(firstName.getText(), lastName.getText(), userRoles.getSelectionModel().getSelectedItem(), password.getText());
                         adminModel.editUser();
-
                         return null;
                     }
                 };
@@ -191,11 +189,12 @@ public class EditUserPageController implements Initializable {
         };
         saveService.setOnSucceeded((event -> {
             loadingComponent.setAction(LoadingActions.SUCCES.getActionValue());
+
             PauseTransition pauseTransition = new PauseTransition(Duration.millis(500));
             pauseTransition.setOnFinished((ev) -> {
                 CommonMethods.closeWindow(secondaryLayout);
                 CommonMethods.closeWindow(thirdLayout);
-                // Platform.runLater(()->model.getEventsDisplayer().displayEvents());
+                adminModel.getUsersDisplayer().displayUsers();
             });
             pauseTransition.play();
         }));
@@ -208,7 +207,6 @@ public class EditUserPageController implements Initializable {
             });
             pauseTransition.play();
             saveService.getException().printStackTrace();
-
         });
         saveService.restart();
     }

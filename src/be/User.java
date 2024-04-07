@@ -111,8 +111,10 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName) && Objects.equals(role, user.role) && Objects.equals(userId, user.userId) && Objects.equals(userEvents, user.userEvents) && Objects.equals(password, user.password);
+        return Objects.equals(firstName.getValue(), user.firstName.getValue()) && Objects.equals(lastName.getValue(), user.lastName.getValue()) && Objects.equals(role.getValue(), user.role.getValue()) && Objects.equals(userId.getValue(), user.userId.getValue())&& Objects.equals(password.getValue(), user.password.getValue());
     }
+
+
 
     @Override
     public int hashCode() {

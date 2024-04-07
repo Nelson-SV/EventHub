@@ -191,7 +191,7 @@ public class CreateUserController implements Initializable {
                 pauseTransition.setOnFinished((ev) -> {
                     CommonMethods.closeWindow(secondaryLayout);
                     CommonMethods.closeWindow(thirdLayout);
-                   // Platform.runLater(()->model.getEventsDisplayer().displayEvents());
+                    adminModel.getUsersDisplayer().displayUsers();
                 });
                 pauseTransition.play();
         }));
@@ -204,7 +204,6 @@ public class CreateUserController implements Initializable {
             });
             pauseTransition.play();
             saveService.getException().printStackTrace();
-
         });
         saveService.restart();
     }

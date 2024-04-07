@@ -25,11 +25,7 @@ public class AdminController implements Initializable, InitializationErrorListen
     @FXML
     private MFXButton usersNavButton;
     @FXML
-    private MFXButton statsNavButton;
-    @FXML
     private Rectangle sellingLine;
-    @FXML
-    private Rectangle ticketingLine;
     @FXML
     private Rectangle eventsLine;
     @FXML
@@ -43,7 +39,7 @@ public class AdminController implements Initializable, InitializationErrorListen
     public void initialize(URL location, ResourceBundle resources) {
         try {
             adminModel = new AdminModel();
-            NavigationHoverControl navigationHoverControl = new NavigationHoverControl(eventsLine, sellingLine, ticketingLine, eventsNavButton, usersNavButton, statsNavButton);
+            NavigationHoverControl navigationHoverControl = new NavigationHoverControl(eventsLine, sellingLine, eventsNavButton, usersNavButton);
             navigationHoverControl.initializeNavButtons();
             initializeStartingPage();
             addUsersNavListener(usersNavButton);
@@ -78,7 +74,6 @@ public class AdminController implements Initializable, InitializationErrorListen
 
 
     private void openUsersPage(){
-
         if(userPageComponent==null){
             userPageComponent = new UserPageComponent(adminSecondaryLayout,adminThirdLayout,adminFourthLayout,adminModel);
             adminPageDisplayer.getChildren().clear();
