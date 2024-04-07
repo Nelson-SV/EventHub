@@ -1,5 +1,6 @@
 package bll.admin;
 
+import be.Event;
 import be.EventStatus;
 import be.Status;
 import be.User;
@@ -7,6 +8,7 @@ import exceptions.EventException;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
 
+import java.io.File;
 import java.util.Collection;
 import java.util.List;
 
@@ -26,4 +28,18 @@ public interface IAdminLogic {
     boolean deleteEvent(int eventId) throws EventException;
 
     List<EventStatus> getSearchedEvents(String eventName,List<EventStatus> events);
+
+    List<String> getRoles();
+    boolean fileExists(File file);
+
+    User saveUserWithImage(User user,File uploadedImage) throws EventException;
+
+    User saveUserWithDefaultImage(User user) throws  EventException;
+
+    ObservableMap<Integer,User> getAllUsersWithFullData() throws EventException;
+
+    ObservableList<User> sortUserByRole(Collection<User> values);
+    List<User> sortedUsersByLastName(Collection<User> values);
+
+    User editUserOperation(User selectedUserToEdit, File uploadedImage,User unEditedUser) throws EventException;
 }

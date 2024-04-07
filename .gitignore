@@ -7,6 +7,8 @@ out/
 
 # EventHub
 src/resources/DbLogin.txt
+src/resources/Cloudinary.txt
+#uploadImages/userUploadedImages
 resourcesEvent/
 ### Eclipse ###
 .apt_generated

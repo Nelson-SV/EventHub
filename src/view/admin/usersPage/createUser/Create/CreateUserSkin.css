@@ -1,0 +1,44 @@
+.createContainer {
+    -fx-background-color: #F8F0E5;
+    -fx-background-radius: 10;
+}
+
+.newUserHeader {
+    -fx-text-fill: #102c57;
+}
+.label{
+    -fx-text-fill: #102c57
+}
+
+.uploadImageBtn {
+    -fx-background-color: #E5EDF8;
+    -fx-text-fill: #102c57;
+}
+
+.saveUserBtn {
+    -fx-background-color: #2A9D8F;
+    -fx-text-fill: #102c57;
+}
+
+.cancelUserBtn {
+    -fx-background-color: #E63946;
+    -fx-text-fill: #102c57;
+}
+
+.firstName:error{
+    -fx-border-color: red;
+    -fx-border-width: 2;
+}
+.lastName:error{
+    -fx-border-color: red;
+    -fx-border-width: 2;
+}
+.userRoles:error{
+    -fx-border-color: red;
+    -fx-border-width: 2;
+}
+
+.userPassword:error{
+    -fx-border-color: red;
+    -fx-border-width: 2;
+}

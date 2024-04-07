@@ -45,7 +45,6 @@ public class AssignController implements Initializable {
         adminEventManagePage.getRoot().setAlignment(Pos.CENTER);
         adminModel.setCoordinatorsDisplayer(adminEventManagePage);
         CommonMethods.showSecondaryLayout(secondaryLayout, adminEventManagePage.getRoot());
-        System.out.println(eventId);
         initializeEventCoordinatorsService();
     }
     private void initializeEventCoordinatorsService(){

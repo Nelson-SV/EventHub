@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
@@ -8,13 +7,10 @@
 
 <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="70.0" prefWidth="1056.0" style="-fx-background-color: #E5EDF8; -fx-border-color: #102c57; -fx-background-radius: 10; -fx-border-radius: 10; -fx-border-width: 2;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <HBox fx:id="userContainer" alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="424.0" spacing="20.0">
+      <HBox fx:id="userContainer" alignment="CENTER" prefHeight="50.0" prefWidth="424.0" spacing="20.0">
          <children>
-            <ImageView fx:id="userImageContainer" fitHeight="60.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS">
-               <HBox.margin>
-                  <Insets left="10.0" />
-               </HBox.margin></ImageView>
-            <Label fx:id="userName" minWidth="100.0" text="this will be the user name" textFill="#102c57" HBox.hgrow="ALWAYS">
+            <ImageView fx:id="userImageContainer" fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS" />
+            <Label fx:id="userName" contentDisplay="CENTER" maxWidth="-Infinity" minWidth="100.0" prefWidth="300.0" textFill="#102c57" HBox.hgrow="ALWAYS">
                <font>
                   <Font name="System Bold" size="16.0" />
                </font>
@@ -23,7 +19,7 @@
       </HBox>
       <HBox fx:id="eventsContainer" alignment="CENTER" prefHeight="100.0" prefWidth="250.0">
          <children>
-            <Label fx:id="userEvents" minWidth="115.0" prefWidth="230.0" text="This will be a lot off names or not depending off the user events" textFill="#102c57" HBox.hgrow="ALWAYS">
+            <Label fx:id="userEvents" contentDisplay="CENTER" minWidth="115.0" textFill="#102c57" HBox.hgrow="ALWAYS">
                <font>
                   <Font size="14.0" />
                </font>
@@ -32,7 +28,7 @@
       </HBox>
       <HBox fx:id="roleContainer" alignment="CENTER" prefHeight="100.0" prefWidth="152.0">
          <children>
-            <Label fx:id="userRole" maxWidth="-Infinity" minWidth="66.0" prefWidth="132.0" text="Label" textFill="#102c57" HBox.hgrow="ALWAYS" />
+            <Label fx:id="userRole" contentDisplay="CENTER" minWidth="66.0" textFill="#102c57" HBox.hgrow="ALWAYS" />
          </children>
       </HBox>
       <HBox fx:id="actionsContainer" alignment="CENTER" minWidth="175.0" prefHeight="100.0" prefWidth="250.0" />

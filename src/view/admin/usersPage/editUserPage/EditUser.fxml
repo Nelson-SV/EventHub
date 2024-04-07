@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import io.github.palexdev.materialfx.controls.MFXComboBox?>
+<?import io.github.palexdev.materialfx.controls.MFXPasswordField?>
+<?import io.github.palexdev.materialfx.controls.MFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<GridPane fx:id="editUserContainerComponent" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="722.0" styleClass="createContainer" stylesheets="@../createUser/Create/CreateUserSkin.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+  <columnConstraints>
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="361.0" />
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="361.0" />
+  </columnConstraints>
+  <rowConstraints>
+    <RowConstraints fillHeight="false" maxHeight="-Infinity" minHeight="10.0" prefHeight="362.0" vgrow="SOMETIMES" />
+      <RowConstraints />
+  </rowConstraints>
+   <children>
+      <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="320.0" prefWidth="362.0" GridPane.rowSpan="2">
+         <children>
+            <HBox prefHeight="30.0" prefWidth="200.0">
+               <children>
+                  <Label styleClass="newUserHeader" text="Edit user">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+            <VBox maxHeight="-Infinity" prefHeight="70.0" prefWidth="219.0">
+               <children>
+                  <Label text="First name *">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <MFXTextField fx:id="firstName" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" prefWidth="219.0" styleClass="firstName" />
+               </children>
+            </VBox>
+            <VBox prefHeight="70.0" prefWidth="100.0">
+               <children>
+                  <Label text="Last Name *" />
+                  <MFXTextField fx:id="lastName" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" prefWidth="219.0" styleClass="lastName" />
+               </children>
+            </VBox>
+            <VBox prefHeight="70.0" prefWidth="100.0">
+               <children>
+                  <Label text="Role *" />
+                  <MFXComboBox fx:id="userRoles" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" prefWidth="219.0" promptText="Select role" styleClass="userRoles" />
+               </children>
+            </VBox>
+            <VBox prefHeight="70.0" prefWidth="219.0">
+               <children>
+                  <Label text="Password *" />
+                  <MFXPasswordField fx:id="password" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" prefWidth="219.0" styleClass="userPassword" />
+               </children>
+            </VBox>
+         </children>
+         <padding>
+            <Insets left="71.0" />
+         </padding>
+      </VBox>
+      <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="320.0" prefWidth="362.0" GridPane.columnIndex="1">
+         <children>
+            <Label fx:id="errorUpload" maxHeight="-Infinity" prefHeight="12.0" text="Failed to load image!" visible="false" />
+            <ImageView fx:id="addUserImageView" fitHeight="190.0" fitWidth="190.0" pickOnBounds="true" />
+            <MFXButton fx:id="uploadImage" buttonType="RAISED" prefHeight="30.0" prefWidth="100.0" styleClass="uploadImageBtn" text="Upload image">
+               <VBox.margin>
+                  <Insets top="5.0" />
+               </VBox.margin></MFXButton>
+            <HBox alignment="CENTER" prefHeight="70.0" prefWidth="362.0" spacing="20.0">
+               <children>
+                  <MFXButton fx:id="saveUser" buttonType="RAISED" maxHeight="-Infinity" prefHeight="30.0" prefWidth="60.0" styleClass="saveUserBtn" text="Save" />
+                  <MFXButton fx:id="cancelUser" buttonType="RAISED" maxHeight="-Infinity" prefHeight="30.0" prefWidth="60.0" styleClass="cancelUserBtn" text="Cancel" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+   <padding>
+      <Insets bottom="20.0" top="20.0" />
+   </padding>
+</GridPane>

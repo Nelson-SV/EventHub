@@ -4,12 +4,17 @@ import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import view.admin.eventsPage.AdminEventPage;
+import view.admin.usersPage.UserPageComponent;
+import view.admin.usersPage.UserPageController;
+import view.components.eventsPage.EventsPageController;
 import view.components.listeners.InitializationErrorListener;
 import view.utility.NavigationHoverControl;
+
 import java.net.URL;
 import java.util.ResourceBundle;
 public class AdminController implements Initializable, InitializationErrorListener {
@@ -20,25 +25,25 @@ public class AdminController implements Initializable, InitializationErrorListen
     @FXML
     private MFXButton usersNavButton;
     @FXML
-    private MFXButton statsNavButton;
-    @FXML
     private Rectangle sellingLine;
-    @FXML
-    private Rectangle ticketingLine;
     @FXML
     private Rectangle eventsLine;
     @FXML
     private VBox adminPageDisplayer;
     @FXML
     private StackPane adminSecondaryLayout,adminThirdLayout,adminFourthLayout;
+    private UserPageComponent userPageComponent;
+    private AdminEventPage adminEventPage;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
             adminModel = new AdminModel();
-            NavigationHoverControl navigationHoverControl = new NavigationHoverControl(eventsLine, sellingLine, ticketingLine, eventsNavButton, usersNavButton, statsNavButton);
+            NavigationHoverControl navigationHoverControl = new NavigationHoverControl(eventsLine, sellingLine, eventsNavButton, usersNavButton);
             navigationHoverControl.initializeNavButtons();
             initializeStartingPage();
+            addUsersNavListener(usersNavButton);
+            addAdminEventsNavListener(eventsNavButton);
         } catch (EventException e) {
             e.printStackTrace();
             initializationError = true;
@@ -50,18 +55,42 @@ public class AdminController implements Initializable, InitializationErrorListen
         return initializationError;
     }
 
-    public void navigateEventsPage(ActionEvent event) {
-    }
-
-    public void selling(ActionEvent event) {
-    }
-
-    public void createSpecialTicket(ActionEvent event) {
+    private void navigateEventsPage() {
+     initializeStartingPage();
+     userPageComponent=null;
     }
 
     private void initializeStartingPage(){
-        adminPageDisplayer.getChildren().clear();
-        adminPageDisplayer.getChildren().add(new AdminEventPage(this.adminModel,adminSecondaryLayout,adminThirdLayout,adminFourthLayout));
+        if(adminEventPage==null){
+            adminEventPage = new AdminEventPage(adminModel,adminSecondaryLayout,adminThirdLayout,adminFourthLayout);
+            adminPageDisplayer.getChildren().clear();
+            adminPageDisplayer.getChildren().add(adminEventPage);
+        }
+
+        //adminPageDisplayer.getChildren().clear();
+        //adminPageDisplayer.getChildren().add(new AdminEventPage(this.adminModel,adminSecondaryLayout,adminThirdLayout,adminFourthLayout));
     }
 
+
+
+    private void openUsersPage(){
+        if(userPageComponent==null){
+            userPageComponent = new UserPageComponent(adminSecondaryLayout,adminThirdLayout,adminFourthLayout,adminModel);
+            adminPageDisplayer.getChildren().clear();
+            adminPageDisplayer.getChildren().add(userPageComponent.getRoot());
+        }
+        adminEventPage=null;
+    }
+
+    private void addUsersNavListener(MFXButton usersNavButton){
+        usersNavButton.addEventHandler(MouseEvent.MOUSE_CLICKED,event->{
+            openUsersPage();
+        });
+    }
+
+    private void addAdminEventsNavListener(MFXButton adminEventsButton){
+        adminEventsButton.setOnAction((event)->{
+            navigateEventsPage();
+        });
+    }
 }

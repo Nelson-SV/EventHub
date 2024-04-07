@@ -1,6 +1,7 @@
 package dal.admindal;
 import be.Event;
 import be.EventStatus;
+import be.User;
 import dal.ConnectionManager;
 import exceptions.ErrorCode;
 import exceptions.EventException;
@@ -14,6 +15,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 public class AdminDao implements IAdminDao {
+
     private ConnectionManager connectionManager;
 
     public AdminDao() throws exceptions.EventException {
@@ -24,6 +26,8 @@ public class AdminDao implements IAdminDao {
     public ObservableMap<Integer, EventStatus> getAllEvents() throws EventException {
         return retrieveEvents();
     }
+
+
 
     /**
      * Retrieves all the events related to an eventCoordinator
@@ -64,4 +68,8 @@ public class AdminDao implements IAdminDao {
         }
         return events;
     }
+
+
+
+
 }
