@@ -35,4 +35,8 @@ public interface IAdminLogic {
 
     User saveUserWithDefaultImage(User user) throws  EventException;
 
+    ObservableMap<Integer,User> getAllUsersWithFullData() throws EventException;
+
+    ObservableList<User> sortUserByRole(Collection<User> values);
+    List<User> sortedUsersByLastName(Collection<User> values);
 }

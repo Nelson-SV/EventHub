@@ -36,9 +36,11 @@ public class AdminModel implements CommonModel, SortCommander, SortObserver {
 
     private static final String defaultImage= "default.png";
    /**holds the users in the system with the password and image */
-    private final ObservableMap<Integer,User> usersInTheSystem;
-
-
+    private ObservableMap<Integer,User> usersInTheSystem;
+    /**Users sorted by role*/
+    private ObservableList<User> sortedUsersByLastName;
+    /**the current displayed users on the view */
+    private ObservableList<User> displayedUsers;
 
     /**
      * holds the sort subjects, 'shortcut buttons'
@@ -109,6 +111,8 @@ public class AdminModel implements CommonModel, SortCommander, SortObserver {
         this.observers = new ArrayList<>();
         roles.setAll(adminLogic.getRoles());
         this.usersInTheSystem = FXCollections.observableHashMap();
+        this.sortedUsersByLastName =FXCollections.observableArrayList();
+        this.displayedUsers= FXCollections.observableArrayList();
     }
 
     public ObservableList<User> getAllCoordinators() {
@@ -227,7 +231,12 @@ public class AdminModel implements CommonModel, SortCommander, SortObserver {
         switch (deleteOperation) {
             case DELETE_EVENT -> this.deleteEvent(entityId);
             case DELETE_USER -> this.deleteUser(entityId);
+            case DELETE_USER_PERMANENT -> this.deleteUserPermanent(entityId);
         }
+    }
+
+    private void deleteUserPermanent(int entityId) {
+        System.out.println("deleted");
     }
 
     @Override
@@ -355,7 +364,6 @@ public class AdminModel implements CommonModel, SortCommander, SortObserver {
     }
 
     public void saveUser(String firstName, String lastName, String userRole, String password) throws EventException {
-
         if(uploadedImage!=null){
             User user =  new User(firstName,lastName,userRole,password);
             User insertedUser = adminLogic.saveUserWithImage(user,uploadedImage);
@@ -369,12 +377,28 @@ public class AdminModel implements CommonModel, SortCommander, SortObserver {
                 this.usersInTheSystem.put(insertedUser.getUserId(),insertedUser);
             }
         }
-
         //refresh the  collection that is displaying the users;
     }
 
 
+    public void getAllUsersWithFullInfo() throws EventException {
+        this.usersInTheSystem= adminLogic.getAllUsersWithFullData();
+        sortDisplayedUsersByLastName();
+        this.displayedUsers = sortedUsersByLastName;
+    }
+
+    /**sort users by last name in alphabetically order*/
+    private void sortDisplayedUsersByLastName(){
+        this.sortedUsersByLastName.setAll(adminLogic.sortedUsersByLastName(this.usersInTheSystem.values()));
+    }
+
+    public ObservableList<User> getUsersToDisplay(){
+        return this.displayedUsers;
+    }
+    //TODO to be implemented
+    private void getSortedUserByRole(){
+        this.sortedUsersByLastName =adminLogic.sortUserByRole(usersInTheSystem.values());
+    }
+
     //User management operations
-
-
 }

@@ -3,14 +3,17 @@ package be;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
+import java.util.List;
 
 public class User {
     private SimpleStringProperty firstName;
     private SimpleStringProperty lastName;
     private SimpleStringProperty role;
     private SimpleIntegerProperty userId;
-
-
+    private ObservableList<String> userEvents;
     private SimpleStringProperty password;
     private SimpleStringProperty userImageUrl;
 
@@ -32,6 +35,20 @@ public class User {
         this.password = new SimpleStringProperty(password);
     }
 
+    public User(String firstName, String lastName, String role, String password, String userImageUrl, List<String> events){
+        this(firstName,lastName,role,password,userImageUrl);
+        this.userEvents= FXCollections.observableArrayList();
+        this.userEvents.setAll(events);
+    }
+
+
+    public ObservableList<String> getUserEvents() {
+        return userEvents;
+    }
+
+    public void setUserEvents(ObservableList<String> userEvents) {
+        this.userEvents = userEvents;
+    }
 
     public String getPassword() {
         return password.get();

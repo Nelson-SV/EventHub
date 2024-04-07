@@ -8,7 +8,9 @@ import com.cloudinary.utils.ObjectUtils;
 import exceptions.ErrorCode;
 import exceptions.EventException;
 import exceptions.ExceptionLogger;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.ObservableMap;
 import javafx.concurrent.Task;
 
 import java.io.File;
@@ -185,6 +187,45 @@ public class UsersDAO {
         }
         return succeeded;
     }
+
+    public ObservableMap<Integer,User> getFullUserInfo() throws EventException {
+     ObservableMap<Integer,User> fullUsers= FXCollections.observableHashMap();
+     String sql ="SELECT U.* ,E.name AS EventName FROM Users U LEFT JOIN UsersEvents UE ON UE.UserId=U.UserId LEFT JOIN Event E ON UE.EventId=E.EventId";
+
+    try(Connection conn = connectionManager.getConnection()) {
+        try(PreparedStatement psmt = conn.prepareStatement(sql) ){
+             ResultSet rs= psmt.executeQuery();
+             while(rs.next()){
+                 int userId= rs.getInt("UserId");
+                 String firstName = rs.getString("FirstName");
+                 String password = rs.getString("Password");
+                 String lastName = rs.getString("LastName");
+                 String profilePicture= rs.getString("ProfilePicture");
+                 String role = rs.getString("Role");
+                 String eventName= rs.getString("EventName");
+                 User user = fullUsers.get(userId);
+                 if (user == null) {
+                     List<String> events = new ArrayList<>();
+                     if (eventName != null) {
+                         events.add(eventName);
+                     }
+                     user = new User(firstName, lastName, role, password, profilePicture, events);
+                     user.setUserId(userId);
+                     fullUsers.put(userId, user);
+                 } else if (eventName != null) {
+                     user.getUserEvents().add(eventName);
+                 }
+             }
+        }
+    } catch (SQLException | EventException e) {
+        throw new EventException(e.getMessage(),e,ErrorCode.OPERATION_DB_FAILED);
+    }
+return fullUsers;
+    }
+
+
+
+
     public User saveUserWithCustomImage(User user, File uploadedFile) throws EventException {
         String sql = "INSERT INTO Users VALUES(?,?,?,?,?)";
             Connection conn = null;

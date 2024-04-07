@@ -9,7 +9,8 @@ public enum ErrorCode {
     FAILED_UPDATE_EVENTS("Failed to retrieve the latest events modifications, please check your network connection"),
     FAILED_UPDATE_STATUS("Failed to update the status, please use the start date/time, end date/time values"),
     FILE_ALREADY_EXISTS("The image that you are uploading already exists in the system. Please load another one!"),
-    COPY_FAILED("Failed to save the image into the application memory")
+    COPY_FAILED("Failed to save the image into the application memory"),
+    FAILED_LOAD_USERS("Failed to load users in the system. Please check your connection!");
     ;
 
 

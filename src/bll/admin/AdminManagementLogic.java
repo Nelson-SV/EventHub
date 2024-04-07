@@ -171,4 +171,19 @@ public class AdminManagementLogic implements IAdminLogic {
         return usersDAO.saveUserWithDefaultImage(user);
     }
 
+    @Override
+    public ObservableMap<Integer, User> getAllUsersWithFullData() throws EventException {
+        return usersDAO.getFullUserInfo();
+    }
+
+    @Override
+    public ObservableList<User> sortUserByRole(Collection<User> values) {
+        return null;
+    };
+
+    /**sort users by LastName alphabetically */
+    public List<User> sortedUsersByLastName(Collection<User> values){
+      return values.stream().sorted(Comparator.comparing(User::getLastName)).collect(Collectors.toList());
+    }
+
 }
