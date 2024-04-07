@@ -23,7 +23,7 @@ public class Model implements CommonModel {
     private Displayable eventsDisplayer;
     private DateObserver eventsObservable;
     private DateObserver dateObservable;
-    private CustomerManager customerManager;
+
     private CoordinatorsDisplayer coordinatorsDisplayer;
 
     /**
@@ -54,6 +54,7 @@ public class Model implements CommonModel {
     private Event selectedEvent;
 
     private List<Ticket> addedTickets;
+
     private static Model instance;
 
     public static Model getInstance() throws EventException {
@@ -68,7 +69,6 @@ public class Model implements CommonModel {
         initializeEventsObservable();
         initializeEventDateObservable();
         eventManager = new EventManager();
-        customerManager = new CustomerManager();
         ticketManager = new TicketManager();
         coordinatorEvents = FXCollections.observableHashMap();
         allEvents = FXCollections.observableHashMap();
@@ -295,10 +295,6 @@ public class Model implements CommonModel {
     }
 
 
-    public void addCustomer(Customer customer) throws EventException {
-        customerManager.addCustomer(customer);
-    }
-
     public List<String> getAllEventNames() {
         Collection<Event> events = allEvents.values();
 
@@ -319,21 +315,7 @@ public class Model implements CommonModel {
         return specialTickets; // Return the tickets for the specified event
     }
 
-    public void deductTicketQuantity(int id, int quantity) throws EventException {
-        ticketManager.deductQuantity(id,quantity);
-    }
 
-    public void deductSpecialQuantity(int id, int quantity) throws EventException{
-        ticketManager.deductSpecialQuantity(id,quantity);
-    }
-
-    public void insertSoldTicket(int ticketId, int customerId) throws EventException{
-        ticketManager.insertSoldTicket(ticketId,customerId);
-    }
-
-    public void insertSoldSpecialTicket(int ticketId, int customerId) throws EventException{
-        ticketManager.insertSoldSpecialTicket(ticketId,customerId);
-    }
 
     public Integer getEventIdByName(String eventName) {
         for (Event event : allEvents.values()) {
@@ -348,6 +330,11 @@ public class Model implements CommonModel {
         allEvents = eventManager.getAllEvents();
     }
 
+
+
+    public void sellTicket (List<Ticket> allSelectedTickets, Customer customer) throws EventException {
+        ticketManager.soldTickets(allSelectedTickets, customer);
+    }
 
 
         /*

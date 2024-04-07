@@ -5,6 +5,7 @@ import be.Ticket;
 import exceptions.ErrorCode;
 import exceptions.EventException;
 import exceptions.ExceptionHandler;
+import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
@@ -28,6 +29,7 @@ import javafx.util.Duration;
 import view.components.loadingComponent.LoadingActions;
 import view.components.loadingComponent.LoadingComponent;
 import view.components.main.Model;
+import view.utility.CommonMethods;
 import view.utility.SellingValidator;
 import view.utility.TicketValidator;
 
@@ -62,6 +64,8 @@ public class SellingViewController implements Initializable {
     private ListView<Ticket> allSelectedTickets;
     @FXML
     private Label totalPrice;
+    @FXML
+    private MFXButton save;
     private Service<Void> sellingService;
     private LoadingComponent loadingComponent;
     private StackPane secondaryLayout;
@@ -120,6 +124,13 @@ public class SellingViewController implements Initializable {
         SellingValidator.emailToolTip(email);
         SellingValidator.addSellingListeners(eventTicketsAmount, specialTicketsAmount);
         SellingValidator.addSellingListeners2(name, lastName, email, allSelectedTickets, specialTickets, allEventTickets);
+        save.setOnAction((e) -> {
+            try {
+                sell();
+            } catch (EventException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
     }
 
     private void loadTicketsInfo(){
@@ -303,7 +314,7 @@ public class SellingViewController implements Initializable {
 
 
     }*/
-   public void sell(ActionEvent actionEvent) throws EventException {
+   public void sell() throws EventException {
        boolean isSellingValid = SellingValidator.isSellingValid(name, lastName, email, allSelectedTickets);
        if (isSellingValid) {
            initializeLoadingView();
@@ -319,31 +330,7 @@ public class SellingViewController implements Initializable {
        String customerEmail = email.getText();
 
        Customer customer = new Customer(customerName, customerLastName, customerEmail);
-       model.addCustomer(customer); // possibly return the id here
-
-       // get customer ID
-       int customerId = customer.getId();
-
-       //minus the quantity
-       //create sold ticket
-
-       for (Ticket item : allSelectedTickets.getItems()) {
-
-
-           boolean isSpecial = item.getSpecial();
-           if (isSpecial) {
-               //call method for special ticket
-               model.deductSpecialQuantity(item.getId(), item.getQuantity());
-               model.insertSoldSpecialTicket(item.getId(), customerId);
-           } else {
-               //call method for normal ticket
-               model.deductTicketQuantity(item.getId(), item.getQuantity());
-               model.insertSoldTicket(item.getId(), customerId);
-           }
-           // call ticket dao method
-
-
-       }
+       model.sellTicket(allSelectedTickets.getItems(),customer );
    }
 
     public void cancel (ActionEvent actionEvent){
@@ -369,6 +356,7 @@ public class SellingViewController implements Initializable {
                 loadingComponent.setAction(LoadingActions.SUCCES.getActionValue());
                 PauseTransition pauseTransition = new PauseTransition(Duration.millis(500));
                 pauseTransition.setOnFinished((ev) -> {
+                    closeLoader();
                     clearThings();
                 });
                 pauseTransition.play();
@@ -381,13 +369,16 @@ public class SellingViewController implements Initializable {
                 loadingComponent.setAction(LoadingActions.FAIL.getActionValue());
                 PauseTransition pauseTransition = new PauseTransition(Duration.millis(500));
                 pauseTransition.setOnFinished((ev) -> {
-                    //closeLoader();
+                    closeLoader();
                 });
                 pauseTransition.play();
             });
 
         });
         sellingService.restart();
+    }
+    private void closeLoader() {
+        CommonMethods.closeWindow(secondaryLayout);
     }
 
     private void initializeLoadingView() {

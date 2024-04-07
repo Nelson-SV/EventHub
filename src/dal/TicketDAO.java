@@ -1,5 +1,6 @@
 package dal;
 
+import be.Customer;
 import be.Ticket;
 import exceptions.ErrorCode;
 import exceptions.EventException;
@@ -8,10 +9,13 @@ import javafx.collections.ObservableMap;
 
 import java.math.BigDecimal;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TicketDAO {
 
     private final ConnectionManager connectionManager;
+    private CustomerDAO customerDAO = new CustomerDAO();
     public TicketDAO() throws EventException {
         this.connectionManager = new ConnectionManager();
     }
@@ -87,69 +91,118 @@ public class TicketDAO {
         return tickets;
     }
 
-    public void deductQuantity(int id, int quantity) throws EventException {
-        Connection conn = null;
+    public void deductQuantity(List<Ticket> eventTickets, Connection conn) throws EventException {
+
         try {
-            conn = connectionManager.getConnection();
             String sql = "UPDATE Ticket SET Quantity = Quantity - ? WHERE ID = ?";
             PreparedStatement statement = conn.prepareStatement(sql);
-            statement.setInt(1, quantity);
-            statement.setInt(2, id);
-            int rowsUpdated = statement.executeUpdate();
-            if (rowsUpdated == 0) {
-                throw new SQLException("No ticket found with ID: " + id);
+            for(Ticket ticket : eventTickets) {
+                statement.setInt(1, ticket.getQuantity());
+                statement.setInt(2, ticket.getId());
+                statement.addBatch();
             }
-        } catch (SQLException | EventException e) {
+            statement.executeBatch();
+        } catch (SQLException e) {
             throw new EventException(e.getMessage(), e.getCause(), ErrorCode.OPERATION_DB_FAILED);        }
     }
 
-    public void deductSpecialQuantity(int id, int quantity) throws EventException {
-        Connection conn = null;
+    public void deductSpecialQuantity(List<Ticket> specialTickets, Connection conn) throws EventException {
+
         try {
-            conn = connectionManager.getConnection();
             String sql = "UPDATE SpecialTickets SET Quantity = Quantity - ? WHERE ID = ?";
             PreparedStatement statement = conn.prepareStatement(sql);
-            statement.setInt(1, quantity);
-            statement.setInt(2, id);
-            int rowsUpdated = statement.executeUpdate();
-            if (rowsUpdated == 0) {
-                throw new SQLException("No ticket found with ID: " + id);
+            for(Ticket ticket : specialTickets){
+                statement.setInt(1, ticket.getQuantity());
+                statement.setInt(2, ticket.getId());
+                statement.addBatch();
             }
-        } catch (SQLException | EventException e) {
+
+            statement.executeBatch();
+        } catch (SQLException e) {
             throw new EventException(e.getMessage(), e.getCause(), ErrorCode.OPERATION_DB_FAILED);        }
     }
 
-    public void insertSoldTicket(int ticketID, int customerID) throws EventException {
-        Connection conn = null;
+    public void insertSoldTicket(List<Ticket> eventTickets, int customerID, Connection conn) throws EventException {
+
         try {
-            conn = connectionManager.getConnection();
             String sql = "INSERT INTO SoldTickets (TicketID, CustomerID) VALUES (?, ?)";
             PreparedStatement statement = conn.prepareStatement(sql);
-            statement.setInt(1, ticketID);
-            statement.setInt(2, customerID);
-            int rowsInserted = statement.executeUpdate();
-            if (rowsInserted == 0) {
-                throw new SQLException("Failed to insert ticket: " + ticketID + " for customer: " + customerID);
+            for(Ticket ticket : eventTickets) {
+                for (int i = 0; i < ticket.getQuantity(); i++) {
+                statement.setInt(1, ticket.getId());
+                statement.setInt(2, customerID);
+                statement.addBatch();
+                }
             }
+            statement.executeBatch();
         } catch (SQLException e) {
             throw new EventException(e.getMessage(), e.getCause(), ErrorCode.OPERATION_DB_FAILED);
         }
     }
 
-    public void insertSoldSpecialTicket(int ticketID, int customerID) throws EventException {
-        Connection conn = null;
+    public void insertSoldSpecialTicket(List<Ticket> specialTickets, int customerID, Connection conn) throws EventException { //addConn
+
         try {
-            conn = connectionManager.getConnection();
             String sql = "INSERT INTO SoldTickets (SpecialTicketId, CustomerID) VALUES (?, ?)";
             PreparedStatement statement = conn.prepareStatement(sql);
-            statement.setInt(1, ticketID);
-            statement.setInt(2, customerID);
-            int rowsInserted = statement.executeUpdate();
-            if (rowsInserted == 0) {
-                throw new SQLException("Failed to insert ticket: " + ticketID + " for customer: " + customerID);
+            for(Ticket ticket : specialTickets){
+                for (int i = 0; i < ticket.getQuantity(); i++) {
+                    statement.setInt(1, ticket.getId());
+                    statement.setInt(2, customerID);
+                    statement.addBatch();
+                }
             }
+            statement.executeBatch();
         } catch (SQLException e) {
             throw new EventException(e.getMessage(), e.getCause(), ErrorCode.OPERATION_DB_FAILED);
+        }
+    }
+
+    public void insertSoldTickets(List<Ticket> allSelectedTickets, Customer customer) throws EventException {
+        Connection conn = null;
+        try{
+            Integer customerId = null;
+            conn = connectionManager.getConnection();
+            conn.setAutoCommit(false);
+            if(customer != null){
+                customerId = customerDAO.addCustomer(customer, conn);
+            }
+            if(!allSelectedTickets.isEmpty()) {
+                List<Ticket> specialTickets = new ArrayList<>();
+                List<Ticket> eventTickets = new ArrayList<>();
+
+                for (Ticket item : allSelectedTickets) {
+
+                    boolean isSpecial = item.getSpecial();
+                    if (isSpecial) {
+                        specialTickets.add(item);
+                    } else {
+                        eventTickets.add(item);
+                    }
+                }
+                insertSoldSpecialTicket(specialTickets, customerId, conn);
+                deductSpecialQuantity(specialTickets, conn);
+
+                insertSoldTicket(eventTickets, customerId, conn);
+                deductQuantity(eventTickets, conn);
+            }
+            conn.commit();
+        }
+        catch (EventException | SQLException e) {
+            if (conn != null) {
+                try {
+                    conn.rollback();
+                } catch (SQLException ex) {
+                    throw new EventException(ex.getMessage(), ex.getCause(), ErrorCode.CONNECTION_FAILED);
+                }
+            }
+            throw new EventException(e.getMessage(), e.getCause(), ErrorCode.CONNECTION_FAILED);
+        } finally {
+            try {
+                conn.close();
+            } catch (SQLException e) {
+                throw new EventException(e.getMessage(), e.getCause(), ErrorCode.CONNECTION_FAILED);
+            }
         }
     }
 

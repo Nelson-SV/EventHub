@@ -156,6 +156,7 @@ public class EditEventValidator {
      * check if the date text is valid
      */
     public static void addTimeTextEmptyChecker(MFXComboBox<LocalTime> time) {
+
         time.textProperty().addListener(((observable, oldValue, newValue) -> {
             PauseTransition pauseTransition = new PauseTransition(Duration.millis(100));
             pauseTransition.setOnFinished((e) -> {
