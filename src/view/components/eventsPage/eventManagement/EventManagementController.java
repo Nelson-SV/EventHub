@@ -160,9 +160,9 @@ public class EventManagementController extends GridPane implements Initializable
         //bind event end date with view
         bindSelectedEventWithDatesTextValues(endDate, model.getSelectedEvent().endDateProperty());
         //set start time in  view
-        startTime.setText(model.getSelectedEvent().getStartTime().toString());
+        startTime.setText(model.getSelectedEvent().getStartTime()!=null?(model.getSelectedEvent().getStartTime().toString()):"");
         //set end time with view
-        endTime.setText(model.getSelectedEvent().getEndTime().toString());
+        endTime.setText(model.getSelectedEvent().getEndTime()!=null?model.getSelectedEvent().getEndTime().toString():"");
         //bind event name with view
         eventName.textProperty().bindBidirectional(model.getSelectedEvent().nameProperty());
         //bind start date with view
@@ -224,10 +224,14 @@ public class EventManagementController extends GridPane implements Initializable
         System.out.println(model.getSelectedEvent());
         System.out.println(isEventValid);
         System.out.println(model.isEditValid()+ "");
-        boolean areDatesValid =model.isEditValid();
+        boolean areDatesValid = model.isEditValid();
 
         if(!areDatesValid){
           initializeInvalidInputError(model.getEventEditResponse(),invalidInput);
+        }else{
+            model.setEventEditResponse(null);
+            invalidInput.setVisible(false);
+            invalidInput.setText(null);
         }
 
 

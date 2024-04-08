@@ -35,4 +35,7 @@ public interface ILogicManager {
 
     LocalTime convertStringToLocalTime(String value);
 
+    boolean areDatesModified(Event editedEvent, Event originalEvent);
+
+
 }

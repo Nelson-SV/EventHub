@@ -1,5 +1,4 @@
 package bll;
-
 import be.*;
 import dal.EventDAO;
 import dal.UsersDAO;
@@ -7,12 +6,9 @@ import exceptions.EventException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableMap;
 import javafx.concurrent.Task;
-import javafx.util.StringConverter;
-
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -225,12 +221,21 @@ public class EventManagementLogic implements ILogicManager {
         }
     }
 
-    public LocalDate convertStringToLocalDate(String value) {
-        if (value != null && !value.isEmpty()) {
-            return LocalDate.parse(value, dateFormatter);
-        } else {
-            return null;
+    @Override
+    public boolean areDatesModified(Event editedEvent, Event originalEvent) {
+        if (!Objects.equals(editedEvent.getStartDate(), originalEvent.getStartDate())) {
+            return true;
         }
+        if (!Objects.equals(editedEvent.getStartTime(), originalEvent.getStartTime())) {
+            return true;
+        }
+        if (!Objects.equals(editedEvent.getEndDate(), originalEvent.getEndDate())) {
+            return true;
+        }
+        if (!Objects.equals(editedEvent.getEndTime(), originalEvent.getEndTime())) {
+            return true;
+        }
+        return false;
     }
 
 }

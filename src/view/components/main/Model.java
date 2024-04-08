@@ -215,14 +215,20 @@ public class Model implements CommonModel {
         if (selectedEvent.equals(allEvents.get(selectedEvent.getId()))) {
             return true;
         }
-        EventInvalidResponse eventInvalidResponse = evmLogic.isInputValidTest(selectedEvent);
-        if (eventInvalidResponse == null) {
-            return true;
-        } else {
-            this.eventEditResponse = eventInvalidResponse;
-        }
+        boolean areDatesModified = evmLogic.areDatesModified(selectedEvent,allEvents.get(selectedEvent.getId()));
 
-        return false;
+        if(areDatesModified){
+            EventInvalidResponse eventInvalidResponse = evmLogic.isInputValidTest(selectedEvent);
+            if (eventInvalidResponse == null) {
+                return true;
+            } else {
+                this.eventEditResponse = eventInvalidResponse;
+                return false;
+            }
+        }else{
+         //save edit without checks
+         return true;
+        }
     }
 
     /**retrieves the response off edit event validation operation*/
