@@ -7,15 +7,9 @@ import exceptions.EventException;
 import java.sql.*;
 
 public class CustomerDAO {
-    private final ConnectionManager connectionManager;
-    public CustomerDAO() throws EventException {
-        this.connectionManager = new ConnectionManager();
-    }
 
-    public void addCustomer(Customer customer) throws EventException {
-        Connection conn = null;
+    public int addCustomer(Customer customer, Connection conn) throws EventException {
         try {
-            conn = connectionManager.getConnection();
             String sql = "INSERT INTO Customers (FirstName, LastName, EmailAddress) VALUES (?, ?, ?)";
             PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, customer.getName());
@@ -26,6 +20,7 @@ public class CustomerDAO {
                 if (generatedKeys.next()) {
                     int keys = generatedKeys.getInt(1);
                     customer.setId(keys);
+                    return keys;
                 } else {
                     throw new EventException(ErrorCode.OPERATION_DB_FAILED);
                 }
@@ -33,7 +28,5 @@ public class CustomerDAO {
         } catch (EventException | SQLException e) {
             throw new EventException(e.getMessage(), e.getCause(), ErrorCode.OPERATION_DB_FAILED);
         }
-
-
     }
 }

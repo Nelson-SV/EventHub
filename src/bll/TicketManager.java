@@ -1,9 +1,12 @@
 package bll;
 
+import be.Customer;
 import be.Ticket;
 import dal.TicketDAO;
 import exceptions.EventException;
 import javafx.collections.ObservableMap;
+
+import java.util.List;
 
 public class TicketManager {
 
@@ -21,20 +24,9 @@ public class TicketManager {
         return ticketD.retrieveSpecialTicketsForEventOrNot(eventId);
     }
 
-    public void deductQuantity(int id, int quantity) throws EventException {
-        ticketD.deductQuantity(id, quantity);
-    }
 
-    public void deductSpecialQuantity(int id, int quantity) throws EventException{
-        ticketD.deductSpecialQuantity(id,quantity);
-    }
-
-    public void insertSoldTicket(int ticketId, int customerId) throws EventException{
-        ticketD.insertSoldTicket(ticketId,customerId);
-    }
-
-    public void insertSoldSpecialTicket(int ticketId, int customerId) throws EventException{
-        ticketD.insertSoldSpecialTicket(ticketId,customerId);
+    public void soldTickets(List<Ticket> allSelectedTickets, Customer customer) throws EventException {
+        ticketD.insertSoldTickets(allSelectedTickets, customer);
     }
 
 }

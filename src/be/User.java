@@ -123,15 +123,8 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" +
-                "firstName=" + firstName +
-                ", lastName=" + lastName +
-                ", role=" + role +
-                ", userId=" + userId +
-                ", userEvents=" + userEvents +
-                ", password=" + password +
-                ", userImageUrl=" + userImageUrl +
-                '}';
+        return firstName.getValue() + " " +
+               lastName.getValue();
     }
 
     public String getFirstName() {

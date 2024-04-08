@@ -24,13 +24,15 @@ public class Model implements CommonModel {
     private Displayable eventsDisplayer;
     private DateObserver eventsObservable;
     private DateObserver dateObservable;
-    private CustomerManager customerManager;
+
     private CoordinatorsDisplayer coordinatorsDisplayer;
 
     /**
      * Holds the events for a given user
      */
     private ObservableMap<Integer, Event> coordinatorEvents;
+
+    private ObservableMap<Integer, Event> allEvents;
 
     private ObservableMap<Integer, Ticket> eventTickets;
     private ObservableMap<Integer, Ticket> specialTickets;
@@ -53,6 +55,7 @@ public class Model implements CommonModel {
     private Event selectedEvent;
 
     private List<Ticket> addedTickets;
+
     private static Model instance;
 
     public static Model getInstance() throws EventException {
@@ -67,14 +70,15 @@ public class Model implements CommonModel {
         initializeEventsObservable();
         initializeEventDateObservable();
         eventManager = new EventManager();
-        customerManager = new CustomerManager();
         ticketManager = new TicketManager();
         coordinatorEvents = FXCollections.observableHashMap();
+        allEvents = FXCollections.observableHashMap();
         coordinatorEventsWithStatus = FXCollections.observableHashMap();
         eventTickets = FXCollections.observableHashMap();
         evmLogic = new EventManagementLogic();
         addedTickets = new ArrayList<>();
         initializeEventsMap();
+        returnAllEvents();
     }
 
     private void initializeEventsObservable() throws EventException {
@@ -98,6 +102,7 @@ public class Model implements CommonModel {
         if (inserted != null) {
             event.setId(inserted);
             coordinatorEvents.put(inserted, event);
+
         }
     }
 
@@ -284,13 +289,16 @@ public class Model implements CommonModel {
         this.coordinatorEvents = coordinatorEvents;
     }
 
-
-    public void addCustomer(Customer customer) throws EventException {
-        customerManager.addCustomer(customer);
+    public ObservableMap<Integer, Event> getAllEvents() {
+        return allEvents;
+    }
+    public void setAllEvents(ObservableMap<Integer, Event> allEvents) {
+        this.allEvents = allEvents;
     }
 
+
     public List<String> getAllEventNames() {
-        Collection<Event> events = coordinatorEvents.values();
+        Collection<Event> events = allEvents.values();
 
         List<String> eventNames = events.stream()
                 .map(Event::getName) // Extract the name of each event
@@ -309,24 +317,10 @@ public class Model implements CommonModel {
         return specialTickets; // Return the tickets for the specified event
     }
 
-    public void deductTicketQuantity(int id, int quantity) throws EventException {
-        ticketManager.deductQuantity(id,quantity);
-    }
 
-    public void deductSpecialQuantity(int id, int quantity) throws EventException{
-        ticketManager.deductSpecialQuantity(id,quantity);
-    }
-
-    public void insertSoldTicket(int ticketId, int customerId) throws EventException{
-        ticketManager.insertSoldTicket(ticketId,customerId);
-    }
-
-    public void insertSoldSpecialTicket(int ticketId, int customerId) throws EventException{
-        ticketManager.insertSoldSpecialTicket(ticketId,customerId);
-    }
 
     public Integer getEventIdByName(String eventName) {
-        for (Event event : coordinatorEvents.values()) {
+        for (Event event : allEvents.values()) {
             if (event.getName().equals(eventName)) {
                 return event.getId();
             }
@@ -334,6 +328,15 @@ public class Model implements CommonModel {
         return -1;
     }
 
+    public void returnAllEvents() throws EventException {
+        allEvents = eventManager.getAllEvents();
+    }
+
+
+
+    public void sellTicket (List<Ticket> allSelectedTickets, Customer customer) throws EventException {
+        ticketManager.soldTickets(allSelectedTickets, customer);
+    }
 
 
         /*

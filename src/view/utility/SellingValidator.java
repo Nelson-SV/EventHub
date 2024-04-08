@@ -45,7 +45,7 @@ public class SellingValidator {
             email.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, false);
         }
 
-        if (allSelectedTickets.getSelectionModel().isEmpty()) {
+        if (allSelectedTickets.getItems().isEmpty()) {
             allSelectedTickets.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, true);
             isValid = false;
         } else {

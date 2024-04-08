@@ -71,7 +71,7 @@ public class MainController implements Initializable , InitializationErrorListen
     private void selling(ActionEvent actionEvent) {
 
         if(!sellingDisplayed){
-            SellingViewController sellingViewController = new SellingViewController(pageDisplayer, model);
+            SellingViewController sellingViewController = new SellingViewController(pageDisplayer, model, secondaryLayout);
             pageDisplayer.getChildren().clear();
             pageDisplayer.getChildren().add(sellingViewController.getRoot());
             sellingDisplayed=true;
