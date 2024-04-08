@@ -3,6 +3,7 @@ package view.components.main;
 import be.*;
 import bll.*;
 import exceptions.EventException;
+import javafx.application.Platform;
 import javafx.collections.*;
 import javafx.concurrent.Task;
 import view.components.eventsObservers.DateObservable;
@@ -246,6 +247,7 @@ public class Model implements CommonModel {
         boolean deleted = evmLogic.deleteEvent(eventId);
         if (deleted) {
             this.coordinatorEvents.remove(eventId);
+            Platform.runLater(() -> getEventsDisplayer().displayEvents());
         }
     }
 

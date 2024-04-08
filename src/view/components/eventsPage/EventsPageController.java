@@ -71,13 +71,6 @@ public class EventsPageController extends VBox implements Displayable, Initializ
         }
     }
 
-
-//    private void initializeConfirmationWindowForEvent(Event event,DeleteButton deleteButton){
-//        deleteButt    on.setConfirmationEntityTitle("This operation will remove the event permanently!");
-//        deleteButton.setConfirmationEntityTitle(event.getName());
-//        deleteButton.setConfirmationWindowEntityStartDate(event.getStartDate());
-//        deleteButton.setConfirmationWindowEntityLocation(event.getLocation());
-//    }
     @FXML
     private void createEvent(ActionEvent actionEvent) {
         this.secondaryLayout.setVisible(true);

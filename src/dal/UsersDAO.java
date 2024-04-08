@@ -252,7 +252,7 @@ public class UsersDAO {
                     throw new EventException(ErrorCode.OPERATION_DB_FAILED);
                 }
             }
-            User fullUser= new User(user.getFirstName(), user.getLastName(), user.getRole(), user.getPassword(),results[0],new ArrayList<>());
+            User fullUser = new User(user.getFirstName(), user.getLastName(), user.getRole(), user.getPassword(), results[0], new ArrayList<>());
 
             conn.commit();
             return fullUser;
@@ -328,7 +328,7 @@ public class UsersDAO {
                     throw new EventException(ErrorCode.OPERATION_DB_FAILED);
                 }
             }
-            User fullUser= new User(user.getFirstName(), user.getLastName(), user.getRole(), user.getPassword(),user.getUserImageUrl(),new ArrayList<>());
+            User fullUser = new User(user.getFirstName(), user.getLastName(), user.getRole(), user.getPassword(), user.getUserImageUrl(), new ArrayList<>());
             conn.commit();
             return fullUser;
         } catch (SQLException e) {
@@ -361,22 +361,24 @@ public class UsersDAO {
             conn.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
             PreparedStatement pstmt = conn.prepareStatement(sql);
             String[] results = null;
-            if(uploadedImage!=null){
+            if (uploadedImage != null) {
                 results = uploadImage(uploadedImage);
                 filePublicId = results[1];
                 pstmt.setString(4, results[0]);
+            }else{
+                pstmt.setString(4, selectedUserToEdit.getUserImageUrl());
             }
             pstmt.setString(1, selectedUserToEdit.getFirstName());
             pstmt.setString(2, selectedUserToEdit.getLastName());
             pstmt.setString(3, selectedUserToEdit.getPassword());
             pstmt.setString(5, selectedUserToEdit.getRole());
-            pstmt.setString(4,selectedUserToEdit.getUserImageUrl());
+
             pstmt.setInt(6, selectedUserToEdit.getUserId());
             int affectedRows = pstmt.executeUpdate();
             if (affectedRows == 0) {
                 throw new EventException(ErrorCode.OPERATION_DB_FAILED);
             }
-            if(results!=null){
+            if (results != null) {
                 selectedUserToEdit.setUserImageUrl(results[0]);
             }
             conn.commit();
@@ -409,5 +411,42 @@ public class UsersDAO {
         }
         return null;
     }
+
+    public boolean deleteUserFromTheSystem(int userId) throws EventException {
+        boolean deleted = false;
+        String sql = "DELETE FROM Users WHERE UserId=?";
+        Connection conn = null;
+        try {
+            conn = connectionManager.getConnection();
+            conn.setAutoCommit(false);
+            conn.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
+            try (PreparedStatement psmt = conn.prepareStatement(sql)) {
+                psmt.setInt(1, userId);
+                psmt.executeUpdate();
+            }
+            conn.commit();
+            deleted = true;
+        } catch (EventException | SQLException e) {
+            if (conn != null) {
+                try {
+                    conn.rollback();
+                } catch (SQLException ex) {
+                    ExceptionLogger.getInstance().getLogger().log(Level.SEVERE, "Failed to roll back delete user operation, user id: " + userId);
+                }
+            }
+            throw new EventException(e.getMessage(), e, ErrorCode.OPERATION_DB_FAILED);
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    ExceptionLogger.getInstance().getLogger().log(Level.SEVERE, e.getMessage());
+                }
+            }
+        }
+
+        return deleted;
+    }
+
 
 }

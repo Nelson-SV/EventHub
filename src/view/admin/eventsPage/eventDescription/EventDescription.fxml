@@ -25,7 +25,7 @@
             <Insets bottom="5.0" left="25.0" right="5.0" top="5.0" />
          </padding>
       </VBox>
-      <VBox alignment="CENTER" maxWidth="-Infinity" prefHeight="120.0" prefWidth="150.0" styleClass="componentBackgroundColor">
+      <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="120.0" prefWidth="150.0" styleClass="componentBackgroundColor">
          <children>
             <Label fx:id="coordinatorsNumber" text="2" />
          </children>
@@ -42,7 +42,7 @@
       </VBox>
       <VBox alignment="CENTER" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="60.0" minWidth="60.0" prefHeight="120.0" prefWidth="152.0" styleClass="componentBackgroundColor ,dates">
          <children>
-            <HBox alignment="CENTER" maxWidth="-Infinity" prefHeight="120.0" prefWidth="152.0" stylesheets="@../../../components/eventsPage/eventDescription/EventDescription.css">
+            <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="120.0" prefWidth="152.0" stylesheets="@../../../components/eventsPage/eventDescription/EventDescription.css">
                <children>
                   <Label fx:id="eventStart" alignment="TOP_LEFT" styleClass="dates">
                      <font>
@@ -59,9 +59,9 @@
             </HBox>
          </children>
       </VBox>
-      <VBox alignment="CENTER" prefHeight="120.0" prefWidth="112.0 " styleClass="componentBackgroundColor,dates">
+      <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="115.0" prefWidth="112.0 " styleClass="componentBackgroundColor,dates">
          <children>
-            <HBox alignment="CENTER" prefHeight="120.0" prefWidth="112.0" styleClass="componentBackgroundColor">
+            <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="112.0" styleClass="componentBackgroundColor">
                <children>
                   <Label fx:id="startTime" alignment="TOP_LEFT" styleClass="dates">
                      <font>
