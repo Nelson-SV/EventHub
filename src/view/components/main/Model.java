@@ -182,7 +182,6 @@ public class Model implements CommonModel {
 
 
     public boolean isEditValid() {
-
         Event originalEvent = allEvents.get(selectedEvent.getId());
         if (selectedEvent.equals(allEvents.get(selectedEvent.getId()))) {
             return true;

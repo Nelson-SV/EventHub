@@ -1,5 +1,4 @@
 package view.components.eventsPage.eventManagement;
-
 import be.EventInvalidResponse;
 import be.User;
 import exceptions.ErrorCode;
@@ -31,7 +30,6 @@ import view.components.loadingComponent.LoadingComponent;
 import view.components.main.Model;
 import view.utility.CommonMethods;
 import view.utility.EditEventValidator;
-
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
@@ -109,8 +107,6 @@ public class EventManagementController extends GridPane implements Initializable
         EditEventValidator.addEventLocationValueListener(eventLocation);
     }
 
-
-    //TODO create event listeners for start an den time values string
 
     /**
      * add validity checker for the dates
@@ -224,26 +220,18 @@ public class EventManagementController extends GridPane implements Initializable
 
     private void saveOperation() {
         boolean areInputsValid = EditEventValidator.isEventValidTimeAsString(eventName, startDate, startTime, endDate, endTime, eventLocation);
-        System.out.println(areInputsValid + " from controller");
         convertInputAndSet(startTime, endTime);
-        System.out.println(model.getSelectedEvent());
-        System.out.println(areInputsValid);
-        System.out.println(model.isEditValid() + "");
-
-
         boolean areDatesValid = model.isEditValid();
         if (areInputsValid) {
             if (!areDatesValid) {
                 initializeInvalidInputError(model.getEventEditResponse(), invalidInput);
             } else {
                 EditEventValidator.hideErrorField(invalidInput);
-                //   initializeLoadingView();
-                // initializeService();
+                   initializeLoadingView();
+                 initializeService();
             }
         }
-
     }
-
 
     /**
      * set the error window to display the error message

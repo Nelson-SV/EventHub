@@ -7,15 +7,12 @@ import exceptions.EventException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableMap;
 import javafx.concurrent.Task;
-import view.utility.EditEventValidator;
-
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
-
 public class EventManagementLogic implements ILogicManager {
     private EventDAO eventData;
     private UsersDAO usersDao;
@@ -55,44 +52,44 @@ public class EventManagementLogic implements ILogicManager {
     public boolean isModifyed(Map<Integer, List<Integer>> assignedCoordinators, Event selectedEvent, Event original) {
         return !assignedCoordinators.get(selectedEvent.getId()).isEmpty() || !selectedEvent.equals(original);
     }
-
-    /**
-     * check if the edited inputs are valid
-     */
-
-    public EventInvalidResponse isInputValidTest(Event selectedEvent) {
-        EventInvalidResponse eventInvalid = new EventInvalidResponse();
-        boolean areInputsValid = true;
-
-
-        if (!isStartDateValid(selectedEvent.getStartDate())) {
-            areInputsValid = false;
-            eventInvalid.setStartDateInvalid(selectedEvent.getStartDate().toString() + ": Start date is not valid!");
-        }
-
-
-        if (selectedEvent.getEndDate() != null && !isEndDateValid(selectedEvent.getStartDate(), selectedEvent.getEndDate())) {
-            areInputsValid = false;
-            eventInvalid.setEndDateInvalid(selectedEvent.getEndDate().toString() + ": End date is not valid!");
-        }
-
-
-        if (selectedEvent.getEndDate() != null && selectedEvent.getEndTime() != null && !isEndTimeValid(selectedEvent.getStartTime(), selectedEvent.getEndTime(), selectedEvent.getStartDate(), selectedEvent.getEndDate())) {
-            areInputsValid = false;
-            eventInvalid.setEndTimeInvalid(selectedEvent.getEndTime() + ": End time is not valid!");
-        }
-
-        if (selectedEvent.getEndTime() != null && !isStartTimeValid(selectedEvent.getStartTime(), selectedEvent.getEndTime())) {
-            areInputsValid = false;
-            eventInvalid.setStartTimeInvalid(selectedEvent.getStartTime() + ": Start time is not valid!");
-        }
-
-        if (areInputsValid) {
-            return null;
-        }
-
-        return eventInvalid;
-    }
+//
+//    /**
+//     * check if the edited inputs are valid
+//     */
+//
+//    public EventInvalidResponse isInputValidTest(Event selectedEvent) {
+//        EventInvalidResponse eventInvalid = new EventInvalidResponse();
+//        boolean areInputsValid = true;
+//
+//
+//        if (!isStartDateValid(selectedEvent.getStartDate())) {
+//            areInputsValid = false;
+//            eventInvalid.setStartDateInvalid(selectedEvent.getStartDate().toString() + ": Start date is not valid!");
+//        }
+//
+//
+//        if (selectedEvent.getEndDate() != null && !isEndDateValid(selectedEvent.getStartDate(), selectedEvent.getEndDate())) {
+//            areInputsValid = false;
+//            eventInvalid.setEndDateInvalid(selectedEvent.getEndDate().toString() + ": End date is not valid!");
+//        }
+//
+//
+//        if (selectedEvent.getEndDate() != null && selectedEvent.getEndTime() != null && !isEndTimeValid(selectedEvent.getStartTime(), selectedEvent.getEndTime(), selectedEvent.getStartDate(), selectedEvent.getEndDate())) {
+//            areInputsValid = false;
+//            eventInvalid.setEndTimeInvalid(selectedEvent.getEndTime() + ": End time is not valid!");
+//        }
+//
+//        if (selectedEvent.getEndTime() != null && !isStartTimeValid(selectedEvent.getStartTime(), selectedEvent.getEndTime())) {
+//            areInputsValid = false;
+//            eventInvalid.setStartTimeInvalid(selectedEvent.getStartTime() + ": Start time is not valid!");
+//        }
+//
+//        if (areInputsValid) {
+//            return null;
+//        }
+//
+//        return eventInvalid;
+//    }
 
 
     /**
@@ -110,12 +107,12 @@ public class EventManagementLogic implements ILogicManager {
         return startTime.isBefore(endTime);
     }
 
-    private boolean isEndTimeValid(LocalTime startTime, LocalTime endTime, LocalDate startDate, LocalDate endDate) {
-        if (startDate.isEqual(endDate)) {
-            return !startTime.isAfter(endTime);
-        }
-        return true;
-    }
+//    private boolean isEndTimeValid(LocalTime startTime, LocalTime endTime, LocalDate startDate, LocalDate endDate) {
+//        if (startDate.isEqual(endDate)) {
+//            return !startTime.isAfter(endTime);
+//        }
+//        return true;
+//    }
 
 
     /**
@@ -234,6 +231,7 @@ public class EventManagementLogic implements ILogicManager {
             return true;
         }
         if (!Objects.equals(editedEvent.getStartTime(), originalEvent.getStartTime())) {
+
             return true;
         }
         if (!Objects.equals(editedEvent.getEndDate(), originalEvent.getEndDate())) {
@@ -258,31 +256,94 @@ public class EventManagementLogic implements ILogicManager {
         EventInvalidResponse eventInvalid = new EventInvalidResponse();
 
         if (!Objects.equals(editedEvent.getStartDate(), originalEvent.getStartDate())) {
-            if(!isStartDateValidCompleteCheck(editedEvent.getStartDate(),originalEvent.getEndDate())){
-              isEditValid=false;
+            if (!isStartDateValidCompleteCheck(editedEvent.getStartDate(), originalEvent.getEndDate())) {
+                isEditValid = false;
                 eventInvalid.setStartDateInvalid(editedEvent.getStartDate().toString() + ": Start date is not valid!");
+            }
+        }
 
+        if (!Objects.equals(editedEvent.getStartTime(), originalEvent.getStartTime())) {
+            boolean isStartTimeValid = isStartTimeValid(editedEvent.getStartTime(), editedEvent.getEndTime(), editedEvent.getStartDate(), editedEvent.getEndDate());
+            System.out.println(isStartTimeValid + "start time validity");
+            if (!isStartTimeValid) {
+                isEditValid = false;
+                eventInvalid.setStartTimeInvalid(editedEvent.getStartTime().toString() + isStartTimeValid + ": Start time is not valid!");
+            }
+        }
+
+        if (!Objects.equals(editedEvent.getEndDate(), originalEvent.getEndDate())) {
+            boolean endDateValid = isEndDateValid(editedEvent.getStartDate(), editedEvent.getEndDate());
+            if (!endDateValid) {
+                isEditValid = false;
+                eventInvalid.setEndDateInvalid(editedEvent.getEndDate().toString() + ": End date is not valid!");
+            }
+        }
+
+        if (!Objects.equals(editedEvent.getEndTime(), originalEvent.getEndTime())) {
+            boolean endTimeValid = isEndTimeValidCompleteCheck(editedEvent.getStartTime(), editedEvent.getEndTime(), editedEvent.getStartDate(), editedEvent.getEndDate());
+            if (!endTimeValid){
+                isEditValid = false;
+                eventInvalid.setEndTimeInvalid(editedEvent.getEndTime() + " : End time is not valid!");
             }
         }
 
 
-        System.out.println(isEditValid + " from event Management");
         if (isEditValid) {
             return null;
         }
         return eventInvalid;
     }
 
-
-
-/**check if start date is valid, before current date or after the end date  */
+    /**
+     * check if start date is valid, before current date or after the end date
+     */
     private boolean isStartDateValidCompleteCheck(LocalDate startDate, LocalDate endDate) {
         if (!isStartDateValid(startDate)) {
             return false;
         }
+
         if (!isEndDateNull(endDate)) {
             return isEndDateValid(startDate, endDate);
         }
         return true;
     }
+
+    /**
+     * check is startTime is valid, before the endTime, if the end date is null
+     */
+    private boolean isStartTimeValid(LocalTime startTime, LocalTime endTime, LocalDate startDate, LocalDate endDate) {
+        if (endDate == null) {
+            if (endTime == null) {
+                return true;
+            }
+            return isStartTimeValid(startTime, endTime);
+        } else {
+            if (startDate.isEqual(endDate)) {
+                if (endTime == null) {
+                    return true;
+                }
+                return startTime.isBefore(endTime);
+            }
+            return true;
+        }
+    }
+
+
+    /**
+     * check is end time is valid, if is not before the start time
+     */
+    private boolean isEndTimeValidCompleteCheck(LocalTime startTime, LocalTime endTime, LocalDate startDate, LocalDate endDate) {
+        if (endDate == null) {
+            return isStartTimeValid(startTime, endTime);
+        } else {
+            if (startDate.isEqual(endDate)) {
+                if (endTime == null) {
+                    return true;
+                }
+                return startTime.isBefore(endTime);
+            }
+            return true;
+        }
+    }
+
 }
