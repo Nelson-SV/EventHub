@@ -118,7 +118,7 @@
             </VBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="30.0">
                <children>
-                  <TextArea fx:id="invalidInput" disable="true" editable="false" prefHeight="40.0" prefWidth="395.0" styleClass="invalidInput" visible="false" wrapText="true" />
+                  <Label fx:id="errorText" prefHeight="26.0" prefWidth="215.0" styleClass="errorText" />
                   <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#cancel" prefHeight="25.0" prefWidth="119.0" style="-fx-background-radius: 20; -fx-background-color: #5585b5;" text="Cancel" textFill="WHITE" />
                   <Button fx:id="saveButton" mnemonicParsing="false" onAction="#saveEvent" prefHeight="25.0" prefWidth="130.0" style="-fx-background-radius: 20; -fx-background-color: #42b883;" text="Save Event" textFill="#fff8f8" />
                </children>

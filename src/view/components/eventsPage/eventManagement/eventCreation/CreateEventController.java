@@ -8,18 +8,24 @@ import exceptions.ExceptionHandler;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXDatePicker;
 import io.github.palexdev.materialfx.controls.MFXScrollPane;
+import javafx.animation.PauseTransition;
+import javafx.application.Platform;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.util.Duration;
 import view.components.main.Model;
 import view.components.ticketsGeneration.TicketsGenerationController;
 import view.utility.EditEventValidator;
 
+import javax.swing.event.ChangeListener;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -51,45 +57,26 @@ public class CreateEventController {
     private Model model;
 
     private  StackPane stackPane, thirdLayout;
+    @FXML
+    private Label errorText;
 
     @FXML
     public void initialize() throws EventException {
 
         startTime.setItems(FXCollections.observableArrayList(generateTimeOptions()));
         endTime.setItems(FXCollections.observableArrayList(generateTimeOptions()));
-
-
-        /*eventName.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.isEmpty()) {
-                markFieldAsValid(eventName);
-            }
-        });
-
-        startDate.valueProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue != null) {
-                markFieldAsValid(startDate);
-            }
-        });
-
-        startTime.valueProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue != null) {
-                markFieldAsValid(startTime);
-            }
-        });
-
-        eventLocation.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.isEmpty()) {
-                markFieldAsValid(eventLocation);
-            }
-        });*/
-
-
+        addInputValuesListeners();
         EditEventValidator.initializeDateFormat(startDate);
         EditEventValidator.initializeDateFormat(endDate);
         EditEventValidator.addEventListeners(eventName, startDate, startTime, endDate, endTime, eventLocation);
         addToolTipsForDates();
         addDatesValidityChecker();
+        EndDateChecker();
 
+    }
+    private void addInputValuesListeners(){
+        EditEventValidator.addEventNameValueListener(eventName);
+        EditEventValidator.addEventLocationValueListener(eventLocation);
     }
     /**
      * add validity checker for the dates
@@ -109,6 +96,25 @@ public class CreateEventController {
         EditEventValidator.addDateToolTip(startDate);
         EditEventValidator.addDateToolTip(endDate);
         EditEventValidator.addTimeToolTip(endTime);
+    }
+
+    public void EndDateChecker() {
+        endDate.valueProperty().addListener((observable, oldValue, newValue) -> {
+            // Check if end date is before start date
+            if (newValue != null && startDate.getValue() != null && newValue.isBefore(startDate.getValue())) {
+                // Set end date to null
+                endDate.setValue(null);
+                Platform.runLater(() -> {
+                    errorText.setText("EndDate cannot be before startDate");
+                });
+                // Schedule a task to clear the error message after 5 seconds
+                PauseTransition pauseTransition = new PauseTransition(Duration.seconds(5));
+                pauseTransition.setOnFinished(event -> {
+                    errorText.setText(""); // Clear the error message
+                });
+                pauseTransition.play();
+            }
+        });
     }
 
     public CreateEventController(StackPane stackPane, StackPane thirdLayout ,Model model) {

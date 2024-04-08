@@ -13,6 +13,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
 <BorderPane prefHeight="720.0" prefWidth="1280.0" styleClass="background-pane" stylesheets="@login.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.LogIn.LogInController">
@@ -28,8 +29,14 @@
                   <RowConstraints maxHeight="158.0" minHeight="0.0" prefHeight="70.33331298828126" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <MFXPasswordField prefHeight="49.0" prefWidth="342.0" style="-fx-background-color: rgba(150, 160, 180, 0.7);" GridPane.rowIndex="1" />
-                  <MFXTextField prefHeight="49.0" prefWidth="341.0" style="-fx-background-color: rgba(150, 160, 180, 0.7);" />
+                  <MFXPasswordField fx:id="password" prefHeight="49.0" prefWidth="342.0" style="-fx-background-color: rgba(150, 160, 180, 0.7);" GridPane.rowIndex="1">
+                     <textFill>
+                        <Color />
+                     </textFill></MFXPasswordField>
+                  <MFXTextField fx:id="userName" prefHeight="49.0" prefWidth="341.0" style="-fx-background-color: rgba(150, 160, 180, 0.7);">
+                     <textFill>
+                        <Color />
+                     </textFill></MFXTextField>
                </children>
                <padding>
                   <Insets top="20.0" />
@@ -43,7 +50,7 @@
                   <Insets top="20.0" />
                </padding>
             </Label>
-            <MFXButton layoutX="218.0" layoutY="274.0" prefHeight="35.0" prefWidth="145.0" style="-fx-background-color: E5EDF8FF; -fx-background-radius: 10;" text="Sign In">
+            <MFXButton layoutX="218.0" layoutY="274.0" onAction="#signIn" prefHeight="35.0" prefWidth="145.0" style="-fx-background-color: E5EDF8FF; -fx-background-radius: 10;" text="Sign In">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font>

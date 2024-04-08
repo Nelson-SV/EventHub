@@ -63,3 +63,6 @@ Label {
     -fx-border-color: red;
     -fx-border-width: 2;
 }
+.errorText{
+    -fx-text-fill: red;
+}
