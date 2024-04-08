@@ -6,12 +6,15 @@ import exceptions.EventException;
 import javafx.application.Platform;
 import javafx.collections.*;
 import javafx.concurrent.Task;
+import javafx.util.StringConverter;
 import view.components.eventsObservers.DateObservable;
 import view.components.eventsObservers.DateObserver;
 import view.components.eventsObservers.EventsObservable;
 import view.components.listeners.CoordinatorsDisplayer;
 import view.components.listeners.Displayable;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -21,6 +24,11 @@ public class Model implements CommonModel {
 // 2.maybe we use a map instead of a list where the eventId will be the key;
 // 3.add an observable object that will hold the current selected event to be managed
 
+
+    /**
+     * holds the response off edit validity , in order to display information on the screen
+     */
+    private EventInvalidResponse eventEditResponse;
     private Displayable eventsDisplayer;
     private DateObserver eventsObservable;
     private DateObserver dateObservable;
@@ -42,9 +50,6 @@ public class Model implements CommonModel {
     private ObservableMap<Integer, User> allEventCoordinators;
     private HashMap<Integer, List<Integer>> assignedoordinators;
 
-
-    //TODO not sure if we will need it , not use @Grosu
-    private ObservableMap<Integer, EventStatus> coordinatorEventsWithStatus;
     private EventManager eventManager;
     private ILogicManager evmLogic;
     private TicketManager ticketManager;
@@ -73,7 +78,6 @@ public class Model implements CommonModel {
         ticketManager = new TicketManager();
         coordinatorEvents = FXCollections.observableHashMap();
         allEvents = FXCollections.observableHashMap();
-        coordinatorEventsWithStatus = FXCollections.observableHashMap();
         eventTickets = FXCollections.observableHashMap();
         evmLogic = new EventManagementLogic();
         addedTickets = new ArrayList<>();
@@ -122,32 +126,6 @@ public class Model implements CommonModel {
     public void initializeEventsMap() throws EventException {
         coordinatorEvents = evmLogic.getEvents();
     }
-
-
-    //TODO change from using events to events with status , after discussing with the team
-    // do not use for now @Grosu
-
-    /**
-     * initialize the events with status map
-     */
-    private void initializeEventsWithStatusMap(Map<Integer, Event> coordinatorEvents) {
-        coordinatorEventsWithStatus = evmLogic.getEventsWithStatus(coordinatorEvents);
-    }
-
-
-//Todo needs to be deleted if not used anymore Grosu
-
-//    /**
-//     * listener for changes in the  events list, calls the EventDisplayer method to display the events
-//     */
-//    private void addUpdateEventListener() {
-//        this.coordinatorEvents.addListener((MapChangeListener<? super Integer, ? super Event>) change -> {
-//            if (change.wasAdded() || change.wasRemoved()) {
-//                eventsDisplayer.displayEvents();
-//            }
-//        });
-//    }
-
 
     /**
      * Sets the Event Displayer responsible for displaying the events
@@ -204,9 +182,36 @@ public class Model implements CommonModel {
 
 
     public boolean isEditValid() {
-        return evmLogic.isEditValid(selectedEvent);
+        Event originalEvent = allEvents.get(selectedEvent.getId());
+        if (selectedEvent.equals(allEvents.get(selectedEvent.getId()))) {
+            return true;
+        }
+        boolean areDatesModified = evmLogic.areDatesModified(selectedEvent, allEvents.get(selectedEvent.getId()));
+        if (areDatesModified) {
+            EventInvalidResponse eventInvalidResponse = evmLogic.areEditedDatesValid(selectedEvent, originalEvent);
+            if (eventInvalidResponse == null) {
+                return true;
+            } else {
+                this.eventEditResponse = eventInvalidResponse;
+                return false;
+            }
+        }
+        return true;
     }
 
+    /**
+     * retrieves the response off edit event validation operation
+     */
+    public EventInvalidResponse getEventEditResponse() {
+        return eventEditResponse;
+    }
+
+    /**
+     * sets the response off edit event validation operation
+     */
+    public void setEventEditResponse(EventInvalidResponse eventEditResponse) {
+        this.eventEditResponse = eventEditResponse;
+    }
 
     /**
      * delete operation to be performed
@@ -270,6 +275,7 @@ public class Model implements CommonModel {
      */
     public void saveEditEventOperation(List<User> assignedCoordinators) throws EventException {
         HashMap<Integer, List<Integer>> assignedCoordinatorsMap = new HashMap<>();
+
         assignedCoordinatorsMap.put(selectedEvent.getId(), assignedCoordinators.stream().map(User::getUserId).collect(Collectors.toList()));
         boolean isModified = evmLogic.isModifyed(assignedCoordinatorsMap, selectedEvent, coordinatorEvents.get(selectedEvent.getId()));
         if (!isModified) {
@@ -278,6 +284,7 @@ public class Model implements CommonModel {
         boolean editSucceded = evmLogic.saveEditOperation(selectedEvent, assignedCoordinatorsMap);
         if (editSucceded) {
             coordinatorEvents.put(selectedEvent.getId(), selectedEvent);
+            eventEditResponse = null;
         }
     }
 
@@ -292,6 +299,7 @@ public class Model implements CommonModel {
     public ObservableMap<Integer, Event> getAllEvents() {
         return allEvents;
     }
+
     public void setAllEvents(ObservableMap<Integer, Event> allEvents) {
         this.allEvents = allEvents;
     }
@@ -318,7 +326,6 @@ public class Model implements CommonModel {
     }
 
 
-
     public Integer getEventIdByName(String eventName) {
         for (Event event : allEvents.values()) {
             if (event.getName().equals(eventName)) {
@@ -333,10 +340,14 @@ public class Model implements CommonModel {
     }
 
 
-
-    public void sellTicket (List<Ticket> allSelectedTickets, Customer customer) throws EventException {
+    public void sellTicket(List<Ticket> allSelectedTickets, Customer customer) throws EventException {
         ticketManager.soldTickets(allSelectedTickets, customer);
     }
+
+    public LocalTime convertStringToTime(String value) {
+        return evmLogic.convertStringToLocalTime(value);
+    }
+
 
 
         /*

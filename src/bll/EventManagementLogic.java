@@ -1,8 +1,6 @@
 package bll;
-import be.Event;
-import be.EventStatus;
-import be.Status;
-import be.User;
+
+import be.*;
 import dal.EventDAO;
 import dal.UsersDAO;
 import exceptions.EventException;
@@ -11,13 +9,16 @@ import javafx.collections.ObservableMap;
 import javafx.concurrent.Task;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
-
 public class EventManagementLogic implements ILogicManager {
     private EventDAO eventData;
     private UsersDAO usersDao;
+
+    private static final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+    private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     public EventManagementLogic() throws EventException {
         this.eventData = new EventDAO();
@@ -51,60 +52,67 @@ public class EventManagementLogic implements ILogicManager {
     public boolean isModifyed(Map<Integer, List<Integer>> assignedCoordinators, Event selectedEvent, Event original) {
         return !assignedCoordinators.get(selectedEvent.getId()).isEmpty() || !selectedEvent.equals(original);
     }
+//
+//    /**
+//     * check if the edited inputs are valid
+//     */
+//
+//    public EventInvalidResponse isInputValidTest(Event selectedEvent) {
+//        EventInvalidResponse eventInvalid = new EventInvalidResponse();
+//        boolean areInputsValid = true;
+//
+//
+//        if (!isStartDateValid(selectedEvent.getStartDate())) {
+//            areInputsValid = false;
+//            eventInvalid.setStartDateInvalid(selectedEvent.getStartDate().toString() + ": Start date is not valid!");
+//        }
+//
+//
+//        if (selectedEvent.getEndDate() != null && !isEndDateValid(selectedEvent.getStartDate(), selectedEvent.getEndDate())) {
+//            areInputsValid = false;
+//            eventInvalid.setEndDateInvalid(selectedEvent.getEndDate().toString() + ": End date is not valid!");
+//        }
+//
+//
+//        if (selectedEvent.getEndDate() != null && selectedEvent.getEndTime() != null && !isEndTimeValid(selectedEvent.getStartTime(), selectedEvent.getEndTime(), selectedEvent.getStartDate(), selectedEvent.getEndDate())) {
+//            areInputsValid = false;
+//            eventInvalid.setEndTimeInvalid(selectedEvent.getEndTime() + ": End time is not valid!");
+//        }
+//
+//        if (selectedEvent.getEndTime() != null && !isStartTimeValid(selectedEvent.getStartTime(), selectedEvent.getEndTime())) {
+//            areInputsValid = false;
+//            eventInvalid.setStartTimeInvalid(selectedEvent.getStartTime() + ": Start time is not valid!");
+//        }
+//
+//        if (areInputsValid) {
+//            return null;
+//        }
+//
+//        return eventInvalid;
+//    }
 
-    public boolean isEditValid(Event selectedEvent) {
-        boolean endDateValid = true;
-        boolean endTimeValid = true;
-        LocalDate startDate = selectedEvent.startDateProperty().get();
-        LocalDate endDate = selectedEvent.getEndDate();
-        LocalTime startTime = selectedEvent.startTimeProperty().get();
-        LocalTime endTime = selectedEvent.getEndTime();
-        if (endDate != null) {
-            endDateValid = isEndDateValid(startDate, endDate);
-        }
-        if (endTime != null) {
-            endTimeValid = isEndTimeValid(startTime, endTime, startDate, endDate);
-        }
 
-        return isNameValid(selectedEvent.getName()) &&
-                isStartDateValid(startDate) &&
-                !isStartTimeNull(startTime) &&
-                !isLocationEmpty(selectedEvent.getLocation()) &&
-                endDateValid &&
-                endTimeValid;
-    }
-
-    private boolean isNameValid(String name) {
-        return !name.isEmpty();
-    }
-
+    /**
+     * checks if the start date is valid compared with the local Date
+     */
     private boolean isStartDateValid(LocalDate startDate) {
         return startDate != null && !startDate.isBefore(LocalDate.now());
-    }
-
-    private boolean isStartTimeNull(LocalTime startTime) {
-        return startTime == null;
     }
 
     private boolean isEndDateValid(LocalDate startDate, LocalDate endDate) {
         return !startDate.isAfter(endDate);
     }
 
-    private boolean isEndTimeValid(LocalTime startTime, LocalTime endTime, LocalDate startDate, LocalDate endDate) {
-        if (endDate != null) {
-            if (startDate.isEqual(endDate)) {
-                return startTime.isBefore(endTime);
-            } else {
-                return startTime.isBefore(endTime);
-            }
-        } else {
-            return true;
-        }
+    private boolean isStartTimeValid(LocalTime startTime, LocalTime endTime) {
+        return startTime.isBefore(endTime);
     }
 
-    private boolean isLocationEmpty(String location) {
-        return location.isEmpty();
-    }
+//    private boolean isEndTimeValid(LocalTime startTime, LocalTime endTime, LocalDate startDate, LocalDate endDate) {
+//        if (startDate.isEqual(endDate)) {
+//            return !startTime.isAfter(endTime);
+//        }
+//        return true;
+//    }
 
 
     /**
@@ -118,7 +126,6 @@ public class EventManagementLogic implements ILogicManager {
         return eventData.saveEditOperation(selectedEvent, assignedCoordinators);
     }
 
-
     /**
      * compute the status off the current based on the start date, time, end date, time
      *
@@ -126,9 +133,7 @@ public class EventManagementLogic implements ILogicManager {
      */
     public Status computeEventStatus(EventStatus event) {
         return EventStatusCalculator.calculateStatus(event);
-
     }
-
 
     /**
      * To not be used, not sure if we need it
@@ -146,16 +151,17 @@ public class EventManagementLogic implements ILogicManager {
     }
 
     /**
-     *sort the events by the status and startDate  */
-    public List<Event> getSortedEventsByStatus(Collection<Event> events){
+     * sort the events by the status and startDate
+     */
+    public List<Event> getSortedEventsByStatus(Collection<Event> events) {
         List<EventStatus> eventsWithStatus = convertToEventsWithStatus(events);
         List<EventStatus> sortedEvents = new ArrayList<>();
         //sort ongoing events
         List<EventStatus> ongoingEvents = sortOngoing(eventsWithStatus);
         //sort upcoming events
-        List<EventStatus> upcomingEvents= sortUpcoming(eventsWithStatus);
+        List<EventStatus> upcomingEvents = sortUpcoming(eventsWithStatus);
         //sort finalized events
-        List<EventStatus> finalizedEvents=sortFinalized(eventsWithStatus);
+        List<EventStatus> finalizedEvents = sortFinalized(eventsWithStatus);
 
         sortedEvents.addAll(ongoingEvents);
         sortedEvents.addAll(upcomingEvents);
@@ -164,24 +170,23 @@ public class EventManagementLogic implements ILogicManager {
         return convertToEvent(sortedEvents);
     }
 
-    private List<EventStatus> sortOngoing(List<EventStatus> events){
-        List<EventStatus> ongoing = events.stream().filter((item)->item.getStatus().getValue().equals(Status.ONGOING.getValue())).toList();
-    return sortByStartingDate(ongoing);
+    private List<EventStatus> sortOngoing(List<EventStatus> events) {
+        List<EventStatus> ongoing = events.stream().filter((item) -> item.getStatus().getValue().equals(Status.ONGOING.getValue())).toList();
+        return sortByStartingDate(ongoing);
     }
 
-    private List<EventStatus> sortUpcoming(List<EventStatus> events){
-     List<EventStatus> upcoming = events.stream().filter((item)->item.getStatus().getValue().equals(Status.UPCOMING.getValue())).toList();
-     return sortByStartingDate(upcoming);
+    private List<EventStatus> sortUpcoming(List<EventStatus> events) {
+        List<EventStatus> upcoming = events.stream().filter((item) -> item.getStatus().getValue().equals(Status.UPCOMING.getValue())).toList();
+        return sortByStartingDate(upcoming);
     }
 
-    private List<EventStatus> sortFinalized(List<EventStatus> events){
-        List<EventStatus> finalized = events.stream().filter((item)->item.getStatus().getValue().equals(Status.FINALIZED.getValue())).toList();
-    return sortByStartingDate(finalized);
+    private List<EventStatus> sortFinalized(List<EventStatus> events) {
+        List<EventStatus> finalized = events.stream().filter((item) -> item.getStatus().getValue().equals(Status.FINALIZED.getValue())).toList();
+        return sortByStartingDate(finalized);
     }
 
 
-
-    private List<EventStatus> sortByStartingDate(List<EventStatus> events){
+    private List<EventStatus> sortByStartingDate(List<EventStatus> events) {
         return events.stream()
                 .sorted(Comparator.comparing(event -> Math.abs(ChronoUnit.DAYS.between(LocalDate.now(), event.getEventDTO().getStartDate()))))
                 .collect(Collectors.toList());
@@ -197,15 +202,148 @@ public class EventManagementLogic implements ILogicManager {
                 })
                 .toList();
     }
-    private List<Event> convertToEvent(List<EventStatus> events){
+
+    private List<Event> convertToEvent(List<EventStatus> events) {
         return events.stream().map(EventStatus::getEventDTO).toList();
     }
 
-    /**delete an event from the database
-     * @param eventId the id of the event*/
+    /**
+     * delete an event from the database
+     *
+     * @param eventId the id of the event
+     */
     @Override
     public boolean deleteEvent(int eventId) throws EventException {
         return eventData.deleteEvent(eventId);
+    }
+
+    public LocalTime convertStringToLocalTime(String value) {
+        if (value != null && !value.isEmpty()) {
+            return LocalTime.parse(value, timeFormatter);
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public boolean areDatesModified(Event editedEvent, Event originalEvent) {
+        if (!Objects.equals(editedEvent.getStartDate(), originalEvent.getStartDate())) {
+            return true;
+        }
+        if (!Objects.equals(editedEvent.getStartTime(), originalEvent.getStartTime())) {
+
+            return true;
+        }
+        if (!Objects.equals(editedEvent.getEndDate(), originalEvent.getEndDate())) {
+            return true;
+        }
+        if (!Objects.equals(editedEvent.getEndTime(), originalEvent.getEndTime())) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * return true is event is null
+     */
+    private boolean isEndDateNull(LocalDate endDate) {
+        return endDate == null;
+    }
+
+
+    public EventInvalidResponse areEditedDatesValid(Event editedEvent, Event originalEvent) {
+        boolean isEditValid = true;
+        EventInvalidResponse eventInvalid = new EventInvalidResponse();
+
+        if (!Objects.equals(editedEvent.getStartDate(), originalEvent.getStartDate())) {
+            if (!isStartDateValidCompleteCheck(editedEvent.getStartDate(), originalEvent.getEndDate())) {
+                isEditValid = false;
+                eventInvalid.setStartDateInvalid(editedEvent.getStartDate().toString() + ": Start date is not valid!");
+            }
+        }
+
+        if (!Objects.equals(editedEvent.getStartTime(), originalEvent.getStartTime())) {
+            boolean isStartTimeValid = isStartTimeValid(editedEvent.getStartTime(), editedEvent.getEndTime(), editedEvent.getStartDate(), editedEvent.getEndDate());
+            System.out.println(isStartTimeValid + "start time validity");
+            if (!isStartTimeValid) {
+                isEditValid = false;
+                eventInvalid.setStartTimeInvalid(editedEvent.getStartTime().toString() + isStartTimeValid + ": Start time is not valid!");
+            }
+        }
+
+        if (!Objects.equals(editedEvent.getEndDate(), originalEvent.getEndDate())) {
+            boolean endDateValid = isEndDateValid(editedEvent.getStartDate(), editedEvent.getEndDate());
+            if (!endDateValid) {
+                isEditValid = false;
+                eventInvalid.setEndDateInvalid(editedEvent.getEndDate().toString() + ": End date is not valid!");
+            }
+        }
+
+        if (!Objects.equals(editedEvent.getEndTime(), originalEvent.getEndTime())) {
+            boolean endTimeValid = isEndTimeValidCompleteCheck(editedEvent.getStartTime(), editedEvent.getEndTime(), editedEvent.getStartDate(), editedEvent.getEndDate());
+            if (!endTimeValid){
+                isEditValid = false;
+                eventInvalid.setEndTimeInvalid(editedEvent.getEndTime() + " : End time is not valid!");
+            }
+        }
+
+
+        if (isEditValid) {
+            return null;
+        }
+        return eventInvalid;
+    }
+
+    /**
+     * check if start date is valid, before current date or after the end date
+     */
+    private boolean isStartDateValidCompleteCheck(LocalDate startDate, LocalDate endDate) {
+        if (!isStartDateValid(startDate)) {
+            return false;
+        }
+
+        if (!isEndDateNull(endDate)) {
+            return isEndDateValid(startDate, endDate);
+        }
+        return true;
+    }
+
+    /**
+     * check is startTime is valid, before the endTime, if the end date is null
+     */
+    private boolean isStartTimeValid(LocalTime startTime, LocalTime endTime, LocalDate startDate, LocalDate endDate) {
+        if (endDate == null) {
+            if (endTime == null) {
+                return true;
+            }
+            return isStartTimeValid(startTime, endTime);
+        } else {
+            if (startDate.isEqual(endDate)) {
+                if (endTime == null) {
+                    return true;
+                }
+                return startTime.isBefore(endTime);
+            }
+            return true;
+        }
+    }
+
+
+    /**
+     * check is end time is valid, if is not before the start time
+     */
+    private boolean isEndTimeValidCompleteCheck(LocalTime startTime, LocalTime endTime, LocalDate startDate, LocalDate endDate) {
+        if (endDate == null) {
+            return isStartTimeValid(startTime, endTime);
+        } else {
+            if (startDate.isEqual(endDate)) {
+                if (endTime == null) {
+                    return true;
+                }
+                return startTime.isBefore(endTime);
+            }
+            return true;
+        }
     }
 
 }

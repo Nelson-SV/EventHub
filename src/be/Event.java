@@ -193,7 +193,10 @@ public class Event {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Event event = (Event) o;
-        return Objects.equals(id, event.id) && Objects.equals(name, event.name) && Objects.equals(description, event.description) && Objects.equals(startDate, event.startDate) && Objects.equals(endDate, event.endDate) && Objects.equals(startTime, event.startTime) && Objects.equals(endTime, event.endTime) && Objects.equals(location, event.location) && Objects.equals(availableTickets, event.availableTickets);
+        return Objects.equals(id.getValue(), event.id.getValue()) && Objects.equals(name.getValue(), event.name.getValue())
+                && Objects.equals(description.getValue(), event.description.getValue()) && Objects.equals(startDate.getValue(), event.startDate.getValue())
+                && Objects.equals(endDate.getValue(), event.endDate.getValue()) && Objects.equals(startTime.getValue(), event.startTime.getValue()) && Objects.equals(endTime.getValue(), event.endTime.getValue())
+                && Objects.equals(location.getValue(), event.location.getValue()) && Objects.equals(availableTickets.getValue(), event.availableTickets.getValue());
     }
 
     @Override
