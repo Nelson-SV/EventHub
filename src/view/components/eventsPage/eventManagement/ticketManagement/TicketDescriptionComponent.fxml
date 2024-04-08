@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.shape.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.SVGPath?>
+<?import javafx.scene.text.Font?>
 
-<HBox fx:id="ticketContainer" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="30.0" minWidth="220.0" prefHeight="60.0" prefWidth="460.0" style="-fx-border-color: #102c57; -fx-background-color: #E5EDF8; -fx-background-radius: 10; -fx-border-width: 2; -fx-border-radius: 10;" stylesheets="@../../eventDescription/EventDescription.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
+<HBox fx:id="ticketContainer" alignment="CENTER" maxHeight="60.0" maxWidth="440.0" minHeight="30.0" minWidth="220.0" prefHeight="60.0" prefWidth="440.0" style="-fx-border-color: #102c57; -fx-background-color: #E5EDF8; -fx-background-radius: 10; -fx-border-width: 2; -fx-border-radius: 10;" stylesheets="@../../eventDescription/EventDescription.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <VBox alignment="CENTER_LEFT" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="30.0" minWidth="70.0" prefHeight="60.0" prefWidth="180.0" style="-fx-background-color: #E5EDF8; -fx-background-radius: 10;" HBox.hgrow="ALWAYS">
          <children>

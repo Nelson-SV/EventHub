@@ -106,12 +106,12 @@ public class Model implements CommonModel {
         }
     }
 
-    public List<Ticket> getNewTicket(Ticket ticket) {
+    public List<Ticket> getNewAddedTicket(Ticket ticket) {
         addedTickets.add(ticket);
         return addedTickets;
     }
 
-    public void removeTicket(Ticket ticket) {
+    public void removeAddedTicket(Ticket ticket) {
         addedTickets.remove(ticket);
     }
 

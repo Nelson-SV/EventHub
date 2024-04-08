@@ -1,5 +1,6 @@
 package view.components.eventsPage.eventManagement;
 
+import be.DeleteOperation;
 import be.User;
 import exceptions.ErrorCode;
 import exceptions.EventException;
@@ -7,6 +8,7 @@ import exceptions.ExceptionHandler;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXDatePicker;
+import io.github.palexdev.materialfx.controls.MFXScrollPane;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleObjectProperty;
@@ -22,9 +24,14 @@ import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 import javafx.util.StringConverter;
 import org.controlsfx.control.CheckComboBox;
+import view.components.deleteEvent.DeleteButton;
+import view.components.eventsPage.eventDescription.EventComponent;
+import view.components.eventsPage.eventManagement.ticketManagement.TicketDescriptionComponent;
+import view.components.eventsPage.manageButton.ManageAction;
 import view.components.listeners.CoordinatorsDisplayer;
 import view.components.loadingComponent.LoadingActions;
 import view.components.loadingComponent.LoadingComponent;
@@ -46,7 +53,8 @@ public class EventManagementController extends GridPane implements Initializable
     private MFXButton saveEdit;
     @FXML
     private MFXButton cancelEdit;
-
+    @FXML
+    private VBox ticketsVBox;
     @FXML
     private TextArea eventLocation;
     @FXML
@@ -104,6 +112,7 @@ public class EventManagementController extends GridPane implements Initializable
         EditEventValidator.addEventListeners(eventName, startDate, startTime, endDate, endTime, eventLocation);
         addToolTipsForDates();
         addDatesValidityChecker();
+        displayTickets();
         cancelEdit.setOnAction((e) -> cancelEditOperation());
         saveEdit.setOnAction((e) -> saveOperation());
     }
@@ -220,6 +229,27 @@ public class EventManagementController extends GridPane implements Initializable
             }
         };
              time.textProperty().bindBidirectional(eventTime,timeConverter);
+    }
+
+    /**
+     * loads the tickets of the selected event
+     */
+    @FXML
+    private void displayTickets() {
+        if(ticketsVBox.getScene()==null){
+            ticketsVBox.getChildren().clear();
+            try {
+                model.getTicketsForEvent(model.getSelectedEvent().getId()).values()
+                        .forEach(t ->
+                                {
+                                    TicketDescriptionComponent ticketDescriptionComponent = new TicketDescriptionComponent(t);
+                                    ticketsVBox.getChildren().add(ticketDescriptionComponent);
+                                }
+                        );
+            } catch (EventException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
 

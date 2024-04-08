@@ -101,7 +101,7 @@ public class TicketsGenerationController {
             createEventController.hBoxTickets.setAlignment(Pos.CENTER_LEFT);
             createEventController.hBoxTickets.getChildren().add(0, vBox);
 
-            model.getNewTicket(ticket);
+            model.getNewAddedTicket(ticket);
 
             remove.setOnAction(event -> {
                 removeTicket(vBox, ticket);
@@ -115,7 +115,7 @@ public class TicketsGenerationController {
 
     private void removeTicket(VBox selectedVbox, Ticket selectedTicket) {
         createEventController.hBoxTickets.getChildren().remove(selectedVbox);
-        model.removeTicket(selectedTicket);
+        model.removeAddedTicket(selectedTicket);
     }
 
     private void editTicket(Ticket ticket, Parent parent) {
