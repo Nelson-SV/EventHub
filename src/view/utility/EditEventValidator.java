@@ -4,6 +4,7 @@ import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXDatePicker;
 import javafx.animation.PauseTransition;
 import javafx.css.PseudoClass;
+import javafx.scene.Node;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
@@ -113,18 +114,13 @@ public class EditEventValidator {
 
 
     public static boolean isEventValidTimeAsString(TextField name, MFXDatePicker startDate, MFXComboBox<String> startTime, MFXDatePicker endDate, MFXComboBox<String> endTIme, TextArea eventLocation) {
-        boolean nameValid = true;
-        boolean startDateTextValid = true;
-        boolean startTimeTextValid = true;
-        boolean endDateValid = true;
-        boolean endTimeValid = true;
-        boolean eventLocationValid = true;
+       boolean isValid = true;
 
         //check if start time is valid
         if (!isTimeValid(startTime.getText())) {
             startTime.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, true);
-            startTimeTextValid = false;
-            System.out.println("check start Time valid: " + startTimeTextValid);
+            isValid = false;
+            System.out.println("check start Time valid: " + isValid);
         } else {
             startTime.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, false);
         }
@@ -133,8 +129,8 @@ public class EditEventValidator {
         //check if start date is valid
         if (parseDateOrNull(startDate.getText()) == null) {
             startDate.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, true);
-            startDateTextValid = false;
-            System.out.println("check start date valid" + startDateTextValid);
+            isValid = false;
+            System.out.println("check start date valid" + isValid);
         } else {
             startDate.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, false);
         }
@@ -143,8 +139,8 @@ public class EditEventValidator {
         if (!endDate.getText().isEmpty()) {
             if (parseDateOrNull(endDate.getText()) == null) {
                 endDate.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, true);
-                endDateValid = false;
-                System.out.println("check end time valid" + endDateValid);
+                isValid = false;
+                System.out.println("check end time valid" + isValid);
             } else {
                 endDate.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, false);
             }
@@ -154,8 +150,8 @@ public class EditEventValidator {
         if (!endTIme.getText().isEmpty()) {
             if (!isTimeValid(endTIme.getText())) {
                 endTIme.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, true);
-                endTimeValid = false;
-                System.out.println(" check end time " + endTimeValid);
+                isValid = false;
+                System.out.println(" check end time " + isValid);
             } else {
                 endTIme.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, false);
             }
@@ -164,20 +160,20 @@ public class EditEventValidator {
         //check if name is valid
         if (!isNameValid(name.getText())) {
             name.pseudoClassStateChanged(ERROR_PSEUDO_CLASS,true);
-            nameValid=false;
-            System.out.println("checked name Validity " + nameValid);
+            isValid=false;
+            System.out.println("checked name Validity " + isValid);
         }else{
             name.pseudoClassStateChanged(ERROR_PSEUDO_CLASS,false);
         }
 
         if (eventLocation.getText().isEmpty()) {
             eventLocation.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, true);
-            eventLocationValid = false;
-            System.out.println("check location " + eventLocationValid);
+            isValid = false;
+            System.out.println("check location " + isValid);
         } else {
             eventLocation.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, false);
         }
-        return startTimeTextValid && startDateTextValid && endDateValid && endTimeValid && eventLocationValid&&nameValid;
+        return isValid;
     }
 
 
@@ -443,5 +439,9 @@ public class EditEventValidator {
             }
         }
         return true;
+    }
+
+    public static void changePseudoClassValue(Node node){
+        node.pseudoClassStateChanged(ERROR_PSEUDO_CLASS,true);
     }
 }

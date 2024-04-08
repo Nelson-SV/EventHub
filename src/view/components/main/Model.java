@@ -6,12 +6,15 @@ import exceptions.EventException;
 import javafx.application.Platform;
 import javafx.collections.*;
 import javafx.concurrent.Task;
+import javafx.util.StringConverter;
 import view.components.eventsObservers.DateObservable;
 import view.components.eventsObservers.DateObserver;
 import view.components.eventsObservers.EventsObservable;
 import view.components.listeners.CoordinatorsDisplayer;
 import view.components.listeners.Displayable;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -21,6 +24,11 @@ public class Model implements CommonModel {
 // 2.maybe we use a map instead of a list where the eventId will be the key;
 // 3.add an observable object that will hold the current selected event to be managed
 
+
+    /**
+     * holds the response off edit validity , in order to display information on the screen
+     */
+    private EventInvalidResponse eventEditResponse;
     private Displayable eventsDisplayer;
     private DateObserver eventsObservable;
     private DateObserver dateObservable;
@@ -204,9 +212,28 @@ public class Model implements CommonModel {
 
 
     public boolean isEditValid() {
-        return evmLogic.isEditValid(selectedEvent);
+        if (selectedEvent.equals(allEvents.get(selectedEvent.getId()))) {
+            return true;
+        }
+        EventInvalidResponse eventInvalidResponse = evmLogic.isInputValidTest(selectedEvent);
+        if (eventInvalidResponse == null) {
+            return true;
+        } else {
+            this.eventEditResponse = eventInvalidResponse;
+        }
+
+        return false;
     }
 
+    /**retrieves the response off edit event validation operation*/
+    public EventInvalidResponse getEventEditResponse() {
+        return eventEditResponse;
+    }
+
+    /**sets the response off edit event validation operation*/
+    public void setEventEditResponse(EventInvalidResponse eventEditResponse) {
+        this.eventEditResponse = eventEditResponse;
+    }
 
     /**
      * delete operation to be performed
@@ -292,6 +319,7 @@ public class Model implements CommonModel {
     public ObservableMap<Integer, Event> getAllEvents() {
         return allEvents;
     }
+
     public void setAllEvents(ObservableMap<Integer, Event> allEvents) {
         this.allEvents = allEvents;
     }
@@ -318,7 +346,6 @@ public class Model implements CommonModel {
     }
 
 
-
     public Integer getEventIdByName(String eventName) {
         for (Event event : allEvents.values()) {
             if (event.getName().equals(eventName)) {
@@ -333,10 +360,14 @@ public class Model implements CommonModel {
     }
 
 
-
-    public void sellTicket (List<Ticket> allSelectedTickets, Customer customer) throws EventException {
+    public void sellTicket(List<Ticket> allSelectedTickets, Customer customer) throws EventException {
         ticketManager.soldTickets(allSelectedTickets, customer);
     }
+
+    public LocalTime convertStringToTime(String value) {
+        return evmLogic.convertStringToLocalTime(value);
+    }
+
 
 
         /*

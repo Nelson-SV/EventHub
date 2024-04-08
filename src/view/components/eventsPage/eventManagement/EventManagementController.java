@@ -1,8 +1,7 @@
 package view.components.eventsPage.eventManagement;
-
+import be.EventInvalidResponse;
 import be.User;
 import exceptions.ErrorCode;
-import exceptions.EventException;
 import exceptions.ExceptionHandler;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
@@ -31,7 +30,6 @@ import view.components.loadingComponent.LoadingComponent;
 import view.components.main.Model;
 import view.utility.CommonMethods;
 import view.utility.EditEventValidator;
-
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
@@ -39,7 +37,6 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ResourceBundle;
-
 
 public class EventManagementController extends GridPane implements Initializable, CoordinatorsDisplayer {
     @FXML
@@ -76,14 +73,14 @@ public class EventManagementController extends GridPane implements Initializable
     private LoadingComponent loadingComponent;
 
 
-    public EventManagementController(Model model,StackPane secondaryLayout, StackPane thirdLayout) {
+    public EventManagementController(Model model, StackPane secondaryLayout, StackPane thirdLayout) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("EventManager.fxml"));
         loader.setController(this);
         try {
             managementRoot = loader.load();
             this.secondaryLayout = secondaryLayout;
             this.thirdLayout = thirdLayout;
-            this.model= model;
+            this.model = model;
             this.getChildren().add(managementRoot);
         } catch (IOException e) {
             ExceptionHandler.errorAlertMessage(ErrorCode.LOADING_FXML_FAILED.getValue());
@@ -98,7 +95,6 @@ public class EventManagementController extends GridPane implements Initializable
         EditEventValidator.initializeDateFormat(startDate);
         EditEventValidator.initializeDateFormat(endDate);
         addInputValuesListeners();
-       // EditEventValidator.addEventListeners(eventName, startDate, startTime, endDate, endTime, eventLocation);
         addToolTipsForDates();
         addDatesValidityChecker();
         cancelEdit.setOnAction((e) -> cancelEditOperation());
@@ -106,21 +102,21 @@ public class EventManagementController extends GridPane implements Initializable
     }
 
 
-    private void addInputValuesListeners(){
+    private void addInputValuesListeners() {
         EditEventValidator.addEventNameValueListener(eventName);
         EditEventValidator.addEventLocationValueListener(eventLocation);
     }
 
 
-
     //TODO create event listeners for start an den time values string
+
     /**
      * add validity checker for the dates
      */
     private void addDatesValidityChecker() {
-            EditEventValidator.addDateTextEmptyChecker(startDate);
-       EditEventValidator.addStartTimeValidityCheckerString(startTime);
-       EditEventValidator.addEndTimeValidityCheckerString(endTime);
+        EditEventValidator.addDateTextEmptyChecker(startDate);
+        EditEventValidator.addStartTimeValidityCheckerString(startTime);
+        EditEventValidator.addEndTimeValidityCheckerString(endTime);
         EditEventValidator.addEndDateTextValidityChecker(endDate);
     }
 
@@ -134,21 +130,9 @@ public class EventManagementController extends GridPane implements Initializable
         EditEventValidator.addTimeStringToolTip(endTime);
     }
 
-
     /**
      * initialize the event time variables
      */
-    private ObservableList<LocalTime> generateTimeOptions() {
-        ObservableList<LocalTime> timeOptions = FXCollections.observableArrayList();
-        LocalTime time = LocalTime.of(0, 0);
-        while (time.isBefore(LocalTime.of(23, 0))) {
-            time = time.plusHours(1);
-            timeOptions.add(time);
-        }
-        return timeOptions;
-    }
-
-
     private ObservableList<String> generateTimeValues() {
         ObservableList<String> timeValues = FXCollections.observableArrayList();
         for (int i = 1; i < 24; i++) {
@@ -171,23 +155,29 @@ public class EventManagementController extends GridPane implements Initializable
      * binds the selected event to the eventManagementPage
      */
     private void bindSelectedEventProprieties() {
-        bindSelectedEventWithDatesTextValues(startDate,model.getSelectedEvent().startDateProperty());
-        bindSelectedEventWithDatesTextValues(endDate,model.getSelectedEvent().endDateProperty());
-
-        // bindSelectedEventWithTimeTextPropriety(startTime,model.getSelectedEvent().startTimeProperty());
-      //  bindSelectedEventWithTimeTextPropriety(endTime,model.getSelectedEvent().endTimeProperty());
+        //bind event start date  with view
+        bindSelectedEventWithDatesTextValues(startDate, model.getSelectedEvent().startDateProperty());
+        //bind event end date with view
+        bindSelectedEventWithDatesTextValues(endDate, model.getSelectedEvent().endDateProperty());
+        //set start time in  view
+        startTime.setText(model.getSelectedEvent().getStartTime().toString());
+        //set end time with view
+        endTime.setText(model.getSelectedEvent().getEndTime().toString());
+        //bind event name with view
         eventName.textProperty().bindBidirectional(model.getSelectedEvent().nameProperty());
+        //bind start date with view
         startDate.valueProperty().bindBidirectional(model.getSelectedEvent().startDateProperty());
+        //bind end date with view
         endDate.valueProperty().bindBidirectional(model.getSelectedEvent().endDateProperty());
-      //  startTime.valueProperty().bindBidirectional(model.getSelectedEvent().startTimeProperty());
-     //   endTime.valueProperty().bindBidirectional(model.getSelectedEvent().endTimeProperty());
+        //bind event description with view
         eventDescription.textProperty().bindBidirectional(model.getSelectedEvent().descriptionProperty());
+        //bind event location with view
         eventLocation.textProperty().bindBidirectional(model.getSelectedEvent().locationProperty());
     }
 
     /**bind the selected event with the text propriety of the datepicker */
     private void bindSelectedEventWithDatesTextValues(MFXDatePicker date, SimpleObjectProperty<LocalDate> eventDate){
-     DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
         StringConverter<LocalDate> converter = new StringConverter<LocalDate>() {
             @Override
@@ -207,36 +197,8 @@ public class EventManagementController extends GridPane implements Initializable
                 }
             }
         };
-     date.textProperty().bindBidirectional(eventDate,converter);
+        date.textProperty().bindBidirectional(eventDate,converter);
     }
-
-
-    /**
-     * bind the selected event with the text propriety of the time values*/
-    private void bindSelectedEventWithTimeTextPropriety(MFXComboBox<LocalTime> time, SimpleObjectProperty<LocalTime> eventTime){
-        DateTimeFormatter  timeFormatter  = DateTimeFormatter.ofPattern("HH:mm");
-        StringConverter<LocalTime> timeConverter =  new StringConverter<LocalTime>() {
-            @Override
-            public String toString(LocalTime timeValue) {
-                if (timeValue != null) {
-
-                    return timeValue.format(timeFormatter);
-                } else {
-                    return "";
-                }
-            }
-            @Override
-            public LocalTime fromString(String timeString) {
-                try{
-                    return LocalTime.parse(timeString,timeFormatter);
-                }catch (DateTimeParseException e){
-                    return null;
-                }
-            }
-        };
-             time.textProperty().bindBidirectional(eventTime,timeConverter);
-    }
-
 
     /**
      * cancel the event editing
@@ -247,16 +209,65 @@ public class EventManagementController extends GridPane implements Initializable
         this.secondaryLayout.setVisible(false);
     }
 
-    private void saveOperation() {
-        boolean isEventValidText = EditEventValidator.isEventValidTimeAsString(eventName, startDate, startTime, endDate, endTime, eventLocation);
-        System.out.println(isEventValidText + " from controller");
-        if (isEventValidText) {
-            if (model.isEditValid()) {
-                initializeLoadingView();
-                initializeService();
-            }
-        }
+
+    private void convertInputAndSet(MFXComboBox<String> startTime, MFXComboBox<String> endTime) {
+        LocalTime startTimeInput = model.convertStringToTime(startTime.getText());
+        LocalTime endTimeInput = model.convertStringToTime(endTime.getText());
+        model.getSelectedEvent().setStartTime(startTimeInput);
+        model.getSelectedEvent().setEndTime(endTimeInput);
     }
+
+    private void saveOperation() {
+        boolean isEventValid = EditEventValidator.isEventValidTimeAsString(eventName, startDate, startTime, endDate, endTime, eventLocation);
+        System.out.println(isEventValid + " from controller");
+        convertInputAndSet(startTime, endTime);
+        System.out.println(model.getSelectedEvent());
+        System.out.println(isEventValid);
+        System.out.println(model.isEditValid()+ "");
+        boolean areDatesValid =model.isEditValid();
+
+        if(!areDatesValid){
+          initializeInvalidInputError(model.getEventEditResponse(),invalidInput);
+        }
+
+
+
+
+
+        //        if (isEventValidText) {
+//            if (model.isEditValid()) {
+//                initializeLoadingView();
+//                initializeService();
+//            }
+//        }
+    }
+
+
+
+    /**set the error window to display the error message*/
+    private void initializeInvalidInputError(EventInvalidResponse invalidResponse,TextArea inputError){
+        StringBuilder errorMessageBuilder = new StringBuilder();
+            if(invalidResponse.getStartDateInvalid()!=null){
+                EditEventValidator.changePseudoClassValue(startDate);
+                errorMessageBuilder.append(invalidResponse.getStartDateInvalid()).append("\n");
+            }
+            if(invalidResponse.getStartTimeInvalid()!=null){
+                EditEventValidator.changePseudoClassValue(startTime);
+                errorMessageBuilder.append(invalidResponse.getStartTimeInvalid()).append("\n");
+            }
+            if(invalidResponse.getEndDateInvalid()!=null){
+                EditEventValidator.changePseudoClassValue(endDate);
+                errorMessageBuilder.append(invalidResponse.getEndDateInvalid()).append("\n");
+            }
+            if(invalidResponse.getEndTimeInvalid()!=null){
+                EditEventValidator.changePseudoClassValue(endTime);
+                errorMessageBuilder.append(invalidResponse.getEndTimeInvalid()).append("\n");
+            }
+            invalidInput.setText(errorMessageBuilder.toString());
+            invalidInput.setVisible(true);
+            EditEventValidator.changePseudoClassValue(invalidInput);
+    }
+
 
     private void initializeLoadingView() {
         this.thirdLayout.getChildren().clear();
@@ -301,7 +312,7 @@ public class EventManagementController extends GridPane implements Initializable
                 pauseTransition.setOnFinished((ev) -> {
                     closeLoader();
                     cancelEditOperation();
-                    Platform.runLater(()->model.getEventsDisplayer().displayEvents());
+                    Platform.runLater(() -> model.getEventsDisplayer().displayEvents());
                 });
                 pauseTransition.play();
             });

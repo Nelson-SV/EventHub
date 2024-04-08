@@ -1,16 +1,18 @@
 package bll;
-import be.Event;
-import be.EventStatus;
-import be.Status;
-import be.User;
+
+import be.*;
 import dal.EventDAO;
 import dal.UsersDAO;
 import exceptions.EventException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableMap;
 import javafx.concurrent.Task;
+import javafx.util.StringConverter;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -18,6 +20,9 @@ import java.util.stream.Collectors;
 public class EventManagementLogic implements ILogicManager {
     private EventDAO eventData;
     private UsersDAO usersDao;
+
+    private static final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+    private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     public EventManagementLogic() throws EventException {
         this.eventData = new EventDAO();
@@ -52,58 +57,58 @@ public class EventManagementLogic implements ILogicManager {
         return !assignedCoordinators.get(selectedEvent.getId()).isEmpty() || !selectedEvent.equals(original);
     }
 
-    public boolean isEditValid(Event selectedEvent) {
-        boolean endDateValid = true;
-        boolean endTimeValid = true;
-        LocalDate startDate = selectedEvent.startDateProperty().get();
-        LocalDate endDate = selectedEvent.getEndDate();
-        LocalTime startTime = selectedEvent.startTimeProperty().get();
-        LocalTime endTime = selectedEvent.getEndTime();
-        if (endDate != null) {
-            endDateValid = isEndDateValid(startDate, endDate);
-        }
-        if (endTime != null) {
-            endTimeValid = isEndTimeValid(startTime, endTime, startDate, endDate);
+    public EventInvalidResponse isInputValidTest(Event selectedEvent) {
+        EventInvalidResponse eventInvalid = new EventInvalidResponse();
+        boolean areInputsValid = true;
+
+
+        if (!isStartDateValid(selectedEvent.getStartDate())) {
+            areInputsValid = false;
+            eventInvalid.setStartDateInvalid(selectedEvent.getStartDate().toString() + ": Start date is not valid!");
         }
 
-        return isNameValid(selectedEvent.getName()) &&
-                isStartDateValid(startDate) &&
-                !isStartTimeNull(startTime) &&
-                !isLocationEmpty(selectedEvent.getLocation()) &&
-                endDateValid &&
-                endTimeValid;
-    }
 
-    private boolean isNameValid(String name) {
-        return !name.isEmpty();
+        if (selectedEvent.getEndDate() != null && !isEndDateValid(selectedEvent.getStartDate(), selectedEvent.getEndDate())) {
+            areInputsValid = false;
+            eventInvalid.setEndDateInvalid(selectedEvent.getEndDate().toString() + ": End date is not valid!");
+        }
+
+
+        if (selectedEvent.getEndDate() != null && selectedEvent.getEndTime() != null && !isEndTimeValid(selectedEvent.getStartTime(), selectedEvent.getEndTime(), selectedEvent.getStartDate(), selectedEvent.getEndDate())) {
+            areInputsValid = false;
+            eventInvalid.setEndTimeInvalid(selectedEvent.getEndTime() + ": End time is not valid!");
+        }
+
+        if (selectedEvent.getEndTime() != null && !isStartTimeValid(selectedEvent.getStartTime(), selectedEvent.getEndTime())) {
+            areInputsValid = false;
+            eventInvalid.setStartTimeInvalid(selectedEvent.getStartTime() + ": Start time is not valid!");
+        }
+
+        if (areInputsValid) {
+            return null;
+        }
+
+        return eventInvalid;
     }
 
     private boolean isStartDateValid(LocalDate startDate) {
         return startDate != null && !startDate.isBefore(LocalDate.now());
     }
 
-    private boolean isStartTimeNull(LocalTime startTime) {
-        return startTime == null;
-    }
+
 
     private boolean isEndDateValid(LocalDate startDate, LocalDate endDate) {
         return !startDate.isAfter(endDate);
     }
-
-    private boolean isEndTimeValid(LocalTime startTime, LocalTime endTime, LocalDate startDate, LocalDate endDate) {
-        if (endDate != null) {
-            if (startDate.isEqual(endDate)) {
-                return startTime.isBefore(endTime);
-            } else {
-                return startTime.isBefore(endTime);
-            }
-        } else {
-            return true;
-        }
+    private boolean  isStartTimeValid(LocalTime startTime,LocalTime endTime){
+        return startTime.isBefore(endTime);
     }
 
-    private boolean isLocationEmpty(String location) {
-        return location.isEmpty();
+    private boolean isEndTimeValid(LocalTime startTime, LocalTime endTime, LocalDate startDate, LocalDate endDate) {
+        if (startDate.isEqual(endDate)) {
+            return !startTime.isAfter(endTime);
+        }
+        return true;
     }
 
 
@@ -146,16 +151,17 @@ public class EventManagementLogic implements ILogicManager {
     }
 
     /**
-     *sort the events by the status and startDate  */
-    public List<Event> getSortedEventsByStatus(Collection<Event> events){
+     * sort the events by the status and startDate
+     */
+    public List<Event> getSortedEventsByStatus(Collection<Event> events) {
         List<EventStatus> eventsWithStatus = convertToEventsWithStatus(events);
         List<EventStatus> sortedEvents = new ArrayList<>();
         //sort ongoing events
         List<EventStatus> ongoingEvents = sortOngoing(eventsWithStatus);
         //sort upcoming events
-        List<EventStatus> upcomingEvents= sortUpcoming(eventsWithStatus);
+        List<EventStatus> upcomingEvents = sortUpcoming(eventsWithStatus);
         //sort finalized events
-        List<EventStatus> finalizedEvents=sortFinalized(eventsWithStatus);
+        List<EventStatus> finalizedEvents = sortFinalized(eventsWithStatus);
 
         sortedEvents.addAll(ongoingEvents);
         sortedEvents.addAll(upcomingEvents);
@@ -164,24 +170,23 @@ public class EventManagementLogic implements ILogicManager {
         return convertToEvent(sortedEvents);
     }
 
-    private List<EventStatus> sortOngoing(List<EventStatus> events){
-        List<EventStatus> ongoing = events.stream().filter((item)->item.getStatus().getValue().equals(Status.ONGOING.getValue())).toList();
-    return sortByStartingDate(ongoing);
+    private List<EventStatus> sortOngoing(List<EventStatus> events) {
+        List<EventStatus> ongoing = events.stream().filter((item) -> item.getStatus().getValue().equals(Status.ONGOING.getValue())).toList();
+        return sortByStartingDate(ongoing);
     }
 
-    private List<EventStatus> sortUpcoming(List<EventStatus> events){
-     List<EventStatus> upcoming = events.stream().filter((item)->item.getStatus().getValue().equals(Status.UPCOMING.getValue())).toList();
-     return sortByStartingDate(upcoming);
+    private List<EventStatus> sortUpcoming(List<EventStatus> events) {
+        List<EventStatus> upcoming = events.stream().filter((item) -> item.getStatus().getValue().equals(Status.UPCOMING.getValue())).toList();
+        return sortByStartingDate(upcoming);
     }
 
-    private List<EventStatus> sortFinalized(List<EventStatus> events){
-        List<EventStatus> finalized = events.stream().filter((item)->item.getStatus().getValue().equals(Status.FINALIZED.getValue())).toList();
-    return sortByStartingDate(finalized);
+    private List<EventStatus> sortFinalized(List<EventStatus> events) {
+        List<EventStatus> finalized = events.stream().filter((item) -> item.getStatus().getValue().equals(Status.FINALIZED.getValue())).toList();
+        return sortByStartingDate(finalized);
     }
 
 
-
-    private List<EventStatus> sortByStartingDate(List<EventStatus> events){
+    private List<EventStatus> sortByStartingDate(List<EventStatus> events) {
         return events.stream()
                 .sorted(Comparator.comparing(event -> Math.abs(ChronoUnit.DAYS.between(LocalDate.now(), event.getEventDTO().getStartDate()))))
                 .collect(Collectors.toList());
@@ -197,15 +202,35 @@ public class EventManagementLogic implements ILogicManager {
                 })
                 .toList();
     }
-    private List<Event> convertToEvent(List<EventStatus> events){
+
+    private List<Event> convertToEvent(List<EventStatus> events) {
         return events.stream().map(EventStatus::getEventDTO).toList();
     }
 
-    /**delete an event from the database
-     * @param eventId the id of the event*/
+    /**
+     * delete an event from the database
+     *
+     * @param eventId the id of the event
+     */
     @Override
     public boolean deleteEvent(int eventId) throws EventException {
         return eventData.deleteEvent(eventId);
+    }
+
+    public LocalTime convertStringToLocalTime(String value) {
+        if (value != null && !value.isEmpty()) {
+            return LocalTime.parse(value, timeFormatter);
+        } else {
+            return null;
+        }
+    }
+
+    public LocalDate convertStringToLocalDate(String value) {
+        if (value != null && !value.isEmpty()) {
+            return LocalDate.parse(value, dateFormatter);
+        } else {
+            return null;
+        }
     }
 
 }

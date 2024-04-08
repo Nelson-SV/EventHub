@@ -31,7 +31,7 @@
 
 
 .invalidInput:error{
-    -fx-background-color: #E1EBF2;
+    -fx-background-color: #F8F0E5;
     -fx-background-radius: 5;
     -fx-border-radius: 5;
     -fx-text-fill: #5585b5;
