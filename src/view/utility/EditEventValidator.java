@@ -183,10 +183,11 @@ public class EditEventValidator {
      */
     public static void addTimeValidityChecker(MFXComboBox<LocalTime> time) {
         time.textProperty().addListener(((observable, oldValue, newValue) -> {
-            System.out.println(newValue +"new value");
             if (!newValue.isEmpty()) {
                 PauseTransition pauseTransition = new PauseTransition(Duration.millis(100));
                 pauseTransition.setOnFinished((e) -> {
+
+
                   time.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, !newValue.matches("^([01]?[0-9]|2[0-3]):[0-5][0-9]$"));
                 });
                 pauseTransition.playFromStart();
