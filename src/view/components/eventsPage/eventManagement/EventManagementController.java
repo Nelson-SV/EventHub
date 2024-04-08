@@ -1,4 +1,5 @@
 package view.components.eventsPage.eventManagement;
+
 import be.EventInvalidResponse;
 import be.User;
 import exceptions.ErrorCode;
@@ -30,6 +31,7 @@ import view.components.loadingComponent.LoadingComponent;
 import view.components.main.Model;
 import view.utility.CommonMethods;
 import view.utility.EditEventValidator;
+
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
@@ -160,9 +162,9 @@ public class EventManagementController extends GridPane implements Initializable
         //bind event end date with view
         bindSelectedEventWithDatesTextValues(endDate, model.getSelectedEvent().endDateProperty());
         //set start time in  view
-        startTime.setText(model.getSelectedEvent().getStartTime()!=null?(model.getSelectedEvent().getStartTime().toString()):"");
+        startTime.setText(model.getSelectedEvent().getStartTime() != null ? (model.getSelectedEvent().getStartTime().toString()) : "");
         //set end time with view
-        endTime.setText(model.getSelectedEvent().getEndTime()!=null?model.getSelectedEvent().getEndTime().toString():"");
+        endTime.setText(model.getSelectedEvent().getEndTime() != null ? model.getSelectedEvent().getEndTime().toString() : "");
         //bind event name with view
         eventName.textProperty().bindBidirectional(model.getSelectedEvent().nameProperty());
         //bind start date with view
@@ -175,8 +177,10 @@ public class EventManagementController extends GridPane implements Initializable
         eventLocation.textProperty().bindBidirectional(model.getSelectedEvent().locationProperty());
     }
 
-    /**bind the selected event with the text propriety of the datepicker */
-    private void bindSelectedEventWithDatesTextValues(MFXDatePicker date, SimpleObjectProperty<LocalDate> eventDate){
+    /**
+     * bind the selected event with the text propriety of the datepicker
+     */
+    private void bindSelectedEventWithDatesTextValues(MFXDatePicker date, SimpleObjectProperty<LocalDate> eventDate) {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
         StringConverter<LocalDate> converter = new StringConverter<LocalDate>() {
@@ -188,6 +192,7 @@ public class EventManagementController extends GridPane implements Initializable
                     return "";
                 }
             }
+
             @Override
             public LocalDate fromString(String string) {
                 try {
@@ -197,7 +202,7 @@ public class EventManagementController extends GridPane implements Initializable
                 }
             }
         };
-        date.textProperty().bindBidirectional(eventDate,converter);
+        date.textProperty().bindBidirectional(eventDate, converter);
     }
 
     /**
@@ -218,58 +223,57 @@ public class EventManagementController extends GridPane implements Initializable
     }
 
     private void saveOperation() {
-        boolean isEventValid = EditEventValidator.isEventValidTimeAsString(eventName, startDate, startTime, endDate, endTime, eventLocation);
-        System.out.println(isEventValid + " from controller");
+        boolean areInputsValid = EditEventValidator.isEventValidTimeAsString(eventName, startDate, startTime, endDate, endTime, eventLocation);
+        System.out.println(areInputsValid + " from controller");
         convertInputAndSet(startTime, endTime);
         System.out.println(model.getSelectedEvent());
-        System.out.println(isEventValid);
-        System.out.println(model.isEditValid()+ "");
-        boolean areDatesValid = model.isEditValid();
+        System.out.println(areInputsValid);
+        System.out.println(model.isEditValid() + "");
 
-        if(!areDatesValid){
-          initializeInvalidInputError(model.getEventEditResponse(),invalidInput);
-        }else{
-            model.setEventEditResponse(null);
-            invalidInput.setVisible(false);
-            invalidInput.setText(null);
+
+        boolean areDatesValid = model.isEditValid();
+        if (areInputsValid) {
+            if (!areDatesValid) {
+                initializeInvalidInputError(model.getEventEditResponse(), invalidInput);
+            } else {
+                EditEventValidator.hideErrorField(invalidInput);
+                //   initializeLoadingView();
+                // initializeService();
+            }
         }
 
-
-
-
-
-        //        if (isEventValidText) {
-//            if (model.isEditValid()) {
-//                initializeLoadingView();
-//                initializeService();
-//            }
-//        }
     }
 
 
-
-    /**set the error window to display the error message*/
-    private void initializeInvalidInputError(EventInvalidResponse invalidResponse,TextArea inputError){
+    /**
+     * set the error window to display the error message
+     */
+    private void initializeInvalidInputError(EventInvalidResponse invalidResponse, TextArea inputError) {
         StringBuilder errorMessageBuilder = new StringBuilder();
-            if(invalidResponse.getStartDateInvalid()!=null){
-                EditEventValidator.changePseudoClassValue(startDate);
-                errorMessageBuilder.append(invalidResponse.getStartDateInvalid()).append("\n");
-            }
-            if(invalidResponse.getStartTimeInvalid()!=null){
-                EditEventValidator.changePseudoClassValue(startTime);
-                errorMessageBuilder.append(invalidResponse.getStartTimeInvalid()).append("\n");
-            }
-            if(invalidResponse.getEndDateInvalid()!=null){
-                EditEventValidator.changePseudoClassValue(endDate);
-                errorMessageBuilder.append(invalidResponse.getEndDateInvalid()).append("\n");
-            }
-            if(invalidResponse.getEndTimeInvalid()!=null){
-                EditEventValidator.changePseudoClassValue(endTime);
-                errorMessageBuilder.append(invalidResponse.getEndTimeInvalid()).append("\n");
-            }
-            invalidInput.setText(errorMessageBuilder.toString());
-            invalidInput.setVisible(true);
-            EditEventValidator.changePseudoClassValue(invalidInput);
+        if (invalidResponse.getStartDateInvalid() != null) {
+            EditEventValidator.changePseudoClassValue(startDate);
+            errorMessageBuilder.append(invalidResponse.getStartDateInvalid()).append("\n");
+        }
+        if (invalidResponse.getStartTimeInvalid() != null) {
+            EditEventValidator.changePseudoClassValue(startTime);
+            errorMessageBuilder.append(invalidResponse.getStartTimeInvalid()).append("\n");
+        }
+        if (invalidResponse.getEndDateInvalid() != null) {
+            EditEventValidator.changePseudoClassValue(endDate);
+            errorMessageBuilder.append(invalidResponse.getEndDateInvalid()).append("\n");
+        }
+        if (invalidResponse.getEndTimeInvalid() != null) {
+            EditEventValidator.changePseudoClassValue(endTime);
+            errorMessageBuilder.append(invalidResponse.getEndTimeInvalid()).append("\n");
+        }
+        invalidInput.setText(errorMessageBuilder.toString());
+        invalidInput.setVisible(true);
+        EditEventValidator.changePseudoClassValue(invalidInput);
+        PauseTransition pauseTransition = new PauseTransition(Duration.seconds(5));
+        pauseTransition.setOnFinished((event)->{
+            EditEventValidator.hideErrorField(inputError);
+        });
+        pauseTransition.playFromStart();
     }
 
 

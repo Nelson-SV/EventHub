@@ -37,5 +37,7 @@ public interface ILogicManager {
 
     boolean areDatesModified(Event editedEvent, Event originalEvent);
 
+    EventInvalidResponse areEditedDatesValid(Event editedEvent,Event originalEvent);
+
 
 }

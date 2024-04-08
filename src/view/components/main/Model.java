@@ -50,9 +50,6 @@ public class Model implements CommonModel {
     private ObservableMap<Integer, User> allEventCoordinators;
     private HashMap<Integer, List<Integer>> assignedoordinators;
 
-
-    //TODO not sure if we will need it , not use @Grosu
-    private ObservableMap<Integer, EventStatus> coordinatorEventsWithStatus;
     private EventManager eventManager;
     private ILogicManager evmLogic;
     private TicketManager ticketManager;
@@ -81,7 +78,6 @@ public class Model implements CommonModel {
         ticketManager = new TicketManager();
         coordinatorEvents = FXCollections.observableHashMap();
         allEvents = FXCollections.observableHashMap();
-        coordinatorEventsWithStatus = FXCollections.observableHashMap();
         eventTickets = FXCollections.observableHashMap();
         evmLogic = new EventManagementLogic();
         addedTickets = new ArrayList<>();
@@ -130,32 +126,6 @@ public class Model implements CommonModel {
     public void initializeEventsMap() throws EventException {
         coordinatorEvents = evmLogic.getEvents();
     }
-
-
-    //TODO change from using events to events with status , after discussing with the team
-    // do not use for now @Grosu
-
-    /**
-     * initialize the events with status map
-     */
-    private void initializeEventsWithStatusMap(Map<Integer, Event> coordinatorEvents) {
-        coordinatorEventsWithStatus = evmLogic.getEventsWithStatus(coordinatorEvents);
-    }
-
-
-//Todo needs to be deleted if not used anymore Grosu
-
-//    /**
-//     * listener for changes in the  events list, calls the EventDisplayer method to display the events
-//     */
-//    private void addUpdateEventListener() {
-//        this.coordinatorEvents.addListener((MapChangeListener<? super Integer, ? super Event>) change -> {
-//            if (change.wasAdded() || change.wasRemoved()) {
-//                eventsDisplayer.displayEvents();
-//            }
-//        });
-//    }
-
 
     /**
      * Sets the Event Displayer responsible for displaying the events
@@ -212,31 +182,34 @@ public class Model implements CommonModel {
 
 
     public boolean isEditValid() {
+
+        Event originalEvent = allEvents.get(selectedEvent.getId());
         if (selectedEvent.equals(allEvents.get(selectedEvent.getId()))) {
             return true;
         }
-        boolean areDatesModified = evmLogic.areDatesModified(selectedEvent,allEvents.get(selectedEvent.getId()));
-
-        if(areDatesModified){
-            EventInvalidResponse eventInvalidResponse = evmLogic.isInputValidTest(selectedEvent);
+        boolean areDatesModified = evmLogic.areDatesModified(selectedEvent, allEvents.get(selectedEvent.getId()));
+        if (areDatesModified) {
+            EventInvalidResponse eventInvalidResponse = evmLogic.areEditedDatesValid(selectedEvent, originalEvent);
             if (eventInvalidResponse == null) {
                 return true;
             } else {
                 this.eventEditResponse = eventInvalidResponse;
                 return false;
             }
-        }else{
-         //save edit without checks
-         return true;
         }
+        return true;
     }
 
-    /**retrieves the response off edit event validation operation*/
+    /**
+     * retrieves the response off edit event validation operation
+     */
     public EventInvalidResponse getEventEditResponse() {
         return eventEditResponse;
     }
 
-    /**sets the response off edit event validation operation*/
+    /**
+     * sets the response off edit event validation operation
+     */
     public void setEventEditResponse(EventInvalidResponse eventEditResponse) {
         this.eventEditResponse = eventEditResponse;
     }
@@ -303,6 +276,7 @@ public class Model implements CommonModel {
      */
     public void saveEditEventOperation(List<User> assignedCoordinators) throws EventException {
         HashMap<Integer, List<Integer>> assignedCoordinatorsMap = new HashMap<>();
+
         assignedCoordinatorsMap.put(selectedEvent.getId(), assignedCoordinators.stream().map(User::getUserId).collect(Collectors.toList()));
         boolean isModified = evmLogic.isModifyed(assignedCoordinatorsMap, selectedEvent, coordinatorEvents.get(selectedEvent.getId()));
         if (!isModified) {
@@ -311,6 +285,7 @@ public class Model implements CommonModel {
         boolean editSucceded = evmLogic.saveEditOperation(selectedEvent, assignedCoordinatorsMap);
         if (editSucceded) {
             coordinatorEvents.put(selectedEvent.getId(), selectedEvent);
+            eventEditResponse = null;
         }
     }
 

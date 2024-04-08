@@ -1,4 +1,5 @@
 package bll;
+
 import be.*;
 import dal.EventDAO;
 import dal.UsersDAO;
@@ -6,6 +7,8 @@ import exceptions.EventException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableMap;
 import javafx.concurrent.Task;
+import view.utility.EditEventValidator;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -53,6 +56,10 @@ public class EventManagementLogic implements ILogicManager {
         return !assignedCoordinators.get(selectedEvent.getId()).isEmpty() || !selectedEvent.equals(original);
     }
 
+    /**
+     * check if the edited inputs are valid
+     */
+
     public EventInvalidResponse isInputValidTest(Event selectedEvent) {
         EventInvalidResponse eventInvalid = new EventInvalidResponse();
         boolean areInputsValid = true;
@@ -87,16 +94,19 @@ public class EventManagementLogic implements ILogicManager {
         return eventInvalid;
     }
 
+
+    /**
+     * checks if the start date is valid compared with the local Date
+     */
     private boolean isStartDateValid(LocalDate startDate) {
         return startDate != null && !startDate.isBefore(LocalDate.now());
     }
 
-
-
     private boolean isEndDateValid(LocalDate startDate, LocalDate endDate) {
         return !startDate.isAfter(endDate);
     }
-    private boolean  isStartTimeValid(LocalTime startTime,LocalTime endTime){
+
+    private boolean isStartTimeValid(LocalTime startTime, LocalTime endTime) {
         return startTime.isBefore(endTime);
     }
 
@@ -119,7 +129,6 @@ public class EventManagementLogic implements ILogicManager {
         return eventData.saveEditOperation(selectedEvent, assignedCoordinators);
     }
 
-
     /**
      * compute the status off the current based on the start date, time, end date, time
      *
@@ -127,9 +136,7 @@ public class EventManagementLogic implements ILogicManager {
      */
     public Status computeEventStatus(EventStatus event) {
         return EventStatusCalculator.calculateStatus(event);
-
     }
-
 
     /**
      * To not be used, not sure if we need it
@@ -238,4 +245,44 @@ public class EventManagementLogic implements ILogicManager {
         return false;
     }
 
+    /**
+     * return true is event is null
+     */
+    private boolean isEndDateNull(LocalDate endDate) {
+        return endDate == null;
+    }
+
+
+    public EventInvalidResponse areEditedDatesValid(Event editedEvent, Event originalEvent) {
+        boolean isEditValid = true;
+        EventInvalidResponse eventInvalid = new EventInvalidResponse();
+
+        if (!Objects.equals(editedEvent.getStartDate(), originalEvent.getStartDate())) {
+            if(!isStartDateValidCompleteCheck(editedEvent.getStartDate(),originalEvent.getEndDate())){
+              isEditValid=false;
+                eventInvalid.setStartDateInvalid(editedEvent.getStartDate().toString() + ": Start date is not valid!");
+
+            }
+        }
+
+
+        System.out.println(isEditValid + " from event Management");
+        if (isEditValid) {
+            return null;
+        }
+        return eventInvalid;
+    }
+
+
+
+/**check if start date is valid, before current date or after the end date  */
+    private boolean isStartDateValidCompleteCheck(LocalDate startDate, LocalDate endDate) {
+        if (!isStartDateValid(startDate)) {
+            return false;
+        }
+        if (!isEndDateNull(endDate)) {
+            return isEndDateValid(startDate, endDate);
+        }
+        return true;
+    }
 }

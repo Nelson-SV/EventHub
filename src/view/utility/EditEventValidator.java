@@ -444,4 +444,9 @@ public class EditEventValidator {
     public static void changePseudoClassValue(Node node){
         node.pseudoClassStateChanged(ERROR_PSEUDO_CLASS,true);
     }
+
+    public static  void hideErrorField(TextArea errorField) {
+        errorField.setVisible(false);
+        errorField.setText(null);
+    }
 }
