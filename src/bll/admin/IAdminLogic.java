@@ -42,4 +42,5 @@ public interface IAdminLogic {
     List<User> sortedUsersByLastName(Collection<User> values);
 
     User editUserOperation(User selectedUserToEdit, File uploadedImage,User unEditedUser) throws EventException;
+    boolean deleteUserFromSystem(int userId)throws EventException;
 }

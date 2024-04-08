@@ -97,7 +97,7 @@ public class DeleteButtonController implements OperationHandler, Initializable {
             pauseTransition.setOnFinished((ev) -> {
                 CommonMethods.closeWindow(thirdLayout);
                 CommonMethods.closeWindow(secondaryLayout);
-                Platform.runLater(() -> model.getEventsDisplayer().displayEvents());
+
             });
             pauseTransition.play();
         });

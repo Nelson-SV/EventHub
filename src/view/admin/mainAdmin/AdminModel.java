@@ -217,6 +217,18 @@ public class AdminModel implements CommonModel, SortCommander, SortObserver {
         }
     }
 
+    private void deleteUserPermanent(int entityId) throws EventException {
+        boolean deletionPerformed = adminLogic.deleteUserFromSystem(entityId);
+        if (deletionPerformed) {
+            this.usersInTheSystem.remove(entityId);
+            sortDisplayedUsersByLastName();
+            this.displayedUsers = sortedUsersByLastName;
+            Platform.runLater(() -> {
+                getUsersDisplayer().displayUsers();
+            });
+        }
+    }
+
     /**
      * decrease the number off the coordinators in order to reflect the remove operation in the event view
      */
@@ -245,9 +257,6 @@ public class AdminModel implements CommonModel, SortCommander, SortObserver {
         }
     }
 
-    private void deleteUserPermanent(int entityId) {
-        System.out.println("deleted");
-    }
 
     @Override
     public Event getEventById(int eventId) {
@@ -436,13 +445,17 @@ public class AdminModel implements CommonModel, SortCommander, SortObserver {
             updateUsersMapSortedListDisplayedUsers(editedUser);
         }
     }
-/**updates the users map with the latest user updates
- * sort the list in alphabetically order and updates the displayed users
- * @param user the newly created or updated user */
+
+    /**
+     * updates the users map with the latest user updates
+     * sort the list in alphabetically order and updates the displayed users
+     *
+     * @param user the newly created or updated user
+     */
     private void updateUsersMapSortedListDisplayedUsers(User user) {
         this.usersInTheSystem.put(user.getUserId(), user);
         sortDisplayedUsersByLastName();
-        this.displayedUsers=sortedUsersByLastName;
+        this.displayedUsers = sortedUsersByLastName;
         this.uploadedImage = null;
     }
 

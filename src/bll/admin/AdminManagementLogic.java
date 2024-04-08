@@ -195,4 +195,8 @@ public class AdminManagementLogic implements IAdminLogic {
         }
         return usersDAO.editUserOperation(selectedUserToEdit,uploadedImage);
     }
+
+    public boolean deleteUserFromSystem(int userId) throws EventException {
+        return usersDAO.deleteUserFromTheSystem(userId);
+    }
 }
