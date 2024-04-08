@@ -8,7 +8,6 @@ import exceptions.ExceptionHandler;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXDatePicker;
-import io.github.palexdev.materialfx.controls.MFXScrollPane;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleObjectProperty;
@@ -29,14 +28,15 @@ import javafx.util.Duration;
 import javafx.util.StringConverter;
 import org.controlsfx.control.CheckComboBox;
 import view.components.deleteEvent.DeleteButton;
-import view.components.eventsPage.eventDescription.EventComponent;
 import view.components.eventsPage.eventManagement.ticketManagement.TicketDescriptionComponent;
 import view.components.eventsPage.manageButton.ManageAction;
 import view.components.listeners.CoordinatorsDisplayer;
 import view.components.loadingComponent.LoadingActions;
 import view.components.loadingComponent.LoadingComponent;
 import view.components.main.Model;
-import view.components.ticketsGeneration.ticketDesign.TicketsDesignController;
+import view.components.regularTickets.deleteTicket.DeleteTicket;
+import view.components.regularTickets.ticketDesign.TicketsDesignController;
+import view.components.regularTickets.ticketManagement.ManageTicket;
 import view.utility.CommonMethods;
 import view.utility.EditEventValidator;
 
@@ -243,7 +243,11 @@ public class EventManagementController extends GridPane implements Initializable
                 model.getTicketsForEvent(model.getSelectedEvent().getId()).values()
                         .forEach(t ->
                                 {
-                                    TicketDescriptionComponent ticketDescriptionComponent = new TicketDescriptionComponent(t);
+                                    System.out.println("EventsManagement SL: " + secondaryLayout);
+                                    System.out.println("EventsManagement TL: " + thirdLayout);
+                                    ManageTicket manage = new ManageTicket(secondaryLayout,thirdLayout,model, this);
+                                    DeleteTicket delete = new DeleteTicket(secondaryLayout,thirdLayout,model, DeleteOperation.DELETE_TICKET);
+                                    TicketDescriptionComponent ticketDescriptionComponent = new TicketDescriptionComponent(t, manage, delete);
                                     ticketsVBox.getChildren().add(ticketDescriptionComponent);
                                 }
                         );
@@ -256,6 +260,8 @@ public class EventManagementController extends GridPane implements Initializable
     @FXML
     private void addNewTicket() {
         showThirdLayout();
+        System.out.println("EventsManagement OTHER SL: " + secondaryLayout);
+        System.out.println("EventsManagement OTHER TL: " + thirdLayout);
         TicketsDesignController ticketsDesignController = new TicketsDesignController(secondaryLayout, thirdLayout, this, model);
         this.thirdLayout.getChildren().add(ticketsDesignController.getRoot());
     }
@@ -264,6 +270,10 @@ public class EventManagementController extends GridPane implements Initializable
         this.thirdLayout.getChildren().clear();
         this.thirdLayout.setDisable(false);
         this.thirdLayout.setVisible(true);
+    }
+
+    public VBox getTicketsVBox(){
+        return ticketsVBox;
     }
 
 
