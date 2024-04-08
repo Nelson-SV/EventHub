@@ -2,6 +2,7 @@ package view.components.eventsPage.manageButton;
 import exceptions.ErrorCode;
 import exceptions.ExceptionHandler;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import view.components.main.Model;
@@ -15,6 +16,7 @@ public class ManageAction extends VBox {
         loader.setController(new ManageController(editWindow,thirdLayout,model,eventId));
         try {
             manageControl= loader.load();
+            this.setAlignment(Pos.CENTER);
             this.getChildren().add(manageControl);
         } catch (IOException e) {
             ExceptionHandler.errorAlertMessage(ErrorCode.LOADING_FXML_FAILED.getValue());

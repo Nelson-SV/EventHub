@@ -97,8 +97,8 @@ public class CreateEventController {
     private void addDatesValidityChecker() {
         EditEventValidator.addTimeTextEmptyChecker(startTime);
         EditEventValidator.addDateTextEmptyChecker(startDate);
-        EditEventValidator.addTimeValidityChecker(endTime);
-        EditEventValidator.addDateValidityChecker(endDate);
+        EditEventValidator.addEndTimeValidityChecker(endTime);
+        EditEventValidator.addEndDateTextValidityChecker(endDate);
     }
 
     /**

@@ -123,7 +123,7 @@ public class AdminManagementLogic implements IAdminLogic {
 
     @Override
     public List<EventStatus> getSearchedEvents(String eventName, List<EventStatus> events) {
-        return events.stream().filter(e -> e.getEventDTO().getName().toLowerCase().contains(eventName)).toList();
+        return events.stream().filter(e -> e.getEventDTO().getName().toLowerCase().contains(eventName.toLowerCase())).toList();
     }
 
     private List<EventStatus> sortOngoing(Collection<EventStatus> events) {

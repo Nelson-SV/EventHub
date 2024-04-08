@@ -41,7 +41,7 @@ public class ManageController implements Initializable {
         this.editWindow.setVisible(true);
         this.editWindow.setDisable(false);
         model.setSelectedEvent(this.eventId);
-        EventManagementController manageEventController = new EventManagementController(editWindow,thirdLayout);
+        EventManagementController manageEventController = new EventManagementController(model,editWindow,thirdLayout);
         manageEventController.setAlignment(Pos.CENTER);
         model.setCoordinatorsDisplayer(manageEventController);
         editWindow.getChildren().clear();

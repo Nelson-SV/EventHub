@@ -4,6 +4,7 @@ import exceptions.ErrorCode;
 import exceptions.ExceptionHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import view.components.main.CommonModel;
@@ -20,6 +21,7 @@ public class DeleteButton extends VBox {
         loader.setController(deleteButtonController);
         try {
             this.deleteOperation = loader.load();
+            this.setAlignment(Pos.CENTER);
             this.getChildren().add(this.deleteOperation);
         } catch (IOException e) {
             ExceptionHandler.errorAlertMessage(ErrorCode.LOADING_FXML_FAILED.getValue());
