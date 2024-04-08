@@ -6,24 +6,21 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
-import view.admin.mainAdmin.AdminController;
 import view.components.listeners.InitializationErrorListener;
-import view.components.main.MainController;
 
 import java.io.IOException;
 import java.util.Scanner;
 
-
 public class Main extends Application {
-    public void start(Stage primaryStage) throws Exception{
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/LogIn/LogInView.fxml"));
-        Parent root = loader.load();
-        primaryStage.setTitle("LogIn");
-        primaryStage.setScene(new Scene(root));
-        primaryStage.show();
-    }
+  //  public void start(Stage primaryStage) throws Exception{
+//        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/LogIn/LogInView.fxml"));
+//        Parent root = loader.load();
+//        primaryStage.setTitle("LogIn");
+//        primaryStage.setScene(new Scene(root));
+//        primaryStage.show();
+//    }
 
-   /* public void start(Stage primaryStage) throws Exception {
+   public void start(Stage primaryStage) throws Exception {
         String userRole = getUserRole();
         switch (userRole){
             case "admin": loadAdminPage(primaryStage);
@@ -62,7 +59,7 @@ public class Main extends Application {
             Parent root = loader.load();
             InitializationErrorListener errorListener = loader.getController();
             if(errorListener.isInitializationError()){
-                showError(window,ErrorCode.OPERATION_DB_FAILED.getValue());
+                showError(window, ErrorCode.OPERATION_DB_FAILED.getValue());
             }else{
                 window.setTitle(title);
                 window.setScene(new Scene(root));
@@ -79,5 +76,5 @@ public class Main extends Application {
         Alert alert = new Alert(Alert.AlertType.ERROR, errorMessage);
         alert.show();
         stage.close();
-    }*/
+    }
 }
