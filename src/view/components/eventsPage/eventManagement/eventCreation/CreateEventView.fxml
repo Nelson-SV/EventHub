@@ -54,25 +54,25 @@
                         <VBox prefHeight="50.0" prefWidth="100.0">
                            <children>
                               <Label text="Start date  *" />
-                              <MFXDatePicker fx:id="startDate"  minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="120.0" styleClass="startDate" />
+                              <MFXDatePicker fx:id="startDate" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="120.0" styleClass="startDate" />
                            </children>
                         </VBox>
                         <VBox prefHeight="200.0" prefWidth="100.0">
                            <children>
                               <Label text="Start  time  *" />
-                              <MFXComboBox fx:id="startTime" styleClass="startTime" allowEdit="true" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="120.0" />
+                              <MFXComboBox fx:id="startTime" allowEdit="true" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="120.0" styleClass="startTime" />
                            </children>
                         </VBox>
                         <VBox prefHeight="200.0" prefWidth="100.0">
                            <children>
                               <Label text="End date  " />
-                              <MFXDatePicker fx:id="endDate" styleClass="endDate" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="129.0" />
+                              <MFXDatePicker fx:id="endDate" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="129.0" styleClass="endDate" />
                            </children>
                         </VBox>
                         <VBox prefHeight="200.0" prefWidth="100.0">
                            <children>
                               <Label text="End time" />
-                              <MFXComboBox fx:id="endTime" styleClass="endTime" allowEdit="true" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="120.0" />
+                              <MFXComboBox fx:id="endTime" allowEdit="true" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="120.0" styleClass="endTime" />
                            </children>
                         </VBox>
                      </children>
@@ -92,7 +92,7 @@
                         <VBox prefHeight="76.0" prefWidth="455.0">
                            <children>
                               <Label text="Location  *" />
-                              <TextArea fx:id="eventLocation"  styleClass="eventLocation" prefHeight="91.0" prefWidth="113.0" />
+                              <TextArea fx:id="eventLocation" prefHeight="91.0" prefWidth="113.0" styleClass="eventLocation" />
                            </children>
                         </VBox>
                      </children>
@@ -119,8 +119,8 @@
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="30.0">
                <children>
                   <TextArea fx:id="invalidInput" disable="true" editable="false" prefHeight="40.0" prefWidth="395.0" styleClass="invalidInput" visible="false" wrapText="true" />
-                  <Button mnemonicParsing="false" onAction="#cancel" prefHeight="25.0" prefWidth="119.0" style="-fx-background-radius: 20; -fx-background-color: #5585b5;" text="Cancel" textFill="WHITE" />
-                  <Button mnemonicParsing="false" onAction="#saveEvent" prefHeight="25.0" prefWidth="130.0" style="-fx-background-radius: 20; -fx-background-color: #42b883;" text="Save Event" textFill="#fff8f8" />
+                  <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#cancel" prefHeight="25.0" prefWidth="119.0" style="-fx-background-radius: 20; -fx-background-color: #5585b5;" text="Cancel" textFill="WHITE" />
+                  <Button fx:id="saveButton" mnemonicParsing="false" onAction="#saveEvent" prefHeight="25.0" prefWidth="130.0" style="-fx-background-radius: 20; -fx-background-color: #42b883;" text="Save Event" textFill="#fff8f8" />
                </children>
                <VBox.margin>
                   <Insets left="150.0" right="150.0" />

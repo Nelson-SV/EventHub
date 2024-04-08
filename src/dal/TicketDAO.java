@@ -133,6 +133,7 @@ public class TicketDAO {
                 statement.setInt(2, customerID);
                 statement.addBatch();
                 }
+
             }
             statement.executeBatch();
         } catch (SQLException e) {

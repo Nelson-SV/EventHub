@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import io.github.palexdev.materialfx.controls.MFXPasswordField?>
+<?import io.github.palexdev.materialfx.controls.MFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane prefHeight="720.0" prefWidth="1280.0" styleClass="background-pane" stylesheets="@login.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.LogIn.LogInController">
+   <center>
+      <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="369.0" prefWidth="624.0" style="-fx-background-color: rgba(0, 0, 0, 0.85); -fx-background-radius: 20;" BorderPane.alignment="CENTER">
+         <children>
+            <GridPane alignment="CENTER" layoutX="133.0" layoutY="72.0" maxHeight="300.0" maxWidth="400.0" prefHeight="177.0" prefWidth="336.0">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints maxHeight="158.0" minHeight="0.0" prefHeight="87.66668701171875" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="158.0" minHeight="0.0" prefHeight="70.33331298828126" vgrow="SOMETIMES" />
+               </rowConstraints>
+               <children>
+                  <MFXPasswordField prefHeight="49.0" prefWidth="342.0" style="-fx-background-color: rgba(150, 160, 180, 0.7);" GridPane.rowIndex="1" />
+                  <MFXTextField prefHeight="49.0" prefWidth="341.0" style="-fx-background-color: rgba(150, 160, 180, 0.7);" />
+               </children>
+               <padding>
+                  <Insets top="20.0" />
+               </padding>
+            </GridPane>
+            <Label layoutX="133.0" layoutY="14.0" text="Sign In" textFill="#f2efef">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+               <padding>
+                  <Insets top="20.0" />
+               </padding>
+            </Label>
+            <MFXButton layoutX="218.0" layoutY="274.0" prefHeight="35.0" prefWidth="145.0" style="-fx-background-color: E5EDF8FF; -fx-background-radius: 10;" text="Sign In">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </MFXButton>
+         </children>
+         <BorderPane.margin>
+            <Insets bottom="120.0" />
+         </BorderPane.margin>
+      </AnchorPane>
+   </center>
+   <top>
+      <HBox prefHeight="100.0" prefWidth="200.0" spacing="20.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label text="EventHub" textFill="#102c57">
+               <font>
+                  <Font name="System Bold Italic" size="28.0" />
+               </font>
+               <padding>
+                  <Insets left="60.0" top="20.0" />
+               </padding>
+            </Label>
+            <ImageView fitHeight="70.0" fitWidth="65.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../resources/images/ticket.png" />
+               </image>
+               <HBox.margin>
+                  <Insets top="5.0" />
+               </HBox.margin>
+            </ImageView>
+         </children>
+      </HBox>
+   </top>
+</BorderPane>

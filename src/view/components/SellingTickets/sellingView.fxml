@@ -16,9 +16,9 @@
 
 <VBox fx:id="box" alignment="BASELINE_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1280.0" style="-fx-background-color: white;" stylesheets="@Selling.css" VBox.vgrow="ALWAYS" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <HBox alignment="CENTER" prefHeight="500.0" prefWidth="1020.0" style="-fx-background-color: E5EDF8FF; -fx-background-radius: 20;" VBox.vgrow="ALWAYS">
+      <HBox alignment="CENTER" maxHeight="570.0" prefHeight="500.0" prefWidth="1020.0" style="-fx-background-color: E5EDF8FF; -fx-background-radius: 20;" VBox.vgrow="ALWAYS">
          <VBox.margin>
-            <Insets left="150.0" right="150.0" top="100.0" />
+            <Insets left="150.0" right="150.0" top="90.0" />
          </VBox.margin>
          <children>
             <VBox prefHeight="454.0" prefWidth="579.0" spacing="25.0">
@@ -36,7 +36,7 @@
                         <VBox prefHeight="62.0" prefWidth="215.0">
                            <children>
                               <Label text="Name  *" />
-                              <TextField fx:id="name"  styleClass="name" alignment="TOP_LEFT" prefHeight="40.0" prefWidth="215.0" />
+                              <TextField fx:id="name" alignment="BOTTOM_LEFT" prefHeight="40.0" prefWidth="215.0" styleClass="name" />
                            </children>
                         </VBox>
                      </children>
@@ -46,7 +46,7 @@
                         <VBox prefHeight="100.0" prefWidth="216.0">
                            <children>
                               <Label text="LastName  *" />
-                              <TextField fx:id="lastName" styleClass="lastName" alignment="TOP_LEFT" prefHeight="40.0" prefWidth="216.0" />
+                              <TextField fx:id="lastName" alignment="BOTTOM_LEFT" prefHeight="40.0" prefWidth="216.0" styleClass="lastName" />
                            </children>
                         </VBox>
                      </children>
@@ -56,7 +56,7 @@
                         <VBox prefHeight="100.0" prefWidth="215.0">
                            <children>
                               <Label text="Email  *" />
-                              <TextField fx:id="email" styleClass="email" alignment="TOP_LEFT" prefHeight="40.0" prefWidth="215.0" />
+                              <TextField fx:id="email" alignment="BOTTOM_LEFT" prefHeight="40.0" prefWidth="215.0" styleClass="email" />
                            </children>
                         </VBox>
                      </children>
@@ -92,7 +92,7 @@
                         <VBox prefHeight="57.0" prefWidth="220.0">
                            <children>
                               <Label text="Event tickets" />
-                              <MFXComboBox fx:id="allEventTickets" styleClass="allEventTickets" alignment="TOP_LEFT" prefHeight="41.0" prefWidth="216.0" promptText="Select ticket"  />
+                              <MFXComboBox fx:id="allEventTickets" alignment="TOP_LEFT" prefHeight="41.0" prefWidth="216.0" promptText="Select ticket" styleClass="allEventTickets" />
                            </children>
                         </VBox>
                         <VBox prefHeight="57.0" prefWidth="67.0">
@@ -136,7 +136,7 @@
                         <VBox prefHeight="77.0" prefWidth="254.0">
                            <children>
                               <Label text="All tickets" />
-                              <ListView fx:id="allSelectedTickets" styleClass="allSelectedTickets" prefHeight="99.0" prefWidth="254.0" style="-fx-background-radius: 5;" />
+                              <ListView fx:id="allSelectedTickets" prefHeight="99.0" prefWidth="254.0" style="-fx-background-radius: 5;" styleClass="allSelectedTickets" />
                            </children>
                         </VBox>
                         <VBox prefHeight="79.0" prefWidth="100.0">
@@ -154,13 +154,17 @@
                         </VBox>
                      </children>
                   </HBox>
-                  <HBox prefHeight="100.0" prefWidth="200.0">
+                  <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                      <children>
-                        <VBox prefHeight="96.0" prefWidth="267.0">
+                        <VBox prefHeight="17.0" prefWidth="116.0">
                            <children>
                               <Label fx:id="totalPrice" />
                            </children>
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
                         </VBox>
+                        <Label fx:id="errorText" prefHeight="17.0" prefWidth="327.0" styleClass="errorText" />
                      </children>
                   </HBox>
                </children>
@@ -168,22 +172,22 @@
                   <Insets left="70.0" />
                </opaqueInsets>
                <padding>
-                  <Insets top="50.0" />
+                  <Insets bottom="20.0" top="50.0" />
                </padding>
             </VBox>
          </children>
       </HBox>
       <HBox alignment="CENTER" fillHeight="false" prefHeight="123.0" prefWidth="1020.0" spacing="40.0" VBox.vgrow="ALWAYS">
          <VBox.margin>
-            <Insets bottom="10.0" left="130.0" right="130.0" />
+            <Insets left="130.0" right="130.0" />
          </VBox.margin>
          <children>
             <MFXButton onAction="#cancel" prefHeight="42.0" prefWidth="142.0" rippleColor="#5585b5" style="-fx-border-color: #5585b5; -fx-background-color: transparent; -fx-border-radius: 7;" text="Cancel" />
-            <MFXButton onAction="#sell" prefHeight="38.0" prefWidth="161.0" rippleColor="#19573a" style="-fx-background-color: #42b883; -fx-background-radius: 10;" text="Sell/Print">
+            <MFXButton fx:id="save" onAction="#sell" prefHeight="38.0" prefWidth="161.0" rippleColor="#19573a" style="-fx-background-color: #42b883; -fx-background-radius: 10;" text="Sell/Print">
                <graphic>
                   <ImageView fitHeight="33.0" fitWidth="34.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../../../resourcesEvent/usersImages/print.png" />
+                        <Image url="@../../../resources/images/print.png" />
                      </image>
                   </ImageView>
                </graphic>

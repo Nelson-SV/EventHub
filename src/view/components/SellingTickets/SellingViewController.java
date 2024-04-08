@@ -37,6 +37,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.util.*;
+import java.util.logging.Handler;
 
 public class SellingViewController implements Initializable {
 
@@ -69,6 +70,9 @@ public class SellingViewController implements Initializable {
     private Service<Void> sellingService;
     private LoadingComponent loadingComponent;
     private StackPane secondaryLayout;
+    @FXML
+    private Label errorText;
+
     private static final PseudoClass ERROR_PSEUDO_CLASS = PseudoClass.getPseudoClass("error");
 
     public SellingViewController(VBox vbox, Model model, StackPane secondaryLayout) {
@@ -184,23 +188,37 @@ public class SellingViewController implements Initializable {
         if (selectedTicketInfo != null && !amountOfEventTickets.isEmpty()) {
             int selectedQuantity = Integer.parseInt(amountOfEventTickets); // Parse selected quantity
 
-            // Check if selected quantity does not exceed available inventory
-            if (selectedQuantity <= selectedTicketInfo.getQuantity()) {
-                BigDecimal ticketPrice = selectedTicketInfo.getTicketPrice();
+            if (!isTicketAlreadyAdded(selectedTicketInfo)) {
 
-                BigDecimal totalPrice = ticketPrice.multiply(BigDecimal.valueOf(selectedQuantity));
-                selectedTicketInfo.setTicketPrice(totalPrice);
-                selectedTicketInfo.setQuantity(selectedQuantity);
-                selectedTicketInfo.setSpecial(false); //since this is a normal ticket
-                allSelectedTickets.getItems().add(selectedTicketInfo);
+                // Check if selected quantity does not exceed available inventory
+                if (selectedQuantity <= selectedTicketInfo.getQuantity()) {
+                    BigDecimal ticketPrice = selectedTicketInfo.getTicketPrice();
 
-                allEventTickets.getSelectionModel().clearSelection();
-                eventTicketsAmount.clear();
+                    BigDecimal totalPrice = ticketPrice.multiply(BigDecimal.valueOf(selectedQuantity));
+                    selectedTicketInfo.setTicketPrice(totalPrice);
+                    selectedTicketInfo.setQuantity(selectedQuantity);
+                    selectedTicketInfo.setSpecial(false); //since this is a normal ticket
+                    allSelectedTickets.getItems().add(selectedTicketInfo);
+
+                    allEventTickets.getSelectionModel().clearSelection();
+                    eventTicketsAmount.clear();
+                } else {
+                    eventTicketsAmount.clear();
+                    eventTicketsAmount.setText("overMax");
+                    eventTicketsAmount.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, true);
+
+                }
+
             } else {
-                eventTicketsAmount.clear();
-                eventTicketsAmount.setText("overMax");
-                eventTicketsAmount.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, true);
-
+                Platform.runLater(() -> {
+                    errorText.setText("The ticket you are trying to add is already in your list");
+                });
+                // Schedule a task to clear the error message after 5 seconds
+                PauseTransition pauseTransition = new PauseTransition(Duration.seconds(5));
+                pauseTransition.setOnFinished(event -> {
+                    errorText.setText(""); // Clear the error message
+                });
+                pauseTransition.play();
             }
         } else {
             eventTicketsAmount.clear();
@@ -240,6 +258,17 @@ public class SellingViewController implements Initializable {
                     specialTicketsAmount.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, true);
                 }
             }
+            else {
+                Platform.runLater(() -> {
+                    errorText.setText("The ticket you are trying to add is already in your list");
+                });
+                // Schedule a task to clear the error message after 5 seconds
+                PauseTransition pauseTransition = new PauseTransition(Duration.seconds(5));
+                pauseTransition.setOnFinished(event -> {
+                    errorText.setText(""); // Clear the error message
+                });
+                pauseTransition.play();
+            }
 
         } else {
             specialTicketsAmount.clear();
@@ -277,43 +306,7 @@ public class SellingViewController implements Initializable {
     }
 
 
-   /* public void sell(ActionEvent actionEvent) throws EventException {
-        boolean isSellingValid = SellingValidator.isSellingValid(name, lastName, email, allSelectedTickets);
-        if(isSellingValid) {
-            String customerName = name.getText();
-            String customerLastName = lastName.getText();
-            String customerEmail = email.getText();
 
-            Customer customer = new Customer(customerName, customerLastName, customerEmail);
-            model.addCustomer(customer); // possibly return the id here
-
-            // get customer ID
-            int customerId = customer.getId();
-
-            //minus the quantity
-            //create sold ticket
-
-            for (Ticket item : allSelectedTickets.getItems()) {
-
-
-                boolean isSpecial = item.getSpecial();
-                if (isSpecial) {
-                    //call method for special ticket
-                    model.deductSpecialQuantity(item.getId(), item.getQuantity());
-                    model.insertSoldSpecialTicket(item.getId(), customerId);
-                } else {
-                    //call method for normal ticket
-                    model.deductTicketQuantity(item.getId(), item.getQuantity());
-                    model.insertSoldTicket(item.getId(), customerId);
-                }
-                // call ticket dao method
-
-
-            }
-        }
-
-
-    }*/
    public void sell() throws EventException {
        boolean isSellingValid = SellingValidator.isSellingValid(name, lastName, email, allSelectedTickets);
        if (isSellingValid) {

@@ -1,3 +1,4 @@
+
 package view.components.eventsPage.eventManagement.eventCreation;
 import be.Event;
 import be.Ticket;
@@ -54,7 +55,7 @@ public class CreateEventController {
     @FXML
     public void initialize() throws EventException {
 
-       startTime.setItems(FXCollections.observableArrayList(generateTimeOptions()));
+        startTime.setItems(FXCollections.observableArrayList(generateTimeOptions()));
         endTime.setItems(FXCollections.observableArrayList(generateTimeOptions()));
 
 
@@ -153,7 +154,7 @@ public class CreateEventController {
     }
 
     public void saveEvent(ActionEvent actionEvent){
-       /* if (isEventValid()) {*/
+        /* if (isEventValid()) {*/
         boolean isEventValid = EditEventValidator.isEventValid(eventName, startDate, startTime, endDate, endTime, eventLocation);
         if (isEventValid) {
             String name = eventName.getText();
@@ -169,7 +170,7 @@ public class CreateEventController {
                 closeWindow(actionEvent);
             } catch (EventException e) {
                 ExceptionHandler.errorAlertMessage(e.getErrorCode().getValue());
-           }
+            }
         }
     }
 
@@ -232,7 +233,3 @@ public class CreateEventController {
 
 
 }
-
-
-
-
