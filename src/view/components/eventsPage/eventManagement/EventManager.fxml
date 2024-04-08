@@ -117,7 +117,7 @@
                                 <Font name="System Bold" size="18.0" />
                             </font>
                         </Label>
-                        <Button alignment="CENTER" mnemonicParsing="false" prefWidth="80.0" style="-fx-border-color: #102C57; -fx-border-radius: 50; -fx-background-color: #E5EDF8; -fx-background-radius: 50; -fx-border-width: 2; -fx-text-fill: #102c57;" text="Add ticket" textFill="#5585b5">
+                        <Button alignment="CENTER" mnemonicParsing="false" onAction="#addNewTicket" prefWidth="80.0" style="-fx-border-color: #102C57; -fx-border-radius: 50; -fx-background-color: #E5EDF8; -fx-background-radius: 50; -fx-border-width: 2; -fx-text-fill: #102c57;" text="Add ticket" textFill="#5585b5">
                             <font>
                                 <Font name="System Bold" size="12.0" />
                             </font>

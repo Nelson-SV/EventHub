@@ -1,100 +1,112 @@
 package view.components.ticketsGeneration.ticketDesign;
 
 import be.Ticket;
+import com.google.gson.internal.bind.util.ISO8601Utils;
+import exceptions.ErrorCode;
+import exceptions.EventException;
+import exceptions.ExceptionHandler;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXScrollPane;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import view.components.eventsPage.eventManagement.EventManagementController;
 import view.components.eventsPage.eventManagement.eventCreation.CreateEventController;
+import view.components.eventsPage.eventManagement.ticketManagement.TicketDescriptionComponent;
+import view.components.main.Model;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.Optional;
+import java.util.ResourceBundle;
 
-public class TicketsDesignController extends FlowPane {
+public class TicketsDesignController implements Initializable {
 
-    public MFXButton addTicketBT;
-    public MFXComboBox ticketTypeCombo, ticketColorCombo;
-    public MFXTextField ticketPriceTF, ticketQuantity;
-    public MFXComboBox eventNameCombo;
-    public MFXTextField eventLocationTF, eventDateTF;
-    public MFXTextField line4TF, line5TF, line6TF;
-    public Label eventNameLB, eventDateLB, eventLocationLB, line4LB, line5LB, line6LB, custNameLB, custEmailLB, ticketTypeLB, ticketPriceLB;
-    public FlowPane ticketPane, ticketTypeFlowPane;
-    public MFXScrollPane scrollPane;
-    public HBox ticketHBox;
-
-    public CreateEventController createEventController;
-    private StackPane secondaryLayout, thirdLayout;
-
-    private Ticket ticket;
     @FXML
-    private ImageView qrCode, logoImg, barCode;
+    private MFXButton addTicketBT;
+    @FXML
+    private MFXComboBox ticketColorCombo;
+    @FXML
+    private MFXTextField ticketTypeTF, ticketPriceTF, ticketQuantity;
+    @FXML
+    private FlowPane flowPane;
+    @FXML
+    private VBox ticketDesignVBox;
+    @FXML
+    private HBox ticketHBox;
+    @FXML
+    private EventManagementController eventManagementController;
+    @FXML
+    private TicketComponentDescription ticketComponentDescription;
+    @FXML
+    private StackPane secondaryLayout, thirdLayout;
+    @FXML
+    private Model model;
+    @FXML
+    private Ticket ticket;
 
-    public TicketsDesignController() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("TicketsDesignComponent.fxml"));
+    public TicketsDesignController(StackPane secondaryLayout, StackPane thirdLayout, EventManagementController eventManagementController, Model model) {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("TicketsDesignWindow.fxml"));
         loader.setController(this);
-        try{
-            ticketPane = loader.load();
-            this.getChildren().add(ticketPane);
+        try {
+            flowPane=loader.load();
+            this.secondaryLayout=secondaryLayout;
+            this.thirdLayout = thirdLayout;
+            this.eventManagementController = eventManagementController;
+            this.model = model;
+            displayTicket();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            ExceptionHandler.errorAlertMessage(ErrorCode.LOADING_FXML_FAILED.getValue());
         }
     }
 
-    public ImageView getQrCode() {
-        return qrCode;
-    }
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        //ticketComponentDescription = new TicketComponentDescription(model.getSelectedEvent());
 
-    public void setQrCode(ImageView qrCode) {
-        this.qrCode = qrCode;
-    }
-
-    public ImageView getLogoImg() {
-        return logoImg;
-    }
-
-    public void setLogoImg(ImageView logoImg) {
-        this.logoImg = logoImg;
-    }
-
-    public ImageView getBarCode() {
-        return barCode;
-    }
-
-    public void setBarCode(ImageView barCode) {
-        this.barCode = barCode;
+        updateTicketInformation();
     }
 
     @FXML
-    private void initialize() {
-
-        /*
-        TicketsDesignController ticketsDesignController = new TicketsDesignController();
-        ticketHBox.getChildren().add(ticketsDesignController);
-
-        ticketsDesignController.getQrCode().setImage(new Image("/resources/images/Image 1.png"));
-        ticketsDesignController.getBarCode().setImage(new Image ("/resources/images/Image 2.png"));
-        ticketsDesignController.getLogoImg().setImage(new Image("/resources/images/Image 3.png"));
-
-         */
-
-
+    private void displayTicket() {
+        if(ticketHBox.getScene()==null){
+            ticketHBox.getChildren().clear();
+            ticketComponentDescription = new TicketComponentDescription(this, model);
+            ticketHBox.getChildren().add(ticketComponentDescription);
+        }
     }
 
-    /*
+    public void addTickets(){
 
+
+
+        closeWindow();
+    }
+
+    public void cancelAction(){
+
+        closeWindow();
+    }
+
+    public void updateTicketInformation() {
+        ticketTypeTF.textProperty().addListener((observable, oldValue, newValue) -> {
+            // Update the label with the new selected type
+            ticketComponentDescription.setNewTicketType(newValue);
+        });
+    }
+
+/*
     public void updateEventInformation(){
-            ObservableList<String> list = FXCollections.observableArrayList();
-            list.add("Event 1");
-            list.add("Event 2");
-            eventNameCombo.setItems(list);
-
             eventNameCombo.textProperty().addListener((observable, oldValue, newValue) -> {
                 // Update the label with the new selected Event
                 eventNameLB.setText(newValue);
@@ -159,34 +171,19 @@ public class TicketsDesignController extends FlowPane {
         });
     }
 
-    public void updateExtraLines(){
-        line4TF.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue.isEmpty()) {
-                line4LB.setText("Fourth Line");
-            } else {
-                // If the text field has text, update the label with the new text
-                line4LB.setText(newValue);
-            }
-        });
+ */
 
-        line5TF.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue.isEmpty()) {
-                line5LB.setText("Fifth Line");
-            } else {
-                // If the text field has text, update the label with the new text
-                line5LB.setText(newValue);
-            }
-        });
-
-        line6TF.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue.isEmpty()) {
-                line6LB.setText("Sixth Line");
-            } else {
-                // If the text field has text, update the label with the new text
-                line6LB.setText(newValue);
-            }
-        });
+    public FlowPane getRoot() {
+        return flowPane;
     }
 
-     */
+    public MFXTextField ticketPrice(){
+        return ticketPriceTF;
+    }
+
+    private void closeWindow() {
+        thirdLayout.getChildren().clear();
+        thirdLayout.setDisable(true);
+        thirdLayout.setVisible(false);
+    }
 }

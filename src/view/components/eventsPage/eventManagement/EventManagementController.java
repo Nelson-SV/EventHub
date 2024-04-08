@@ -36,6 +36,7 @@ import view.components.listeners.CoordinatorsDisplayer;
 import view.components.loadingComponent.LoadingActions;
 import view.components.loadingComponent.LoadingComponent;
 import view.components.main.Model;
+import view.components.ticketsGeneration.ticketDesign.TicketsDesignController;
 import view.utility.CommonMethods;
 import view.utility.EditEventValidator;
 
@@ -250,6 +251,19 @@ public class EventManagementController extends GridPane implements Initializable
                 throw new RuntimeException(e);
             }
         }
+    }
+
+    @FXML
+    private void addNewTicket() {
+        showThirdLayout();
+        TicketsDesignController ticketsDesignController = new TicketsDesignController(secondaryLayout, thirdLayout, this, model);
+        this.thirdLayout.getChildren().add(ticketsDesignController.getRoot());
+    }
+
+    private void showThirdLayout() {
+        this.thirdLayout.getChildren().clear();
+        this.thirdLayout.setDisable(false);
+        this.thirdLayout.setVisible(true);
     }
 
 

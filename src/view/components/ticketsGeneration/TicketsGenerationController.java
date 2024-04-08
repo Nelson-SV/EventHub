@@ -75,7 +75,7 @@ public class TicketsGenerationController {
 
     @FXML
     private void addTickets(ActionEvent actionEvent) throws EventException {
-        boolean isTicketValid = TicketValidator.isTicketValid(ticketTypeTF, ticketPriceTF, ticketQuantityTF );
+        boolean isTicketValid = TicketValidator.isTicketValid(ticketTypeTF, ticketPriceTF, ticketQuantityTF);
 
         if(isTicketValid) {
             Ticket ticket = new Ticket(ticketTypeTF.getText(), Integer.parseInt(ticketQuantityTF.getText()), new BigDecimal(ticketPriceTF.getText()));

@@ -20,44 +20,20 @@
          <children>
             <Label fx:id="eventNameLB" prefWidth="250.0" text="Event Name Line">
                <VBox.margin>
-                  <Insets left="15.0" top="10.0" />
-               </VBox.margin>
-               <font>
-                  <Font size="15.0" />
-               </font>
-            </Label>
-            <Label fx:id="eventDateLB" prefWidth="250.0" text="Event Date Line">
-               <VBox.margin>
-                  <Insets left="15.0" />
+                  <Insets bottom="10.0" left="15.0" top="10.0" />
                </VBox.margin>
                <font>
                   <Font size="14.0" />
                </font>
             </Label>
+            <Label fx:id="eventDateLB" prefWidth="250.0" text="Event Date Line">
+               <VBox.margin>
+                  <Insets bottom="10.0" left="15.0" />
+               </VBox.margin>
+            </Label>
             <Label fx:id="eventLocationLB" prefWidth="250.0" text="Event Location Line">
                <VBox.margin>
-                  <Insets bottom="20.0" left="15.0" />
-               </VBox.margin>
-            </Label>
-            <Label fx:id="line4LB" prefWidth="250.0" text="Fourth Line">
-               <VBox.margin>
-                  <Insets left="15.0" />
-               </VBox.margin>
-               <font>
-                  <Font size="12.0" />
-               </font>
-            </Label>
-            <Label fx:id="line5LB" prefWidth="250.0" text="Fifth Line">
-               <VBox.margin>
-                  <Insets bottom="5.0" left="15.0" />
-               </VBox.margin>
-               <font>
-                  <Font size="12.0" />
-               </font>
-            </Label>
-            <Label fx:id="line6LB" prefWidth="250.0" text="Sixth Line">
-               <VBox.margin>
-                  <Insets bottom="20.0" left="15.0" />
+                  <Insets bottom="70.0" left="15.0" />
                </VBox.margin>
                <font>
                   <Font size="12.0" />
@@ -65,10 +41,10 @@
             </Label>
             <Label fx:id="custNameLB" prefHeight="17.0" prefWidth="250.0" text="Customer Name">
                <VBox.margin>
-                  <Insets left="15.0" />
+                  <Insets bottom="5.0" left="15.0" />
                </VBox.margin>
                <font>
-                  <Font size="11.0" />
+                  <Font size="10.0" />
                </font>
             </Label>
             <Label fx:id="custEmailLB" prefWidth="250.0" text="Customer Email">
@@ -76,7 +52,7 @@
                   <Insets left="15.0" />
                </VBox.margin>
                <font>
-                  <Font size="11.0" />
+                  <Font size="10.0" />
                </font>
             </Label>
          </children>
@@ -85,7 +61,7 @@
          <children>
             <VBox prefHeight="100.0" prefWidth="63.0">
                <children>
-                  <HBox alignment="CENTER" prefHeight="50.0" prefWidth="63.0">
+                  <HBox alignment="CENTER" prefHeight="42.0" prefWidth="73.0">
                      <children>
                         <Label prefHeight="12.0" prefWidth="100.0" rotate="90.0" text="Ticket Price">
                            <font>
@@ -99,7 +75,7 @@
                         </Label>
                      </children>
                   </HBox>
-                  <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0">
+                  <HBox alignment="CENTER" prefHeight="58.0" prefWidth="73.0">
                      <children>
                         <Label fx:id="ticketPriceLB" rotate="90.0" text="dkk">
                            <font>

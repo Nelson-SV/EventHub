@@ -2,18 +2,17 @@
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
 <?import io.github.palexdev.materialfx.controls.MFXComboBox?>
-<?import io.github.palexdev.materialfx.controls.MFXScrollPane?>
 <?import io.github.palexdev.materialfx.controls.MFXTextField?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<!--        fx:controller="view.components.ticketsGeneration.TicketsGenerationControllerGenerationController"-->
 
-<MFXScrollPane fx:id="scrollPane" maxHeight="600.0" maxWidth="800.0" minHeight="600.0" minWidth="800.0" prefHeight="600.0" prefWidth="800.0" styleClass="scrollPane" stylesheets="../TicketsGeneration.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
-   <content>
-      <VBox maxHeight="718.0" maxWidth="898.0" minHeight="597.0" minWidth="598.0" prefHeight="597.0" prefWidth="797.0" styleClass="vHBoxGroup" stylesheets="@../TicketsGeneration.css">
+<FlowPane fx:id="flowPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="599.0" prefWidth="601.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <VBox fx:id="ticketDesignVBox" maxHeight="718.0" maxWidth="898.0" minHeight="597.0" minWidth="598.0" prefHeight="597.0" prefWidth="600.0" styleClass="vHBoxGroup" stylesheets="@../TicketsGeneration.css">
          <children>
             <HBox fx:id="ticketHBox" alignment="CENTER" prefHeight="243.0" prefWidth="782.0" styleClass="vHBoxGroup" stylesheets="@../TicketsGeneration.css">
                <padding>
@@ -22,33 +21,28 @@
             </HBox>
             <HBox prefHeight="20.0" prefWidth="858.0" style="-fx-background-color: brown;">
                <VBox.margin>
-                  <Insets left="20.0" right="20.0" />
-               </VBox.margin></HBox>
+                  <Insets left="40.0" right="40.0" />
+               </VBox.margin>
+            </HBox>
             <VBox prefHeight="240.0" prefWidth="898.0">
                <children>
-                  <HBox alignment="CENTER" prefHeight="120.0" prefWidth="898.0" spacing="10.0">
+                  <HBox alignment="CENTER" prefHeight="120.0" prefWidth="898.0" spacing="100.0">
                      <children>
-                        <MFXComboBox fx:id="ticketTypeCombo" allowEdit="true" floatMode="ABOVE" floatingText="Ticket Type" prefWidth="148.0" styleClass="comboGroup" />
+                        <MFXTextField fx:id="ticketTypeTF" floatMode="ABOVE" floatingText="Ticket Type" floatingTextGap="0.0" prefHeight="32.0" prefWidth="148.0" styleClass="textFieldGroup" />
                         <MFXComboBox fx:id="ticketColorCombo" allowEdit="true" floatMode="ABOVE" floatingText="Ticket Color" prefWidth="148.0" styleClass="comboGroup" />
-                        <MFXTextField fx:id="ticketPriceTF" floatMode="ABOVE" floatingText="Ticket Price" floatingTextGap="0.0" prefHeight="32.0" prefWidth="148.0" styleClass="textFieldGroup" />
-                        <MFXTextField fx:id="ticketQuantity" floatMode="ABOVE" floatingText="Quantity to Generate" floatingTextGap="0.0" layoutX="306.0" layoutY="10.0" prefHeight="32.0" prefWidth="148.0" styleClass="textFieldGroup" />
-                        <MFXComboBox fx:id="eventNameCombo" allowEdit="true" floatMode="ABOVE" floatingText="Event Name Line" prefWidth="123.0" styleClass="comboGroup" />
                      </children>
                      <padding>
                         <Insets top="30.0" />
                      </padding>
                   </HBox>
-                  <HBox alignment="CENTER" prefHeight="120.0" prefWidth="898.0" spacing="10.0">
-                     <children>
-                        <MFXTextField fx:id="eventDateTF" floatMode="ABOVE" floatingText="Event Date Line" floatingTextGap="0.0" prefHeight="32.0" prefWidth="148.0" styleClass="textFieldGroup" />
-                        <MFXTextField fx:id="eventLocationTF" floatMode="ABOVE" floatingText="Event Location Line" floatingTextGap="0.0" prefHeight="32.0" prefWidth="148.0" styleClass="textFieldGroup" />
-                        <MFXTextField fx:id="line4TF" floatMode="ABOVE" floatingText="Fourth Line" floatingTextGap="0.0" prefHeight="32.0" prefWidth="148.0" styleClass="textFieldGroup" />
-                        <MFXTextField fx:id="line5TF" floatMode="ABOVE" floatingText="Fifth Line" floatingTextGap="0.0" prefHeight="32.0" prefWidth="148.0" styleClass="textFieldGroup" />
-                        <MFXTextField fx:id="line6TF" floatMode="ABOVE" floatingText="Sixth Line" floatingTextGap="0.0" prefHeight="32.0" prefWidth="148.0" styleClass="textFieldGroup" />
-                     </children>
+                  <HBox alignment="CENTER" prefHeight="120.0" prefWidth="898.0" spacing="100.0">
                      <padding>
                         <Insets bottom="20.0" />
                      </padding>
+                     <children>
+                        <MFXTextField fx:id="ticketPriceTF" floatMode="ABOVE" floatingText="Price" floatingTextGap="0.0" prefHeight="32.0" prefWidth="148.0" styleClass="textFieldGroup" />
+                        <MFXTextField fx:id="ticketQuantity" floatMode="ABOVE" floatingText="Quantity" floatingTextGap="0.0" prefHeight="32.0" prefWidth="148.0" styleClass="textFieldGroup" />
+                     </children>
                   </HBox>
                </children>
             </VBox>
@@ -64,12 +58,13 @@
                         <MFXButton fx:id="cancelBtn" cancelButton="true" onAction="#cancelAction" prefHeight="30.0" prefWidth="100.0" styleClass="cancelBtn" stylesheets="@../TicketsGeneration.css" text="Cancel">
                            <font>
                               <Font name="System Bold" size="15.0" />
-                           </font></MFXButton>
+                           </font>
+                        </MFXButton>
                      </children>
                   </VBox>
                </children>
             </HBox>
          </children>
       </VBox>
-   </content>
-</MFXScrollPane>
+   </children>
+</FlowPane>
