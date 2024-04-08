@@ -1,8 +1,5 @@
 package bll;
-import be.Event;
-import be.EventStatus;
-import be.Status;
-import be.User;
+import be.*;
 import dal.EventDAO;
 import dal.UsersDAO;
 import exceptions.EventException;
@@ -114,8 +111,8 @@ public class EventManagementLogic implements ILogicManager {
      * @param assignedCoordinators the coordinates assigned to this event
      */
     @Override
-    public boolean saveEditOperation(Event selectedEvent, Map<Integer, List<Integer>> assignedCoordinators) throws EventException {
-        return eventData.saveEditOperation(selectedEvent, assignedCoordinators);
+    public boolean saveEditOperation(Event selectedEvent, Map<Integer, List<Integer>> assignedCoordinators, List<Ticket> tickets) throws EventException {
+        return eventData.saveEditOperation(selectedEvent, assignedCoordinators, tickets);
     }
 
 

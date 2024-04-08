@@ -121,7 +121,6 @@ public class EventDAO {
                         throw new EventException(ErrorCode.OPERATION_DB_FAILED);
                     }
                 }
-                ticketStatement.addBatch();
             }
             ticketStatement.executeBatch();
         }
@@ -234,7 +233,7 @@ public class EventDAO {
 //        return evCoordinators;
 //    }
 
-    public boolean saveEditOperation(Event selectedEvent, Map<Integer, List<Integer>> assignedCoordinators) throws EventException {
+    public boolean saveEditOperation(Event selectedEvent, Map<Integer, List<Integer>> assignedCoordinators, List<Ticket> tickets) throws EventException {
         boolean succeded = false;
         String updateEvent = "UPDATE Event SET Start_date=?,Name=?,Description=?,End_Date=?,Start_Time=?,End_Time=?,Location=? WHERE EventId=?";
         Connection conn = null;
@@ -270,6 +269,11 @@ public class EventDAO {
                 psmt.executeUpdate();
             }
             insertCoordinators(selectedEvent.getId(), assignedCoordinators, conn);
+
+            if (!tickets.isEmpty()) {
+                List<Integer> ticketIds = insertTicket(tickets, conn);
+                addTicketToEvent(ticketIds, selectedEvent.getId(), conn);
+            }
             conn.commit();
             succeded = true;
         } catch (SQLException | EventException e) {
