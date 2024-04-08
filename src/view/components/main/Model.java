@@ -275,7 +275,8 @@ public class Model implements CommonModel {
         if (!isModified) {
             return;
         }
-        boolean editSucceded = evmLogic.saveEditOperation(selectedEvent, assignedCoordinatorsMap);
+        boolean editSucceded = evmLogic.saveEditOperation(selectedEvent, assignedCoordinatorsMap, addedTickets);
+        addedTickets.clear();
         if (editSucceded) {
             coordinatorEvents.put(selectedEvent.getId(), selectedEvent);
         }
