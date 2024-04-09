@@ -1,6 +1,7 @@
 package view.components.regularTickets.deleteTicket;
 
 import be.DeleteOperation;
+import be.Ticket;
 import exceptions.ErrorCode;
 import exceptions.EventException;
 import exceptions.ExceptionLogger;
@@ -37,6 +38,7 @@ public class DeleteTicketController implements OperationHandler, Initializable {
     private LoadingComponent loadingComponent;
     private ConfirmationWindow confirmationWindow;
     private DeleteOperation performedDeleteOperation;
+    private Ticket ticket;
 
     public DeleteTicketController(StackPane secondaryLayout, StackPane thirdLayout, CommonModel model, DeleteOperation deleteOperation) {
         this.secondaryLayout = secondaryLayout;
