@@ -5,6 +5,7 @@ import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -18,9 +19,6 @@ import view.components.listeners.InitializationErrorListener;
 import view.components.specialTickets.SpecialTicketsController;
 import view.utility.CommonMethods;
 import view.utility.NavigationHoverControl;
-
-
-import java.awt.*;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -118,6 +116,7 @@ public class MainController implements Initializable, InitializationErrorListene
             navigation.getChildren().remove(userImage);
             Label placeholder = new Label("UserImage");
             navigation.getChildren().add(placeholder);
+            HBox.setMargin(placeholder, new Insets(0, 10, 0, 0));
         });
         imageLoader.getServiceLoader().restart();
     }

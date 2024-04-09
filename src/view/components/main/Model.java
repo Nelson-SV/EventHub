@@ -15,8 +15,6 @@ import java.time.LocalTime;
 import java.util.*;
 import java.util.stream.Collectors;
 public class Model implements CommonModel {
-
-
     //TODO  logged user to be initialized with the actual logged user
 //12,Andrei Ionut,test,Grosu,http://res.cloudinary.com/deipyfz99/image/upload/v1712563835/mbwqk1wpanct5bdtdmgw.png,event_coordinator
     private User loggedUser ;
@@ -144,6 +142,7 @@ public class Model implements CommonModel {
             createdEvent.setStatus(EventStatusCalculator.calculateStatus(event));
             loggedCoordinatorEvents.put(inserted,createdEvent);
         }
+
         Platform.runLater(()->{
             this.eventsDisplayer.displayEvents();
         });
@@ -355,6 +354,7 @@ public class Model implements CommonModel {
         eventTickets = ticketManager.getTicketsForEvent(eventId); // Store tickets for the specified event
         return eventTickets; // Return the tickets for the specified event
     }
+
 
     public ObservableMap<Integer, Ticket> getSpecialTicketsForEventOrNot(int eventId) throws EventException {
         specialTickets = ticketManager.getSpecialTicketsRelatedOrNot(eventId); // Store tickets for the specified event

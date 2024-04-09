@@ -21,29 +21,29 @@ public class TicketComponentDescription extends FlowPane implements Initializabl
     @FXML
     private Label eventNameLB, eventDateLB, eventLocationLB, custNameLB, custEmailLB, ticketPriceLB, ticketTypeLB;
     @FXML
-    private Ticket ticket;
-    @FXML
     private Event event;
     @FXML
     private ImageView qrCode, logoImg, barCode;
     @FXML
     private FlowPane ticketPane;
-    @FXML
-    private TicketsDesignController ticketsDesignController;
-    @FXML
-    private Model model;
 
-    public TicketComponentDescription(TicketsDesignController ticketsDesignController, Event event) {
+
+    //    @FXML
+//    private TicketsDesignController ticketsDesignController;
+//    @FXML
+//    private Model model;
+
+    public TicketComponentDescription(Event event) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("TicketsDesignComponent.fxml"));
         loader.setController(this);
         this.event = event;
         try {
             ticketPane = loader.load();
             this.getChildren().add(ticketPane);
-            this.ticketsDesignController = ticketsDesignController;
+          //  this.ticketsDesignController = ticketsDesignController;
 
         } catch (IOException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             ExceptionHandler.errorAlertMessage(ErrorCode.LOADING_FXML_FAILED.getValue());
         }
     }
@@ -53,7 +53,6 @@ public class TicketComponentDescription extends FlowPane implements Initializabl
         getQrCode().setImage(new Image("/resources/images/Image 1.png"));
         getBarCode().setImage(new Image("/resources/images/Image 2.png"));
         getLogoImg().setImage(new Image("/resources/images/Image 3.png"));
-
         setTicketLabel();
     }
 
@@ -76,8 +75,8 @@ public class TicketComponentDescription extends FlowPane implements Initializabl
         return qrCode;
     }
 
-    public void setQrCode(ImageView qrCode) {
-        this.qrCode = qrCode;
+    public void setQrCode(Image qrCode) {
+        this.qrCode.setImage(qrCode);
     }
 
     public ImageView getLogoImg() {
@@ -98,5 +97,14 @@ public class TicketComponentDescription extends FlowPane implements Initializabl
 
     public FlowPane getRoot(){
         return ticketPane;
+    }
+    public void setCustomerName(String customerName) {
+        String text = "Customer Name :"  + customerName;
+        this.custNameLB.setText(text);
+    }
+
+    public void setCustomerEmail(String customerEmail) {
+        String text = "Customer Email :"  + customerEmail;
+        this.custEmailLB.setText(text);
     }
 }
