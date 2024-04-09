@@ -14,6 +14,7 @@ public class Ticket {
     private String customerName;
     private String customerEmail;
     private String UUID;
+    private String color;
 
     private Boolean special;
 
@@ -37,6 +38,14 @@ public class Ticket {
         this.ticketPrice = price;
     }
 
+    public Ticket (int id, String ticketType, int quantity, BigDecimal ticketPrice, String color) {
+        this.id = id;
+        this.ticketType = ticketType;
+        this.quantity = quantity;
+        this.ticketPrice = ticketPrice;
+        this.color = color;
+    }
+
     public Ticket (int id, String ticketType, int quantity, BigDecimal ticketPrice) {
         this.id = id;
         this.ticketType = ticketType;
@@ -44,10 +53,11 @@ public class Ticket {
         this.ticketPrice = ticketPrice;
     }
 
-    public Ticket (String ticketType, int quantity, BigDecimal ticketPrice) {
+    public Ticket (String ticketType, int quantity, BigDecimal ticketPrice, String color) {
         this.ticketType = ticketType;
         this.quantity = quantity;
         this.ticketPrice = ticketPrice;
+        this.color = color;
     }
 
     // Copy constructor
@@ -132,6 +142,14 @@ public class Ticket {
 
     public void setUUID(String UUID) {
         this.UUID = UUID;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
     }
 
     @Override
