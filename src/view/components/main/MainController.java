@@ -81,7 +81,6 @@ public class MainController implements Initializable , InitializationErrorListen
     @FXML
     private void navigateEventsPage(ActionEvent actionEvent) {
         if(!pageDisplayer.getChildren().contains(eventsPageController)){
-            model.sortedEventsList();
             eventsPageController= new EventsPageController(secondaryLayout,thirdLayout);
             pageDisplayer.getChildren().clear();
             pageDisplayer.getChildren().add(eventsPageController);

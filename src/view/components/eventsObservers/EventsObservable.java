@@ -1,6 +1,5 @@
 package view.components.eventsObservers;
 import be.Event;
-import be.EventStatus;
 import bll.EventManagementLogic;
 import bll.ILogicManager;
 import exceptions.ErrorCode;
@@ -23,7 +22,7 @@ public class EventsObservable  implements DateObserver {
     private final Model model;
     private final ILogicManager evmLogic;
     private final int periodTime = 300;
-    private ScheduledService<ObservableMap<Integer, EventStatus>> scheduledService;
+    private ScheduledService<ObservableMap<Integer, Event>> scheduledService;
 
     public EventsObservable(Model model) throws EventException {
         this.eventDisplayer = new ArrayList<>();
@@ -47,18 +46,18 @@ public class EventsObservable  implements DateObserver {
         }));
     }
 
-    private void updateCoordinatorEvents(ObservableMap<Integer, EventStatus> newEvents) {
+    private void updateCoordinatorEvents(ObservableMap<Integer, Event> newEvents) {
         model.setCoordinatorEvents(newEvents);
     }
 
     public void startService() {
-        scheduledService = new ScheduledService<ObservableMap<Integer, EventStatus>>() {
+        scheduledService = new ScheduledService<ObservableMap<Integer, Event>>() {
             @Override
-            protected Task<ObservableMap<Integer, EventStatus>> createTask() {
-                return new Task<ObservableMap<Integer, EventStatus>>() {
+            protected Task<ObservableMap<Integer, Event>> createTask() {
+                return new Task<ObservableMap<Integer, Event>>() {
                     @Override
-                    protected ObservableMap<Integer, EventStatus> call() throws EventException {
-                        return evmLogic.getEventsWithStatus(12);
+                    protected ObservableMap<Integer, Event> call() throws EventException {
+                        return evmLogic.getEvents();
                     }
                 };
             }
