@@ -10,7 +10,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.paint.Color;
 import view.components.main.Model;
 
 import java.io.IOException;
@@ -19,7 +22,7 @@ import java.util.ResourceBundle;
 
 public class TicketComponentDescription extends FlowPane implements Initializable {
     @FXML
-    private Label eventNameLB, eventDateLB, eventLocationLB, custNameLB, custEmailLB, ticketPriceLB, ticketTypeLB;
+    private Label eventNameLB, eventDateLB, eventLocationLB, custNameLB, custEmailLB, ticketPriceLB, ticketTypeLB, extraLabel1, extraLabel2;
     @FXML
     private Ticket ticket;
     @FXML
@@ -69,6 +72,37 @@ public class TicketComponentDescription extends FlowPane implements Initializabl
 
     public void setTicketPrice(String price) {
         ticketPriceLB.setText(price + "dkk");
+    }
+
+    public void setTicketColour(Color fill){
+        ticketPane.setBackground(new Background(new BackgroundFill(fill, null, null)));
+
+        double brightness = fill.getBrightness();
+        if (brightness < 0.5) {
+            ticketPane.setStyle("-fx-border-color: white; -fx-border-width: 2px;");
+            // Set font color to white
+            eventNameLB.setTextFill(Color.WHITE);
+            eventDateLB.setTextFill(Color.WHITE);
+            eventLocationLB.setTextFill(Color.WHITE);
+            ticketTypeLB.setTextFill(Color.WHITE);
+            ticketPriceLB.setTextFill(Color.WHITE);
+            custNameLB.setTextFill(Color.WHITE);
+            custEmailLB.setTextFill(Color.WHITE);
+            extraLabel1.setTextFill(Color.WHITE);
+            extraLabel2.setTextFill(Color.WHITE);
+        } else {
+            ticketPane.setStyle("-fx-border-color: black; -fx-border-width: 2px;");
+            // Set font color to black
+            eventNameLB.setTextFill(Color.BLACK);
+            eventDateLB.setTextFill(Color.BLACK);
+            eventLocationLB.setTextFill(Color.BLACK);
+            ticketTypeLB.setTextFill(Color.BLACK);
+            ticketPriceLB.setTextFill(Color.BLACK);
+            custNameLB.setTextFill(Color.BLACK);
+            custEmailLB.setTextFill(Color.BLACK);
+            extraLabel1.setTextFill(Color.BLACK);
+            extraLabel2.setTextFill(Color.BLACK);
+        }
     }
 
 

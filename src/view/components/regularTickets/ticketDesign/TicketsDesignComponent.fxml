@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<FlowPane fx:id="ticketPane" maxHeight="202.0" maxWidth="450.0" minHeight="202.0" minWidth="450.0" prefHeight="202.0" prefWidth="450.0" styleClass="flowPane" stylesheets="@../ticketGeneration/TicketsGeneration.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<FlowPane fx:id="ticketPane" maxHeight="202.0" maxWidth="450.0" minHeight="202.0" minWidth="450.0" prefHeight="202.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <HBox alignment="CENTER" prefHeight="200.0" prefWidth="126.0">
          <children>
@@ -61,21 +61,21 @@
          <children>
             <VBox prefHeight="100.0" prefWidth="63.0">
                <children>
-                  <HBox alignment="CENTER" prefHeight="42.0" prefWidth="73.0">
+                  <HBox alignment="CENTER" prefHeight="39.0" prefWidth="73.0">
                      <children>
-                        <Label prefHeight="12.0" prefWidth="100.0" rotate="90.0" text="Ticket Price">
+                        <Label fx:id="extraLabel2" prefHeight="12.0" prefWidth="50.0" rotate="90.0" text="Ticket Price">
                            <font>
                               <Font size="6.0" />
                            </font>
                         </Label>
-                        <Label prefHeight="13.0" prefWidth="98.0" rotate="90.0" text="Ticket Type">
+                        <Label fx:id="extraLabel1" prefHeight="13.0" prefWidth="50.0" rotate="90.0" text="Ticket Type">
                            <font>
                               <Font size="6.0" />
                            </font>
                         </Label>
                      </children>
                   </HBox>
-                  <HBox alignment="CENTER" prefHeight="58.0" prefWidth="73.0">
+                  <HBox alignment="CENTER" prefHeight="60.0" prefWidth="73.0">
                      <children>
                         <Label fx:id="ticketPriceLB" rotate="90.0" text="dkk">
                            <font>

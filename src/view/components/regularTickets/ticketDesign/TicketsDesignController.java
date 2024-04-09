@@ -11,10 +11,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.ColorPicker;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import view.components.eventsPage.eventManagement.EventManagementController;
 import view.components.eventsPage.eventManagement.ticketManagement.TicketDescriptionComponent;
 import view.components.main.Model;
@@ -32,7 +34,7 @@ public class TicketsDesignController implements Initializable {
     @FXML
     private MFXButton addTicketBT;
     @FXML
-    private MFXComboBox ticketColorCombo;
+    private ColorPicker colorPicker;
     @FXML
     private MFXTextField ticketTypeTF, ticketPriceTF, ticketQuantityTF;
     @FXML
@@ -85,12 +87,17 @@ public class TicketsDesignController implements Initializable {
         boolean isTicketValid = TicketValidator.isTicketValid(ticketTypeTF, ticketPriceTF, ticketQuantityTF);
 
         if (isTicketValid) {
-            Ticket ticket = new Ticket(ticketTypeTF.getText(), Integer.parseInt(ticketQuantityTF.getText()), new BigDecimal(ticketPriceTF.getText()));
+            String type = ticketTypeTF.getText();
+            int price = Integer.parseInt(ticketQuantityTF.getText());
+            BigDecimal quantity = new BigDecimal(ticketPriceTF.getText());
+            String color = colorPicker.getValue().toString();
+
+            Ticket ticket = new Ticket(type, price, quantity, color);
 
             VBox ticketsVBox = eventManagementController.getTicketsVBox();
 
             ManageTicket manage = new ManageTicket(secondaryLayout,thirdLayout,model, eventManagementController, ticket);
-            DeleteTicket delete = new DeleteTicket(secondaryLayout,thirdLayout,model, DeleteOperation.DELETE_TICKET);
+            DeleteTicket delete = new DeleteTicket(secondaryLayout,thirdLayout,model, DeleteOperation.DELETE_TICKET, ticket, eventManagementController);
             TicketDescriptionComponent ticketDescriptionComponent = new TicketDescriptionComponent(ticket, manage, delete);
             ticketsVBox.getChildren().add(ticketDescriptionComponent);
 
@@ -101,8 +108,6 @@ public class TicketsDesignController implements Initializable {
             } else {
                 // Update existing ticket
                 model.getTicketsToEdit(ticket, selectedTicket.getId());
-                System.out.println("Controller: " + ticket.getId());
-                System.out.println("Controller Selected: " + selectedTicket.getId());
                 // Remove the existing ticket from the view
                 removeTicket(ticketsVBox, selectedTicket);
             }
@@ -139,6 +144,14 @@ public class TicketsDesignController implements Initializable {
             ticketTypeTF.setText(selectedTicket.getTicketType());
             ticketPriceTF.setText(selectedTicket.getTicketPrice()+"");
             ticketQuantityTF.setText(selectedTicket.getQuantity()+"");
+
+            String ticketColor = selectedTicket.getColor();
+
+            if (ticketColor != null && !ticketColor.isEmpty()) {
+                colorPicker.setValue(Color.valueOf(ticketColor));
+            } else{
+                ticketComponentDescription.setTicketColour(Color.WHITE);
+            }
         }
     }
 
@@ -151,6 +164,11 @@ public class TicketsDesignController implements Initializable {
         ticketPriceTF.textProperty().addListener((observable, oldValue, newValue) -> {
             // Update the label with the new selected type
             ticketComponentDescription.setTicketPrice(newValue);
+        });
+
+        colorPicker.valueProperty().addListener((observable, oldColor, newValue) -> {
+            // Update the background color of the FlowPane
+            ticketComponentDescription.setTicketColour(newValue);
         });
     }
 

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
-<?import io.github.palexdev.materialfx.controls.MFXComboBox?>
 <?import io.github.palexdev.materialfx.controls.MFXTextField?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ColorPicker?>
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -28,7 +28,7 @@
                   <HBox alignment="CENTER" prefHeight="120.0" prefWidth="898.0" spacing="100.0">
                      <children>
                         <MFXTextField fx:id="ticketTypeTF" floatMode="ABOVE" floatingText="Ticket Type" floatingTextGap="0.0" prefHeight="32.0" prefWidth="148.0" styleClass="textFieldGroup" />
-                        <MFXComboBox fx:id="ticketColorCombo" allowEdit="true" floatMode="ABOVE" floatingText="Ticket Color" prefWidth="148.0" styleClass="comboGroup" />
+                        <ColorPicker fx:id="colorPicker" minHeight="32.0" minWidth="148.0" prefHeight="32.0" prefWidth="148.0" promptText="Ticket Color" />
                      </children>
                      <padding>
                         <Insets top="30.0" />
