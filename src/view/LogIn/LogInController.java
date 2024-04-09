@@ -2,6 +2,7 @@ package view.LogIn;
 
 import com.sun.tools.javac.Main;
 import exceptions.ErrorCode;
+import exceptions.EventException;
 import io.github.palexdev.materialfx.controls.MFXPasswordField;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import javafx.event.ActionEvent;
@@ -12,14 +13,18 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 import view.components.listeners.InitializationErrorListener;
+import view.components.main.Model;
 
 import java.io.IOException;
+
+import static java.awt.SystemColor.window;
 
 public class LogInController {
     @FXML
     public MFXPasswordField password;
     @FXML
     public MFXTextField userName;
+    private Model model;
 
 
 
@@ -27,23 +32,31 @@ public class LogInController {
         String enteredUsername = userName.getText();
         String enteredPassword = password.getText();
 
-        // You need to implement your authentication logic here
-        // For demonstration purposes, let's assume the username is "admin" and password is "admin"
-        if ("admin".equals(enteredUsername)) {
-            Stage stage = (Stage) userName.getScene().getWindow();
-            stage.close();
-            // Load admin page
-            loadAdminPage(new Stage());
-        } else if ("coordinator".equals(enteredUsername)) {
-            Stage stage = (Stage) userName.getScene().getWindow();
-            stage.close();
-            // Load coordinator page
-            loadCoordinatorPage(new Stage());
-        } else {
-            // Show error message for invalid credentials
-           // showError("Invalid username or password!");
+        try {
+            String role = model.checkUser(enteredUsername, enteredPassword);
+
+            if (role != null) {
+                // User authenticated successfully, load corresponding page
+                Stage stage = (Stage) userName.getScene().getWindow();
+                stage.close();
+
+                if ("admin".equals(role)) {
+                    loadAdminPage(new Stage());
+                } else if ("coordinator".equals(role)) {
+                    loadCoordinatorPage(new Stage());
+                }
+
+                // Save the current user's state
+                // You can create a model class to store information about the logged-in user
+                // For example:
+                // UserModel currentUser = new UserModel(enteredUsername, role);
+            }
+        } catch (EventException e) {
+
         }
     }
+
+    // Other method
     private void loadAdminPage(Stage stage){
 
         String resource = "/view/admin/mainAdmin/AdminMain.fxml";

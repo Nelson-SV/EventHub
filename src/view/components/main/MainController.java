@@ -39,6 +39,7 @@ public class MainController implements Initializable , InitializationErrorListen
     @FXML
     private VBox eventsPageController;
     private  boolean sellingDisplayed;
+    private SpecialTicketsController specialTicketsController;
 
 
     @FXML
@@ -58,9 +59,13 @@ public class MainController implements Initializable , InitializationErrorListen
     }
 
     public void createSpecialTicket(ActionEvent actionEvent) {
-        SpecialTicketsController specialTicketsController = new SpecialTicketsController(pageDisplayer, model);
-        pageDisplayer.getChildren().clear();
-        pageDisplayer.getChildren().add(specialTicketsController.getRoot());
+        if(specialTicketsController == null){
+            specialTicketsController = new SpecialTicketsController(pageDisplayer, model);
+            pageDisplayer.getChildren().clear();
+            pageDisplayer.getChildren().add(specialTicketsController.getRoot());
+        }
+        sellingDisplayed = false;
+
     }
 
     public boolean isInitializationError() {
@@ -75,7 +80,9 @@ public class MainController implements Initializable , InitializationErrorListen
             pageDisplayer.getChildren().clear();
             pageDisplayer.getChildren().add(sellingViewController.getRoot());
             sellingDisplayed=true;
+
         }
+        specialTicketsController = null;
     }
 
     @FXML
@@ -86,6 +93,7 @@ public class MainController implements Initializable , InitializationErrorListen
             pageDisplayer.getChildren().add(eventsPageController);
             sellingDisplayed=false;
         }
+        specialTicketsController = null;
     }
 
     private void initializeMainPageEvents() {

@@ -12,15 +12,17 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class Main extends Application {
-  //  public void start(Stage primaryStage) throws Exception{
-//        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/LogIn/LogInView.fxml"));
-//        Parent root = loader.load();
-//        primaryStage.setTitle("LogIn");
-//        primaryStage.setScene(new Scene(root));
-//        primaryStage.show();
-//    }
+  public void start(Stage primaryStage) throws Exception{
 
-   public void start(Stage primaryStage) throws Exception {
+
+       FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/LogIn/LogInView.fxml"));
+      Parent root = loader.load();primaryStage.setTitle("LogIn");
+       primaryStage.setScene(new Scene(root));
+        primaryStage.show();
+   }
+
+
+  /* public void start(Stage primaryStage) throws Exception {
         String userRole = getUserRole();
         switch (userRole){
             case "admin": loadAdminPage(primaryStage);
@@ -76,5 +78,5 @@ public class Main extends Application {
         Alert alert = new Alert(Alert.AlertType.ERROR, errorMessage);
         alert.show();
         stage.close();
-    }
+    }*/
 }
