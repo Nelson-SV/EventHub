@@ -29,7 +29,6 @@ import view.components.loadingComponent.LoadingComponent;
 import view.utility.CommonMethods;
 import view.utility.ImageLoadingHandler;
 import view.utility.UserManagementValidator;
-
 import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;

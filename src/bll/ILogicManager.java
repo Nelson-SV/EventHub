@@ -17,19 +17,11 @@ public interface ILogicManager {
 
     Task<List<User>> getevCoord(int eventId);
 
-    ObservableMap<Integer, User> getEventCoordinators(int eventId) throws EventException;
-
     boolean isModifyed(Map<Integer, List<Integer>> assignedCoordinators, Event selectedEvent, Event original);
 
-    boolean saveEditOperation(Event selectedEvent, Map<Integer, List<Integer>> assignedCoordinators) throws EventException;
-
-    //EventInvalidResponse isInputValidTest(Event selectedEvent);
+    boolean saveEditOperation(Event selectedEvent, Map<Integer, List<Integer>> assignedCoordinators, List<Ticket> tickets) throws EventException;
 
     Status computeEventStatus(EventStatus event);
-
-    ObservableMap<Integer, EventStatus> getEventsWithStatus(Map<Integer, Event> coordinatorEvents);
-
-    List<Event> getSortedEventsByStatus(Collection<Event> events);
 
     boolean deleteEvent(int eventId) throws EventException;
 
@@ -39,5 +31,10 @@ public interface ILogicManager {
 
     EventInvalidResponse areEditedDatesValid(Event editedEvent,Event originalEvent);
 
+
+    /**retrieve all the events for an user*/
+    ObservableMap<Integer, EventStatus> getEventsWithStatus(int userId)throws EventException;
+    /**retrieve the sorted events by status in descending order*/
+    List<EventStatus> getAllSortedEventsByStatus(Collection<EventStatus> events);
 
 }

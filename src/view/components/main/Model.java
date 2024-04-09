@@ -13,7 +13,6 @@ import view.components.eventsObservers.EventsObservable;
 import view.components.listeners.CoordinatorsDisplayer;
 import view.components.listeners.Displayable;
 
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
@@ -54,7 +53,6 @@ public class Model implements CommonModel {
     private EventManager eventManager;
     private ILogicManager evmLogic;
     private TicketManager ticketManager;
-    private LogInManager logInManager;
 
     /**
      * holds the current opened event for managing
@@ -62,7 +60,6 @@ public class Model implements CommonModel {
     private Event selectedEvent;
 
     private List<Ticket> addedTickets;
-    private User loggedUser;
 
     private static Model instance;
 
@@ -79,7 +76,6 @@ public class Model implements CommonModel {
         initializeEventDateObservable();
         eventManager = new EventManager();
         ticketManager = new TicketManager();
-        logInManager = new LogInManager();
         coordinatorEvents = FXCollections.observableHashMap();
         allEvents = FXCollections.observableHashMap();
         eventTickets = FXCollections.observableHashMap();
@@ -350,10 +346,6 @@ public class Model implements CommonModel {
 
     public LocalTime convertStringToTime(String value) {
         return evmLogic.convertStringToLocalTime(value);
-    }
-
-    public String checkUser(String username, String password) throws EventException {
-       return logInManager.checkUser(username, password);
     }
 
 
