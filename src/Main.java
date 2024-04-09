@@ -19,7 +19,7 @@ public class Main extends Application {
 //        primaryStage.setScene(new Scene(root));
 //        primaryStage.show();
 //    }
-git
+
    public void start(Stage primaryStage) throws Exception {
         String userRole = getUserRole();
         switch (userRole){
