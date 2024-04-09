@@ -22,7 +22,7 @@ public class EventDAO {
         this.connectionManager = new ConnectionManager();
     }
 
-    public Integer insertEvent(Event event, List<Ticket> tickets) throws EventException {
+    public Integer insertEvent(Event event, List<Ticket> tickets,int userId) throws EventException {
         Integer eventId = null;
         Connection conn = null;
 
@@ -66,6 +66,7 @@ public class EventDAO {
                 List<Integer> ticketIds = insertTicket(tickets, conn);
                 addTicketToEvent(ticketIds, eventId, conn);
             }
+            assignNewEventToLoggedUser(conn,userId,eventId);
             conn.commit();
 
         } catch (EventException | SQLException e) {
@@ -86,6 +87,21 @@ public class EventDAO {
         }
         return eventId;
     }
+
+    /**assign newly created event to the logged user */
+    private void assignNewEventToLoggedUser(Connection connection,int userId, int eventId) throws SQLException {
+        String sql = "INSERT  INTO UsersEvents VALUES (?,?)";
+        try(PreparedStatement psmt= connection.prepareStatement(sql)) {
+            psmt.setInt(1, userId);
+            psmt.setInt(2, eventId);
+            psmt.executeUpdate();
+        }
+    }
+
+
+
+
+
 
     public void addTicketToEvent(List<Integer> ticketIds, int eventID, Connection conn) throws EventException, SQLException {
         String sql = "INSERT INTO EventTickets (TicketID, EventID) VALUES (?, ?)";

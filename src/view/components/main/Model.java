@@ -17,7 +17,17 @@ import java.util.stream.Collectors;
 public class Model implements CommonModel {
 
 
-    //TODO change the method that retrieves the events for an user to accept the logge user, now is hardcoded to 12, the user with the most events
+    //TODO  logged user to be initialized with the actual logged user
+//12,Andrei Ionut,test,Grosu,http://res.cloudinary.com/deipyfz99/image/upload/v1712563835/mbwqk1wpanct5bdtdmgw.png,event_coordinator
+    private User loggedUser ;
+    {
+   loggedUser = new User("andrei Ionut", "Grosu", "event_coordinator", "http://res.cloudinary.com/deipyfz99/image/upload/v1712563835/mbwqk1wpanct5bdtdmgw.png");
+    loggedUser.setUserId(12);
+    }
+
+
+
+
     /**
      * holds the response of edit validity , in order to display information on the screen
      */
@@ -115,10 +125,21 @@ public class Model implements CommonModel {
         dateObservable.startService();
     }
 
+
+
+    public User getLoggedUser() {
+        return loggedUser;
+    }
+
+    public void setLoggedUser(User loggedUser) {
+        this.loggedUser = loggedUser;
+    }
+
+
     /*** creates a new event
      @param event the new event created*/
-    public void addEvent(Event event) throws EventException {
-        Integer inserted = eventManager.addEvent(event, addedTickets);
+    public void addEvent(Event event,int userId) throws EventException {
+        Integer inserted = eventManager.addEvent(event, addedTickets,userId);
         addedTickets.clear();
         if (inserted != null) {
             event.setId(inserted);
@@ -145,7 +166,7 @@ public class Model implements CommonModel {
      * initialize the events map
      */
     public void initializeEventsMap() throws EventException {
-        loggedCoordinatorEvents = evmLogic.getEventsWithStatus(12);
+        loggedCoordinatorEvents = evmLogic.getEventsWithStatus(loggedUser.getUserId());
     }
 
     /**
