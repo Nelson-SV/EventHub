@@ -19,6 +19,7 @@ import view.admin.usersPage.threads.ImageLoader;
 import view.components.confirmationWindow.ConfirmationWindow;
 import view.components.deleteEvent.DeleteButton;
 import view.components.loadingComponent.LoadingComponent;
+import view.utility.CommonMethods;
 
 import java.net.URL;
 import java.util.Objects;
@@ -62,18 +63,6 @@ public class UserDescriptionController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         initializeUser();
     }
-
-    private void makeTheImageRound(Image image) {
-        userImageContainer.setImage(image);
-        userImageContainer.setPreserveRatio(false);
-        double width = userImageContainer.getFitWidth();
-        double height = userImageContainer.getFitHeight();
-        Rectangle rectangle = new Rectangle(width, height);
-        rectangle.setArcHeight(width / 2);
-        rectangle.setArcWidth(height / 2);
-        userImageContainer.setClip(rectangle);
-    }
-
     private void initializeUser() {
         setTheImageLoader();
         initializeName(userName);
@@ -85,10 +74,10 @@ public class UserDescriptionController implements Initializable {
     private void setTheImageLoader() {
         imageLoader.setImageLocation(user.getUserImageUrl());
         imageLoader.getServiceLoader().setOnSucceeded((event) -> {
-            makeTheImageRound(imageLoader.getServiceLoader().getValue());
+            CommonMethods.makeTheImageRound(imageLoader.getServiceLoader().getValue(),userImageContainer);
         });
         imageLoader.getServiceLoader().setOnFailed((event) -> {
-            imageLoader.getServiceLoader().getException().printStackTrace();
+          //  imageLoader.getServiceLoader().getException().printStackTrace();
             userContainer.getChildren().remove(userImageContainer);
             userContainer.getChildren().add(0, placeholder);
         });
@@ -111,7 +100,6 @@ public class UserDescriptionController implements Initializable {
 
     private void initializeRole(Label role) {
         role.textProperty().bindBidirectional(user.roleProperty());
-        //role.setText(user.getRole());
     }
 
     private void deleteOperation(HBox actions) {

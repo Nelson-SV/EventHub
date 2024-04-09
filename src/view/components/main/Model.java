@@ -21,12 +21,9 @@ public class Model implements CommonModel {
 //12,Andrei Ionut,test,Grosu,http://res.cloudinary.com/deipyfz99/image/upload/v1712563835/mbwqk1wpanct5bdtdmgw.png,event_coordinator
     private User loggedUser ;
     {
-   loggedUser = new User("andrei Ionut", "Grosu", "event_coordinator", "http://res.cloudinary.com/deipyfz99/image/upload/v1712563835/mbwqk1wpanct5bdtdmgw.png");
-    loggedUser.setUserId(12);
+   loggedUser = new User("Andrei Ionut", "Grosu", "event_coordinator", "","http://res.cloudinary.com/deipyfz99/image/upload/v1712563835/mbwqk1wpanct5bdtdmgw.png");
+   loggedUser.setUserId(12);
     }
-
-
-
 
     /**
      * holds the response of edit validity , in order to display information on the screen
@@ -306,7 +303,6 @@ public class Model implements CommonModel {
     public boolean isModified(Map<Integer, List<Integer>> assignedCoordinators) {
         return evmLogic.isModifyed(assignedCoordinators, selectedEvent, loggedCoordinatorEvents.get(selectedEvent.getId()).getEventDTO());
     }
-
 
     /**
      * save the edit operation performed on the current selected event
