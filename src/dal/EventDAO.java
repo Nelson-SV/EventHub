@@ -233,7 +233,7 @@ public class EventDAO {
 //        return evCoordinators;
 //    }
 
-    public boolean saveEditOperation(Event selectedEvent, Map<Integer, List<Integer>> assignedCoordinators, List<Ticket> tickets) throws EventException {
+    public boolean saveEditOperation(Event selectedEvent, Map<Integer, List<Integer>> assignedCoordinators, List<Ticket> editTickets, List<Ticket> newTickets) throws EventException {
         boolean succeded = false;
         String updateEvent = "UPDATE Event SET Start_date=?,Name=?,Description=?,End_Date=?,Start_Time=?,End_Time=?,Location=? WHERE EventId=?";
         Connection conn = null;
@@ -270,9 +270,12 @@ public class EventDAO {
             }
             insertCoordinators(selectedEvent.getId(), assignedCoordinators, conn);
 
-            if (!tickets.isEmpty()) {
-                List<Integer> ticketIds = insertTicket(tickets, conn);
+            if (!newTickets.isEmpty()) {
+                List<Integer> ticketIds = insertTicket(newTickets, conn);
                 addTicketToEvent(ticketIds, selectedEvent.getId(), conn);
+            }
+            if (!editTickets.isEmpty()) {
+                updateTicket(editTickets, conn);
             }
             conn.commit();
             succeded = true;
@@ -296,6 +299,26 @@ public class EventDAO {
         }
         return succeded;
     }
+
+    private void updateTicket(List<Ticket> editTickets, Connection conn) throws EventException {
+        String ticketSql = "UPDATE Ticket SET Type=?, Quantity=?, Price=? WHERE ID=?";
+        try (PreparedStatement ticketStatement = conn.prepareStatement(ticketSql)) {
+            for (Ticket ticket : editTickets) {
+                System.out.println("DAO: " + ticket.getId());
+                ticketStatement.setString(1, ticket.getTicketType());
+                ticketStatement.setInt(2, ticket.getQuantity());
+                ticketStatement.setBigDecimal(3, ticket.getTicketPrice());
+                ticketStatement.setInt(4, ticket.getId());
+
+                ticketStatement.executeUpdate();
+            }
+            //ticketStatement.executeBatch();
+        } catch (SQLException e) {
+            throw new EventException(e.getMessage());
+        }
+    }
+
+
 
     private void insertCoordinators(int eventId, Map<Integer, List<Integer>> assignedCoordinators, Connection conn) throws SQLException {
         if (assignedCoordinators.get(eventId).isEmpty()) {
