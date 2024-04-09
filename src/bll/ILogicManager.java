@@ -23,7 +23,7 @@ public interface ILogicManager {
 
     boolean saveEditOperation(Event selectedEvent, Map<Integer, List<Integer>> assignedCoordinators) throws EventException;
 
-    EventInvalidResponse isInputValidTest(Event selectedEvent);
+    //EventInvalidResponse isInputValidTest(Event selectedEvent);
 
     Status computeEventStatus(EventStatus event);
 
