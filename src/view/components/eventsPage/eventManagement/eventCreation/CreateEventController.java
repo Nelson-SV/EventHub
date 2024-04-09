@@ -1,7 +1,6 @@
 
 package view.components.eventsPage.eventManagement.eventCreation;
 import be.Event;
-import be.Ticket;
 import exceptions.ErrorCode;
 import exceptions.EventException;
 import exceptions.ExceptionHandler;
@@ -22,7 +21,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 import view.components.main.Model;
-import view.components.ticketsGeneration.TicketsGenerationController;
+import view.components.regularTickets.ticketGeneration.TicketsGenerationController;
 import view.utility.EditEventValidator;
 
 import javax.swing.event.ChangeListener;
