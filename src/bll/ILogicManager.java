@@ -21,7 +21,7 @@ public interface ILogicManager {
 
     boolean isModifyed(Map<Integer, List<Integer>> assignedCoordinators, Event selectedEvent, Event original);
 
-    boolean saveEditOperation(Event selectedEvent, Map<Integer, List<Integer>> assignedCoordinators, List<Ticket> tickets) throws EventException;
+    boolean saveEditOperation(Event selectedEvent, Map<Integer, List<Integer>> assignedCoordinators, List<Ticket> editTickets, List<Ticket> newTickets) throws EventException;
 
     //EventInvalidResponse isInputValidTest(Event selectedEvent);
 

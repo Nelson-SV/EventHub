@@ -10,6 +10,7 @@ import io.github.palexdev.materialfx.controls.MFXTextField;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -49,7 +50,7 @@ public class TicketsDesignController implements Initializable {
     @FXML
     private Model model;
     @FXML
-    private Ticket ticket;
+    private Ticket selectedTicket;
 
     public TicketsDesignController(StackPane secondaryLayout, StackPane thirdLayout, EventManagementController eventManagementController, Model model) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("TicketsDesignWindow.fxml"));
@@ -68,7 +69,6 @@ public class TicketsDesignController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
         updateTicketInformation();
     }
 
@@ -89,26 +89,57 @@ public class TicketsDesignController implements Initializable {
 
             VBox ticketsVBox = eventManagementController.getTicketsVBox();
 
-            ManageTicket manage = new ManageTicket(secondaryLayout,thirdLayout,model, eventManagementController);
+            ManageTicket manage = new ManageTicket(secondaryLayout,thirdLayout,model, eventManagementController, ticket);
             DeleteTicket delete = new DeleteTicket(secondaryLayout,thirdLayout,model, DeleteOperation.DELETE_TICKET);
             TicketDescriptionComponent ticketDescriptionComponent = new TicketDescriptionComponent(ticket, manage, delete);
             ticketsVBox.getChildren().add(ticketDescriptionComponent);
 
-            /*
-            if (selectedTicket != ticket && selectedTicket != null) {
-                removeTicket(selectedVbox, selectedTicket);
+            // Check if it's a new ticket or to edit one
+            if (selectedTicket == null) {
+                // Add new ticket
+                model.getNewAddedTicket(ticket);
+            } else {
+                // Update existing ticket
+                model.getTicketsToEdit(ticket, selectedTicket.getId());
+                System.out.println("Controller: " + ticket.getId());
+                System.out.println("Controller Selected: " + selectedTicket.getId());
+                // Remove the existing ticket from the view
+                removeTicket(ticketsVBox, selectedTicket);
             }
-            */
-
-            model.getNewAddedTicket(ticket);
-
             closeWindow();
+            selectedTicket = null;
         }
     }
 
-    public void cancelAction(){
+    private void removeTicket(VBox ticketsVBox, Ticket selectedTicket) {
+        for (Node node : ticketsVBox.getChildren()) {
+            if (node instanceof TicketDescriptionComponent) {
+                TicketDescriptionComponent ticketDescriptionComponent = (TicketDescriptionComponent) node;
+                if (ticketDescriptionComponent.getTicket().equals(selectedTicket)) {
+                    ticketsVBox.getChildren().remove(node);
+                    break;
+                }
+            }
+        }
+    }
 
+    public Ticket getTicketToEdit(Ticket ticket){
+        selectedTicket = ticket;
+        setTicketInformation();
+        return selectedTicket;
+    }
+
+    public void cancelAction(){
         closeWindow();
+        selectedTicket = null;
+    }
+
+    public void setTicketInformation() {
+        if (selectedTicket!=null){
+            ticketTypeTF.setText(selectedTicket.getTicketType());
+            ticketPriceTF.setText(selectedTicket.getTicketPrice()+"");
+            ticketQuantityTF.setText(selectedTicket.getQuantity()+"");
+        }
     }
 
     public void updateTicketInformation() {
@@ -121,7 +152,6 @@ public class TicketsDesignController implements Initializable {
             // Update the label with the new selected type
             ticketComponentDescription.setTicketPrice(newValue);
         });
-
     }
 
     public FlowPane getRoot() {
