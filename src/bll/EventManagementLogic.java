@@ -4,7 +4,6 @@ import be.*;
 import dal.EventDAO;
 import dal.UsersDAO;
 import exceptions.EventException;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableMap;
 import javafx.concurrent.Task;
 import java.time.LocalDate;
@@ -36,12 +35,6 @@ public class EventManagementLogic implements ILogicManager {
         return usersDao.getEventUsers(eventId);
     }
 
-    @Override
-    public ObservableMap<Integer, User> getEventCoordinators(int eventId) throws EventException {
-        return eventData.getEventCoordinators(eventId);
-    }
-
-
     /**
      * Convert from event objects  to event status objects
      */
@@ -64,10 +57,6 @@ public class EventManagementLogic implements ILogicManager {
     public boolean isModifyed(Map<Integer, List<Integer>> assignedCoordinators, Event selectedEvent, Event original) {
         return !assignedCoordinators.get(selectedEvent.getId()).isEmpty() || !selectedEvent.equals(original);
     }
-
-
-
-
     /**
      * checks if the start date is valid compared with the local Date
      */
@@ -102,78 +91,11 @@ public class EventManagementLogic implements ILogicManager {
         return EventStatusCalculator.calculateStatus(event);
     }
 
-//    /**
-//     * To not be used, not sure if we need it
-//     * Convert from event objects  to event status objects
-//     */
-//    @Override
-//    public ObservableMap<Integer, EventStatus> getEventsWithStatus(Map<Integer, Event> coordinatorEvents) {
-//        ObservableMap<Integer, EventStatus> eventsWithStatus = FXCollections.observableHashMap();
-//        coordinatorEvents.values().stream().map((EventStatus::new))
-//                .forEach((item) -> {
-//                    item.setStatus(computeEventStatus(item));
-//                    eventsWithStatus.put(item.getEventDTO().getId(), item);
-//                });
-//        return eventsWithStatus;
-//    }
-
-    /**
-     * sort the events by the status and startDate
-     */
-    public List<Event> getSortedEventsByStatus(Collection<Event> events) {
-        List<EventStatus> eventsWithStatus = convertToEventsWithStatus(events);
-        List<EventStatus> sortedEvents = new ArrayList<>();
-        //sort ongoing events
-        List<EventStatus> ongoingEvents = sortOngoing(eventsWithStatus);
-        //sort upcoming events
-        List<EventStatus> upcomingEvents = sortUpcoming(eventsWithStatus);
-        //sort finalized events
-        List<EventStatus> finalizedEvents = sortFinalized(eventsWithStatus);
-
-        sortedEvents.addAll(ongoingEvents);
-        sortedEvents.addAll(upcomingEvents);
-        sortedEvents.addAll(finalizedEvents);
-
-        return convertToEvent(sortedEvents);
-    }
-
-    private List<EventStatus> sortOngoing(List<EventStatus> events) {
-        List<EventStatus> ongoing = events.stream().filter((item) -> item.getStatus().getValue().equals(Status.ONGOING.getValue())).toList();
-        return sortByStartingDate(ongoing);
-    }
-
-    private List<EventStatus> sortUpcoming(List<EventStatus> events) {
-        List<EventStatus> upcoming = events.stream().filter((item) -> item.getStatus().getValue().equals(Status.UPCOMING.getValue())).toList();
-        return sortByStartingDate(upcoming);
-    }
-
-    private List<EventStatus> sortFinalized(List<EventStatus> events) {
-        List<EventStatus> finalized = events.stream().filter((item) -> item.getStatus().getValue().equals(Status.FINALIZED.getValue())).toList();
-        return sortByStartingDate(finalized);
-    }
-
-
     private List<EventStatus> sortByStartingDate(List<EventStatus> events) {
         return events.stream()
                 .sorted(Comparator.comparing(event -> Math.abs(ChronoUnit.DAYS.between(LocalDate.now(), event.getEventDTO().getStartDate()))))
                 .collect(Collectors.toList());
     }
-
-    private List<EventStatus> convertToEventsWithStatus(Collection<Event> events) {
-        return events.stream()
-                .map((item) -> {
-                    Status status = EventStatusCalculator.calculateStatus(item);
-                    EventStatus eventStatus = new EventStatus(item);
-                    eventStatus.setStatus(status);
-                    return eventStatus;
-                })
-                .toList();
-    }
-
-    private List<Event> convertToEvent(List<EventStatus> events) {
-        return events.stream().map(EventStatus::getEventDTO).toList();
-    }
-
     /**
      * delete an event from the database
      *
