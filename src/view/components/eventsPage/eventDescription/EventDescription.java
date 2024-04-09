@@ -1,6 +1,7 @@
 package view.components.eventsPage.eventDescription;
 
 import be.Event;
+import be.EventStatus;
 import be.Status;
 import bll.EventStatusCalculator;
 import javafx.beans.binding.StringBinding;
@@ -45,8 +46,8 @@ public class EventDescription implements Initializable {
     @FXML
     private DeleteButton deleteButton;
     @FXML
-    private Event event;
-    public EventDescription(Event event, ManageAction manageAction, DeleteButton deleteButton) {
+    private EventStatus event;
+    public EventDescription(EventStatus event, ManageAction manageAction, DeleteButton deleteButton) {
         this.manageAction = manageAction;
         this.event = event;
         this.deleteButton= deleteButton;
@@ -54,10 +55,10 @@ public class EventDescription implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        bindViewToModel(event);
+        bindViewToModel(event.getEventDTO());
         this.eventActions.getChildren().add(manageAction);
         this.eventActions.getChildren().add(deleteButton);
-        initializeEventStatus(eventStatus,EventStatusCalculator.calculateStatus(event));
+        initializeEventStatus(eventStatus,event.getStatus());
     }
 
     private void bindViewToModel(Event event) {

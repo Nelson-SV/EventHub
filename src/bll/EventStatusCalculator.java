@@ -80,21 +80,24 @@ public class EventStatusCalculator {
         return status;
     }
 
-    private static boolean isStatusChanged(Event event) {
-        boolean hasStarted = !LocalDateTime.of(event.getStartDate(), event.getStartTime()).isBefore(LocalDateTime.now());
-        LocalDateTime endDateTime;
-        if (event.getEndDate() != null) {
-            endDateTime = LocalDateTime.of(event.getEndDate(), event.getEndTime() != null ? event.getEndTime() : LocalTime.MAX);
-        } else {
-            endDateTime = LocalDateTime.of(event.getStartDate(), event.getEndTime() != null ? event.getEndTime() : LocalTime.MAX);
-        }
-        boolean hasEnded = !endDateTime.isBefore(LocalDateTime.now());
-        return hasStarted || hasEnded;
+    private static boolean isEventStatusChanged(EventStatus event) {
+
+
+//        boolean hasStarted = !LocalDateTime.of(event.getStartDate(), event.getStartTime()).isBefore(LocalDateTime.now());
+//        LocalDateTime endDateTime;
+//        if (event.getEndDate() != null) {
+//            endDateTime = LocalDateTime.of(event.getEndDate(), event.getEndTime() != null ? event.getEndTime() : LocalTime.MAX);
+//        } else {
+//            endDateTime = LocalDateTime.of(event.getStartDate(), event.getEndTime() != null ? event.getEndTime() : LocalTime.MAX);
+//        }
+//        boolean hasEnded = !endDateTime.isBefore(LocalDateTime.now());
+//        return hasStarted || hasEnded;
+    return false;
     }
 
-    public static boolean isStatusChanged(Collection<Event> events){
-        for(Event event:events){
-            if(isStatusChanged(event)){
+    public static boolean isStatusChanged(Collection<EventStatus> events){
+        for(EventStatus event:events){
+            if(isEventStatusChanged(event)){
                 return true;
             }
         }
