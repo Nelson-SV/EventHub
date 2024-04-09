@@ -93,6 +93,7 @@ public class EventManagementController extends GridPane implements Initializable
             this.secondaryLayout = secondaryLayout;
             this.thirdLayout = thirdLayout;
             this.getChildren().add(managementRoot);
+            displayTickets();
         } catch (IOException e) {
             ExceptionHandler.errorAlertMessage(ErrorCode.LOADING_FXML_FAILED.getValue());
         }
@@ -113,7 +114,9 @@ public class EventManagementController extends GridPane implements Initializable
         EditEventValidator.addEventListeners(eventName, startDate, startTime, endDate, endTime, eventLocation);
         addToolTipsForDates();
         addDatesValidityChecker();
-        displayTickets();
+
+
+
         cancelEdit.setOnAction((e) -> cancelEditOperation());
         saveEdit.setOnAction((e) -> saveOperation());
     }
@@ -237,14 +240,13 @@ public class EventManagementController extends GridPane implements Initializable
      */
     @FXML
     private void displayTickets() {
+
         if(ticketsVBox.getScene()==null){
             ticketsVBox.getChildren().clear();
             try {
                 model.getTicketsForEvent(model.getSelectedEvent().getId()).values()
                         .forEach(t ->
                                 {
-                                    System.out.println("EventsManagement SL: " + secondaryLayout);
-                                    System.out.println("EventsManagement TL: " + thirdLayout);
                                     ManageTicket manage = new ManageTicket(secondaryLayout,thirdLayout,model, this);
                                     DeleteTicket delete = new DeleteTicket(secondaryLayout,thirdLayout,model, DeleteOperation.DELETE_TICKET);
                                     TicketDescriptionComponent ticketDescriptionComponent = new TicketDescriptionComponent(t, manage, delete);
@@ -252,6 +254,7 @@ public class EventManagementController extends GridPane implements Initializable
                                 }
                         );
             } catch (EventException e) {
+
                 throw new RuntimeException(e);
             }
         }

@@ -42,11 +42,11 @@ public class ManageTicketController implements Initializable {
     }
 
     private void openEditWindow(MouseEvent event) {
-        this.editWindow.setVisible(true);
-        this.editWindow.setDisable(false);
+        this.thirdLayout.setVisible(true);
+        this.thirdLayout.setDisable(false);
         TicketsDesignController ticketsDesignController = new TicketsDesignController(editWindow, thirdLayout, eventManagementController, model);
-        editWindow.getChildren().clear();
-        editWindow.getChildren().add(ticketsDesignController.getRoot());
+        thirdLayout.getChildren().clear();
+        thirdLayout.getChildren().add(ticketsDesignController.getRoot());
         //initializeOrUpdateService(this.ticketId);
     }
 
