@@ -59,7 +59,7 @@ public class Model implements CommonModel {
      */
     private Event selectedEvent;
 
-    private List<Ticket> addedTickets, ticketToEdit;
+    private List<Ticket> addedTickets;
 
     private static Model instance;
 
@@ -81,7 +81,6 @@ public class Model implements CommonModel {
         eventTickets = FXCollections.observableHashMap();
         evmLogic = new EventManagementLogic();
         addedTickets = new ArrayList<>();
-        ticketToEdit = new ArrayList<>();
         initializeEventsMap();
         returnAllEvents();
     }
@@ -114,12 +113,6 @@ public class Model implements CommonModel {
     public List<Ticket> getNewAddedTicket(Ticket ticket) {
         addedTickets.add(ticket);
         return addedTickets;
-    }
-
-    public List<Ticket> getTicketsToEdit(Ticket ticket, int id) {
-        ticket.setId(id);
-        ticketToEdit.add(ticket);
-        return ticketToEdit;
     }
 
     public void removeAddedTicket(Ticket ticket) {
@@ -285,12 +278,11 @@ public class Model implements CommonModel {
 
         assignedCoordinatorsMap.put(selectedEvent.getId(), assignedCoordinators.stream().map(User::getUserId).collect(Collectors.toList()));
         boolean isModified = evmLogic.isModifyed(assignedCoordinatorsMap, selectedEvent, coordinatorEvents.get(selectedEvent.getId()));
-        if (!isModified && ticketToEdit.isEmpty() && addedTickets.isEmpty()) {
+        if (!isModified) {
             return;
         }
-        boolean editSucceded = evmLogic.saveEditOperation(selectedEvent, assignedCoordinatorsMap, ticketToEdit, addedTickets);
+        boolean editSucceded = evmLogic.saveEditOperation(selectedEvent, assignedCoordinatorsMap, addedTickets);
         addedTickets.clear();
-        ticketToEdit.clear();
         if (editSucceded) {
             coordinatorEvents.put(selectedEvent.getId(), selectedEvent);
             eventEditResponse = null;

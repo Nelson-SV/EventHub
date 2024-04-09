@@ -27,12 +27,9 @@
                </font></Label>
          </children>
       </VBox>
-      <VBox alignment="CENTER" prefHeight="60.0" prefWidth="180.0">
+      <VBox prefHeight="60.0" prefWidth="180.0">
          <children>
-            <HBox fx:id="ticketActions" alignment="CENTER" prefHeight="60.0" prefWidth="200.0" spacing="30.0" style="-fx-background-radius: 10;">
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin></HBox>
+            <HBox fx:id="ticketActions" alignment="CENTER" prefHeight="60.0" prefWidth="200.0" spacing="25.0" style="-fx-background-radius: 10;" />
          </children>
       </VBox>
    </children>

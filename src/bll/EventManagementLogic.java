@@ -36,6 +36,18 @@ public class EventManagementLogic implements ILogicManager {
         return usersDao.getEventUsers(eventId);
     }
 
+<<<<<<< HEAD
+=======
+    @Override
+    public ObservableMap<Integer, User> getEventCoordinators(int eventId) throws EventException {
+        return eventData.getEventCoordinators(eventId);
+    }
+
+
+    /**
+     * Convert from event objects  to event status objects
+     */
+>>>>>>> parent of 0924d18 (added retrieving events for a logged user, removed some unused code)
     @Override
     public ObservableMap<Integer, User> getEventCoordinators(int eventId) throws EventException {
         return eventData.getEventCoordinators(eventId);
@@ -52,6 +64,7 @@ public class EventManagementLogic implements ILogicManager {
     public boolean isModifyed(Map<Integer, List<Integer>> assignedCoordinators, Event selectedEvent, Event original) {
         return !assignedCoordinators.get(selectedEvent.getId()).isEmpty() || !selectedEvent.equals(original);
     }
+<<<<<<< HEAD
 //
 //    /**
 //     * check if the edited inputs are valid
@@ -90,6 +103,10 @@ public class EventManagementLogic implements ILogicManager {
 //
 //        return eventInvalid;
 //    }
+=======
+
+
+>>>>>>> parent of 0924d18 (added retrieving events for a logged user, removed some unused code)
 
 
     /**
@@ -122,8 +139,8 @@ public class EventManagementLogic implements ILogicManager {
      * @param assignedCoordinators the coordinates assigned to this event
      */
     @Override
-    public boolean saveEditOperation(Event selectedEvent, Map<Integer, List<Integer>> assignedCoordinators,List<Ticket> editTickets, List<Ticket> newTickets) throws EventException {
-        return eventData.saveEditOperation(selectedEvent, assignedCoordinators, editTickets, newTickets);
+    public boolean saveEditOperation(Event selectedEvent, Map<Integer, List<Integer>> assignedCoordinators,List<Ticket> tickets) throws EventException {
+        return eventData.saveEditOperation(selectedEvent, assignedCoordinators, tickets);
     }
 
     /**
@@ -135,6 +152,7 @@ public class EventManagementLogic implements ILogicManager {
         return EventStatusCalculator.calculateStatus(event);
     }
 
+<<<<<<< HEAD
     /**
      * To not be used, not sure if we need it
      * Convert from event objects  to event status objects
@@ -149,6 +167,22 @@ public class EventManagementLogic implements ILogicManager {
                 });
         return eventsWithStatus;
     }
+=======
+//    /**
+//     * To not be used, not sure if we need it
+//     * Convert from event objects  to event status objects
+//     */
+//    @Override
+//    public ObservableMap<Integer, EventStatus> getEventsWithStatus(Map<Integer, Event> coordinatorEvents) {
+//        ObservableMap<Integer, EventStatus> eventsWithStatus = FXCollections.observableHashMap();
+//        coordinatorEvents.values().stream().map((EventStatus::new))
+//                .forEach((item) -> {
+//                    item.setStatus(computeEventStatus(item));
+//                    eventsWithStatus.put(item.getEventDTO().getId(), item);
+//                });
+//        return eventsWithStatus;
+//    }
+>>>>>>> parent of 0924d18 (added retrieving events for a logged user, removed some unused code)
 
     /**
      * sort the events by the status and startDate
