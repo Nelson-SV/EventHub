@@ -59,7 +59,7 @@ public class Model implements CommonModel {
      */
     private Event selectedEvent;
 
-    private List<Ticket> addedTickets, ticketToEdit;
+    private List<Ticket> addedTickets, ticketToEdit, ticketsToDelete;
 
     private static Model instance;
 
@@ -82,6 +82,7 @@ public class Model implements CommonModel {
         evmLogic = new EventManagementLogic();
         addedTickets = new ArrayList<>();
         ticketToEdit = new ArrayList<>();
+        ticketsToDelete = new ArrayList<>();
         initializeEventsMap();
         returnAllEvents();
     }
@@ -120,6 +121,12 @@ public class Model implements CommonModel {
         ticket.setId(id);
         ticketToEdit.add(ticket);
         return ticketToEdit;
+    }
+
+    public List<Ticket> getTicketsToDelete(Ticket ticket, int id) {
+        ticket.setId(id);
+        ticketsToDelete.add(ticket);
+        return ticketsToDelete;
     }
 
     public void removeAddedTicket(Ticket ticket) {
@@ -228,12 +235,8 @@ public class Model implements CommonModel {
         switch (deleteOperation) {
             case DELETE_EVENT -> this.deleteEvent(entityId);
             case DELETE_USER -> this.deleteUser(entityId);
-            case DELETE_TICKET -> this.deleteTicket(entityId);
+            //case DELETE_TICKET -> this.deleteTicket(entityId);
         }
-    }
-
-    private void deleteTicket(int entityId) {
-
     }
 
 
@@ -256,9 +259,10 @@ public class Model implements CommonModel {
      * @param eventId the id of the event that will be deleted
      */
     private void deleteEvent(int eventId) throws EventException {
-        boolean deleted = evmLogic.deleteEvent(eventId);
+        boolean deleted = evmLogic.deleteEvent(eventId, ticketsToDelete);
         if (deleted) {
             this.coordinatorEvents.remove(eventId);
+            ticketsToDelete.clear();
             Platform.runLater(() -> getEventsDisplayer().displayEvents());
         }
     }
@@ -285,12 +289,13 @@ public class Model implements CommonModel {
 
         assignedCoordinatorsMap.put(selectedEvent.getId(), assignedCoordinators.stream().map(User::getUserId).collect(Collectors.toList()));
         boolean isModified = evmLogic.isModifyed(assignedCoordinatorsMap, selectedEvent, coordinatorEvents.get(selectedEvent.getId()));
-        if (!isModified && ticketToEdit.isEmpty() && addedTickets.isEmpty()) {
+        if (!isModified && ticketToEdit.isEmpty() && addedTickets.isEmpty() && ticketsToDelete.isEmpty()) {
             return;
         }
-        boolean editSucceded = evmLogic.saveEditOperation(selectedEvent, assignedCoordinatorsMap, ticketToEdit, addedTickets);
+        boolean editSucceded = evmLogic.saveEditOperation(selectedEvent, assignedCoordinatorsMap, ticketToEdit, addedTickets, ticketsToDelete);
         addedTickets.clear();
         ticketToEdit.clear();
+        ticketsToDelete.clear();
         if (editSucceded) {
             coordinatorEvents.put(selectedEvent.getId(), selectedEvent);
             eventEditResponse = null;

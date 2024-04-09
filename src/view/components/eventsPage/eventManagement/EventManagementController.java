@@ -225,7 +225,7 @@ public class EventManagementController extends GridPane implements Initializable
                         .forEach(t ->
                                 {
                                     ManageTicket manage = new ManageTicket(secondaryLayout,thirdLayout,model, this, t);
-                                    DeleteTicket delete = new DeleteTicket(secondaryLayout,thirdLayout,model, DeleteOperation.DELETE_TICKET);
+                                    DeleteTicket delete = new DeleteTicket(secondaryLayout,thirdLayout,model, DeleteOperation.DELETE_TICKET, t, this);
                                     TicketDescriptionComponent ticketDescriptionComponent = new TicketDescriptionComponent(t, manage, delete);
                                     ticketsVBox.getChildren().add(ticketDescriptionComponent);
                                 }
@@ -251,6 +251,7 @@ public class EventManagementController extends GridPane implements Initializable
     }
 
     public VBox getTicketsVBox(){
+        System.out.println("EVENT: " + ticketsVBox.toString());
         return ticketsVBox;
     }
 

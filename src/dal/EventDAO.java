@@ -105,12 +105,13 @@ public class EventDAO {
 
     public List<Integer> insertTicket(List<Ticket> tickets, Connection conn) throws SQLException, EventException {
         List<Integer> ticketIds = new ArrayList<>();
-        String ticketSql = "INSERT INTO Ticket (Type, Quantity, Price) VALUES (?, ?, ?)";
+        String ticketSql = "INSERT INTO Ticket (Type, Quantity, Price, Colour) VALUES (?, ?, ?, ?)";
         try (PreparedStatement ticketStatement = conn.prepareStatement(ticketSql, Statement.RETURN_GENERATED_KEYS)) {
             for (Ticket ticket : tickets) {
                 ticketStatement.setString(1, ticket.getTicketType());
                 ticketStatement.setInt(2, ticket.getQuantity());
                 ticketStatement.setBigDecimal(3, ticket.getTicketPrice());
+                ticketStatement.setString(4, ticket.getColor());
 
                 ticketStatement.executeUpdate();
 
@@ -233,8 +234,9 @@ public class EventDAO {
 //        return evCoordinators;
 //    }
 
-    public boolean saveEditOperation(Event selectedEvent, Map<Integer, List<Integer>> assignedCoordinators, List<Ticket> editTickets, List<Ticket> newTickets) throws EventException {
+    public boolean saveEditOperation(Event selectedEvent, Map<Integer, List<Integer>> assignedCoordinators, List<Ticket> editTickets, List<Ticket> newTickets, List<Ticket> ticketsToDelete) throws EventException {
         boolean succeded = false;
+        System.out.println("LIST DAO: " + ticketsToDelete);
         String updateEvent = "UPDATE Event SET Start_date=?,Name=?,Description=?,End_Date=?,Start_Time=?,End_Time=?,Location=? WHERE EventId=?";
         Connection conn = null;
         try {
@@ -277,6 +279,9 @@ public class EventDAO {
             if (!editTickets.isEmpty()) {
                 updateTicket(editTickets, conn);
             }
+            if (!ticketsToDelete.isEmpty()) {
+                deleteTicket(ticketsToDelete, conn);
+            }
             conn.commit();
             succeded = true;
         } catch (SQLException | EventException e) {
@@ -301,18 +306,30 @@ public class EventDAO {
     }
 
     private void updateTicket(List<Ticket> editTickets, Connection conn) throws EventException {
-        String ticketSql = "UPDATE Ticket SET Type=?, Quantity=?, Price=? WHERE ID=?";
+        String ticketSql = "UPDATE Ticket SET Type=?, Quantity=?, Price=?, Colour=? WHERE ID=?";
         try (PreparedStatement ticketStatement = conn.prepareStatement(ticketSql)) {
             for (Ticket ticket : editTickets) {
-                System.out.println("DAO: " + ticket.getId());
                 ticketStatement.setString(1, ticket.getTicketType());
                 ticketStatement.setInt(2, ticket.getQuantity());
                 ticketStatement.setBigDecimal(3, ticket.getTicketPrice());
-                ticketStatement.setInt(4, ticket.getId());
+                ticketStatement.setString(4, ticket.getColor());
+                ticketStatement.setInt(5, ticket.getId());
 
                 ticketStatement.executeUpdate();
             }
-            //ticketStatement.executeBatch();
+        } catch (SQLException e) {
+            throw new EventException(e.getMessage());
+        }
+    }
+
+    private void deleteTicket(List<Ticket> ticketsToDelete, Connection conn) throws EventException {
+        String ticketSql = "DELETE FROM Ticket WHERE ID=?";
+        try (PreparedStatement ticketStatement = conn.prepareStatement(ticketSql)) {
+            for (Ticket ticket : ticketsToDelete) {
+                ticketStatement.setInt(1, ticket.getId());
+
+                ticketStatement.executeUpdate();
+            }
         } catch (SQLException e) {
             throw new EventException(e.getMessage());
         }
@@ -335,7 +352,7 @@ public class EventDAO {
         }
     }
 
-    public boolean deleteEvent(int eventId) throws EventException {
+    public boolean deleteEvent(int eventId, List<Ticket> ticketsToDelete) throws EventException {
         boolean succeeded = false;
         String sql = "DELETE FROM Event WHERE EventId=?";
         try (Connection conn = connectionManager.getConnection()) {
@@ -344,6 +361,9 @@ public class EventDAO {
             try (PreparedStatement psmt = conn.prepareStatement(sql)) {
                 psmt.setInt(1, eventId);
                 psmt.executeUpdate();
+                if (!ticketsToDelete.isEmpty()) {
+                    deleteTicket(ticketsToDelete, conn);
+                }
                 conn.commit();
                 succeeded = true;
             } catch (SQLException e) {

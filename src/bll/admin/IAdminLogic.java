@@ -1,9 +1,6 @@
 package bll.admin;
 
-import be.Event;
-import be.EventStatus;
-import be.Status;
-import be.User;
+import be.*;
 import exceptions.EventException;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
@@ -25,7 +22,7 @@ public interface IAdminLogic {
 
     boolean assignCoordinatorsToEvent(ObservableList<Integer> selectedUsers, int id) throws  EventException;
 
-    boolean deleteEvent(int eventId) throws EventException;
+    boolean deleteEvent(int eventId, List<Ticket> ticketToDelete) throws EventException;
 
     List<EventStatus> getSearchedEvents(String eventName,List<EventStatus> events);
 

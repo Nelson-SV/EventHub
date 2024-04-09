@@ -21,7 +21,7 @@ public interface ILogicManager {
 
     boolean isModifyed(Map<Integer, List<Integer>> assignedCoordinators, Event selectedEvent, Event original);
 
-    boolean saveEditOperation(Event selectedEvent, Map<Integer, List<Integer>> assignedCoordinators, List<Ticket> editTickets, List<Ticket> newTickets) throws EventException;
+    boolean saveEditOperation(Event selectedEvent, Map<Integer, List<Integer>> assignedCoordinators, List<Ticket> editTickets, List<Ticket> newTickets, List<Ticket> deleteTickets) throws EventException;
 
     //EventInvalidResponse isInputValidTest(Event selectedEvent);
 
@@ -31,7 +31,7 @@ public interface ILogicManager {
 
     List<Event> getSortedEventsByStatus(Collection<Event> events);
 
-    boolean deleteEvent(int eventId) throws EventException;
+    boolean deleteEvent(int eventId, List<Ticket> ticketsToDelete) throws EventException;
 
     LocalTime convertStringToLocalTime(String value);
 

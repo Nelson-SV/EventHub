@@ -122,8 +122,8 @@ public class EventManagementLogic implements ILogicManager {
      * @param assignedCoordinators the coordinates assigned to this event
      */
     @Override
-    public boolean saveEditOperation(Event selectedEvent, Map<Integer, List<Integer>> assignedCoordinators,List<Ticket> editTickets, List<Ticket> newTickets) throws EventException {
-        return eventData.saveEditOperation(selectedEvent, assignedCoordinators, editTickets, newTickets);
+    public boolean saveEditOperation(Event selectedEvent, Map<Integer, List<Integer>> assignedCoordinators,List<Ticket> editTickets, List<Ticket> newTickets, List<Ticket> deleteTickets) throws EventException {
+        return eventData.saveEditOperation(selectedEvent, assignedCoordinators, editTickets, newTickets, deleteTickets);
     }
 
     /**
@@ -213,8 +213,8 @@ public class EventManagementLogic implements ILogicManager {
      * @param eventId the id of the event
      */
     @Override
-    public boolean deleteEvent(int eventId) throws EventException {
-        return eventData.deleteEvent(eventId);
+    public boolean deleteEvent(int eventId, List<Ticket> ticketsToDelete) throws EventException {
+        return eventData.deleteEvent(eventId, ticketsToDelete);
     }
 
     public LocalTime convertStringToLocalTime(String value) {

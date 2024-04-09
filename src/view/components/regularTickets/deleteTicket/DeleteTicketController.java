@@ -11,15 +11,18 @@ import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 import view.components.confirmationWindow.ConfirmationWindow;
+import view.components.eventsPage.eventManagement.EventManagementController;
+import view.components.eventsPage.eventManagement.ticketManagement.TicketDescriptionComponent;
 import view.components.listeners.OperationHandler;
 import view.components.loadingComponent.LoadingActions;
 import view.components.loadingComponent.LoadingComponent;
-import view.components.main.CommonModel;
+import view.components.main.Model;
 import view.utility.CommonMethods;
 
 import java.net.URL;
@@ -32,34 +35,53 @@ public class DeleteTicketController implements OperationHandler, Initializable {
     private VBox deleteOperation;
     private StackPane secondaryLayout;
     private StackPane thirdLayout;
-    private CommonModel model;
-    private int ticketId;
+    private Model model;
     private Service<Void> deleteTicketService;
     private LoadingComponent loadingComponent;
     private ConfirmationWindow confirmationWindow;
     private DeleteOperation performedDeleteOperation;
     private Ticket ticket;
+    private EventManagementController eventManagementController;
+    private VBox ticketsVBox;
 
-    public DeleteTicketController(StackPane secondaryLayout, StackPane thirdLayout, CommonModel model, DeleteOperation deleteOperation) {
+    public DeleteTicketController(StackPane secondaryLayout, StackPane thirdLayout, Model model, DeleteOperation deleteOperation, Ticket ticket, EventManagementController eventManagementController) {
         this.secondaryLayout = secondaryLayout;
         this.thirdLayout = thirdLayout;
         this.model = model;
         this.performedDeleteOperation = deleteOperation;
+        this.ticket = ticket;
+        this.eventManagementController = eventManagementController;
+
+        ticketsVBox = eventManagementController.getTicketsVBox();
+        System.out.println("constructor: " + ticketsVBox);
     }
 
     @Override
     public void performOperation() {
         initializeLoadingComponent();
         initializeDeleteService();
+        removeTicket(ticketsVBox, ticket);
+    }
+
+    private void removeTicket(VBox ticketsVBox, Ticket selectedTicket) {
+        for (Node node : ticketsVBox.getChildren()) {
+            if (node instanceof TicketDescriptionComponent) {
+                TicketDescriptionComponent ticketDescriptionComponent = (TicketDescriptionComponent) node;
+                if (ticketDescriptionComponent.getTicket().equals(selectedTicket)) {
+                    ticketsVBox.getChildren().remove(node);
+                    break;
+                }
+            }
+        }
     }
 
 
     private void initializeDeleteOperation() {
-        secondaryLayout.getChildren().clear();
-        confirmationWindow = new ConfirmationWindow(this, secondaryLayout);
-        secondaryLayout.getChildren().add(confirmationWindow);
-        secondaryLayout.setDisable(false);
-        secondaryLayout.setVisible(true);
+        thirdLayout.getChildren().clear();
+        confirmationWindow = new ConfirmationWindow(this, thirdLayout);
+        thirdLayout.getChildren().add(confirmationWindow);
+        thirdLayout.setDisable(false);
+        thirdLayout.setVisible(true);
     }
 
     private void initializeLoadingComponent() {
@@ -85,7 +107,9 @@ public class DeleteTicketController implements OperationHandler, Initializable {
                 return new Task<Void>() {
                     @Override
                     protected Void call() throws EventException {
-                        model.performDeleteOperation(ticketId, performedDeleteOperation);
+                        System.out.println("CONTROLLER: " + ticket);
+                        model.getTicketsToDelete(ticket, ticket.getId());
+                        System.out.println("CONTROLLER2: " + ticket);
                         return null;
                     }
                 };
@@ -95,7 +119,6 @@ public class DeleteTicketController implements OperationHandler, Initializable {
             loadingComponent.setAction(LoadingActions.SUCCES.getActionValue());
             pauseTransition.setOnFinished((ev) -> {
                 CommonMethods.closeWindow(thirdLayout);
-                CommonMethods.closeWindow(secondaryLayout);
 
             });
             pauseTransition.play();
