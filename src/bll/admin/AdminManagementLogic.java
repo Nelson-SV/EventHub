@@ -10,7 +10,6 @@ import dal.UsersDAO;
 import dal.admindal.AdminDao;
 import dal.admindal.IAdminDao;
 import exceptions.EventException;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
 import javafx.concurrent.Task;
