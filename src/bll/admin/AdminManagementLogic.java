@@ -45,7 +45,6 @@ public class AdminManagementLogic implements IAdminLogic {
     }
 
     /**
-     * To not be used, not sure if we need it
      * Convert from event objects  to event status objects
      */
     @Override

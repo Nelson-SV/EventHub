@@ -41,6 +41,18 @@ public class EventManagementLogic implements ILogicManager {
         return eventData.getEventCoordinators(eventId);
     }
 
+
+    /**
+     * Convert from event objects  to event status objects
+     */
+    @Override
+    public ObservableMap<Integer, EventStatus> getEventsWithStatus(int userId) throws EventException {
+        ObservableMap<Integer, EventStatus> eventsWithStatus = eventData.retrieveEventsForUser(userId);
+        eventsWithStatus.values().forEach(item -> item.setStatus(computeEventStatus(item)));
+        return eventsWithStatus;
+    }
+
+
     /**
      * check if edit operations was performed
      *
@@ -52,44 +64,8 @@ public class EventManagementLogic implements ILogicManager {
     public boolean isModifyed(Map<Integer, List<Integer>> assignedCoordinators, Event selectedEvent, Event original) {
         return !assignedCoordinators.get(selectedEvent.getId()).isEmpty() || !selectedEvent.equals(original);
     }
-//
-//    /**
-//     * check if the edited inputs are valid
-//     */
-//
-//    public EventInvalidResponse isInputValidTest(Event selectedEvent) {
-//        EventInvalidResponse eventInvalid = new EventInvalidResponse();
-//        boolean areInputsValid = true;
-//
-//
-//        if (!isStartDateValid(selectedEvent.getStartDate())) {
-//            areInputsValid = false;
-//            eventInvalid.setStartDateInvalid(selectedEvent.getStartDate().toString() + ": Start date is not valid!");
-//        }
-//
-//
-//        if (selectedEvent.getEndDate() != null && !isEndDateValid(selectedEvent.getStartDate(), selectedEvent.getEndDate())) {
-//            areInputsValid = false;
-//            eventInvalid.setEndDateInvalid(selectedEvent.getEndDate().toString() + ": End date is not valid!");
-//        }
-//
-//
-//        if (selectedEvent.getEndDate() != null && selectedEvent.getEndTime() != null && !isEndTimeValid(selectedEvent.getStartTime(), selectedEvent.getEndTime(), selectedEvent.getStartDate(), selectedEvent.getEndDate())) {
-//            areInputsValid = false;
-//            eventInvalid.setEndTimeInvalid(selectedEvent.getEndTime() + ": End time is not valid!");
-//        }
-//
-//        if (selectedEvent.getEndTime() != null && !isStartTimeValid(selectedEvent.getStartTime(), selectedEvent.getEndTime())) {
-//            areInputsValid = false;
-//            eventInvalid.setStartTimeInvalid(selectedEvent.getStartTime() + ": Start time is not valid!");
-//        }
-//
-//        if (areInputsValid) {
-//            return null;
-//        }
-//
-//        return eventInvalid;
-//    }
+
+
 
 
     /**
@@ -106,15 +82,6 @@ public class EventManagementLogic implements ILogicManager {
     private boolean isStartTimeValid(LocalTime startTime, LocalTime endTime) {
         return startTime.isBefore(endTime);
     }
-
-//    private boolean isEndTimeValid(LocalTime startTime, LocalTime endTime, LocalDate startDate, LocalDate endDate) {
-//        if (startDate.isEqual(endDate)) {
-//            return !startTime.isAfter(endTime);
-//        }
-//        return true;
-//    }
-
-
     /**
      * persist the edit event operation
      *
@@ -135,20 +102,20 @@ public class EventManagementLogic implements ILogicManager {
         return EventStatusCalculator.calculateStatus(event);
     }
 
-    /**
-     * To not be used, not sure if we need it
-     * Convert from event objects  to event status objects
-     */
-    @Override
-    public ObservableMap<Integer, EventStatus> getEventsWithStatus(Map<Integer, Event> coordinatorEvents) {
-        ObservableMap<Integer, EventStatus> eventsWithStatus = FXCollections.observableHashMap();
-        coordinatorEvents.values().stream().map((EventStatus::new))
-                .forEach((item) -> {
-                    item.setStatus(computeEventStatus(item));
-                    eventsWithStatus.put(item.getEventDTO().getId(), item);
-                });
-        return eventsWithStatus;
-    }
+//    /**
+//     * To not be used, not sure if we need it
+//     * Convert from event objects  to event status objects
+//     */
+//    @Override
+//    public ObservableMap<Integer, EventStatus> getEventsWithStatus(Map<Integer, Event> coordinatorEvents) {
+//        ObservableMap<Integer, EventStatus> eventsWithStatus = FXCollections.observableHashMap();
+//        coordinatorEvents.values().stream().map((EventStatus::new))
+//                .forEach((item) -> {
+//                    item.setStatus(computeEventStatus(item));
+//                    eventsWithStatus.put(item.getEventDTO().getId(), item);
+//                });
+//        return eventsWithStatus;
+//    }
 
     /**
      * sort the events by the status and startDate
@@ -346,4 +313,43 @@ public class EventManagementLogic implements ILogicManager {
         }
     }
 
+
+
+
+    //sorting the events with status
+
+    public List<EventStatus> getAllSortedEventsByStatus(Collection<EventStatus> events) {
+        List<EventStatus> sortedEvents = new ArrayList<>();
+        //sort ongoing events
+        List<EventStatus> ongoingEvents = sortOngoing(events);
+        //sort upcoming events
+        List<EventStatus> upcomingEvents = sortUpcoming(events);
+        //sort finalized events
+        List<EventStatus> finalizedEvents = sortFinalized(events);
+
+        sortedEvents.addAll(ongoingEvents);
+        sortedEvents.addAll(upcomingEvents);
+        sortedEvents.addAll(finalizedEvents);
+        return sortedEvents;
+    }
+    private List<EventStatus> sortOngoing(Collection<EventStatus> events) {
+        List<EventStatus> ongoing = events.stream().filter((item) -> item.getStatus().getValue().equals(Status.ONGOING.getValue())).toList();
+        return sortByStartingDateAndTime(ongoing);
+    }
+
+    private List<EventStatus> sortUpcoming(Collection<EventStatus> events) {
+        List<EventStatus> upcoming = events.stream().filter((item) -> item.getStatus().getValue().equals(Status.UPCOMING.getValue())).toList();
+        return sortByStartingDateAndTime(upcoming);
+    }
+
+    private List<EventStatus> sortFinalized(Collection<EventStatus> events) {
+        List<EventStatus> finalized = events.stream().filter((item) -> item.getStatus().getValue().equals(Status.FINALIZED.getValue())).toList();
+        return sortByStartingDateAndTime(finalized);
+    }
+    private List<EventStatus> sortByStartingDateAndTime(List<EventStatus> events) {
+        return events.stream()
+                .sorted(Comparator.comparing((EventStatus event) -> event.getEventDTO().getStartDate())
+                        .thenComparing(event -> event.getEventDTO().getStartTime()))
+                .collect(Collectors.toList());
+    }
 }

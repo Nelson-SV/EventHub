@@ -60,8 +60,8 @@ public class EventsPageController extends VBox implements Displayable, Initializ
                 model.sortedEventsList()
                         .forEach(e ->
                                 {
-                                    ManageAction manageAction = new ManageAction(secondaryLayout,thirdLayout,e.getId(),model);
-                                    DeleteButton deleteButton = new DeleteButton(secondaryLayout,thirdLayout,model,e.getId(), DeleteOperation.DELETE_EVENT);
+                                    ManageAction manageAction = new ManageAction(secondaryLayout,thirdLayout,e.getEventDTO().getId(),model);
+                                    DeleteButton deleteButton = new DeleteButton(secondaryLayout,thirdLayout,model,e.getEventDTO().getId(), DeleteOperation.DELETE_EVENT);
                                     EventComponent eventComponent = new EventComponent(e,manageAction,deleteButton);
                                     mainEventContainer.getChildren().add(eventComponent);
                                 }
@@ -93,7 +93,6 @@ public class EventsPageController extends VBox implements Displayable, Initializ
             model.setEventsDisplayer(this);
             initializeEvents();
         } catch (EventException e) {
-
             ExceptionHandler.errorAlertMessage(e.getMessage());
         }
     }
