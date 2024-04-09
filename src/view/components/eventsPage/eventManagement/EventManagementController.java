@@ -1,7 +1,9 @@
 package view.components.eventsPage.eventManagement;
+import be.DeleteOperation;
 import be.EventInvalidResponse;
 import be.User;
 import exceptions.ErrorCode;
+import exceptions.EventException;
 import exceptions.ExceptionHandler;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
@@ -21,13 +23,18 @@ import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 import javafx.util.StringConverter;
 import org.controlsfx.control.CheckComboBox;
+import view.components.eventsPage.eventManagement.ticketManagement.TicketDescriptionComponent;
 import view.components.listeners.CoordinatorsDisplayer;
 import view.components.loadingComponent.LoadingActions;
 import view.components.loadingComponent.LoadingComponent;
 import view.components.main.Model;
+import view.components.regularTickets.deleteTicket.DeleteTicket;
+import view.components.regularTickets.ticketDesign.TicketsDesignController;
+import view.components.regularTickets.ticketManagement.ManageTicket;
 import view.utility.CommonMethods;
 import view.utility.EditEventValidator;
 import java.io.IOException;
@@ -63,6 +70,8 @@ public class EventManagementController extends GridPane implements Initializable
     @FXML
     private ComboBox<User> normal;
     @FXML
+    private VBox ticketsVBox;
+    @FXML
     CheckComboBox<User> coordinators;
     private Model model;
     @FXML
@@ -82,6 +91,7 @@ public class EventManagementController extends GridPane implements Initializable
             this.thirdLayout = thirdLayout;
             this.model = model;
             this.getChildren().add(managementRoot);
+            displayTickets();
         } catch (IOException e) {
             ExceptionHandler.errorAlertMessage(ErrorCode.LOADING_FXML_FAILED.getValue());
         }
@@ -200,6 +210,51 @@ public class EventManagementController extends GridPane implements Initializable
         };
         date.textProperty().bindBidirectional(eventDate, converter);
     }
+
+    /**
+     * loads the tickets of the selected event
+     */
+    @FXML
+    private void displayTickets() {
+
+        if(ticketsVBox.getScene()==null){
+            ticketsVBox.getChildren().clear();
+            try {
+                model.getTicketsForEvent(model.getSelectedEvent().getId()).values()
+                        .forEach(t ->
+                                {
+                                    ManageTicket manage = new ManageTicket(secondaryLayout,thirdLayout,model, this);
+                                    DeleteTicket delete = new DeleteTicket(secondaryLayout,thirdLayout,model, DeleteOperation.DELETE_TICKET);
+                                    TicketDescriptionComponent ticketDescriptionComponent = new TicketDescriptionComponent(t, manage, delete);
+                                    ticketsVBox.getChildren().add(ticketDescriptionComponent);
+                                }
+                        );
+            } catch (EventException e) {
+
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    @FXML
+    private void addNewTicket() {
+        showThirdLayout();
+        System.out.println("EventsManagement OTHER SL: " + secondaryLayout);
+        System.out.println("EventsManagement OTHER TL: " + thirdLayout);
+        TicketsDesignController ticketsDesignController = new TicketsDesignController(secondaryLayout, thirdLayout, this, model);
+        this.thirdLayout.getChildren().add(ticketsDesignController.getRoot());
+    }
+
+    private void showThirdLayout() {
+        this.thirdLayout.getChildren().clear();
+        this.thirdLayout.setDisable(false);
+        this.thirdLayout.setVisible(true);
+    }
+
+    public VBox getTicketsVBox(){
+        return ticketsVBox;
+    }
+
 
     /**
      * cancel the event editing

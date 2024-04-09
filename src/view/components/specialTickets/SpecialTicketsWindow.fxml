@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<!--        fx:controller="view.components.ticketsGeneration.TicketsGenerationControllerGenerationController"-->
+<!--        fx:controller="view.components.regularTickets.TicketsGenerationControllerGenerationController"-->
 
 <VBox fx:id="vBox" maxHeight="718.0" maxWidth="898.0" minHeight="597.0" minWidth="598.0" prefHeight="700.0" prefWidth="613.0" styleClass="vHBoxGroup" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>

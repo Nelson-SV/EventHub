@@ -1,4 +1,4 @@
-package view.components.ticketsGeneration;
+package view.components.regularTickets.ticketGeneration;
 
 import be.Ticket;
 import exceptions.ErrorCode;
@@ -75,7 +75,7 @@ public class TicketsGenerationController {
 
     @FXML
     private void addTickets(ActionEvent actionEvent) throws EventException {
-        boolean isTicketValid = TicketValidator.isTicketValid(ticketTypeTF, ticketPriceTF, ticketQuantityTF );
+        boolean isTicketValid = TicketValidator.isTicketValid(ticketTypeTF, ticketPriceTF, ticketQuantityTF);
 
         if(isTicketValid) {
             Ticket ticket = new Ticket(ticketTypeTF.getText(), Integer.parseInt(ticketQuantityTF.getText()), new BigDecimal(ticketPriceTF.getText()));
@@ -101,7 +101,7 @@ public class TicketsGenerationController {
             createEventController.hBoxTickets.setAlignment(Pos.CENTER_LEFT);
             createEventController.hBoxTickets.getChildren().add(0, vBox);
 
-            model.getNewTicket(ticket);
+            model.getNewAddedTicket(ticket);
 
             remove.setOnAction(event -> {
                 removeTicket(vBox, ticket);
@@ -115,7 +115,7 @@ public class TicketsGenerationController {
 
     private void removeTicket(VBox selectedVbox, Ticket selectedTicket) {
         createEventController.hBoxTickets.getChildren().remove(selectedVbox);
-        model.removeTicket(selectedTicket);
+        model.removeAddedTicket(selectedTicket);
     }
 
     private void editTicket(Ticket ticket, Parent parent) {

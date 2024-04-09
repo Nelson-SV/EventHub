@@ -110,12 +110,12 @@ public class Model implements CommonModel {
         }
     }
 
-    public List<Ticket> getNewTicket(Ticket ticket) {
+    public List<Ticket> getNewAddedTicket(Ticket ticket) {
         addedTickets.add(ticket);
         return addedTickets;
     }
 
-    public void removeTicket(Ticket ticket) {
+    public void removeAddedTicket(Ticket ticket) {
         addedTickets.remove(ticket);
     }
 
@@ -281,7 +281,8 @@ public class Model implements CommonModel {
         if (!isModified) {
             return;
         }
-        boolean editSucceded = evmLogic.saveEditOperation(selectedEvent, assignedCoordinatorsMap);
+        boolean editSucceded = evmLogic.saveEditOperation(selectedEvent, assignedCoordinatorsMap, addedTickets);
+        addedTickets.clear();
         if (editSucceded) {
             coordinatorEvents.put(selectedEvent.getId(), selectedEvent);
             eventEditResponse = null;
