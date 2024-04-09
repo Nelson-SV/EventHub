@@ -1,7 +1,6 @@
 package view.components.eventsPage.eventManagement;
 import be.DeleteOperation;
 import be.EventInvalidResponse;
-import be.Ticket;
 import be.User;
 import exceptions.ErrorCode;
 import exceptions.EventException;
@@ -224,7 +223,7 @@ public class EventManagementController extends GridPane implements Initializable
                 model.getTicketsForEvent(model.getSelectedEvent().getId()).values()
                         .forEach(t ->
                                 {
-                                    ManageTicket manage = new ManageTicket(secondaryLayout,thirdLayout,model, this, t);
+                                    ManageTicket manage = new ManageTicket(secondaryLayout,thirdLayout,model, this);
                                     DeleteTicket delete = new DeleteTicket(secondaryLayout,thirdLayout,model, DeleteOperation.DELETE_TICKET);
                                     TicketDescriptionComponent ticketDescriptionComponent = new TicketDescriptionComponent(t, manage, delete);
                                     ticketsVBox.getChildren().add(ticketDescriptionComponent);
@@ -240,6 +239,8 @@ public class EventManagementController extends GridPane implements Initializable
     @FXML
     private void addNewTicket() {
         showThirdLayout();
+        System.out.println("EventsManagement OTHER SL: " + secondaryLayout);
+        System.out.println("EventsManagement OTHER TL: " + thirdLayout);
         TicketsDesignController ticketsDesignController = new TicketsDesignController(secondaryLayout, thirdLayout, this, model);
         this.thirdLayout.getChildren().add(ticketsDesignController.getRoot());
     }
