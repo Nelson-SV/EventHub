@@ -1,7 +1,6 @@
 package dal.admindal;
 import be.Event;
 import be.EventStatus;
-import be.User;
 import dal.ConnectionManager;
 import exceptions.ErrorCode;
 import exceptions.EventException;
