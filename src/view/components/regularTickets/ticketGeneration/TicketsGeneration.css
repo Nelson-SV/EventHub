@@ -4,7 +4,6 @@
 }
 .mfx-text-field .floating-text{
     -fx-background-color: #DAC0A3;
-    -fx-font-weight: bold;
     -fx-text-fill: BLACK;
 }
 
@@ -15,9 +14,8 @@
 }
 
 .textFieldGroup {
-    -fx-border-color: BLACK;
-    -fx-background-color: #DAC0A3;
-    -fx-border-radius: 10;
+    -fx-background-color: WHITE;
+    -fx-border-radius: 5;
 }
 
 .buttonGroup {

@@ -16,7 +16,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 public class Model implements CommonModel {
 
-      private User loggedUser ;
+    private User loggedUser ;
 
 
 
@@ -75,8 +75,8 @@ public class Model implements CommonModel {
      */
     private Event selectedEvent;
 
-    private List<Ticket> addedTickets;
-  //  private User loggedUser;
+    private List<Ticket> addedTickets, ticketToEdit, ticketsToDelete;
+    //  private User loggedUser;
 
     private static Model instance;
 
@@ -93,33 +93,26 @@ public class Model implements CommonModel {
         initializeEventDateObservable();
         eventManager = new EventManager();
         ticketManager = new TicketManager();
-
         logInManager = new LogInManager();
         allEvents = FXCollections.observableHashMap();
         eventTickets = FXCollections.observableHashMap();
         evmLogic = new EventManagementLogic();
         addedTickets = new ArrayList<>();
+        ticketToEdit = new ArrayList<>();
+        ticketsToDelete = new ArrayList<>();
         returnAllEvents();
         loggedCoordinatorEvents = FXCollections.observableHashMap();
     }
 
-    /**
-     * initialize the thread that is checking the database for modifications
-     */
     private void initializeEventsObservable() throws EventException {
         eventsObservable = new EventsObservable(this);
         eventsObservable.startService();
     }
 
-    /**
-     * initialize the thread that check if event status has changed
-     */
     private void initializeEventDateObservable() {
         dateObservable = new DateObservable(this);
         dateObservable.startService();
     }
-
-
 
     public User getLoggedUser() {
         return loggedUser;
@@ -129,27 +122,40 @@ public class Model implements CommonModel {
         this.loggedUser = loggedUser;
     }
 
+    /** creates a new event
+     @param event the new event created
+     */
 
-    /*** creates a new event
-     @param event the new event created*/
-    public void addEvent(Event event,int userId) throws EventException {
-        Integer inserted = eventManager.addEvent(event, addedTickets,userId);
-        addedTickets.clear();
-        if (inserted != null) {
-            event.setId(inserted);
-            EventStatus createdEvent = new EventStatus(event);
-            createdEvent.setStatus(EventStatusCalculator.calculateStatus(event));
-            loggedCoordinatorEvents.put(inserted,createdEvent);
-        }
+     public void addEvent(Event event,int userId) throws EventException {
+     Integer inserted = eventManager.addEvent(event, addedTickets,userId);
+     addedTickets.clear();
+     if (inserted != null) {
+     event.setId(inserted);
+     EventStatus createdEvent = new EventStatus(event);
+     createdEvent.setStatus(EventStatusCalculator.calculateStatus(event));
+     loggedCoordinatorEvents.put(inserted,createdEvent);
+     }
 
-        Platform.runLater(()->{
-            this.eventsDisplayer.displayEvents();
-        });
-    }
+     Platform.runLater(()->{
+     this.eventsDisplayer.displayEvents();
+     });
+     }
 
     public List<Ticket> getNewAddedTicket(Ticket ticket) {
         addedTickets.add(ticket);
         return addedTickets;
+    }
+
+    public List<Ticket> getTicketsToEdit(Ticket ticket, int id) {
+        ticket.setId(id);
+        ticketToEdit.add(ticket);
+        return ticketToEdit;
+    }
+
+    public List<Ticket> getTicketsToDelete(Ticket ticket, int id) {
+        ticket.setId(id);
+        ticketsToDelete.add(ticket);
+        return ticketsToDelete;
     }
 
     public void removeAddedTicket(Ticket ticket) {
@@ -158,12 +164,12 @@ public class Model implements CommonModel {
 
 
     /**
-     * initialize the events map
+     *
+     initialize the events map
      */
     public void initializeEventsMap() throws EventException {
         loggedCoordinatorEvents = evmLogic.getEventsWithStatus(loggedUser.getUserId());
     }
-
 
     /**
      * Sets the Event Displayer responsible for displaying the events
@@ -179,29 +185,28 @@ public class Model implements CommonModel {
     }
 
     /**
-     * sorts the events with the least amount of time remaining until it starts first
+     sorts the events with the least amount of time remaining until it starts first
      */
     public List<EventStatus> sortedEventsList() {
-        return evmLogic.getAllSortedEventsByStatus(loggedCoordinatorEvents.values());
-        //return evmLogic.getSortedEventsByStatus(loggedCoordinatorEvents.values());
-    }
-
+        return evmLogic.getAllSortedEventsByStatus(loggedCoordinatorEvents.values());}
     /**
-     * sets the view that is displaying the coordinators
+     * updates the view that is displaying the coordinators
      */
     public void setCoordinatorsDisplayer(CoordinatorsDisplayer displayer) {
         this.coordinatorsDisplayer = displayer;
     }
 
     /**
-     * set the event that has been selected to be managed
-     * it is a clone, if user wants to cancel , than the original event will not be affected
+
+     set the event that has been selected to be managed
+     it is a clone, if user wants to cancel , than the original event will not be affected
      */
     public void setSelectedEvent(int id) {
-        this.selectedEvent = new Event(loggedCoordinatorEvents.get(id).getEventDTO());
-    }
+        this.selectedEvent = new Event(loggedCoordinatorEvents.get(id).getEventDTO());}
 
-    /*** returns the event that have been selected for editing*/
+    /**
+     * returns the event that have been selected for editing
+     */
     public Event getSelectedEvent() {
         return this.selectedEvent;
     }
@@ -219,11 +224,11 @@ public class Model implements CommonModel {
 
 
     public boolean isEditValid() {
-        Event originalEvent = loggedCoordinatorEvents.get(selectedEvent.getId()).getEventDTO();
-        if (selectedEvent.equals(originalEvent)) {
+        Event originalEvent = allEvents.get(selectedEvent.getId());
+        if (selectedEvent.equals(allEvents.get(selectedEvent.getId()))) {
             return true;
         }
-        boolean areDatesModified = evmLogic.areDatesModified(selectedEvent,originalEvent);
+        boolean areDatesModified = evmLogic.areDatesModified(selectedEvent, allEvents.get(selectedEvent.getId()));
         if (areDatesModified) {
             EventInvalidResponse eventInvalidResponse = evmLogic.areEditedDatesValid(selectedEvent, originalEvent);
             if (eventInvalidResponse == null) {
@@ -244,22 +249,15 @@ public class Model implements CommonModel {
     }
 
     /**
-     * delete operation , that needs to be performed
-     *
-     * @param entityId        the entity that needs to be deleted , event, user , ticket
-     * @param deleteOperation the type of the delete operation
+     * delete operation to be performed
      */
     @Override
     public void performDeleteOperation(int entityId, DeleteOperation deleteOperation) throws EventException {
         switch (deleteOperation) {
             case DELETE_EVENT -> this.deleteEvent(entityId);
             case DELETE_USER -> this.deleteUser(entityId);
-            case DELETE_TICKET -> this.deleteTicket(entityId);
+            //case DELETE_TICKET -> this.deleteTicket(entityId);
         }
-    }
-
-    private void deleteTicket(int entityId) {
-
     }
 
 
@@ -272,8 +270,7 @@ public class Model implements CommonModel {
      *
      * @param eventId the id of the required event
      */
-    public Event getEventById(int eventId)
-    {
+    public Event getEventById(int eventId) {
         return loggedCoordinatorEvents.get(eventId).getEventDTO();
     }
 
@@ -283,9 +280,10 @@ public class Model implements CommonModel {
      * @param eventId the id of the event that will be deleted
      */
     private void deleteEvent(int eventId) throws EventException {
-        boolean deleted = evmLogic.deleteEvent(eventId);
+        boolean deleted = evmLogic.deleteEvent(eventId, ticketsToDelete);
         if (deleted) {
             this.loggedCoordinatorEvents.remove(eventId);
+            ticketsToDelete.clear();
             Platform.runLater(() -> getEventsDisplayer().displayEvents());
         }
     }
@@ -303,18 +301,22 @@ public class Model implements CommonModel {
         return evmLogic.isModifyed(assignedCoordinators, selectedEvent, loggedCoordinatorEvents.get(selectedEvent.getId()).getEventDTO());
     }
 
+
     /**
      * save the edit operation performed on the current selected event
      */
     public void saveEditEventOperation(List<User> assignedCoordinators) throws EventException {
         HashMap<Integer, List<Integer>> assignedCoordinatorsMap = new HashMap<>();
+
         assignedCoordinatorsMap.put(selectedEvent.getId(), assignedCoordinators.stream().map(User::getUserId).collect(Collectors.toList()));
-        boolean isModified = evmLogic.isModifyed(assignedCoordinatorsMap, selectedEvent, loggedCoordinatorEvents.get(selectedEvent.getId()).getEventDTO());
-        if (!isModified) {
+        boolean isModified = evmLogic.isModifyed(assignedCoordinatorsMap, selectedEvent,loggedCoordinatorEvents.get(selectedEvent.getId()).getEventDTO());
+        if (!isModified && ticketToEdit.isEmpty() && addedTickets.isEmpty() && ticketsToDelete.isEmpty()) {
             return;
         }
-        boolean editSucceded = evmLogic.saveEditOperation(selectedEvent, assignedCoordinatorsMap, addedTickets);
+        boolean editSucceded = evmLogic.saveEditOperation(selectedEvent, assignedCoordinatorsMap, ticketToEdit, addedTickets, ticketsToDelete);
         addedTickets.clear();
+        ticketToEdit.clear();
+        ticketsToDelete.clear();
         if (editSucceded) {
             EventStatus editedEvent = new EventStatus(selectedEvent);
             editedEvent.setStatus(EventStatusCalculator.calculateStatus(editedEvent.getEventDTO()));
@@ -355,7 +357,6 @@ public class Model implements CommonModel {
         return eventTickets; // Return the tickets for the specified event
     }
 
-
     public ObservableMap<Integer, Ticket> getSpecialTicketsForEventOrNot(int eventId) throws EventException {
         specialTickets = ticketManager.getSpecialTicketsRelatedOrNot(eventId); // Store tickets for the specified event
         return specialTickets; // Return the tickets for the specified event
@@ -384,7 +385,6 @@ public class Model implements CommonModel {
         return evmLogic.convertStringToLocalTime(value);
     }
 
-
     public User checkUser (String username, String password) throws EventException {
         System.out.println(username + password + "inputData");
         loggedUser = logInManager.checkUser(username, password);
@@ -393,20 +393,6 @@ public class Model implements CommonModel {
 
         return loggedUser;
     }
-
-
-        /*
-    public List<Ticket> addTicket(Ticket ticket) {
-        Integer inserted = ticketManager.addTicket(ticket);
-        if (inserted != null) {
-            ticket.setId(inserted);
-            addedTicket = new Ticket(inserted, ticket.getTicketType(), ticket.getQuantity(), ticket.getTicketPrice());
-            eventTickets.put(inserted, ticket);
-        }
-        return null;
-    }
-
-     */
 
 //    /**initialize the event coordinators list*/
 //public void initializeEventCoordinators(int eventId) throws EventException {

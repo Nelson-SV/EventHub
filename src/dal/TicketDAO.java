@@ -55,8 +55,9 @@ public class TicketDAO {
                     String type = res.getString("Type");
                     int quantity = res.getInt("Quantity");
                     BigDecimal price = res.getBigDecimal("Price");
+                    String color = res.getString("Colour");
 
-                    Ticket ticket = new Ticket(id, type, quantity, price);
+                    Ticket ticket = new Ticket(id, type, quantity, price, color);
                     tickets.put(ticket.getId(), ticket);
                 }
             }

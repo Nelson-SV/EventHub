@@ -28,6 +28,7 @@ public class AdminDao implements IAdminDao {
     }
 
 
+
     /**
      * Retrieves all the events related to an eventCoordinator
      */
@@ -67,4 +68,8 @@ public class AdminDao implements IAdminDao {
         }
         return events;
     }
+
+
+
+
 }
