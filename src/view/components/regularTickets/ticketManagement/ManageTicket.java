@@ -20,6 +20,9 @@ public class ManageTicket extends VBox {
         loader.setController(new ManageTicketController(editWindow,thirdLayout,model, eventManagementController));
         try {
             manageControl= loader.load();
+
+
+
             this.getChildren().add(manageControl);
         } catch (IOException e) {
             ExceptionHandler.errorAlertMessage(ErrorCode.LOADING_FXML_FAILED.getValue());

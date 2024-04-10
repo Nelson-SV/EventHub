@@ -183,7 +183,6 @@ public class Model implements CommonModel {
      */
     public List<EventStatus> sortedEventsList() {
         return evmLogic.getAllSortedEventsByStatus(loggedCoordinatorEvents.values());
-        //return evmLogic.getSortedEventsByStatus(loggedCoordinatorEvents.values());
     }
 
     /**
