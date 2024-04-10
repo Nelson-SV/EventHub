@@ -35,6 +35,7 @@ public class User {
         this(firstName, lastName, role);
         this.password = new SimpleStringProperty(password);
     }
+
 /**copy constructor, in order to make  a copy , to not affect the original
  * @param user original  user object */
     public User(User user) {

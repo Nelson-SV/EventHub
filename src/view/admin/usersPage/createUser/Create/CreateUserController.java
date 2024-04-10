@@ -19,7 +19,6 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.jetbrains.annotations.NotNull;
 import view.admin.mainAdmin.AdminModel;
-import view.admin.usersPage.threads.ImageCopyHandler;
 import view.admin.usersPage.threads.ImageLoader;
 import view.admin.usersPage.threads.UploadedImageLoader;
 import view.components.loadingComponent.LoadingActions;
@@ -58,7 +57,6 @@ public class CreateUserController implements Initializable {
     private AdminModel adminModel;
     private ImageLoader imageLoader;
     private ImageLoadingHandler imageLoadingHandler;
-    private ImageCopyHandler imageCopyHandler;
     private Service<Void> saveService;
     private LoadingComponent loadingComponent;
     private static final String defaultImageName="default.png";
@@ -83,8 +81,7 @@ public class CreateUserController implements Initializable {
         addLoadImageBtnAction();
     }
 
-    //TOdo remove the printStacktrace
-    //load the user or default image
+
     private void initializeImageLoader() {
         imageLoader.getServiceLoader().setOnSucceeded((event -> {
             errorUpload.setVisible(false);
@@ -97,12 +94,8 @@ public class CreateUserController implements Initializable {
         imageLoader.getServiceLoader().restart();
     }
 
-
-    //TODO revize the action about the file handler
     private void addCancelAction() {
         this.cancelUser.setOnAction((event -> {
-            FileHandler fileHandler = new FileHandler();
-            fileHandler.cloudinarySettings();
             adminModel.setUploadedImage(null);
             CommonMethods.closeWindow(this.secondaryLayout);
         }));
@@ -128,12 +121,6 @@ public class CreateUserController implements Initializable {
             loadingComponent = new LoadingComponent();
             CommonMethods.showSecondaryLayout(thirdLayout,loadingComponent);
         }
-    }
-
-
-    //TODO remove if not need , used to save the image to local
-    private void saveImage() {
-        imageCopyHandler = new ImageCopyHandler(adminModel.getUploadedImage());
     }
 
     private void addLoadImageBtnAction() {
@@ -178,7 +165,6 @@ public class CreateUserController implements Initializable {
                 return new Task<Void>() {
                     @Override
                     protected Void call() throws Exception {
-                        System.out.println("called");
                         adminModel.saveUser(firstName.getText(), lastName.getText(), userRoles.getSelectionModel().getSelectedItem(), password.getText());
                         return null;
                     }
@@ -203,7 +189,7 @@ public class CreateUserController implements Initializable {
                 ExceptionHandler.errorAlertMessage(ErrorCode.COPY_FAILED.getValue());
             });
             pauseTransition.play();
-            saveService.getException().printStackTrace();
+           // saveService.getException().printStackTrace();
         });
         saveService.restart();
     }

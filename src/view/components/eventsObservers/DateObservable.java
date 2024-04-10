@@ -62,8 +62,7 @@ public class DateObservable  implements DateObserver{
             }
         });
         eventStatusService.setOnFailed((event) -> {
-            EventException cause = (EventException) eventStatusService.getException();
-            ExceptionLogger.getInstance().getLogger().log(Level.SEVERE, cause.getMessage());
+            ExceptionLogger.getInstance().getLogger().log(Level.SEVERE, eventStatusService.getException().getMessage());
             ExceptionHandler.errorAlertMessage(ErrorCode.FAILED_UPDATE_STATUS.getValue());
         });
         eventStatusService.restart();

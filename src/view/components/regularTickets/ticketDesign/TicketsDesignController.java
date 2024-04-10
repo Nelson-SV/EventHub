@@ -76,7 +76,7 @@ public class TicketsDesignController implements Initializable {
     private void displayTicketComponent() {
         if(ticketHBox.getScene()==null){
             ticketHBox.getChildren().clear();
-            ticketComponentDescription = new TicketComponentDescription(this, model.getSelectedEvent());
+            ticketComponentDescription = new TicketComponentDescription(model.getSelectedEvent());
             ticketHBox.getChildren().add(ticketComponentDescription);
         }
     }
@@ -107,7 +107,6 @@ public class TicketsDesignController implements Initializable {
     }
 
     public void cancelAction(){
-
         closeWindow();
     }
 

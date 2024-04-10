@@ -21,7 +21,6 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.jetbrains.annotations.NotNull;
 import view.admin.mainAdmin.AdminModel;
-import view.admin.usersPage.threads.ImageCopyHandler;
 import view.admin.usersPage.threads.ImageLoader;
 import view.admin.usersPage.threads.UploadedImageLoader;
 import view.components.loadingComponent.LoadingActions;
@@ -62,7 +61,6 @@ public class EditUserPageController implements Initializable {
     private AdminModel adminModel;
     private ImageLoader imageLoader;
     private ImageLoadingHandler imageLoadingHandler;
-    private ImageCopyHandler imageCopyHandler;
     private Service<Void> saveService;
     private LoadingComponent loadingComponent;
     private static final String defaultImageName = "default.png";
