@@ -22,14 +22,14 @@ public class ManageTicket extends VBox {
         loader.setController(new ManageTicketController(editWindow,thirdLayout,model, eventManagementController, ticket));
         try {
             manageControl= loader.load();
-<<<<<<< HEAD
 
 
 
-=======
+
+
             manageControl.setAlignment(Pos.CENTER);
             this.setAlignment(Pos.CENTER);
->>>>>>> 32581ea939e4bbc11e0ef6c9b3fc82895c3825af
+
             this.getChildren().add(manageControl);
         } catch (IOException e) {
             ExceptionHandler.errorAlertMessage(ErrorCode.LOADING_FXML_FAILED.getValue());

@@ -1,6 +1,5 @@
 package view.components.eventsObservers;
 import exceptions.ErrorCode;
-import exceptions.EventException;
 import exceptions.ExceptionHandler;
 import exceptions.ExceptionLogger;
 import javafx.concurrent.ScheduledService;
@@ -8,7 +7,6 @@ import javafx.concurrent.Task;
 import javafx.util.Duration;
 import view.components.listeners.Displayable;
 import view.components.main.Model;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;

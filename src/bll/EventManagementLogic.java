@@ -58,10 +58,6 @@ public class EventManagementLogic implements ILogicManager {
         return !assignedCoordinators.get(selectedEvent.getId()).isEmpty() || !selectedEvent.equals(original);
     }
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 32581ea939e4bbc11e0ef6c9b3fc82895c3825af
     /**
      * checks if the start date is valid compared with the local Date
      */

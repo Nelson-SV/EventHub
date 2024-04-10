@@ -1,16 +1,16 @@
 package dal;
-
 import be.Customer;
 import be.Ticket;
+import be.TicketType;
 import exceptions.ErrorCode;
 import exceptions.EventException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableMap;
-
 import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class TicketDAO {
 
@@ -19,6 +19,10 @@ public class TicketDAO {
     public TicketDAO() throws EventException {
         this.connectionManager = new ConnectionManager();
     }
+
+    public static Map<TicketType, List<Ticket>> retrieveTicketsUUID(Map<TicketType, List<Ticket>> ticketTypeListMap) {
+
+    return null;}
 
     /*private ObservableMap<Integer, Ticket> retrieveTickets() throws EventException {
         ObservableMap<Integer, Ticket> tickets = FXCollections.observableHashMap();
@@ -124,7 +128,6 @@ public class TicketDAO {
     }
 
     public void insertSoldTicket(List<Ticket> eventTickets, int customerID, Connection conn) throws EventException {
-
         try {
             String sql = "INSERT INTO SoldTickets (TicketID, CustomerID) VALUES (?, ?)";
             PreparedStatement statement = conn.prepareStatement(sql);
@@ -134,7 +137,6 @@ public class TicketDAO {
                 statement.setInt(2, customerID);
                 statement.addBatch();
                 }
-
             }
             statement.executeBatch();
         } catch (SQLException e) {
@@ -160,7 +162,8 @@ public class TicketDAO {
         }
     }
 
-    public void insertSoldTickets(List<Ticket> allSelectedTickets, Customer customer) throws EventException {
+    public boolean insertSoldTickets(List<Ticket> allSelectedTickets, Customer customer) throws EventException {
+        boolean sellOperationPerformed =false;
         Connection conn = null;
         try{
             Integer customerId = null;
@@ -174,7 +177,6 @@ public class TicketDAO {
                 List<Ticket> eventTickets = new ArrayList<>();
 
                 for (Ticket item : allSelectedTickets) {
-
                     boolean isSpecial = item.getSpecial();
                     if (isSpecial) {
                         specialTickets.add(item);
@@ -189,6 +191,7 @@ public class TicketDAO {
                 deductQuantity(eventTickets, conn);
             }
             conn.commit();
+            sellOperationPerformed=true;
         }
         catch (EventException | SQLException e) {
             if (conn != null) {
@@ -206,6 +209,31 @@ public class TicketDAO {
                 throw new EventException(e.getMessage(), e.getCause(), ErrorCode.CONNECTION_FAILED);
             }
         }
+        return sellOperationPerformed;
+    }
+
+
+
+    public List<Ticket> getTicketsWithUUID(List<Ticket> soldTickets){
+        List<Ticket> ticketsWithUUID = new ArrayList<>();
+        String columnName = null;
+        String sql = "SELECT UUID FROM SoldTickets WHERE " + columnName + " = ?";
+        try{
+            Connection conn =connectionManager.getConnection();
+
+
+
+
+        } catch (EventException e) {
+            throw new RuntimeException(e);
+        }
+        return ticketsWithUUID;
+    }
+private Ticket getSpecialTicketUUID(Connection conn){
+    String sql = "SELECT UUID FROM SoldTickets WHERE SpecialTicketId= ?";
+
+
+return null;
     }
 
 
