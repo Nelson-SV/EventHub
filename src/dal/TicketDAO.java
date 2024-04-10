@@ -1,4 +1,5 @@
 package dal;
+
 import be.Customer;
 import be.Ticket;
 import be.TicketType;
@@ -6,6 +7,7 @@ import exceptions.ErrorCode;
 import exceptions.EventException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableMap;
+
 import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
@@ -16,13 +18,11 @@ public class TicketDAO {
 
     private final ConnectionManager connectionManager;
     private CustomerDAO customerDAO = new CustomerDAO();
+
     public TicketDAO() throws EventException {
         this.connectionManager = new ConnectionManager();
     }
 
-    public static Map<TicketType, List<Ticket>> retrieveTicketsUUID(Map<TicketType, List<Ticket>> ticketTypeListMap) {
-
-    return null;}
 
     /*private ObservableMap<Integer, Ticket> retrieveTickets() throws EventException {
         ObservableMap<Integer, Ticket> tickets = FXCollections.observableHashMap();
@@ -91,7 +91,8 @@ public class TicketDAO {
                 }
             }
         } catch (SQLException | EventException e) {
-            throw new EventException(e.getMessage(), e.getCause(), ErrorCode.OPERATION_DB_FAILED);        }
+            throw new EventException(e.getMessage(), e.getCause(), ErrorCode.OPERATION_DB_FAILED);
+        }
 
         return tickets;
     }
@@ -101,14 +102,15 @@ public class TicketDAO {
         try {
             String sql = "UPDATE Ticket SET Quantity = Quantity - ? WHERE ID = ?";
             PreparedStatement statement = conn.prepareStatement(sql);
-            for(Ticket ticket : eventTickets) {
+            for (Ticket ticket : eventTickets) {
                 statement.setInt(1, ticket.getQuantity());
                 statement.setInt(2, ticket.getId());
                 statement.addBatch();
             }
             statement.executeBatch();
         } catch (SQLException e) {
-            throw new EventException(e.getMessage(), e.getCause(), ErrorCode.OPERATION_DB_FAILED);        }
+            throw new EventException(e.getMessage(), e.getCause(), ErrorCode.OPERATION_DB_FAILED);
+        }
     }
 
     public void deductSpecialQuantity(List<Ticket> specialTickets, Connection conn) throws EventException {
@@ -116,7 +118,7 @@ public class TicketDAO {
         try {
             String sql = "UPDATE SpecialTickets SET Quantity = Quantity - ? WHERE ID = ?";
             PreparedStatement statement = conn.prepareStatement(sql);
-            for(Ticket ticket : specialTickets){
+            for (Ticket ticket : specialTickets) {
                 statement.setInt(1, ticket.getQuantity());
                 statement.setInt(2, ticket.getId());
                 statement.addBatch();
@@ -124,18 +126,19 @@ public class TicketDAO {
 
             statement.executeBatch();
         } catch (SQLException e) {
-            throw new EventException(e.getMessage(), e.getCause(), ErrorCode.OPERATION_DB_FAILED);        }
+            throw new EventException(e.getMessage(), e.getCause(), ErrorCode.OPERATION_DB_FAILED);
+        }
     }
 
     public void insertSoldTicket(List<Ticket> eventTickets, int customerID, Connection conn) throws EventException {
         try {
             String sql = "INSERT INTO SoldTickets (TicketID, CustomerID) VALUES (?, ?)";
             PreparedStatement statement = conn.prepareStatement(sql);
-            for(Ticket ticket : eventTickets) {
+            for (Ticket ticket : eventTickets) {
                 for (int i = 0; i < ticket.getQuantity(); i++) {
-                statement.setInt(1, ticket.getId());
-                statement.setInt(2, customerID);
-                statement.addBatch();
+                    statement.setInt(1, ticket.getId());
+                    statement.setInt(2, customerID);
+                    statement.addBatch();
                 }
             }
             statement.executeBatch();
@@ -149,7 +152,7 @@ public class TicketDAO {
         try {
             String sql = "INSERT INTO SoldTickets (SpecialTicketId, CustomerID) VALUES (?, ?)";
             PreparedStatement statement = conn.prepareStatement(sql);
-            for(Ticket ticket : specialTickets){
+            for (Ticket ticket : specialTickets) {
                 for (int i = 0; i < ticket.getQuantity(); i++) {
                     statement.setInt(1, ticket.getId());
                     statement.setInt(2, customerID);
@@ -163,16 +166,16 @@ public class TicketDAO {
     }
 
     public boolean insertSoldTickets(List<Ticket> allSelectedTickets, Customer customer) throws EventException {
-        boolean sellOperationPerformed =false;
+        boolean sellOperationPerformed = false;
         Connection conn = null;
-        try{
+        try {
             Integer customerId = null;
             conn = connectionManager.getConnection();
             conn.setAutoCommit(false);
-            if(customer != null){
+            if (customer != null) {
                 customerId = customerDAO.addCustomer(customer, conn);
             }
-            if(!allSelectedTickets.isEmpty()) {
+            if (!allSelectedTickets.isEmpty()) {
                 List<Ticket> specialTickets = new ArrayList<>();
                 List<Ticket> eventTickets = new ArrayList<>();
 
@@ -191,9 +194,8 @@ public class TicketDAO {
                 deductQuantity(eventTickets, conn);
             }
             conn.commit();
-            sellOperationPerformed=true;
-        }
-        catch (EventException | SQLException e) {
+            sellOperationPerformed = true;
+        } catch (EventException | SQLException e) {
             if (conn != null) {
                 try {
                     conn.rollback();
@@ -212,30 +214,46 @@ public class TicketDAO {
         return sellOperationPerformed;
     }
 
-
-
-    public List<Ticket> getTicketsWithUUID(List<Ticket> soldTickets){
-        List<Ticket> ticketsWithUUID = new ArrayList<>();
-        String columnName = null;
-        String sql = "SELECT UUID FROM SoldTickets WHERE " + columnName + " = ?";
-        try{
-            Connection conn =connectionManager.getConnection();
-
-
-
-
-        } catch (EventException e) {
-            throw new RuntimeException(e);
+    /**
+     * get the uuid for the sold tickets  from the database
+     */
+    public Map<TicketType, List<Ticket>> retrieveTicketsUUID(Map<TicketType, List<Ticket>> ticketTypeListMap) throws EventException {
+        String sqlNormal = "SELECT UUID FROM SoldTickets WHERE  TicketId= ?";
+        String sqlSpecial = "SELECT UUID FROM SoldTickets WHERE SpecialTicketId= ?";
+        try {
+            Connection conn = connectionManager.getConnection();
+            List<Ticket> specialTicketsUUID = getTicketsUUID(sqlSpecial, conn, ticketTypeListMap.get(TicketType.SPECIAL));
+            List<Ticket> normalTicketsUUId = getTicketsUUID(sqlNormal, conn, ticketTypeListMap.get(TicketType.NORMAL));
+            ticketTypeListMap.put(TicketType.NORMAL, normalTicketsUUId);
+            ticketTypeListMap.put(TicketType.SPECIAL, specialTicketsUUID);
+        } catch (EventException | SQLException e) {
+            throw new EventException(e.getMessage(), e, ErrorCode.OPERATION_DB_FAILED);
         }
-        return ticketsWithUUID;
-    }
-private Ticket getSpecialTicketUUID(Connection conn){
-    String sql = "SELECT UUID FROM SoldTickets WHERE SpecialTicketId= ?";
-
-
-return null;
+        return ticketTypeListMap;
     }
 
+
+    /**
+     * get the uuid for a specific list off tickets
+     *
+     * @param sql     the operation that needs to be performed
+     * @param conn    the database connection
+     * @param tickets the list off tickets that needs to have the uuid retrieved from database
+     */
+    private List<Ticket> getTicketsUUID(String sql, Connection conn, List<Ticket> tickets) throws SQLException {
+        try (PreparedStatement psmt = conn.prepareStatement(sql)) {
+            for (Ticket special : tickets) {
+                psmt.setInt(1, special.getId());
+                try (ResultSet rs = psmt.executeQuery()) {
+                    if (rs.next()) {
+                        String uuid = rs.getString("UUID");
+                        special.setUUID(uuid);
+                    }
+                }
+            }
+        }
+        return tickets;
+    }
 
 
 }

@@ -73,9 +73,6 @@ public class Model implements CommonModel {
     private List<Ticket> addedTickets, ticketToEdit, ticketsToDelete;
     /**holds the sold tickets for a certain customer*/
     private List<Ticket> soldTickets;
-
-
-
     private static Model instance;
 
     public static Model getInstance() throws EventException {
@@ -384,13 +381,15 @@ public class Model implements CommonModel {
     public void sellTicket(List<Ticket> allSelectedTickets, Customer customer) throws EventException {
        boolean sellOperationPerformed = ticketManager.soldTickets(allSelectedTickets, customer);
         if(sellOperationPerformed){
-
             soldTickets=allSelectedTickets;
             System.out.println("soldTickets");
             soldTickets.forEach(System.out::println);
             System.out.println("soldtickets");
         }
-        soldTickets= null;
+    }
+
+    public Map<TicketType,List<Ticket>> getTicketsWithUUId(List<Ticket> soldTickets) throws EventException {
+        return ticketManager.getTicketsWithUUId(soldTickets);
     }
 
 
@@ -412,4 +411,11 @@ public class Model implements CommonModel {
         return loggedUser;
     }
 
+    public Customer getCustomer() {
+    return null;
+    }
+
+    public Event getCurrentEventSell() {
+        return null;
+    }
 }

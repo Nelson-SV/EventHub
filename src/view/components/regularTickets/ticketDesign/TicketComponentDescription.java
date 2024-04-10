@@ -49,7 +49,6 @@ public class TicketComponentDescription extends FlowPane implements Initializabl
     public void initialize(URL location, ResourceBundle resources) {
         getBarCode().setImage(new Image("/resources/images/Image 1.png"));
         getLogoImg().setImage(new Image("/resources/images/Image 3.png"));
-
         setTicketLabels();
     }
 
@@ -75,7 +74,6 @@ public class TicketComponentDescription extends FlowPane implements Initializabl
     public void updateTicketColour(Color fill){
         ticketPane.setBackground(new Background(new BackgroundFill(fill, null, null)));
         adjustImageColors(fill);
-
         double brightness = fill.getBrightness();
         if (brightness < 0.5) {
             ticketPane.setStyle("-fx-border-color: white; -fx-border-width: 2px;");
@@ -145,4 +143,25 @@ public class TicketComponentDescription extends FlowPane implements Initializabl
         String text = "Customer Email :"  + customerEmail;
         this.custEmailLB.setText(text);
     }
+
+    public void setEventName(String name){
+        this.eventNameLB.setText(name);
+    }
+
+    public void setDateAndTime(String dateAndTime){
+        this.eventDateLB.setText(dateAndTime);
+    }
+
+    public void setLocation(String location){
+        this.eventLocationLB.setText(location);
+    }
+
+    public void setPrice(String price){
+        this.ticketPriceLB.setText(price);
+    }
+    public void setType(String type){
+        this.ticketTypeLB.setText(type);
+    }
+
+
 }
