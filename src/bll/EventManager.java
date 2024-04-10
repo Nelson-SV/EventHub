@@ -19,8 +19,8 @@ public class EventManager {
      * Exception handling
      */
 
-    public Integer addEvent(Event event, List<Ticket> tickets,int userId) throws EventException {
-        return eventD.insertEvent(event, tickets,userId);
+    public Integer addEvent(Event event, List<Ticket> tickets, int userId) throws EventException {
+        return eventD.insertEvent(event, tickets, userId);
     }
 
     public ObservableMap<Integer, Event> getAllEvents() throws EventException {

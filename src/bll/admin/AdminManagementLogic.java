@@ -1,9 +1,6 @@
 package bll.admin;
 
-import be.EventStatus;
-import be.Role;
-import be.Status;
-import be.User;
+import be.*;
 import bll.EventStatusCalculator;
 import dal.EventDAO;
 import dal.UsersDAO;
@@ -40,6 +37,7 @@ public class AdminManagementLogic implements IAdminLogic {
     }
 
     /**
+     * To not be used, not sure if we need it
      * Convert from event objects  to event status objects
      */
     @Override
@@ -115,8 +113,8 @@ public class AdminManagementLogic implements IAdminLogic {
     }
 
     @Override
-    public boolean deleteEvent(int eventId) throws EventException {
-        return eventDAO.deleteEvent(eventId);
+    public boolean deleteEvent(int eventId, List<Ticket> ticketsToDelete) throws EventException {
+        return eventDAO.deleteEvent(eventId, ticketsToDelete);
     }
 
     @Override

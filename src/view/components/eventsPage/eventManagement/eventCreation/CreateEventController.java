@@ -22,7 +22,6 @@ import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 import view.components.main.Model;
 import view.components.regularTickets.ticketGeneration.TicketsGenerationController;
-import view.utility.CommonMethods;
 import view.utility.EditEventValidator;
 
 import javax.swing.event.ChangeListener;
@@ -140,9 +139,6 @@ public class CreateEventController {
         return timeOptions;
     }
 
-
-
-
     public void addTicket(ActionEvent actionEvent) {
         showThirdLayout();
         TicketsGenerationController ticketsGenerationController = new TicketsGenerationController(stackPane, thirdLayout,  this, model);
@@ -162,9 +158,6 @@ public class CreateEventController {
         thirdLayout.setVisible(true);
     }
 
-
-
-
     public void saveEvent(ActionEvent actionEvent){
         /* if (isEventValid()) {*/
         boolean isEventValid = EditEventValidator.isEventValid(eventName, startDate, startTime, endDate, endTime, eventLocation);
@@ -178,15 +171,13 @@ public class CreateEventController {
             String locationE = eventLocation.getText();
             Event event = new Event(name, description, startD, endD, startT, endT, locationE);
             try {
-                model.addEvent(event,model.getLoggedUser().getUserId());
+                model.addEvent(event, model.getLoggedUser().getUserId());
                 closeWindow(actionEvent);
             } catch (EventException e) {
                 ExceptionHandler.errorAlertMessage(e.getErrorCode().getValue());
             }
         }
     }
-
-
 
 
     private void closeWindow(ActionEvent event) {

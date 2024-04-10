@@ -28,6 +28,7 @@ public class AdminDao implements IAdminDao {
     }
 
 
+
     /**
      * Retrieves all the events related to an eventCoordinator
      */
@@ -72,6 +73,7 @@ public class AdminDao implements IAdminDao {
 
 
 
+
     /**
      * get the sum off normal tickets for an event, if the result from db is null, than method returns zero
      */
@@ -113,7 +115,6 @@ public class AdminDao implements IAdminDao {
         }
         return totalSpecialTicketsNumber;
     }
-
 
 }
 

@@ -80,9 +80,7 @@ public class EventStatusCalculator {
         return status;
     }
 
-    private static boolean isEventStatusChanged(EventStatus event) {
-
-
+    private static boolean isStatusChanged(EventStatus event) {
 //        boolean hasStarted = !LocalDateTime.of(event.getStartDate(), event.getStartTime()).isBefore(LocalDateTime.now());
 //        LocalDateTime endDateTime;
 //        if (event.getEndDate() != null) {
@@ -92,12 +90,12 @@ public class EventStatusCalculator {
 //        }
 //        boolean hasEnded = !endDateTime.isBefore(LocalDateTime.now());
 //        return hasStarted || hasEnded;
-    return false;
+        return false;
     }
 
     public static boolean isStatusChanged(Collection<EventStatus> events){
         for(EventStatus event:events){
-            if(isEventStatusChanged(event)){
+            if(isStatusChanged(event)){
                 return true;
             }
         }
