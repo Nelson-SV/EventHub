@@ -16,7 +16,7 @@
             <ImageView fx:id="barCode" fitHeight="100.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" />
          </children>
       </HBox>
-      <VBox prefHeight="200.0" prefWidth="213.0">
+      <VBox prefHeight="201.0" prefWidth="213.0">
          <children>
             <Label fx:id="eventNameLB" prefWidth="250.0" text="Event Name Line">
                <VBox.margin>
@@ -59,49 +59,26 @@
       </VBox>
       <VBox prefHeight="200.0" prefWidth="73.0">
          <children>
-            <VBox prefHeight="100.0" prefWidth="63.0">
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="73.0" spacing="20.0">
                <children>
-                  <HBox alignment="CENTER" prefHeight="39.0" prefWidth="73.0">
-                     <children>
-                        <Label fx:id="extraLabel2" prefHeight="12.0" prefWidth="50.0" rotate="90.0" text="Ticket Price">
-                           <font>
-                              <Font size="6.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="extraLabel1" prefHeight="13.0" prefWidth="50.0" rotate="90.0" text="Ticket Type">
-                           <font>
-                              <Font size="6.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </HBox>
-                  <HBox alignment="CENTER" prefHeight="60.0" prefWidth="73.0">
-                     <children>
-                        <Label fx:id="ticketPriceLB" rotate="90.0" text="dkk">
-                           <font>
-                              <Font size="4.0" />
-                           </font>
-                           <HBox.margin>
-                              <Insets left="10.0" />
-                           </HBox.margin>
-                        </Label>
-                        <Label fx:id="ticketTypeLB" rotate="90.0" text="Normal Ticket">
-                           <font>
-                              <Font size="4.0" />
-                           </font>
-                           <HBox.margin>
-                              <Insets left="20.0" />
-                           </HBox.margin>
-                        </Label>
-                     </children>
-                  </HBox>
+                  <Label fx:id="extraLabel1" alignment="CENTER" prefHeight="13.0" prefWidth="100.0" text="Ticket Type" textAlignment="CENTER" />
+                  <Label fx:id="ticketTypeLB" alignment="CENTER" prefHeight="5.0" prefWidth="70.0" text="Normal Ticket">
+                     <font>
+                        <Font size="10.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="extraLabel2" alignment="CENTER" prefHeight="13.0" prefWidth="138.0" text="Ticket Price">
+                     <VBox.margin>
+                        <Insets top="50.0" />
+                     </VBox.margin>
+                  </Label>
+                  <Label fx:id="ticketPriceLB" alignment="CENTER" prefHeight="5.0" prefWidth="70.0" text="dkk">
+                     <font>
+                        <Font size="10.0" />
+                     </font>
+                  </Label>
                </children>
             </VBox>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-               <children>
-                  <ImageView fx:id="qrCode" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" />
-               </children>
-            </HBox>
          </children>
       </VBox>
    </children>

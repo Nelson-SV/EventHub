@@ -25,26 +25,19 @@ public class TicketComponentDescription extends FlowPane implements Initializabl
     @FXML
     private Label eventNameLB, eventDateLB, eventLocationLB, custNameLB, custEmailLB, ticketPriceLB, ticketTypeLB, extraLabel1, extraLabel2;
     @FXML
-    private Ticket ticket;
-    @FXML
     private Event event;
     @FXML
-    private ImageView qrCode, logoImg, barCode;
+    private ImageView logoImg, barCode;
     @FXML
     private FlowPane ticketPane;
-    @FXML
-    private TicketsDesignController ticketsDesignController;
-    @FXML
-    private Model model;
 
-    public TicketComponentDescription(TicketsDesignController ticketsDesignController, Event event) {
+    public TicketComponentDescription(Event event) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("TicketsDesignComponent.fxml"));
         loader.setController(this);
         this.event = event;
         try {
             ticketPane = loader.load();
             this.getChildren().add(ticketPane);
-            this.ticketsDesignController = ticketsDesignController;
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -54,14 +47,13 @@ public class TicketComponentDescription extends FlowPane implements Initializabl
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        getQrCode().setImage(new Image("/resources/images/Image 1.png"));
-        getBarCode().setImage(new Image("/resources/images/Image 2.png"));
+        getBarCode().setImage(new Image("/resources/images/Image 1.png"));
         getLogoImg().setImage(new Image("/resources/images/Image 3.png"));
 
-        setTicketLabel();
+        setTicketLabels();
     }
 
-    private void setTicketLabel() {
+    private void setTicketLabels() {
         eventNameLB.setText(event.getName());
         eventDateLB.setText(event.getStartDate() + ", " + event.getStartTime());
         eventLocationLB.setText(event.getLocation());
@@ -72,10 +64,15 @@ public class TicketComponentDescription extends FlowPane implements Initializabl
     }
 
     public void setTicketPrice(String price) {
-        ticketPriceLB.setText(price + "dkk");
+        ticketPriceLB.setText(price + " dkk");
     }
 
-    public void setTicketColour(Color fill){
+    public void setTicketColor(Color fill){
+        ticketPane.setBackground(new Background(new BackgroundFill(fill, null, null)));
+        ticketPane.setStyle("-fx-border-color: black; -fx-border-width: 2px;");
+    }
+
+    public void updateTicketColour(Color fill){
         ticketPane.setBackground(new Background(new BackgroundFill(fill, null, null)));
         adjustImageColors(fill);
 
@@ -116,18 +113,7 @@ public class TicketComponentDescription extends FlowPane implements Initializabl
         } else {
             colorAdjust.setBrightness(0.5);
         }
-
-        qrCode.setEffect(colorAdjust);
         barCode.setEffect(colorAdjust);
-    }
-
-
-    public ImageView getQrCode() {
-        return qrCode;
-    }
-
-    public void setQrCode(ImageView qrCode) {
-        this.qrCode = qrCode;
     }
 
     public ImageView getLogoImg() {

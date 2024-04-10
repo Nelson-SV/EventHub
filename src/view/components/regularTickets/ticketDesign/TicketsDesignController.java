@@ -5,7 +5,6 @@ import be.Ticket;
 import exceptions.ErrorCode;
 import exceptions.ExceptionHandler;
 import io.github.palexdev.materialfx.controls.MFXButton;
-import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -78,8 +77,10 @@ public class TicketsDesignController implements Initializable {
     private void displayTicketComponent() {
         if(ticketHBox.getScene()==null){
             ticketHBox.getChildren().clear();
-            ticketComponentDescription = new TicketComponentDescription(this, model.getSelectedEvent());
+            ticketComponentDescription = new TicketComponentDescription(model.getSelectedEvent());
             ticketHBox.getChildren().add(ticketComponentDescription);
+            if (selectedTicket == null)
+                ticketComponentDescription.setTicketColor(Color.WHITE);
         }
     }
 
@@ -150,7 +151,7 @@ public class TicketsDesignController implements Initializable {
             if (ticketColor != null && !ticketColor.isEmpty()) {
                 colorPicker.setValue(Color.valueOf(ticketColor));
             } else{
-                ticketComponentDescription.setTicketColour(Color.WHITE);
+                ticketComponentDescription.updateTicketColour(Color.WHITE);
             }
         }
     }
@@ -168,7 +169,7 @@ public class TicketsDesignController implements Initializable {
 
         colorPicker.valueProperty().addListener((observable, oldColor, newValue) -> {
             // Update the background color of the FlowPane
-            ticketComponentDescription.setTicketColour(newValue);
+            ticketComponentDescription.updateTicketColour(newValue);
         });
     }
 
