@@ -17,8 +17,6 @@ public interface ILogicManager {
 
     Task<List<User>> getevCoord(int eventId);
 
-    ObservableMap<Integer, User> getEventCoordinators(int eventId) throws EventException;
-
     boolean isModifyed(Map<Integer, List<Integer>> assignedCoordinators, Event selectedEvent, Event original);
 
     boolean saveEditOperation(Event selectedEvent, Map<Integer, List<Integer>> assignedCoordinators, List<Ticket> editTickets, List<Ticket> newTickets, List<Ticket> deleteTickets) throws EventException;
@@ -27,9 +25,9 @@ public interface ILogicManager {
 
     Status computeEventStatus(EventStatus event);
 
-    ObservableMap<Integer, EventStatus> getEventsWithStatus(Map<Integer, Event> coordinatorEvents);
+    ObservableMap<Integer, EventStatus> getEventsWithStatus(int userId) throws EventException;
 
-    List<Event> getSortedEventsByStatus(Collection<Event> events);
+    List<EventStatus> getAllSortedEventsByStatus(Collection<EventStatus> events);
 
     boolean deleteEvent(int eventId, List<Ticket> ticketsToDelete) throws EventException;
 

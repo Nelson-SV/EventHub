@@ -171,7 +171,7 @@ public class CreateEventController {
             String locationE = eventLocation.getText();
             Event event = new Event(name, description, startD, endD, startT, endT, locationE);
             try {
-                model.addEvent(event);
+                model.addEvent(event, model.getLoggedUser().getUserId());
                 closeWindow(actionEvent);
             } catch (EventException e) {
                 ExceptionHandler.errorAlertMessage(e.getErrorCode().getValue());

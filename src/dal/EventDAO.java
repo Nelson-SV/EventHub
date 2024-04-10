@@ -1,9 +1,6 @@
 package dal;
 
-import be.Event;
-import be.Role;
-import be.Ticket;
-import be.User;
+import be.*;
 import exceptions.ErrorCode;
 import exceptions.EventException;
 import exceptions.ExceptionLogger;
@@ -26,7 +23,7 @@ public class EventDAO {
         this.connectionManager = new ConnectionManager();
     }
 
-    public Integer insertEvent(Event event, List<Ticket> tickets) throws EventException {
+    public Integer insertEvent(Event event, List<Ticket> tickets, int userId) throws EventException {
         Integer eventId = null;
         Connection conn = null;
 
@@ -70,6 +67,7 @@ public class EventDAO {
                 List<Integer> ticketIds = insertTicket(tickets, conn);
                 addTicketToEvent(ticketIds, eventId, conn);
             }
+            assignNewEventToLoggedUser(conn, userId, eventId);
             conn.commit();
 
         } catch (EventException | SQLException e) {
@@ -89,6 +87,16 @@ public class EventDAO {
             }
         }
         return eventId;
+    }
+
+    /**assign newly created event to the logged user*/
+    private void assignNewEventToLoggedUser(Connection connection,int userId, int eventId) throws SQLException {
+        String sql = "INSERT  INTO UsersEvents VALUES (?,?)";
+        try(PreparedStatement psmt= connection.prepareStatement(sql)) {
+            psmt.setInt(1, userId);
+            psmt.setInt(2, eventId);
+            psmt.executeUpdate();
+        }
     }
 
     public void addTicketToEvent(List<Integer> ticketIds, int eventID, Connection conn) throws EventException, SQLException {
@@ -376,6 +384,76 @@ public class EventDAO {
         }
         return succeeded;
     }
+
+    /**get all the events for an user ,with the total amount of tickets*/
+    public  ObservableMap<Integer, EventStatus> retrieveEventsForUser(int userId) throws EventException {
+        ObservableMap<Integer,EventStatus> userEvents= FXCollections.observableHashMap();
+        String sql ="SELECT E.* FROM Event E "+
+                "JOIN UsersEvents UE  ON UE.EventId= E.EventId "+
+                "JOIN Users U On  UE.UserId= U.UserId "+
+                "WHERE Ue.UserId=?";
+        try (Connection conn = connectionManager.getConnection()) {
+            try (PreparedStatement psmt = conn.prepareStatement(sql)) {
+                psmt.setInt(1,userId);
+                ResultSet res = psmt.executeQuery();
+                while (res.next()) {
+                    int eventId = res.getInt("EventId");
+                    LocalDate startDate = res.getDate("Start_date").toLocalDate();
+                    String name = res.getString("Name");
+                    String description = res.getString("Description");
+                    LocalDate endDate = null;
+                    if (res.getDate("End_date") != null) {
+                        endDate = res.getDate("End_date").toLocalDate();
+                    }
+                    LocalTime startTime = res.getTime("Start_time").toLocalTime();
+                    LocalTime endTime = null;
+                    if (res.getTime("End_time") != null) {
+                        endTime = res.getTime("End_time").toLocalTime();
+                    }
+                    String location = res.getString("Location");
+                    int totalNormalTickets = getNormalTicketsNumberForEvent(conn,eventId);
+                    int totalSpecialTickets = getSpecialTicketsNumberForEvent(conn,eventId);
+                    Event event = new Event(name, description, startDate, endDate, startTime, endTime, location);
+                    event.setId(eventId);
+                    int totalTickets=totalNormalTickets+totalSpecialTickets;
+                    event.setAvailableTickets(totalTickets);
+                    EventStatus eventWithStatus = new EventStatus(event);
+                    userEvents.put(event.getId(), eventWithStatus);
+                }
+            }
+        } catch (EventException | SQLException e) {
+            throw new EventException(e.getMessage(), e.getCause(), ErrorCode.OPERATION_DB_FAILED);
+        }
+        return userEvents;
+    }
+
+    /**
+     *get the sum off normal tickets for an event, if the result from db is null, than method returns zero
+     */
+    private int getNormalTicketsNumberForEvent(Connection conn, int eventId) throws SQLException {
+        int totalNormalTicketsNumber = 0;
+        String sql = "SELECT SUM(T.Quantity) AS TotalQuantity " +"FROM Ticket T " +"JOIN EventTickets ET ON T.ID = ET.TicketID " +"JOIN Event E ON E.EventId = ET.EventId " +"WHERE ET.EventId =?";
+        try (PreparedStatement psmt = conn.prepareStatement(sql)) {
+            psmt.setInt(1, eventId);
+            psmt.execute();
+            ResultSet rs = psmt.getResultSet();
+            if (rs.next()) {
+                totalNormalTicketsNumber = rs.getInt("TotalQuantity");}}
+        return totalNormalTicketsNumber;}
+
+    /**
+    * get the sum of special tickets for an event, if the result from db is null, than method returns zero
+     * */
+    private int getSpecialTicketsNumberForEvent(Connection conn, int eventId) throws SQLException {
+        int totalSpecialTicketsNumber = 0;
+        String sql = "SELECT SUM(T.Quantity) AS TotalQuantity " +"FROM SpecialTickets T " +"JOIN EventSpecialTickets ST ON T.ID = ST.SpecialTicketID " +"JOIN Event E ON E.EventId = ST.EventId " +"WHERE ST.EventId = ?";
+        try (PreparedStatement psmt = conn.prepareStatement(sql)) {
+            psmt.setInt(1, eventId);
+            psmt.execute();
+            ResultSet rs = psmt.getResultSet();
+            if (rs.next()) {
+                totalSpecialTicketsNumber = rs.getInt("TotalQuantity");}}
+        return totalSpecialTicketsNumber;}
 
 }
 

@@ -27,7 +27,7 @@ public class TicketComponentDescription extends FlowPane implements Initializabl
     @FXML
     private Event event;
     @FXML
-    private ImageView logoImg, barCode;
+    private ImageView logoImg, barCode, qrCode;
     @FXML
     private FlowPane ticketPane;
 
@@ -128,11 +128,21 @@ public class TicketComponentDescription extends FlowPane implements Initializabl
         return barCode;
     }
 
-    public void setBarCode(ImageView barCode) {
-        this.barCode = barCode;
+    public void setQrCode(Image qrCode) {
+        this.qrCode.setImage(qrCode);
     }
 
     public FlowPane getRoot(){
         return ticketPane;
+    }
+
+    public void setCustomerName(String customerName) {
+        String text = "Customer Name :"  + customerName;
+        this.custNameLB.setText(text);
+    }
+
+    public void setCustomerEmail(String customerEmail) {
+        String text = "Customer Email :"  + customerEmail;
+        this.custEmailLB.setText(text);
     }
 }
