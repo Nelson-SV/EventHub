@@ -55,8 +55,8 @@ public class TicketComponentDescription extends FlowPane implements Initializabl
 
     private void setTicketLabels() {
         eventNameLB.setText(event.getName());
-        eventDateLB.setText(event.getStartDate() + ", " + event.getStartTime());
-        eventLocationLB.setText(event.getLocation());
+        eventDateLB.setText("Date: " + event.getStartDate() + ", Time: " + event.getStartTime());
+        eventLocationLB.setText("Location: " + event.getLocation());
     }
 
     public void setTicketType(String type) {
