@@ -15,13 +15,8 @@ import java.time.LocalTime;
 import java.util.*;
 import java.util.stream.Collectors;
 public class Model implements CommonModel {
-    //TODO  logged user to be initialized with the actual logged user
-//12,Andrei Ionut,test,Grosu,http://res.cloudinary.com/deipyfz99/image/upload/v1712563835/mbwqk1wpanct5bdtdmgw.png,event_coordinator
-    private User loggedUser ;
-    {
-   loggedUser = new User("Andrei Ionut", "Grosu", "event_coordinator", "","http://res.cloudinary.com/deipyfz99/image/upload/v1712563835/mbwqk1wpanct5bdtdmgw.png");
-   loggedUser.setUserId(12);
-    }
+      private User loggedUser ;
+
 
     /**
      * holds the response of edit validity , in order to display information on the screen
@@ -99,7 +94,6 @@ public class Model implements CommonModel {
         eventTickets = FXCollections.observableHashMap();
         evmLogic = new EventManagementLogic();
         addedTickets = new ArrayList<>();
-        initializeEventsMap();
         returnAllEvents();
         loggedCoordinatorEvents = FXCollections.observableHashMap();
     }
