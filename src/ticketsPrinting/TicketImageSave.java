@@ -2,6 +2,7 @@ package ticketsPrinting;
 
 import be.Ticket;
 import be.TicketType;
+import exceptions.EventException;
 import exceptions.ExceptionHandler;
 import view.components.main.Model;
 
@@ -22,18 +23,25 @@ private  TicketsSnapshot ticketImageSnapshot;
         this.model = model;
     }
     public void saveSoldTicketsImages() {
+
         initializeUUIDRetrieval();
     }
 
     private void initializeUUIDRetrieval() {
         uuIdLoader = new TicketUUIdLoader(soldTickets, model);
-        ticketImageSnapshot = new TicketsSnapshot(soldTicketsWithUUID,model.getCustomer(),model.getCurrentEventSell());
         uuIdLoader.setOnSucceeded((event) -> {
             soldTicketsWithUUID = uuIdLoader.getValue();
+            ticketImageSnapshot = new TicketsSnapshot(soldTicketsWithUUID,model.getTheCurrentCustomer(),model.getCurrentEventSell());
+            try {
+                ticketImageSnapshot.createTicketWritableImages();
+            } catch (EventException e) {
+                e.printStackTrace();
+            }
         });
         uuIdLoader.setOnFailed((event) -> {
             ExceptionHandler.errorAlertMessage(uuIdLoader.getException().getMessage());
         });
+
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(uuIdLoader);
         executorService.shutdown();

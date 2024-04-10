@@ -75,6 +75,11 @@ public class Model implements CommonModel {
     private List<Ticket> soldTickets;
     private static Model instance;
 
+
+    private Event selectedEventSellName;
+
+    private Customer currentCustomer ;
+
     public static Model getInstance() throws EventException {
         if (instance == null) {
             instance = new Model();

@@ -311,9 +311,9 @@ public class SellingViewController implements Initializable {
         String customerName = name.getText();
         String customerLastName = lastName.getText();
         String customerEmail = email.getText();
-        Event currentEventSell = (Event) allEvents.getSelectionModel().getSelectedItem();
+        String currentEventSell = (String) allEvents.getSelectionModel().getSelectedItem();
         Customer customer = new Customer(customerName, customerLastName, customerEmail);
-        model.sellTicket(allSelectedTickets.getItems(), customer);
+        model.sellTicket(allSelectedTickets.getItems(), customer,currentEventSell);
     }
 
     public void cancel(ActionEvent actionEvent) {
@@ -335,6 +335,9 @@ public class SellingViewController implements Initializable {
         };
         sellingService.setOnSucceeded((e) -> {
             ticketImageSave = new TicketImageSave(model.getSoldTickets(),model);
+            ticketImageSave.saveSoldTicketsImages();
+
+
             ticketImageSave.saveSoldTicketsImages();
                 loadingComponent.setAction(LoadingActions.SUCCES.getActionValue());
                 PauseTransition pauseTransition = new PauseTransition(Duration.millis(500));

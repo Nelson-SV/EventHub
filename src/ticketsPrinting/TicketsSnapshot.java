@@ -9,10 +9,15 @@ import exceptions.ErrorCode;
 import exceptions.EventException;
 import javafx.application.Platform;
 import javafx.embed.swing.SwingFXUtils;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.paint.Color;
 import javafx.scene.transform.Transform;
 import view.components.regularTickets.ticketDesign.TicketComponentDescription;
 
@@ -39,12 +44,13 @@ public class TicketsSnapshot {
         this.soldTickets = soldTickets;
         this.customer = customer;
         this.createdTicketsImages = new ArrayList<>();
+        this.event = event;
     }
 
-    private void createdTicketImages(Map<TicketType, List<Ticket>> soldTickets, Customer customer, Event event) throws EventException {
+    private void createTicketImages(Map<TicketType, List<Ticket>> soldTickets, Customer customer, Event event) throws EventException {
 
         Platform.runLater(() -> {
-            System.out.println("executed");
+            System.out.println("executed" + " creating the node");
             for (Ticket ticket : soldTickets.get(TicketType.NORMAL)) {
                 try {
                     createdTicketsImages.add(takeSnapshotNormalTicket(event, ticket, customer));
@@ -62,30 +68,29 @@ public class TicketsSnapshot {
                 for (WritableImage image : createdTicketsImages) {
                     // Convert the WritableImage to a BufferedImage
                     BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image, null);
-                    // Create the directory if it doesn't exist
-                    File dir = new File("uploadImages/userUploadedImages");
+
+                    File dir = new File("./uploadImages/userUploadedImages");
                     if (!dir.exists()) {
                         dir.mkdirs();
                     }
-
-                    // Write the image to a file
                     String ticketType = soldTickets.get(TicketType.NORMAL).get(index).getTicketType();
-                    String fileName = customer.getName() + event.getName() + ticketType + ".png";
-                    File outputFile = new File(dir, fileName); // Replace "image.png" with your desired file name
+                    String fileName = customer.getName() + "_" + event.getName() + "_" + ticketType + ".png";
+                    System.out.println(fileName + "file name");
+                    File outputFile = new File(dir, fileName);
                     try {
                         ImageIO.write(bufferedImage, "png", outputFile);
                         index++;
                     } catch (IOException e) {
                         e.printStackTrace();
-                        throw new EventException(e.getMessage(),e, ErrorCode.FAILED_TO_SAVE_IMAGES);
+                        throw new EventException(e.getMessage(), e, ErrorCode.FAILED_TO_SAVE_IMAGES);
                     }
                 }
-            } catch (InterruptedException|EventException e) {
+            } catch (InterruptedException | EventException e) {
                 e.printStackTrace();
                 Thread.currentThread().interrupt();
             }
         });
-executorService.shutdown();
+        executorService.shutdown();
 
     }
 
@@ -96,7 +101,11 @@ executorService.shutdown();
         int height = (int) ticketComponent.getBarCode().getFitHeight();
         Image qrCode = QrCodeGenerator.generateQRCodeImage(objectTicket.getUUID(), width, height);
         ticketComponent.getBarCode().setImage(qrCode);
-        String color = objectTicket.getColor();
+        String colorName = objectTicket.getColor();
+        Color color = Color.web(colorName);
+        BackgroundFill backgroundFill = new BackgroundFill(color, CornerRadii.EMPTY, Insets.EMPTY);
+        Background background = new Background(backgroundFill);
+        ticketComponent.getRoot().setBackground(background);
         ticketComponent.getRoot().setStyle("-fx-background-color: " + color);
         ticketComponent.setCustomerEmail(customer.getEmail());
         ticketComponent.setCustomerName(customer.getName());
@@ -112,8 +121,8 @@ executorService.shutdown();
         return scene.getRoot().snapshot(params, null);
     }
 
-    public List<WritableImage> createTicketWritableImages() {
-        return this.createdTicketsImages;
+    public void createTicketWritableImages() throws EventException {
+        createTicketImages(soldTickets, customer, event);
     }
 
 
