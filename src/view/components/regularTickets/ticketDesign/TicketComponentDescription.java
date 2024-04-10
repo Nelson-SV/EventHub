@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
@@ -76,6 +77,7 @@ public class TicketComponentDescription extends FlowPane implements Initializabl
 
     public void setTicketColour(Color fill){
         ticketPane.setBackground(new Background(new BackgroundFill(fill, null, null)));
+        adjustImageColors(fill);
 
         double brightness = fill.getBrightness();
         if (brightness < 0.5) {
@@ -103,6 +105,20 @@ public class TicketComponentDescription extends FlowPane implements Initializabl
             extraLabel1.setTextFill(Color.BLACK);
             extraLabel2.setTextFill(Color.BLACK);
         }
+    }
+
+    private void adjustImageColors(Color fill) {
+        double brightness = fill.getBrightness();
+        ColorAdjust colorAdjust = new ColorAdjust();
+
+        if (brightness > 0.5) {
+            colorAdjust.setContrast(0.5);
+        } else {
+            colorAdjust.setBrightness(0.5);
+        }
+
+        qrCode.setEffect(colorAdjust);
+        barCode.setEffect(colorAdjust);
     }
 
 
