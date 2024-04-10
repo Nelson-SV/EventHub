@@ -16,7 +16,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 public class Model implements CommonModel {
 
-     private User loggedUser ;
+      private User loggedUser ;
 
 
 
@@ -141,6 +141,7 @@ public class Model implements CommonModel {
             createdEvent.setStatus(EventStatusCalculator.calculateStatus(event));
             loggedCoordinatorEvents.put(inserted,createdEvent);
         }
+
         Platform.runLater(()->{
             this.eventsDisplayer.displayEvents();
         });
@@ -302,7 +303,6 @@ public class Model implements CommonModel {
         return evmLogic.isModifyed(assignedCoordinators, selectedEvent, loggedCoordinatorEvents.get(selectedEvent.getId()).getEventDTO());
     }
 
-
     /**
      * save the edit operation performed on the current selected event
      */
@@ -354,6 +354,7 @@ public class Model implements CommonModel {
         eventTickets = ticketManager.getTicketsForEvent(eventId); // Store tickets for the specified event
         return eventTickets; // Return the tickets for the specified event
     }
+
 
     public ObservableMap<Integer, Ticket> getSpecialTicketsForEventOrNot(int eventId) throws EventException {
         specialTickets = ticketManager.getSpecialTicketsRelatedOrNot(eventId); // Store tickets for the specified event
