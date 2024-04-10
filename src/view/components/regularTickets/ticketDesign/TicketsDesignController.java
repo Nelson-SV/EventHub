@@ -89,11 +89,11 @@ public class TicketsDesignController implements Initializable {
 
         if (isTicketValid) {
             String type = ticketTypeTF.getText();
-            int price = Integer.parseInt(ticketQuantityTF.getText());
-            BigDecimal quantity = new BigDecimal(ticketPriceTF.getText());
+            int quantity = Integer.parseInt(ticketQuantityTF.getText());
+            BigDecimal price = new BigDecimal(ticketPriceTF.getText());
             String color = colorPicker.getValue().toString();
 
-            Ticket ticket = new Ticket(type, price, quantity, color);
+            Ticket ticket = new Ticket(type, quantity, price, color);
 
             VBox ticketsVBox = eventManagementController.getTicketsVBox();
 

@@ -5,6 +5,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
@@ -13,33 +14,34 @@
       <HBox alignment="CENTER" prefHeight="200.0" prefWidth="126.0">
          <children>
             <ImageView fx:id="logoImg" fitHeight="100.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" />
-            <ImageView fx:id="barCode" fitHeight="100.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" />
+            <ImageView fx:id="qrCode" fitHeight="100.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" />
          </children>
       </HBox>
       <VBox prefHeight="201.0" prefWidth="213.0">
          <children>
-            <Label fx:id="eventNameLB" prefWidth="250.0" text="Event Name Line">
+            <Label fx:id="eventNameLB" prefHeight="40.0" prefWidth="198.0" text="Event Name Line" wrapText="true">
                <VBox.margin>
-                  <Insets bottom="10.0" left="15.0" top="10.0" />
+                  <Insets left="15.0" />
                </VBox.margin>
                <font>
                   <Font size="14.0" />
                </font>
             </Label>
-            <Label fx:id="eventDateLB" prefWidth="250.0" text="Event Date Line">
+            <Label fx:id="eventDateLB" prefWidth="250.0" text="Event Date Line" wrapText="true">
                <VBox.margin>
-                  <Insets bottom="10.0" left="15.0" />
+                  <Insets left="15.0" top="5.0" />
                </VBox.margin>
             </Label>
-            <Label fx:id="eventLocationLB" prefWidth="250.0" text="Event Location Line">
+            <Label fx:id="eventLocationLB" prefHeight="53.0" prefWidth="198.0" text="Event Location Line" wrapText="true">
                <VBox.margin>
-                  <Insets bottom="70.0" left="15.0" />
+                  <Insets left="15.0" top="5.0" />
                </VBox.margin>
                <font>
                   <Font size="12.0" />
                </font>
             </Label>
-            <Label fx:id="custNameLB" prefHeight="17.0" prefWidth="250.0" text="Customer Name">
+            <Region prefHeight="29.0" prefWidth="213.0" />
+            <Label fx:id="custNameLB" prefHeight="17.0" prefWidth="250.0" text="Customer Name" wrapText="true">
                <VBox.margin>
                   <Insets bottom="5.0" left="15.0" />
                </VBox.margin>
@@ -47,7 +49,7 @@
                   <Font size="10.0" />
                </font>
             </Label>
-            <Label fx:id="custEmailLB" prefWidth="250.0" text="Customer Email">
+            <Label fx:id="custEmailLB" prefWidth="250.0" text="Customer Email" wrapText="true">
                <VBox.margin>
                   <Insets left="15.0" />
                </VBox.margin>
@@ -59,20 +61,21 @@
       </VBox>
       <VBox prefHeight="200.0" prefWidth="73.0">
          <children>
-            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="73.0" spacing="20.0">
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="73.0">
                <children>
                   <Label fx:id="extraLabel1" alignment="CENTER" prefHeight="13.0" prefWidth="100.0" text="Ticket Type" textAlignment="CENTER" />
-                  <Label fx:id="ticketTypeLB" alignment="CENTER" prefHeight="5.0" prefWidth="70.0" text="Normal Ticket">
+                  <Label fx:id="ticketTypeLB" alignment="CENTER" prefHeight="44.0" prefWidth="70.0" text="Normal Ticket">
                      <font>
                         <Font size="10.0" />
                      </font>
                   </Label>
+                  <Region prefHeight="63.0" prefWidth="73.0" />
                   <Label fx:id="extraLabel2" alignment="CENTER" prefHeight="13.0" prefWidth="138.0" text="Ticket Price">
                      <VBox.margin>
-                        <Insets top="50.0" />
+                        <Insets />
                      </VBox.margin>
                   </Label>
-                  <Label fx:id="ticketPriceLB" alignment="CENTER" prefHeight="5.0" prefWidth="70.0" text="dkk">
+                  <Label fx:id="ticketPriceLB" alignment="CENTER" prefHeight="39.0" prefWidth="70.0" text="dkk">
                      <font>
                         <Font size="10.0" />
                      </font>

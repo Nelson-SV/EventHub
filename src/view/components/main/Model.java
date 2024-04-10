@@ -141,6 +141,21 @@ public class Model implements CommonModel {
      });
      }
 
+     public void addSpecialTicket(Ticket specialTicket, Event event) throws EventException {
+         Integer inserted = ticketManager.addSpecialTicket(specialTicket, event);
+         if (inserted != null) {
+             specialTicket.setId(inserted);
+         }
+     }
+
+    public void updateSpecialTicket(Ticket specialTicket) throws EventException {
+        ticketManager.updateSpecialTicket(specialTicket);
+    }
+
+    public void deleteSpecialTicket(Ticket specialTicket) throws EventException {
+        ticketManager.deleteSpecialTicket(specialTicket);
+    }
+
     public List<Ticket> getNewAddedTicket(Ticket ticket) {
         addedTickets.add(ticket);
         return addedTickets;
