@@ -254,6 +254,12 @@ public class EventManagementLogic implements ILogicManager {
         sortedEvents.addAll(finalizedEvents);
         return sortedEvents;
     }
+
+    @Override
+    public List<Event> getSortedEventsByStatus(Collection<Event> values) {
+        return null;
+    }
+
     private List<EventStatus> sortOngoing(Collection<EventStatus> events) {
         List<EventStatus> ongoing = events.stream().filter((item) -> item.getStatus().getValue().equals(Status.ONGOING.getValue())).toList();
         return sortByStartingDateAndTime(ongoing);

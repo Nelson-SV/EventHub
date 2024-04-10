@@ -3,3 +3,13 @@
     -fx-background-size: cover;
 
 }
+.password:error {
+    -fx-border-color: red;
+    -fx-border-width: 2;
+    -fx-border-radius: 5;
+}
+.userName:error {
+    -fx-border-color: red;
+    -fx-border-width: 2;
+    -fx-border-radius: 5;
+}

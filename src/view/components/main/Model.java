@@ -16,15 +16,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 public class Model implements CommonModel {
 
-
-    //TODO  logged user to be initialized with the actual logged user
-//12,Andrei Ionut,test,Grosu,http://res.cloudinary.com/deipyfz99/image/upload/v1712563835/mbwqk1wpanct5bdtdmgw.png,event_coordinator
-    private User loggedUser ;
-    {
-   loggedUser = new User("andrei Ionut", "Grosu", "event_coordinator", "http://res.cloudinary.com/deipyfz99/image/upload/v1712563835/mbwqk1wpanct5bdtdmgw.png");
-    loggedUser.setUserId(12);
-    }
-
+     private User loggedUser ;
 
 
 
@@ -76,6 +68,7 @@ public class Model implements CommonModel {
     private EventManager eventManager;
     private ILogicManager evmLogic;
     private TicketManager ticketManager;
+    private LogInManager logInManager;
 
     /**
      * holds the current opened event for managing
@@ -83,6 +76,7 @@ public class Model implements CommonModel {
     private Event selectedEvent;
 
     private List<Ticket> addedTickets;
+  //  private User loggedUser;
 
     private static Model instance;
 
@@ -99,12 +93,12 @@ public class Model implements CommonModel {
         initializeEventDateObservable();
         eventManager = new EventManager();
         ticketManager = new TicketManager();
-       // coordinatorEvents = FXCollections.observableHashMap();
+
+        logInManager = new LogInManager();
         allEvents = FXCollections.observableHashMap();
         eventTickets = FXCollections.observableHashMap();
         evmLogic = new EventManagementLogic();
         addedTickets = new ArrayList<>();
-        initializeEventsMap();
         returnAllEvents();
         loggedCoordinatorEvents = FXCollections.observableHashMap();
     }
@@ -168,6 +162,7 @@ public class Model implements CommonModel {
     public void initializeEventsMap() throws EventException {
         loggedCoordinatorEvents = evmLogic.getEventsWithStatus(loggedUser.getUserId());
     }
+
 
     /**
      * Sets the Event Displayer responsible for displaying the events
@@ -388,6 +383,15 @@ public class Model implements CommonModel {
         return evmLogic.convertStringToLocalTime(value);
     }
 
+
+    public User checkUser (String username, String password) throws EventException {
+        System.out.println(username + password + "inputData");
+        loggedUser = logInManager.checkUser(username, password);
+
+        System.out.println(logInManager.checkUser(username, password)+ "loggedInManager checker");
+
+        return loggedUser;
+    }
 
 
         /*

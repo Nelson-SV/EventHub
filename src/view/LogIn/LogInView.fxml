@@ -29,11 +29,11 @@
                   <RowConstraints maxHeight="158.0" minHeight="0.0" prefHeight="70.33331298828126" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <MFXPasswordField fx:id="password" prefHeight="49.0" prefWidth="342.0" style="-fx-background-color: rgba(150, 160, 180, 0.7);" GridPane.rowIndex="1">
+                  <MFXPasswordField fx:id="password" styleClass="password" prefHeight="49.0" prefWidth="342.0" style="-fx-background-color: rgba(150, 160, 180, 0.7);" GridPane.rowIndex="1">
                      <textFill>
                         <Color />
                      </textFill></MFXPasswordField>
-                  <MFXTextField fx:id="userName" prefHeight="49.0" prefWidth="341.0" style="-fx-background-color: rgba(150, 160, 180, 0.7);">
+                  <MFXTextField fx:id="userName" styleClass="userName" prefHeight="49.0" prefWidth="341.0" style="-fx-background-color: rgba(150, 160, 180, 0.7);">
                      <textFill>
                         <Color />
                      </textFill></MFXTextField>
@@ -55,6 +55,7 @@
                   <Font name="System Bold" size="13.0" />
                </font>
             </MFXButton>
+            <Label fx:id="invalidError" layoutX="232.0" layoutY="44.0" />
          </children>
          <BorderPane.margin>
             <Insets bottom="120.0" />
