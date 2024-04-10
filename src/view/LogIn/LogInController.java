@@ -49,7 +49,7 @@ public class LogInController implements Initializable {
 
 
         try {
-            if(!userName.getText().isEmpty() || !password.getText().isEmpty()) {
+            if(!userName.getText().isEmpty() && !password.getText().isEmpty()) {
                 System.out.println(enteredPassword + enteredUsername);
                 User user = model.checkUser(enteredUsername, enteredPassword);
                 System.out.println(user == null);
