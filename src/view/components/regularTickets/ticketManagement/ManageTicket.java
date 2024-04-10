@@ -15,7 +15,7 @@ public class ManageTicket extends VBox {
     @FXML
     private EventManagementController eventManagementController;
   
-    public ManageTicket(StackPane editWindow, StackPane thirdLayout, Model model, EventManagementController eventManagementController, Ticket ticket) {
+    public ManageTicket(StackPane editWindow, StackPane thirdLayout, Model model, EventManagementController eventManagementController) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("ManageTicketButton.fxml"));
         loader.setController(new ManageTicketController(editWindow,thirdLayout,model, eventManagementController));
         try {

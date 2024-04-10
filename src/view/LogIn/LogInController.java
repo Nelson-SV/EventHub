@@ -80,8 +80,7 @@ public class LogInController implements Initializable {
                     pauseTransition.play();
 
                 }
-            }
-            else {
+            } else {
                 userName.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, true);
                 password.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, true);
             }
