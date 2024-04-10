@@ -27,7 +27,7 @@ public class TicketComponentDescription extends FlowPane implements Initializabl
     @FXML
     private Event event;
     @FXML
-    private ImageView logoImg, barCode, qrCode;
+    private ImageView logoImg, qrCode;
     @FXML
     private FlowPane ticketPane;
 
@@ -47,7 +47,7 @@ public class TicketComponentDescription extends FlowPane implements Initializabl
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        getBarCode().setImage(new Image("/resources/images/Image 1.png"));
+        getQrCode().setImage(new Image("/resources/images/Image 1.png"));
         getLogoImg().setImage(new Image("/resources/images/Image 3.png"));
         setTicketLabels();
     }
@@ -111,7 +111,7 @@ public class TicketComponentDescription extends FlowPane implements Initializabl
         } else {
             colorAdjust.setBrightness(0.5);
         }
-        barCode.setEffect(colorAdjust);
+        qrCode.setEffect(colorAdjust);
     }
 
     public ImageView getLogoImg() {
@@ -122,8 +122,8 @@ public class TicketComponentDescription extends FlowPane implements Initializabl
         this.logoImg = logoImg;
     }
 
-    public ImageView getBarCode() {
-        return barCode;
+    public ImageView getQrCode() {
+        return qrCode;
     }
 
     public void setQrCode(Image qrCode) {

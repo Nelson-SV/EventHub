@@ -53,7 +53,6 @@ public class DeleteTicketController implements OperationHandler, Initializable {
         this.eventManagementController = eventManagementController;
 
         ticketsVBox = eventManagementController.getTicketsVBox();
-        System.out.println("constructor: " + ticketsVBox);
     }
 
     @Override
@@ -107,9 +106,7 @@ public class DeleteTicketController implements OperationHandler, Initializable {
                 return new Task<Void>() {
                     @Override
                     protected Void call() throws EventException {
-                        System.out.println("CONTROLLER: " + ticket);
                         model.getTicketsToDelete(ticket, ticket.getId());
-                        System.out.println("CONTROLLER2: " + ticket);
                         return null;
                     }
                 };
