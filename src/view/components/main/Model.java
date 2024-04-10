@@ -411,11 +411,5 @@ public class Model implements CommonModel {
         return loggedUser;
     }
 
-    public Customer getCustomer() {
-    return null;
-    }
 
-    public Event getCurrentEventSell() {
-        return null;
-    }
 }
