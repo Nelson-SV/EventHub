@@ -137,8 +137,8 @@ public class Ticket {
     @Override
     public String toString() {
         return ticketType +
-                ", quantity=" + quantity +
-                ", Price=" + ticketPrice
+                ", q: " + quantity +
+                ", price: " + ticketPrice + "DKK"
                 ;
     }
 }

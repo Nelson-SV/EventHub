@@ -30,29 +30,29 @@ public class EventDAO {
             conn = connectionManager.getConnection();
             conn.setAutoCommit(false);
             conn.commit();
-            String sql = "INSERT INTO Event (Start_date, Name, Description, AvTickets, End_Date, Start_Time, End_Time, Location) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO Event (Start_date, Name, Description, End_Date, Start_Time, End_Time, Location) VALUES (?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             statement.setDate(1, java.sql.Date.valueOf(event.getStartDate()));
             statement.setString(2, event.getName());
             statement.setString(3, event.getDescription());
-            statement.setInt(4, 0);
+
             if (event.getEndDate() != null) {
-                statement.setDate(5, java.sql.Date.valueOf(event.getEndDate()));
+                statement.setDate(4, java.sql.Date.valueOf(event.getEndDate()));
             } else {
-                statement.setDate(5, null);
+                statement.setDate(4, null);
             }
             if (event.getStartTime() != null) {
-                statement.setTime(6, java.sql.Time.valueOf(event.getStartTime()));
+                statement.setTime(5, java.sql.Time.valueOf(event.getStartTime()));
             } else {
-                statement.setTime(6, null);
+                statement.setTime(5, null);
             }
 
             if (event.getEndTime() != null) {
-                statement.setTime(7, java.sql.Time.valueOf(event.getEndTime()));
+                statement.setTime(6, java.sql.Time.valueOf(event.getEndTime()));
             } else {
-                statement.setTime(7, null);
+                statement.setTime(6, null);
             }
-            statement.setString(8, event.getLocation());
+            statement.setString(7, event.getLocation());
             statement.executeUpdate();
             try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
@@ -159,24 +159,22 @@ public class EventDAO {
             try (PreparedStatement psmt = conn.prepareStatement(sql)) {
                 ResultSet res = psmt.executeQuery();
                 while (res.next()) {
-                    int id = res.getInt(1);
-                    LocalDate startDate = res.getDate(2).toLocalDate();
-                    String name = res.getString(3);
-                    String description = res.getString(4);
-                    int avTickets = res.getInt(5);
+                    int id = res.getInt("EventId");
+                    LocalDate startDate = res.getDate("Start_date").toLocalDate();
+                    String name = res.getString("Name");
+                    String description = res.getString("Description");
                     LocalDate endDate = null;
-                    if (res.getDate(6) != null) {
-                        endDate = res.getDate(6).toLocalDate();
+                    if (res.getDate("End_Date") != null) {
+                        endDate = res.getDate("End_Date").toLocalDate();
                     }
-                    LocalTime startTime = res.getTime(7).toLocalTime();
+                    LocalTime startTime = res.getTime("Start_Time").toLocalTime();
                     LocalTime endTime = null;
-                    if (res.getTime(8) != null) {
-                        endTime = res.getTime(8).toLocalTime();
+                    if (res.getTime("End_Time") != null) {
+                        endTime = res.getTime("End_Time").toLocalTime();
                     }
-                    String location = res.getString(9);
+                    String location = res.getString("Location");
                     Event event = new Event(name, description, startDate, endDate, startTime, endTime, location);
                     event.setId(id);
-                    event.setAvailableTickets(avTickets);
                     events.put(event.getId(), event);
                 }
             }

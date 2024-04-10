@@ -13,3 +13,7 @@
     -fx-border-width: 2;
     -fx-border-radius: 5;
 }
+.invalidError{
+    -fx-text-fill: red;
+    -fx-font-size: 17;
+}

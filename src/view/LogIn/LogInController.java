@@ -55,7 +55,7 @@ public class LogInController implements Initializable {
                 System.out.println(user == null);
 
 
-                if (user.getRole() != null) {
+                if (user != null) {
                     // User authenticated successfully, load corresponding page
                     Stage stage = (Stage) userName.getScene().getWindow();
                     stage.close();
@@ -83,6 +83,15 @@ public class LogInController implements Initializable {
             } else {
                 userName.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, true);
                 password.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, true);
+                Platform.runLater(() -> {
+                    invalidError.setText("Fill in userName and password");
+                });
+                // Schedule a task to clear the error message after 5 seconds
+                PauseTransition pauseTransition = new PauseTransition(Duration.seconds(5));
+                pauseTransition.setOnFinished(event -> {
+                    invalidError.setText(""); // Clear the error message
+                });
+                pauseTransition.play();
             }
         } catch (EventException e) {
 
