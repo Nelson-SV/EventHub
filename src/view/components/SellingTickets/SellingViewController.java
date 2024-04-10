@@ -1,12 +1,14 @@
 package view.components.SellingTickets;
 
 import be.Customer;
+import be.Event;
 import be.Ticket;
 import exceptions.ErrorCode;
 import exceptions.EventException;
 import exceptions.ExceptionHandler;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
+import io.github.palexdev.materialfx.controls.cell.MFXListCell;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -21,6 +23,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
@@ -32,7 +35,7 @@ import view.components.main.Model;
 import view.utility.CommonMethods;
 import view.utility.SellingValidator;
 import view.utility.TicketValidator;
-
+import javafx.util.Callback;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URL;
@@ -98,7 +101,6 @@ public class SellingViewController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         List<String> eventNames = model.getAllEventNames();
         allEvents.setItems(FXCollections.observableArrayList(eventNames));
-
         allEvents.setOnAction(event -> {
             loadTicketsInfo();
             loadSpecialTicketsInfo();
@@ -310,8 +312,9 @@ public class SellingViewController implements Initializable {
        String customerName = name.getText();
        String customerLastName = lastName.getText();
        String customerEmail = email.getText();
+       String eventName = (String)allEvents.getSelectionModel().getSelectedItem();
        Customer customer = new Customer(customerName, customerLastName, customerEmail);
-       model.sellTicket(allSelectedTickets.getItems(),customer );
+       model.sellTicket(allSelectedTickets.getItems(),customer,eventName);
    }
 
     public void cancel (ActionEvent actionEvent){
@@ -333,6 +336,9 @@ public class SellingViewController implements Initializable {
         };
         sellingService.setOnSucceeded((e) -> {
             Platform.runLater(() -> {
+
+
+
                 loadingComponent.setAction(LoadingActions.SUCCES.getActionValue());
                 PauseTransition pauseTransition = new PauseTransition(Duration.millis(500));
                 pauseTransition.setOnFinished((ev) -> {
@@ -397,11 +403,4 @@ public class SellingViewController implements Initializable {
         allEventTickets.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, false);
         allSelectedTickets.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, false);
     }
-
-
-
-
-
-
-
 }

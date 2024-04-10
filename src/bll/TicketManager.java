@@ -33,24 +33,25 @@ public class TicketManager {
     }
 
 
-    public  Map<TicketType,List<Ticket>> getTicketsWithUUId(List<Ticket> allTickets){
-
-        return TicketDAO.retrieveTicketsUUID(sortTicketsByType(allTickets));
+    /**
+     * get the tickets with UUID filtered by type
+     */
+    public Map<TicketType, List<Ticket>> getTicketsWithUUId(List<Ticket> allTickets) throws EventException {
+        return ticketD.retrieveTicketsUUID(sortTicketsByType(allTickets));
     }
 
-
-    private  Map<TicketType,List<Ticket>> sortTicketsByType(List<Ticket> allTickets){
-     Map<TicketType,List<Ticket>> sortedTicketsByType = new HashMap<>();
-     sortedTicketsByType.put(TicketType.NORMAL,sortNormalTicketsType(allTickets));
-     sortedTicketsByType.put(TicketType.SPECIAL,sorSpecialTicketsType(allTickets));
-     return sortedTicketsByType;
+    private Map<TicketType, List<Ticket>> sortTicketsByType(List<Ticket> allTickets) {
+        Map<TicketType, List<Ticket>> sortedTicketsByType = new HashMap<>();
+        sortedTicketsByType.put(TicketType.NORMAL, sortNormalTicketsType(allTickets));
+        sortedTicketsByType.put(TicketType.SPECIAL, sorSpecialTicketsType(allTickets));
+        return sortedTicketsByType;
     }
 
-    private List<Ticket> sorSpecialTicketsType(List<Ticket> allTickets){
+    private List<Ticket> sorSpecialTicketsType(List<Ticket> allTickets) {
         return allTickets.stream().filter(Ticket::getSpecial).toList();
     }
 
-    private List<Ticket> sortNormalTicketsType(List<Ticket> allTickets){
-        return allTickets.stream().filter((e)-> !e.getSpecial()).toList();
+    private List<Ticket> sortNormalTicketsType(List<Ticket> allTickets) {
+        return allTickets.stream().filter((e) -> !e.getSpecial()).toList();
     }
 }

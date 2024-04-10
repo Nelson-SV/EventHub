@@ -73,10 +73,11 @@ public class Model implements CommonModel {
     private List<Ticket> addedTickets, ticketToEdit, ticketsToDelete;
     /**holds the sold tickets for a certain customer*/
     private List<Ticket> soldTickets;
-
-
-
     private static Model instance;
+
+    private Event selectedEventSellName;
+
+    private Customer currentCustomer ;
 
     public static Model getInstance() throws EventException {
         if (instance == null) {
@@ -138,21 +139,6 @@ public class Model implements CommonModel {
      this.eventsDisplayer.displayEvents();
      });
      }
-
-     public void addSpecialTicket(Ticket specialTicket, Event event) throws EventException {
-         Integer inserted = ticketManager.addSpecialTicket(specialTicket, event);
-         if (inserted != null) {
-             specialTicket.setId(inserted);
-         }
-     }
-
-    public void updateSpecialTicket(Ticket specialTicket) throws EventException {
-        ticketManager.updateSpecialTicket(specialTicket);
-    }
-
-    public void deleteSpecialTicket(Ticket specialTicket) throws EventException {
-        ticketManager.deleteSpecialTicket(specialTicket);
-    }
 
     public List<Ticket> getNewAddedTicket(Ticket ticket) {
         addedTickets.add(ticket);
@@ -396,16 +382,37 @@ public class Model implements CommonModel {
     }
 
 
-    public void sellTicket(List<Ticket> allSelectedTickets, Customer customer) throws EventException {
+    public void sellTicket(List<Ticket> allSelectedTickets, Customer customer,String eventName) throws EventException {
        boolean sellOperationPerformed = ticketManager.soldTickets(allSelectedTickets, customer);
         if(sellOperationPerformed){
-
             soldTickets=allSelectedTickets;
+            currentCustomer=customer;
+            selectedEventSellName = getFullObjectEventSell(eventName);
+
+
             System.out.println("soldTickets");
             soldTickets.forEach(System.out::println);
             System.out.println("soldtickets");
         }
-        soldTickets= null;
+    }
+
+    private Event getFullObjectEventSell(String  eventName) {
+        Optional<Event> matchingEvent = allEvents.values().stream()
+                .filter(event -> event.getName().equals(eventName))
+                .findFirst();
+        return matchingEvent.orElse(null);
+    }
+
+
+    public Customer getTheCurrentCustomer(){
+        return this.currentCustomer;
+    }
+    public Event getCurrentEventSell(){
+        return this.selectedEventSellName;
+    }
+
+    public Map<TicketType,List<Ticket>> getTicketsWithUUId(List<Ticket> soldTickets) throws EventException {
+        return ticketManager.getTicketsWithUUId(soldTickets);
     }
 
 
