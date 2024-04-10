@@ -1,6 +1,7 @@
 package bll;
 
 import be.Customer;
+import be.Event;
 import be.Ticket;
 import dal.TicketDAO;
 import exceptions.EventException;
@@ -27,6 +28,18 @@ public class TicketManager {
 
     public void soldTickets(List<Ticket> allSelectedTickets, Customer customer) throws EventException {
         ticketD.insertSoldTickets(allSelectedTickets, customer);
+    }
+
+    public Integer addSpecialTicket(Ticket ticket, Event event) throws EventException {
+        return ticketD.addSpecialTicket(ticket, event);
+    }
+
+    public void updateSpecialTicket(Ticket specialTicket) throws EventException {
+        ticketD.updateSpecialTicket(specialTicket);
+    }
+
+    public void deleteSpecialTicket(Ticket specialTicket) throws EventException {
+        ticketD.deleteSpecialTicket(specialTicket);
     }
 
 }
