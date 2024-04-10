@@ -1,28 +1,21 @@
 package view.components.main;
-
 import exceptions.EventException;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
-import javafx.scene.control.Label;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
-import view.admin.usersPage.threads.ImageLoader;
 import view.components.SellingTickets.SellingViewController;
 import view.components.eventsPage.EventsPageController;
 import view.components.listeners.InitializationErrorListener;
 import view.components.specialTickets.SpecialTicketsController;
-import view.utility.CommonMethods;
 import view.utility.NavigationHoverControl;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class MainController implements Initializable, InitializationErrorListener {
+public class MainController implements Initializable , InitializationErrorListener {
     private boolean initializationError = false;
     private Model model;
     @FXML
@@ -45,14 +38,12 @@ public class MainController implements Initializable, InitializationErrorListene
     private VBox pageDisplayer;
     @FXML
     private VBox eventsPageController;
-    private boolean sellingDisplayed;
-    @FXML
-    private HBox navigation;
-    @FXML
-    private ImageView userImage;
+    private  boolean sellingDisplayed;
+    private SpecialTicketsController specialTicketsController;
+
+
     @FXML
     private StackPane secondaryLayout, thirdLayout;
-    private ImageLoader imageLoader;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -61,8 +52,6 @@ public class MainController implements Initializable, InitializationErrorListene
             NavigationHoverControl navigationHoverControl = new NavigationHoverControl(eventsLine, sellingLine, ticketingLine, eventsNavButton, sellingNavButton, specialTicketNavButton);
             navigationHoverControl.initializeNavButtons();
             initializeMainPageEvents();
-            imageLoader = new ImageLoader();
-            setTheImageLoader();
         } catch (EventException e) {
             initializationError = true;
         }
@@ -70,9 +59,13 @@ public class MainController implements Initializable, InitializationErrorListene
     }
 
     public void createSpecialTicket(ActionEvent actionEvent) {
-        SpecialTicketsController specialTicketsController = new SpecialTicketsController(pageDisplayer, model);
-        pageDisplayer.getChildren().clear();
-        pageDisplayer.getChildren().add(specialTicketsController.getRoot());
+        if(specialTicketsController == null){
+            specialTicketsController = new SpecialTicketsController(pageDisplayer, model);
+            pageDisplayer.getChildren().clear();
+            pageDisplayer.getChildren().add(specialTicketsController.getRoot());
+        }
+        sellingDisplayed = false;
+
     }
 
     public boolean isInitializationError() {
@@ -82,23 +75,26 @@ public class MainController implements Initializable, InitializationErrorListene
     @FXML
     private void selling(ActionEvent actionEvent) {
 
-        if (!sellingDisplayed) {
+        if(!sellingDisplayed){
             SellingViewController sellingViewController = new SellingViewController(pageDisplayer, model, secondaryLayout);
             pageDisplayer.getChildren().clear();
             pageDisplayer.getChildren().add(sellingViewController.getRoot());
-            sellingDisplayed = true;
+            sellingDisplayed=true;
+
         }
+        specialTicketsController = null;
     }
 
     @FXML
     private void navigateEventsPage(ActionEvent actionEvent) {
-        if (!pageDisplayer.getChildren().contains(eventsPageController)) {
+        if(!pageDisplayer.getChildren().contains(eventsPageController)){
             model.sortedEventsList();
-            eventsPageController = new EventsPageController(secondaryLayout, thirdLayout);
+            eventsPageController= new EventsPageController(secondaryLayout,thirdLayout);
             pageDisplayer.getChildren().clear();
             pageDisplayer.getChildren().add(eventsPageController);
-            sellingDisplayed = false;
+            sellingDisplayed=false;
         }
+        specialTicketsController = null;
     }
 
     private void initializeMainPageEvents() {
@@ -106,18 +102,8 @@ public class MainController implements Initializable, InitializationErrorListene
         pageDisplayer.getChildren().clear();
         pageDisplayer.getChildren().add(eventsPageController);
     }
-
-    private void setTheImageLoader() {
-        imageLoader.setImageLocation(model.getLoggedUser().getUserImageUrl());
-        imageLoader.getServiceLoader().setOnSucceeded((event) -> {
-            CommonMethods.makeTheImageRound(imageLoader.getServiceLoader().getValue(), userImage);
-        });
-        imageLoader.getServiceLoader().setOnFailed((event) -> {
-            navigation.getChildren().remove(userImage);
-            Label placeholder = new Label("UserImage");
-            navigation.getChildren().add(placeholder);
-            HBox.setMargin(placeholder, new Insets(0, 10, 0, 0));
-        });
-        imageLoader.getServiceLoader().restart();
+    public VBox getPageDisplayer() {
+        return pageDisplayer;
     }
+
 }

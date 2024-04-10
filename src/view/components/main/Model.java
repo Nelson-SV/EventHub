@@ -15,7 +15,9 @@ import java.time.LocalTime;
 import java.util.*;
 import java.util.stream.Collectors;
 public class Model implements CommonModel {
-      private User loggedUser ;
+
+     private User loggedUser ;
+
 
 
     /**
@@ -66,6 +68,7 @@ public class Model implements CommonModel {
     private EventManager eventManager;
     private ILogicManager evmLogic;
     private TicketManager ticketManager;
+    private LogInManager logInManager;
 
     /**
      * holds the current opened event for managing
@@ -73,6 +76,7 @@ public class Model implements CommonModel {
     private Event selectedEvent;
 
     private List<Ticket> addedTickets;
+  //  private User loggedUser;
 
     private static Model instance;
 
@@ -89,7 +93,8 @@ public class Model implements CommonModel {
         initializeEventDateObservable();
         eventManager = new EventManager();
         ticketManager = new TicketManager();
-       // coordinatorEvents = FXCollections.observableHashMap();
+
+        logInManager = new LogInManager();
         allEvents = FXCollections.observableHashMap();
         eventTickets = FXCollections.observableHashMap();
         evmLogic = new EventManagementLogic();
@@ -136,7 +141,6 @@ public class Model implements CommonModel {
             createdEvent.setStatus(EventStatusCalculator.calculateStatus(event));
             loggedCoordinatorEvents.put(inserted,createdEvent);
         }
-
         Platform.runLater(()->{
             this.eventsDisplayer.displayEvents();
         });
@@ -158,6 +162,7 @@ public class Model implements CommonModel {
     public void initializeEventsMap() throws EventException {
         loggedCoordinatorEvents = evmLogic.getEventsWithStatus(loggedUser.getUserId());
     }
+
 
     /**
      * Sets the Event Displayer responsible for displaying the events
@@ -297,6 +302,7 @@ public class Model implements CommonModel {
         return evmLogic.isModifyed(assignedCoordinators, selectedEvent, loggedCoordinatorEvents.get(selectedEvent.getId()).getEventDTO());
     }
 
+
     /**
      * save the edit operation performed on the current selected event
      */
@@ -349,7 +355,6 @@ public class Model implements CommonModel {
         return eventTickets; // Return the tickets for the specified event
     }
 
-
     public ObservableMap<Integer, Ticket> getSpecialTicketsForEventOrNot(int eventId) throws EventException {
         specialTickets = ticketManager.getSpecialTicketsRelatedOrNot(eventId); // Store tickets for the specified event
         return specialTickets; // Return the tickets for the specified event
@@ -378,6 +383,15 @@ public class Model implements CommonModel {
         return evmLogic.convertStringToLocalTime(value);
     }
 
+
+    public User checkUser (String username, String password) throws EventException {
+        System.out.println(username + password + "inputData");
+        loggedUser = logInManager.checkUser(username, password);
+
+        System.out.println(logInManager.checkUser(username, password)+ "loggedInManager checker");
+
+        return loggedUser;
+    }
 
 
         /*

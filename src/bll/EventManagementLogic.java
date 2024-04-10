@@ -6,14 +6,12 @@ import dal.UsersDAO;
 import exceptions.EventException;
 import javafx.collections.ObservableMap;
 import javafx.concurrent.Task;
-
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
-
 public class EventManagementLogic implements ILogicManager {
     private EventDAO eventData;
     private UsersDAO usersDao;
@@ -59,7 +57,6 @@ public class EventManagementLogic implements ILogicManager {
     public boolean isModifyed(Map<Integer, List<Integer>> assignedCoordinators, Event selectedEvent, Event original) {
         return !assignedCoordinators.get(selectedEvent.getId()).isEmpty() || !selectedEvent.equals(original);
     }
-
     /**
      * checks if the start date is valid compared with the local Date
      */
@@ -74,7 +71,6 @@ public class EventManagementLogic implements ILogicManager {
     private boolean isStartTimeValid(LocalTime startTime, LocalTime endTime) {
         return startTime.isBefore(endTime);
     }
-
     /**
      * persist the edit event operation
      *
@@ -82,7 +78,7 @@ public class EventManagementLogic implements ILogicManager {
      * @param assignedCoordinators the coordinates assigned to this event
      */
     @Override
-    public boolean saveEditOperation(Event selectedEvent, Map<Integer, List<Integer>> assignedCoordinators, List<Ticket> tickets) throws EventException {
+    public boolean saveEditOperation(Event selectedEvent, Map<Integer, List<Integer>> assignedCoordinators,List<Ticket> tickets) throws EventException {
         return eventData.saveEditOperation(selectedEvent, assignedCoordinators, tickets);
     }
 
@@ -100,7 +96,6 @@ public class EventManagementLogic implements ILogicManager {
                 .sorted(Comparator.comparing(event -> Math.abs(ChronoUnit.DAYS.between(LocalDate.now(), event.getEventDTO().getStartDate()))))
                 .collect(Collectors.toList());
     }
-
     /**
      * delete an event from the database
      *
@@ -175,7 +170,7 @@ public class EventManagementLogic implements ILogicManager {
 
         if (!Objects.equals(editedEvent.getEndTime(), originalEvent.getEndTime())) {
             boolean endTimeValid = isEndTimeValidCompleteCheck(editedEvent.getStartTime(), editedEvent.getEndTime(), editedEvent.getStartDate(), editedEvent.getEndDate());
-            if (!endTimeValid) {
+            if (!endTimeValid){
                 isEditValid = false;
                 eventInvalid.setEndTimeInvalid(editedEvent.getEndTime() + " : End time is not valid!");
             }
@@ -192,12 +187,14 @@ public class EventManagementLogic implements ILogicManager {
      * check if start date is valid, before current date or after the end date
      */
     private boolean isStartDateValidCompleteCheck(LocalDate startDate, LocalDate endDate) {
-        if (endDate == null) {
-            return isStartDateValid(startDate);
+        if (!isStartDateValid(startDate)) {
+            return false;
         }
 
-        boolean endDateValid = !endDate.isBefore(startDate);
-        return isStartDateValid(startDate) && endDateValid;
+        if (!isEndDateNull(endDate)) {
+            return isEndDateValid(startDate, endDate);
+        }
+        return true;
     }
 
     /**
@@ -239,6 +236,8 @@ public class EventManagementLogic implements ILogicManager {
     }
 
 
+
+
     //sorting the events with status
 
     public List<EventStatus> getAllSortedEventsByStatus(Collection<EventStatus> events) {
@@ -256,6 +255,11 @@ public class EventManagementLogic implements ILogicManager {
         return sortedEvents;
     }
 
+    @Override
+    public List<Event> getSortedEventsByStatus(Collection<Event> values) {
+        return null;
+    }
+
     private List<EventStatus> sortOngoing(Collection<EventStatus> events) {
         List<EventStatus> ongoing = events.stream().filter((item) -> item.getStatus().getValue().equals(Status.ONGOING.getValue())).toList();
         return sortByStartingDateAndTime(ongoing);
@@ -270,7 +274,6 @@ public class EventManagementLogic implements ILogicManager {
         List<EventStatus> finalized = events.stream().filter((item) -> item.getStatus().getValue().equals(Status.FINALIZED.getValue())).toList();
         return sortByStartingDateAndTime(finalized);
     }
-
     private List<EventStatus> sortByStartingDateAndTime(List<EventStatus> events) {
         return events.stream()
                 .sorted(Comparator.comparing((EventStatus event) -> event.getEventDTO().getStartDate())

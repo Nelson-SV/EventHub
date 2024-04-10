@@ -37,4 +37,5 @@ public interface ILogicManager {
     /**retrieve the sorted events by status in descending order*/
     List<EventStatus> getAllSortedEventsByStatus(Collection<EventStatus> events);
 
+    List<Event> getSortedEventsByStatus(Collection<Event> values);
 }
