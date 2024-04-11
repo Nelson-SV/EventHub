@@ -1,5 +1,4 @@
 package ticketsPrinting;
-
 import be.Customer;
 import be.Event;
 import be.Ticket;
@@ -20,7 +19,6 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Transform;
 import view.components.regularTickets.ticketDesign.TicketComponentDescription;
-
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -36,62 +34,89 @@ public class TicketsSnapshot {
     private Map<TicketType, List<Ticket>> soldTickets;
     private Customer customer;
     private Event event;
-    private final List<WritableImage> createdTicketsImages;
-    private CountDownLatch countDownLatch = new CountDownLatch(1);
+    private  final List<WritableImage> createdTicketsImages;
+    private CountDownLatch countDownLatch = new CountDownLatch(2);
     private ExecutorService executorService;
 
     public TicketsSnapshot(Map<TicketType, List<Ticket>> soldTickets, Customer customer, Event event) {
-        this.soldTickets = soldTickets;
         this.customer = customer;
         this.createdTicketsImages = new ArrayList<>();
         this.event = event;
+        setSoldTickets(soldTickets);
+    }
+    public synchronized void setSoldTickets(Map<TicketType, List<Ticket>> soldTickets) {
+        this.soldTickets = soldTickets;
     }
 
-    private void createTicketImages(Map<TicketType, List<Ticket>> soldTickets, Customer customer, Event event) throws EventException {
+    public synchronized Map<TicketType, List<Ticket>> getSoldTickets() {
+        return this.soldTickets;
+    }
+
+    private  synchronized void createTicketImages(Map<TicketType,List<Ticket>> soldTickets, Customer customer, Event event) throws EventException {
 
         Platform.runLater(() -> {
-            System.out.println("executed" + " creating the node");
             for (Ticket ticket : soldTickets.get(TicketType.NORMAL)) {
                 try {
-                    createdTicketsImages.add(takeSnapshotNormalTicket(event, ticket, customer));
-                } catch (WriterException e) {
+                    //createdTicketsImages.add(takeSnapshotNormalTicket(event, ticket, customer));
+                    WritableImage writableImage = takeSnapshotNormalTicket(event, ticket, customer);
+;                        //countDownLatch.await();
+                        //int index = 0;
+                            BufferedImage bufferedImage = SwingFXUtils.fromFXImage(writableImage, null);
+                            File dir = new File("./uploadImages/userUploadedImages");
+                            if (!dir.exists()) {
+                                dir.mkdirs();
+                            }
+                            String ticketType = ticket.getTicketType();
+                            String uuid= ticket.getUUID();
+                            String fileName = uuid+customer.getName() + "_" + event.getName() + "_" + ticketType + ".png";
+                            System.out.println(fileName);
+                            File outputFile = new File(dir, fileName);
+                            try {
+                                ImageIO.write(bufferedImage, "png", outputFile);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                                throw new EventException(e.getMessage(), e, ErrorCode.FAILED_TO_SAVE_IMAGES);
+                            }
+
+                } catch (WriterException | EventException e) {
                     e.printStackTrace();
                 }
-            }
-            countDownLatch.countDown();
-        });
-        executorService = Executors.newSingleThreadExecutor();
-        executorService.execute(() -> {
-            try {
-                countDownLatch.await();
-                int index = 0;
-                for (WritableImage image : createdTicketsImages) {
-                    // Convert the WritableImage to a BufferedImage
-                    BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image, null);
 
-                    File dir = new File("./uploadImages/userUploadedImages");
-                    if (!dir.exists()) {
-                        dir.mkdirs();
-                    }
-                    String ticketType = soldTickets.get(TicketType.NORMAL).get(index).getTicketType();
-                    String fileName = customer.getName() + "_" + event.getName() + "_" + ticketType + ".png";
-                    System.out.println(fileName + "file name");
-                    File outputFile = new File(dir, fileName);
-                    try {
-                        ImageIO.write(bufferedImage, "png", outputFile);
-                        index++;
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        throw new EventException(e.getMessage(), e, ErrorCode.FAILED_TO_SAVE_IMAGES);
-                    }
-                }
-            } catch (InterruptedException | EventException e) {
-                e.printStackTrace();
-                Thread.currentThread().interrupt();
             }
+           // countDownLatch.countDown();
         });
-        executorService.shutdown();
 
+
+       // executorService = Executors.newSingleThreadExecutor();
+        //executorService.execute(() -> {
+//            try {
+//                countDownLatch.await();
+//                int index = 0;
+//                for (WritableImage image : createdTicketsImages) {
+//                    BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image, null);
+//                    File dir = new File("./uploadImages/userUploadedImages");
+//                    if (!dir.exists()) {
+//                        dir.mkdirs();
+//                    }
+//                    String ticketType = soldTickets.get(TicketType.NORMAL).get(index).getTicketType();
+//                    String uuid= soldTickets.get(TicketType.NORMAL).get(index).getUUID();
+//                    String fileName = uuid+customer.getName() + "_" + event.getName() + "_" + ticketType + ".png";
+//                    System.out.println(fileName);
+//                    File outputFile = new File(dir, fileName);
+//                    try {
+//                        ImageIO.write(bufferedImage, "png", outputFile);
+//                        index++;
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                        throw new EventException(e.getMessage(), e, ErrorCode.FAILED_TO_SAVE_IMAGES);
+//                    }
+//                }
+//            } catch (InterruptedException | EventException e) {
+//                e.printStackTrace();
+//                Thread.currentThread().interrupt();
+//            }
+        //});
+        //executorService.shutdown();
     }
 
 
@@ -102,11 +127,10 @@ public class TicketsSnapshot {
         Image qrCode = QrCodeGenerator.generateQRCodeImage(objectTicket.getUUID(), width, height);
         ticketComponent.getBarCode().setImage(qrCode);
         String colorName = objectTicket.getColor();
-        Color color = Color.web(colorName);
+        Color color = Color.web("#" + colorName.substring(2));
         BackgroundFill backgroundFill = new BackgroundFill(color, CornerRadii.EMPTY, Insets.EMPTY);
         Background background = new Background(backgroundFill);
         ticketComponent.getRoot().setBackground(background);
-        ticketComponent.getRoot().setStyle("-fx-background-color: " + color);
         ticketComponent.setCustomerEmail(customer.getEmail());
         ticketComponent.setCustomerName(customer.getName());
         ticketComponent.setEventName(event.getName());
@@ -120,10 +144,7 @@ public class TicketsSnapshot {
         params.setTransform(Transform.scale(scaleFactor, scaleFactor));
         return scene.getRoot().snapshot(params, null);
     }
-
-    public void createTicketWritableImages() throws EventException {
-        createTicketImages(soldTickets, customer, event);
+    public synchronized void createTicketWritableImages() throws EventException {
+        createTicketImages(getSoldTickets(),customer, event);
     }
-
-
 }

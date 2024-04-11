@@ -22,12 +22,11 @@ private  TicketsSnapshot ticketImageSnapshot;
         this.soldTickets = soldTickets;
         this.model = model;
     }
-    public void saveSoldTicketsImages() {
-
+    public synchronized void saveSoldTicketsImages() {
         initializeUUIDRetrieval();
     }
 
-    private void initializeUUIDRetrieval() {
+    private synchronized void initializeUUIDRetrieval() {
         uuIdLoader = new TicketUUIdLoader(soldTickets, model);
         uuIdLoader.setOnSucceeded((event) -> {
             soldTicketsWithUUID = uuIdLoader.getValue();

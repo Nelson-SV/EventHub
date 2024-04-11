@@ -389,8 +389,6 @@ public class Model implements CommonModel {
             soldTickets=allSelectedTickets;
             currentCustomer=customer;
             selectedEventSellName = getFullObjectEventSell(eventName);
-
-
             System.out.println("soldTickets");
             soldTickets.forEach(System.out::println);
             System.out.println("soldtickets");
