@@ -1,6 +1,7 @@
 package bll;
 
 import be.Customer;
+import be.Event;
 import be.Ticket;
 import be.TicketType;
 import dal.TicketDAO;
@@ -32,6 +33,17 @@ public class TicketManager {
         return ticketD.insertSoldTickets(allSelectedTickets, customer);
     }
 
+    public Integer addSpecialTicket(Ticket ticket, Event event) throws EventException {
+        return ticketD.addSpecialTicket(ticket, event);
+    }
+
+    public void updateSpecialTicket(Ticket specialTicket) throws EventException {
+        ticketD.updateSpecialTicket(specialTicket);
+    }
+
+    public void deleteSpecialTicket(Ticket specialTicket) throws EventException {
+        ticketD.deleteSpecialTicket(specialTicket);
+    }
 
     /**
      * get the tickets with UUID filtered by type
