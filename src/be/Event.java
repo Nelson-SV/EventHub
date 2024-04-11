@@ -97,17 +97,7 @@ public class Event {
 
     @Override
     public String toString() {
-        return "Event{" +
-                "id=" + id +
-                ", name=" + name +
-                ", description=" + description +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
-                ", startTime=" + startTime +
-                ", endTime=" + endTime +
-                ", location=" + location +
-                ", availableTickets=" + availableTickets +
-                '}';
+        return name.get();
     }
 
     public void setStartTime(LocalTime startTime) {
@@ -174,6 +164,10 @@ public class Event {
         this.description.setValue(originalEvent.getDescription());
         this.location.setValue(originalEvent.getLocation());
     }
+    public Event(String name) {
+        initializeFields();
+        this.name.setValue(name);
+        }
 
 
     private void initializeFields() {

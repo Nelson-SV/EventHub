@@ -475,28 +475,3 @@ INFO: Logger initialized
 .......................................
 Apr 09, 2024 10:12:07 PM view.components.eventsObservers.DateObservable lambda$startService$2
 SEVERE: Cannot invoke "javafx.collections.ObservableMap.values()" because "this.loggedCoordinatorEvents" is null
-Apr 10, 2024 2:43:06 PM exceptions.ExceptionLogger <init>
-INFO: Logger initialized 
-.......................................
-Apr 10, 2024 2:43:06 PM view.admin.eventsPage.AdminPageController lambda$initializeEvents$7
-SEVERE: The conversion from date to INTEGER is unsupported.
-Apr 10, 2024 2:43:28 PM view.admin.eventsPage.AdminPageController lambda$initializeEvents$7
-SEVERE: The conversion from date to INTEGER is unsupported.
-Apr 10, 2024 3:36:36 PM exceptions.ExceptionLogger <init>
-INFO: Logger initialized 
-.......................................
-Apr 10, 2024 3:36:36 PM view.admin.eventsPage.AdminPageController lambda$initializeEvents$7
-SEVERE: The conversion from date to INTEGER is unsupported.
-Apr 10, 2024 3:36:46 PM view.admin.eventsPage.AdminPageController lambda$initializeEvents$7
-SEVERE: The conversion from date to INTEGER is unsupported.
-Apr 10, 2024 3:36:58 PM view.admin.eventsPage.AdminPageController lambda$initializeEvents$7
-SEVERE: The conversion from date to INTEGER is unsupported.
-Apr 10, 2024 3:37:39 PM view.admin.eventsPage.AdminPageController lambda$initializeEvents$7
-SEVERE: The conversion from date to INTEGER is unsupported.
-Apr 10, 2024 7:00:49 PM exceptions.ExceptionLogger <init>
-INFO: Logger initialized 
-.......................................
-Apr 10, 2024 7:00:49 PM view.admin.eventsPage.AdminPageController lambda$initializeEvents$7
-SEVERE: The index 10 is out of range.
-Apr 10, 2024 7:00:56 PM view.admin.eventsPage.AdminPageController lambda$initializeEvents$7
-SEVERE: The index 10 is out of range.
