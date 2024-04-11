@@ -21,12 +21,11 @@
 .buttonGroup {
     -fx-border-color: BLACK;
     -fx-border-radius: 10;
-    -fx-background-color: #DAC0A3;
 }
 
 .buttonGroup:pressed {
     -fx-text-fill: WHITE;
-    -fx-border-color: #988672;
+    -fx-border-color: BLACK;
     -fx-border-radius: 10;
     -fx-background-color: #988672;
 }
@@ -43,7 +42,6 @@
     -fx-text-fill: #EA363C;
     -fx-border-color: BLACK;
     -fx-border-radius: 10;
-    -fx-background-color: #DAC0A3;
 }
 
 .cancelBtn:pressed{
