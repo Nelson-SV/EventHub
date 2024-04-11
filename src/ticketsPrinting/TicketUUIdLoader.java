@@ -5,7 +5,6 @@ import be.TicketType;
 import javafx.concurrent.Task;
 import view.components.main.Model;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
