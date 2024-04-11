@@ -1,6 +1,5 @@
 package view.components.specialTickets;
 
-import be.DeleteOperation;
 import be.Event;
 import be.Ticket;
 import exceptions.EventException;
@@ -19,9 +18,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import view.components.deleteEvent.DeleteButton;
-import view.components.eventsPage.eventDescription.EventComponent;
-import view.components.eventsPage.manageButton.ManageAction;
+import javafx.scene.paint.Color;
 import view.components.main.Model;
 import view.utility.TicketValidator;
 
@@ -37,7 +34,7 @@ public class SpecialTicketsController implements Initializable {
     public HBox hBox;
     @FXML
     private VBox box;
-    public HBox ticketHBox;
+    public VBox ticketVBox;
     public MFXTextField ticketTypeTF, ticketQuantityTF, ticketPriceTF;
     @FXML
     private ListView<Ticket> ticketsEventList;
@@ -53,6 +50,7 @@ public class SpecialTicketsController implements Initializable {
     private ObservableList<Ticket> ticketsOfEvent;
     private Ticket selectedTicket;
     private Event selectedEvent;
+    private SpecialComponentDescription specialComponentDescription;
 
 
     public SpecialTicketsController(VBox box, Model model){
@@ -62,6 +60,7 @@ public class SpecialTicketsController implements Initializable {
         try {
             hBox=loader.load();
             this.box = box;
+            displayTicketComponent();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -81,18 +80,30 @@ public class SpecialTicketsController implements Initializable {
                 if (empty || ticket == null) {
                     setText(null);
                 } else {
-                    setText(ticket.getTicketType() + ", Quantity: " + ticket.getQuantity());
+                    setText(ticket.getTicketType() + "    Quantity: " + ticket.getQuantity() + "    Price: " + ticket.getTicketPrice());
                 }
             }
         });
 
+        updateTicketInformation();
         addListenerEventsComboBox();
 
     }
 
+    @FXML
+    private void displayTicketComponent() {
+        if(ticketVBox.getScene()==null){
+            ticketVBox.getChildren().clear();
+            specialComponentDescription = new SpecialComponentDescription();
+            ticketVBox.getChildren().add(specialComponentDescription);
+        }
+    }
+
     private void setEventsComboBox() {
         model.sortedEventsList().forEach(e -> eventsOfCoordinator.add(e.getEventDTO()));
+        eventsOfCoordinator.add(new Event("Not Related to Events"));
         eventsCB.setItems(eventsOfCoordinator);
+        eventToChooseCB.setItems(eventsOfCoordinator);
     }
 
     private void addListenerEventsComboBox(){
@@ -118,6 +129,18 @@ public class SpecialTicketsController implements Initializable {
         });
     }
 
+    public void updateTicketInformation() {
+        ticketTypeTF.textProperty().addListener((observable, oldValue, newValue) -> {
+            // Update the label with the new selected type
+            specialComponentDescription.setTicketType(newValue);
+        });
+
+        colorPicker.valueProperty().addListener((observable, oldColor, newValue) -> {
+            // Update the background color of the FlowPane
+            specialComponentDescription.updateTicketColour(newValue);
+        });
+    }
+
     public void addTicket(ActionEvent actionEvent) throws EventException {
         boolean isTicketValid = TicketValidator.isTicketValid(ticketTypeTF, ticketPriceTF, ticketQuantityTF);
 
@@ -128,27 +151,64 @@ public class SpecialTicketsController implements Initializable {
             String color = colorPicker.getValue().toString();
 
             Ticket specialTicket = new Ticket(type, quantity, price, color);
+            Event event = (Event) eventToChooseCB.getSelectionModel().getSelectedItem();
+            String text = eventToChooseCB.getText();
+            if(text == null || text.isEmpty())
+                event = null;
 
-            model.addSpecialTicket(specialTicket, selectedEvent);
+            if (selectedTicket == null) {
+                model.addSpecialTicket(specialTicket, event);
+                if (event != null && event == eventsCB.getSelectionModel().getSelectedItem()) {
+                    ticketsEventList.getItems().add(specialTicket);
+                    ticketsEventList.refresh();
+                }
+            } else {
+                selectedTicket.setTicketType(type);
+                selectedTicket.setQuantity(quantity);
+                selectedTicket.setTicketPrice(price);
+                selectedTicket.setColor(color);
+                ticketsEventList.refresh();
+                model.updateSpecialTicket(selectedTicket);
+            }
+            selectedTicket = null;
+            clearFields();
         }
     }
 
     public void editTicket(ActionEvent actionEvent) {
+        selectedTicket = ticketsEventList.getSelectionModel().getSelectedItem();
 
+        ticketTypeTF.setText(selectedTicket.getTicketType());
+        ticketQuantityTF.setText(""+selectedTicket.getQuantity());
+        ticketPriceTF.setText(""+selectedTicket.getTicketPrice());
+        String ticketColor = selectedTicket.getColor();
+        colorPicker.setValue(Color.valueOf(ticketColor));
+        specialComponentDescription.setTicketColor(Color.valueOf(ticketColor));
+        eventToChooseCB.setDisable(true);
     }
 
-    public void removeTicket(ActionEvent actionEvent) {
-        //model.deleteSpecialTicket();
-    }
-
-    public void cancelAction(ActionEvent actionEvent) {
+    public void removeTicket(ActionEvent actionEvent) throws EventException {
+        selectedTicket = ticketsEventList.getSelectionModel().getSelectedItem();
+        model.deleteSpecialTicket(selectedTicket);
+        ticketsEventList.getItems().remove(selectedTicket);
+        ticketsEventList.refresh();
+        selectedTicket = null;
         clearFields();
     }
 
-    private void clearFields() {
-
+    public void clearAction(ActionEvent actionEvent) {
+        clearFields();
     }
 
+    public void clearFields(){
+        ticketTypeTF.clear();
+        ticketQuantityTF.clear();
+        ticketPriceTF.clear();
+        eventToChooseCB.setValue(null);
+        eventToChooseCB.setDisable(false);
+        specialComponentDescription.resetTicketColor();
+        colorPicker.setValue(Color.WHITE);
+    }
     public HBox getRoot() {
         return hBox;
     }

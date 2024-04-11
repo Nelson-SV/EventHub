@@ -13,6 +13,7 @@ import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.logging.Level;
 
 public class TicketDAO {
@@ -84,8 +85,9 @@ public class TicketDAO {
                     String type = res.getString("Type");
                     int quantity = res.getInt("Quantity");
                     BigDecimal price = res.getBigDecimal("Price");
+                    String color = res.getString("Colour");
 
-                    Ticket ticket = new Ticket(id, type, quantity, price);
+                    Ticket ticket = new Ticket(id, type, quantity, price, color);
                     tickets.put(ticket.getId(), ticket);
                 }
             }
@@ -219,11 +221,12 @@ public class TicketDAO {
             conn = connectionManager.getConnection();
             conn.setAutoCommit(false);
             conn.commit();
-            String sql = "INSERT INTO SpecialTicket (Type, Quantity, Price) VALUES (?, ?, ?)";
+            String sql = "INSERT INTO SpecialTickets (Type, Quantity, Price, Colour) VALUES (?, ?, ?, ?)";
             PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, ticket.getTicketType());
             statement.setInt(2, ticket.getQuantity());
             statement.setBigDecimal(3, ticket.getTicketPrice());
+            statement.setString(4, ticket.getColor());
 
             statement.executeUpdate();
             try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
@@ -233,7 +236,11 @@ public class TicketDAO {
                     throw new EventException(ErrorCode.OPERATION_DB_FAILED);
                 }
             }
-            addSpecialTicketToEvent(ticket, event, conn);
+
+            if(event != null && !Objects.equals(event.getName(), "Not Related to Events")) {
+                addSpecialTicketToEvent(ticketId, event, conn);
+            }
+
             conn.commit();
 
         } catch (EventException | SQLException e) {
@@ -255,10 +262,10 @@ public class TicketDAO {
         return ticketId;
     }
 
-    public void addSpecialTicketToEvent(Ticket ticket, Event event, Connection conn) throws EventException, SQLException{
+    public void addSpecialTicketToEvent(int ticketID, Event event, Connection conn) throws EventException, SQLException{
         String sql = "INSERT INTO EventSpecialTickets (SpecialTicketID, EventID) VALUES (?, ?)";
-        try (PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            statement.setInt(1, ticket.getId());
+        try (PreparedStatement statement = conn.prepareStatement(sql)) {
+            statement.setInt(1, ticketID);
             statement.setInt(2, event.getId());
             statement.executeUpdate();
         }
@@ -266,7 +273,7 @@ public class TicketDAO {
 
     public void updateSpecialTicket(Ticket specialTicket) throws EventException {
 
-        String updateTicket = "UPDATE SpecialTicket SET Type=?, Quantity=?, Price=? WHERE ID=?";
+        String updateTicket = "UPDATE SpecialTickets SET Type=?, Quantity=?, Price=?, Colour=? WHERE ID=?";
         Connection conn = null;
         try {
             conn = connectionManager.getConnection();
@@ -276,7 +283,8 @@ public class TicketDAO {
                 psmt.setString(1, specialTicket.getTicketType());
                 psmt.setInt(2, specialTicket.getQuantity());
                 psmt.setBigDecimal(3, specialTicket.getTicketPrice());
-                psmt.setInt(4, specialTicket.getId());
+                psmt.setString(4, specialTicket.getColor());
+                psmt.setInt(5, specialTicket.getId());
                 psmt.executeUpdate();
             }
 
@@ -303,7 +311,7 @@ public class TicketDAO {
 
     public void deleteSpecialTicket(Ticket specialTicket) throws EventException {
 
-        String sql = "DELETE FROM SpecialTicket WHERE ID=?";
+        String sql = "DELETE FROM SpecialTickets WHERE ID=?";
         try (Connection conn = connectionManager.getConnection()) {
             conn.setAutoCommit(false);
             conn.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);

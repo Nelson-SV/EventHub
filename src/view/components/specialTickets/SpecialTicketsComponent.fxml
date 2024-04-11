@@ -1,26 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<FlowPane fx:id="ticketPane" maxHeight="250.0" maxWidth="250.0" minHeight="250.0" minWidth="250.0" prefHeight="250.0" prefWidth="250.0" styleClass="flowPane" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<FlowPane fx:id="ticketPane" alignment="CENTER" columnHalignment="CENTER" maxHeight="200.0" maxWidth="200.0" minHeight="200.0" minWidth="200.0" prefHeight="200.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <VBox alignment="CENTER" prefHeight="250.0" prefWidth="250.0" spacing="30.0">
+      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="200.0">
          <children>
-            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="40.0" prefWidth="250.0" text="Special Ticket" textAlignment="CENTER">
+            <Label fx:id="ticketTypeLB" alignment="CENTER" contentDisplay="CENTER" prefHeight="85.0" prefWidth="200.0" text="Special Ticket" textAlignment="CENTER" wrapText="true">
                <font>
-                  <Font size="33.0" />
+                  <Font size="30.0" />
                </font>
             </Label>
-            <ImageView fx:id="qrCode" fitHeight="75.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true" />
-            <Label alignment="CENTER" prefHeight="26.0" prefWidth="250.0" text="IDENTIFICATION">
-               <font>
-                  <Font size="20.0" />
-               </font>
-            </Label>
+            <ImageView fx:id="qrCode" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin></ImageView>
          </children>
       </VBox>
    </children>
