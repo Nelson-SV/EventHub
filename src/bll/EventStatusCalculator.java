@@ -81,16 +81,29 @@ public class EventStatusCalculator {
     }
 
     private static boolean isStatusChanged(EventStatus event) {
-//        boolean hasStarted = !LocalDateTime.of(event.getStartDate(), event.getStartTime()).isBefore(LocalDateTime.now());
-//        LocalDateTime endDateTime;
-//        if (event.getEndDate() != null) {
-//            endDateTime = LocalDateTime.of(event.getEndDate(), event.getEndTime() != null ? event.getEndTime() : LocalTime.MAX);
-//        } else {
-//            endDateTime = LocalDateTime.of(event.getStartDate(), event.getEndTime() != null ? event.getEndTime() : LocalTime.MAX);
-//        }
-//        boolean hasEnded = !endDateTime.isBefore(LocalDateTime.now());
-//        return hasStarted || hasEnded;
-        return false;
+        boolean changed = false;
+        LocalDateTime endDateTime;
+        LocalDateTime startDateTime = LocalDateTime.of(event.getEventDTO().getStartDate(), event.getEventDTO().getStartTime());
+        if (event.getEventDTO().getEndDate() == null) {
+            if (event.getEventDTO().getEndTime() == null) {
+                endDateTime = LocalDateTime.of(event.getEventDTO().getStartDate().plusDays(1), LocalTime.MAX);
+            } else {
+                endDateTime = LocalDateTime.of(event.getEventDTO().getStartDate(), event.getEventDTO().getEndTime());
+            }
+        } else {
+            endDateTime = LocalDateTime.of(event.getEventDTO().getEndDate(),
+                    event.getEventDTO().getEndTime() != null ? event.getEventDTO().getEndTime() : LocalTime.MAX);
+        }
+        if (event.getStatus() == Status.ONGOING) {
+            if (LocalDateTime.now().isAfter(endDateTime)) {
+                changed = true;
+            }
+        } else if (event.getStatus() == Status.UPCOMING) {
+            if (LocalDateTime.now().isAfter(startDateTime)) {
+                changed = true;
+            }
+        }
+        return changed;
     }
 
     public static boolean isStatusChanged(Collection<EventStatus> events){

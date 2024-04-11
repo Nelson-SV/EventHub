@@ -15,19 +15,17 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class TicketImageSave {
     private TicketUUIdLoader uuIdLoader;
     private Model model;
-    private List<Ticket> soldTickets;
     private ExecutorService executorService = Executors.newSingleThreadExecutor();
     private ExecutorService consumerExecutor = Executors.newSingleThreadExecutor();
     private BlockingQueue<Map<TicketType, List<Ticket>>> queue = new LinkedBlockingQueue<>(10);
 
-    public TicketImageSave(List<Ticket> soldTickets, Model model) {
-        this.soldTickets = soldTickets;
+    public TicketImageSave(Model model) {
         this.model = model;
-        initiateConsumerTask();
     }
 
-    public synchronized void saveSoldTicketsImages() {
+    public void saveSoldTicketsImages() {
         initializeUUIDRetrieval();
+        initiateConsumerTask();
     }
 
     private void initiateConsumerTask() {
@@ -35,14 +33,17 @@ public class TicketImageSave {
             try {
                 while (true) {
                     Map<TicketType, List<Ticket>> soldTicketsWithUUID = queue.take();
-                    Platform.runLater(() -> {
-                        try {
-                            TicketsSnapshot ticketImageSnapshot = new TicketsSnapshot(soldTicketsWithUUID, model.getTheCurrentCustomer(), model.getCurrentEventSell());
-                            ticketImageSnapshot.createTicketWritableImages();
-                        } catch (EventException e) {
-                            e.printStackTrace();
-                        }
-                    });
+//                    Platform.runLater(() -> {
+//                        try {
+//                            TicketsSnapshot ticketImageSnapshot = new TicketsSnapshot(soldTicketsWithUUID, model.getTheCurrentCustomer(), model.getCurrentEventSell());
+//                            ticketImageSnapshot.createTicketWritableImages();
+//                        } catch (EventException e) {
+//                            e.printStackTrace();
+//                        }
+//                    });
+
+
+                    System.out.println(soldTicketsWithUUID + "from consumer");
                 }
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
@@ -52,19 +53,19 @@ public class TicketImageSave {
     }
 
     private synchronized void initializeUUIDRetrieval() {
-        uuIdLoader = new TicketUUIdLoader(soldTickets, model);
+        uuIdLoader = new TicketUUIdLoader(model);
         uuIdLoader.setOnSucceeded((event) -> {
-            System.out.println(soldTickets + " sold tickets");
-            System.out.println(uuIdLoader.getValue()+"uuid");
+            System.out.println(model.getSoldTickets() + "sold tickets");
+            System.out.println(uuIdLoader.getValue()+ "uuid");
             try {
                 queue.put(uuIdLoader.getValue());
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
         });
-        uuIdLoader.setOnFailed((event) -> {ExceptionHandler.errorAlertMessage(uuIdLoader.getException().getMessage());
+        uuIdLoader.setOnFailed((event) -> {
+            ExceptionHandler.errorAlertMessage(uuIdLoader.getException().getMessage());
             System.out.println(uuIdLoader.getValue()+"uuid");});
-
         executorService.execute(uuIdLoader);
     }
 

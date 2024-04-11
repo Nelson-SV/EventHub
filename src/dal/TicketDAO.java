@@ -180,7 +180,6 @@ public class TicketDAO {
             if (!allSelectedTickets.isEmpty()) {
                 List<Ticket> specialTickets = new ArrayList<>();
                 List<Ticket> eventTickets = new ArrayList<>();
-
                 for (Ticket item : allSelectedTickets) {
                     boolean isSpecial = item.getSpecial();
                     if (isSpecial) {
@@ -229,12 +228,12 @@ public class TicketDAO {
             List<Ticket> normalTicketsUUId = getTicketsUUID(sqlNormal, conn, ticketTypeListMap.get(TicketType.NORMAL));
             ticketTypeMap.put(TicketType.NORMAL, normalTicketsUUId);
             ticketTypeMap.put(TicketType.SPECIAL, specialTicketsUUID);
-            System.out.println(ticketTypeMap +"ticket type");
         } catch (EventException | SQLException e) {
             throw new EventException(e.getMessage(), e, ErrorCode.OPERATION_DB_FAILED);
         }
         return ticketTypeMap;
     }
+
 
 
     /**
@@ -246,12 +245,12 @@ public class TicketDAO {
      */
     private List<Ticket> getTicketsUUID(String sql, Connection conn, List<Ticket> tickets) throws SQLException {
         try (PreparedStatement psmt = conn.prepareStatement(sql)) {
-            for (Ticket special : tickets) {
-                psmt.setInt(1, special.getId());
+            for (Ticket ticket : tickets) {
+                psmt.setInt(1, ticket.getId());
                 try (ResultSet rs = psmt.executeQuery()) {
                     if (rs.next()) {
                         String uuid = rs.getString("UUID");
-                        special.setUUID(uuid);
+                        ticket.setUUID(uuid);
                     }
                 }
             }

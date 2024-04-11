@@ -1,9 +1,7 @@
 package be;
-
 import java.math.BigDecimal;
 
 public class Ticket {
-
     private int id;
     private String eventName;
     private String ticketType;
