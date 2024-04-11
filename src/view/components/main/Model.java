@@ -18,6 +18,8 @@ public class Model implements CommonModel {
 
     private User loggedUser ;
 
+
+
     /**
      * holds the response of edit validity , in order to display information on the screen
      */
@@ -45,10 +47,6 @@ public class Model implements CommonModel {
      */
     //private ObservableMap<Integer, Event> coordinatorEvents;
 
-
-
-
-
     /**
      * holds the events with the status computed of the current logged in coordinator, in order to be displayed on the screen
      */
@@ -61,6 +59,12 @@ public class Model implements CommonModel {
     private ObservableMap<Integer, Ticket> eventTickets;
     private ObservableMap<Integer, Ticket> specialTickets;
 
+
+    // Todo the following to collections are not used, we remove them
+    /*** holds all the event coordinators available*/
+    private ObservableMap<Integer, User> allEventCoordinators;
+    private HashMap<Integer, List<Integer>> assignedoordinators;
+
     private EventManager eventManager;
     private ILogicManager evmLogic;
     private TicketManager ticketManager;
@@ -70,11 +74,9 @@ public class Model implements CommonModel {
      * holds the current opened event for managing
      */
     private Event selectedEvent;
+
     private List<Ticket> addedTickets, ticketToEdit, ticketsToDelete;
-    /**holds the sold tickets for a certain customer*/
-    private List<Ticket> soldTickets;
-
-
+    //  private User loggedUser;
 
     private static Model instance;
 
@@ -201,8 +203,7 @@ public class Model implements CommonModel {
      sorts the events with the least amount of time remaining until it starts first
      */
     public List<EventStatus> sortedEventsList() {
-        return evmLogic.getAllSortedEventsByStatus(loggedCoordinatorEvents.values());
-    }
+        return evmLogic.getAllSortedEventsByStatus(loggedCoordinatorEvents.values());}
     /**
      * updates the view that is displaying the coordinators
      */
@@ -302,8 +303,6 @@ public class Model implements CommonModel {
         }
     }
 
-
-
     /**
      * compares the dates of the events with the current date,
      * in order to rerender the view
@@ -313,9 +312,6 @@ public class Model implements CommonModel {
     }
 
 
-
-
-//TODO delete if not used
     public boolean isModified(Map<Integer, List<Integer>> assignedCoordinators) {
         return evmLogic.isModifyed(assignedCoordinators, selectedEvent, loggedCoordinatorEvents.get(selectedEvent.getId()).getEventDTO());
     }
@@ -397,34 +393,24 @@ public class Model implements CommonModel {
 
 
     public void sellTicket(List<Ticket> allSelectedTickets, Customer customer) throws EventException {
-       boolean sellOperationPerformed = ticketManager.soldTickets(allSelectedTickets, customer);
-        if(sellOperationPerformed){
-
-            soldTickets=allSelectedTickets;
-            System.out.println("soldTickets");
-            soldTickets.forEach(System.out::println);
-            System.out.println("soldtickets");
-        }
-        soldTickets= null;
-    }
-
-
-
-    public List<Ticket> getSoldTickets() {
-        return soldTickets;
+        ticketManager.soldTickets(allSelectedTickets, customer);
     }
 
     public LocalTime convertStringToTime(String value) {
         return evmLogic.convertStringToLocalTime(value);
     }
 
-
-
     public User checkUser (String username, String password) throws EventException {
         System.out.println(username + password + "inputData");
         loggedUser = logInManager.checkUser(username, password);
+
         System.out.println(logInManager.checkUser(username, password)+ "loggedInManager checker");
+
         return loggedUser;
     }
 
+//    /**initialize the event coordinators list*/
+//public void initializeEventCoordinators(int eventId) throws EventException {
+//    evmLogic.getEventCoordinators(eventId).values().forEach((user)->allEventCoordinators.put(user.getUserId(),user));
+//}
 }

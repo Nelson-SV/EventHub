@@ -147,10 +147,14 @@ public class SellingViewController implements Initializable {
                 List<Ticket> ticketList = new ArrayList<>(ticketsMap.values());
                 allEventTickets.setItems(FXCollections.observableList(ticketList));
                 System.out.println(ticketsMap.values());
+
+
             } catch (EventException e) {
                 // Handle exception
             }
         }
+
+
     }
 
     private void loadSpecialTicketsInfo(){
@@ -289,6 +293,7 @@ public class SellingViewController implements Initializable {
             BigDecimal totalPrice = item.getTicketPrice(); // Parse total price to BigDecimal
             total = total.add(totalPrice); // Add total price to running total
         }
+
         totalPrice.setText("Total Price: " + total.toString() + " DKK");
     }
 
@@ -299,23 +304,31 @@ public class SellingViewController implements Initializable {
             allSelectedTickets.getItems().remove(selectedTicket);
         }
     }
+
+
+
    public void sell() throws EventException {
        boolean isSellingValid = SellingValidator.isSellingValid(name, lastName, email, allSelectedTickets);
        if (isSellingValid) {
            initializeLoadingView();
            initializeService();
+
        }
+
    }
    private void sellTickets() throws EventException {
+
        String customerName = name.getText();
        String customerLastName = lastName.getText();
        String customerEmail = email.getText();
+
        Customer customer = new Customer(customerName, customerLastName, customerEmail);
        model.sellTicket(allSelectedTickets.getItems(),customer );
    }
 
     public void cancel (ActionEvent actionEvent){
         clearThings();
+
     }
 
     private void initializeService() {

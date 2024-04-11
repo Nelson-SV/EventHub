@@ -1,18 +1,20 @@
 package dal;
+
 import be.Customer;
+import be.Event;
 import be.Ticket;
-import be.TicketType;
 import exceptions.ErrorCode;
 import exceptions.EventException;
+import exceptions.ExceptionLogger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableMap;
+
 import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.logging.Level;
-import java.util.Map;
 
 public class TicketDAO {
 
@@ -21,10 +23,6 @@ public class TicketDAO {
     public TicketDAO() throws EventException {
         this.connectionManager = new ConnectionManager();
     }
-
-    public static Map<TicketType, List<Ticket>> retrieveTicketsUUID(Map<TicketType, List<Ticket>> ticketTypeListMap) {
-
-    return null;}
 
     /*private ObservableMap<Integer, Ticket> retrieveTickets() throws EventException {
         ObservableMap<Integer, Ticket> tickets = FXCollections.observableHashMap();
@@ -131,6 +129,7 @@ public class TicketDAO {
     }
 
     public void insertSoldTicket(List<Ticket> eventTickets, int customerID, Connection conn) throws EventException {
+
         try {
             String sql = "INSERT INTO SoldTickets (TicketID, CustomerID) VALUES (?, ?)";
             PreparedStatement statement = conn.prepareStatement(sql);
@@ -140,6 +139,7 @@ public class TicketDAO {
                 statement.setInt(2, customerID);
                 statement.addBatch();
                 }
+
             }
             statement.executeBatch();
         } catch (SQLException e) {
@@ -165,8 +165,7 @@ public class TicketDAO {
         }
     }
 
-    public boolean insertSoldTickets(List<Ticket> allSelectedTickets, Customer customer) throws EventException {
-        boolean sellOperationPerformed =false;
+    public void insertSoldTickets(List<Ticket> allSelectedTickets, Customer customer) throws EventException {
         Connection conn = null;
         try{
             Integer customerId = null;
@@ -180,6 +179,7 @@ public class TicketDAO {
                 List<Ticket> eventTickets = new ArrayList<>();
 
                 for (Ticket item : allSelectedTickets) {
+
                     boolean isSpecial = item.getSpecial();
                     if (isSpecial) {
                         specialTickets.add(item);
@@ -194,7 +194,6 @@ public class TicketDAO {
                 deductQuantity(eventTickets, conn);
             }
             conn.commit();
-            sellOperationPerformed=true;
         }
         catch (EventException | SQLException e) {
             if (conn != null) {
@@ -212,11 +211,10 @@ public class TicketDAO {
                 throw new EventException(e.getMessage(), e.getCause(), ErrorCode.CONNECTION_FAILED);
             }
         }
-        return sellOperationPerformed;
     }
 
 
-public Integer addSpecialTicket(Ticket ticket, Event event) throws EventException {
+    public Integer addSpecialTicket(Ticket ticket, Event event) throws EventException {
         Integer ticketId = null;
         Connection conn = null;
         try {
@@ -264,25 +262,16 @@ public Integer addSpecialTicket(Ticket ticket, Event event) throws EventExceptio
         return ticketId;
     }
 
-    public List<Ticket> getTicketsWithUUID(List<Ticket> soldTickets){
-        List<Ticket> ticketsWithUUID = new ArrayList<>();
-        String columnName = null;
-        String sql = "SELECT UUID FROM SoldTickets WHERE " + columnName + " = ?";
-        try{
-            Connection conn =connectionManager.getConnection();
-
-        }
     public void addSpecialTicketToEvent(int ticketID, Event event, Connection conn) throws EventException, SQLException{
-          String sql = "INSERT INTO EventSpecialTickets (SpecialTicketID, EventID) VALUES (?, ?)";
-          try (PreparedStatement statement = conn.prepareStatement(sql)) {
-              statement.setInt(1, ticketID);
-              statement.setInt(2, event.getId());
-              statement.executeUpdate();
-          }
-      }
+        String sql = "INSERT INTO EventSpecialTickets (SpecialTicketID, EventID) VALUES (?, ?)";
+        try (PreparedStatement statement = conn.prepareStatement(sql)) {
+            statement.setInt(1, ticketID);
+            statement.setInt(2, event.getId());
+            statement.executeUpdate();
+        }
+    }
 
-
-public void updateSpecialTicket(Ticket specialTicket) throws EventException {
+    public void updateSpecialTicket(Ticket specialTicket) throws EventException {
 
         String updateTicket = "UPDATE SpecialTickets SET Type=?, Quantity=?, Price=?, Colour=? WHERE ID=?";
         Connection conn = null;
@@ -320,18 +309,7 @@ public void updateSpecialTicket(Ticket specialTicket) throws EventException {
         }
     }
 
-        } catch (EventException e) {
-            throw new RuntimeException(e);
-        }
-        return ticketsWithUUID;
-    }
-
-
-private Ticket getSpecialTicketUUID(Connection conn){
-    String sql = "SELECT UUID FROM SoldTickets WHERE SpecialTicketId= ?";
-
-
-public void deleteSpecialTicket(Ticket specialTicket) throws EventException {
+    public void deleteSpecialTicket(Ticket specialTicket) throws EventException {
 
         String sql = "DELETE FROM SpecialTickets WHERE ID=?";
         try (Connection conn = connectionManager.getConnection()) {
@@ -350,7 +328,4 @@ public void deleteSpecialTicket(Ticket specialTicket) throws EventException {
             ExceptionLogger.getInstance().getLogger().log(Level.SEVERE, e.getMessage(), e);
         }
     }
-
-
-
 }
