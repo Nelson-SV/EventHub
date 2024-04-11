@@ -14,9 +14,6 @@ import java.util.Objects;
 public class Event {
     private SimpleIntegerProperty id;
     private SimpleStringProperty name;
-
-
-
     private SimpleStringProperty description;
     private SimpleObjectProperty<LocalDate> startDate;
     private SimpleObjectProperty<LocalDate> endDate;
@@ -163,6 +160,7 @@ public class Event {
         this.endTime.setValue(originalEvent.getEndTime());
         this.description.setValue(originalEvent.getDescription());
         this.location.setValue(originalEvent.getLocation());
+        this.availableTickets.setValue(originalEvent.getAvailableTickets());
     }
     public Event(String name) {
         initializeFields();
