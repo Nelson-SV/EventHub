@@ -18,8 +18,6 @@ public class Model implements CommonModel {
 
     private User loggedUser ;
 
-
-
     /**
      * holds the response of edit validity , in order to display information on the screen
      */
@@ -47,6 +45,10 @@ public class Model implements CommonModel {
      */
     //private ObservableMap<Integer, Event> coordinatorEvents;
 
+
+
+
+
     /**
      * holds the events with the status computed of the current logged in coordinator, in order to be displayed on the screen
      */
@@ -59,12 +61,6 @@ public class Model implements CommonModel {
     private ObservableMap<Integer, Ticket> eventTickets;
     private ObservableMap<Integer, Ticket> specialTickets;
 
-
-    // Todo the following to collections are not used, we remove them
-    /*** holds all the event coordinators available*/
-    private ObservableMap<Integer, User> allEventCoordinators;
-    private HashMap<Integer, List<Integer>> assignedoordinators;
-
     private EventManager eventManager;
     private ILogicManager evmLogic;
     private TicketManager ticketManager;
@@ -74,11 +70,15 @@ public class Model implements CommonModel {
      * holds the current opened event for managing
      */
     private Event selectedEvent;
-
     private List<Ticket> addedTickets, ticketToEdit, ticketsToDelete;
-    //  private User loggedUser;
-
+    /**holds the sold tickets for a certain customer*/
+    private List<Ticket> soldTickets;
     private static Model instance;
+
+
+    private Event selectedEventSellName;
+
+    private Customer currentCustomer ;
 
     public static Model getInstance() throws EventException {
         if (instance == null) {
@@ -141,21 +141,6 @@ public class Model implements CommonModel {
      });
      }
 
-     public void addSpecialTicket(Ticket specialTicket, Event event) throws EventException {
-         Integer inserted = ticketManager.addSpecialTicket(specialTicket, event);
-         if (inserted != null) {
-             specialTicket.setId(inserted);
-         }
-     }
-
-    public void updateSpecialTicket(Ticket specialTicket) throws EventException {
-        ticketManager.updateSpecialTicket(specialTicket);
-    }
-
-    public void deleteSpecialTicket(Ticket specialTicket) throws EventException {
-        ticketManager.deleteSpecialTicket(specialTicket);
-    }
-
     public List<Ticket> getNewAddedTicket(Ticket ticket) {
         addedTickets.add(ticket);
         return addedTickets;
@@ -203,7 +188,8 @@ public class Model implements CommonModel {
      sorts the events with the least amount of time remaining until it starts first
      */
     public List<EventStatus> sortedEventsList() {
-        return evmLogic.getAllSortedEventsByStatus(loggedCoordinatorEvents.values());}
+        return evmLogic.getAllSortedEventsByStatus(loggedCoordinatorEvents.values());
+    }
     /**
      * updates the view that is displaying the coordinators
      */
@@ -303,6 +289,8 @@ public class Model implements CommonModel {
         }
     }
 
+
+
     /**
      * compares the dates of the events with the current date,
      * in order to rerender the view
@@ -312,6 +300,9 @@ public class Model implements CommonModel {
     }
 
 
+
+
+//TODO delete if not used
     public boolean isModified(Map<Integer, List<Integer>> assignedCoordinators) {
         return evmLogic.isModifyed(assignedCoordinators, selectedEvent, loggedCoordinatorEvents.get(selectedEvent.getId()).getEventDTO());
     }
@@ -392,25 +383,55 @@ public class Model implements CommonModel {
     }
 
 
-    public void sellTicket(List<Ticket> allSelectedTickets, Customer customer) throws EventException {
-        ticketManager.soldTickets(allSelectedTickets, customer);
+    public void sellTicket(List<Ticket> allSelectedTickets, Customer customer,String eventName) throws EventException {
+        boolean sellOperationPerformed = ticketManager.soldTickets(allSelectedTickets, customer);
+        if(sellOperationPerformed){
+            soldTickets=allSelectedTickets;
+            currentCustomer=customer;
+            selectedEventSellName = getFullObjectEventSell(eventName);
+            System.out.println("soldTickets");
+            soldTickets.forEach(System.out::println);
+            System.out.println("soldtickets");
+        }
+    }
+
+    private Event getFullObjectEventSell(String  eventName) {
+        Optional<Event> matchingEvent = allEvents.values().stream()
+                .filter(event -> event.getName().equals(eventName))
+                .findFirst();
+        return matchingEvent.orElse(null);
+    }
+
+
+    public Customer getTheCurrentCustomer(){
+        return this.currentCustomer;
+    }
+    public Event getCurrentEventSell(){
+        return this.selectedEventSellName;
+    }
+
+    public Map<TicketType,List<Ticket>> getTicketsWithUUId(List<Ticket> soldTickets) throws EventException {
+        return ticketManager.getTicketsWithUUId(soldTickets);
+    }
+
+
+
+    public List<Ticket> getSoldTickets() {
+        return soldTickets;
     }
 
     public LocalTime convertStringToTime(String value) {
         return evmLogic.convertStringToLocalTime(value);
     }
 
+
+
     public User checkUser (String username, String password) throws EventException {
         System.out.println(username + password + "inputData");
         loggedUser = logInManager.checkUser(username, password);
-
         System.out.println(logInManager.checkUser(username, password)+ "loggedInManager checker");
-
         return loggedUser;
     }
 
-//    /**initialize the event coordinators list*/
-//public void initializeEventCoordinators(int eventId) throws EventException {
-//    evmLogic.getEventCoordinators(eventId).values().forEach((user)->allEventCoordinators.put(user.getUserId(),user));
-//}
+
 }
