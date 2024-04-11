@@ -11,6 +11,7 @@ import javafx.collections.ObservableMap;
 import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -218,18 +219,20 @@ public class TicketDAO {
      * get the uuid for the sold tickets  from the database
      */
     public Map<TicketType, List<Ticket>> retrieveTicketsUUID(Map<TicketType, List<Ticket>> ticketTypeListMap) throws EventException {
+        Map<TicketType, List<Ticket>> ticketTypeMap = new HashMap<>();
         String sqlNormal = "SELECT UUID FROM SoldTickets WHERE  TicketId= ?";
         String sqlSpecial = "SELECT UUID FROM SoldTickets WHERE SpecialTicketId= ?";
         try {
             Connection conn = connectionManager.getConnection();
             List<Ticket> specialTicketsUUID = getTicketsUUID(sqlSpecial, conn, ticketTypeListMap.get(TicketType.SPECIAL));
             List<Ticket> normalTicketsUUId = getTicketsUUID(sqlNormal, conn, ticketTypeListMap.get(TicketType.NORMAL));
-            ticketTypeListMap.put(TicketType.NORMAL, normalTicketsUUId);
-            ticketTypeListMap.put(TicketType.SPECIAL, specialTicketsUUID);
+            ticketTypeMap.put(TicketType.NORMAL, normalTicketsUUId);
+            ticketTypeMap.put(TicketType.SPECIAL, specialTicketsUUID);
+            System.out.println(ticketTypeMap +"ticket type");
         } catch (EventException | SQLException e) {
             throw new EventException(e.getMessage(), e, ErrorCode.OPERATION_DB_FAILED);
         }
-        return ticketTypeListMap;
+        return ticketTypeMap;
     }
 
 
