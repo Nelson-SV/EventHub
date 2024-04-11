@@ -31,12 +31,12 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="124.0" prefWidth="640.0" spacing="30.0" VBox.vgrow="ALWAYS">
                <children>
-                  <MFXButton fx:id="editTicket" onAction="#editTicket" prefHeight="29.0" prefWidth="135.0" styleClass="buttonGroup" stylesheets="@../regularTickets/ticketGeneration/TicketsGeneration.css" text="Edit Ticket">
+                  <MFXButton fx:id="editTicket" onAction="#editTicket" prefHeight="29.0" prefWidth="135.0" styleClass="buttonGroup" text="Edit Ticket">
                      <font>
                         <Font name="System Bold" size="15.0" />
                      </font>
                   </MFXButton>
-                  <MFXButton fx:id="removeTicketBT" layoutX="10.0" layoutY="10.0" onAction="#removeTicket" prefHeight="0.0" prefWidth="135.0" styleClass="cancelBtn" stylesheets="@../regularTickets/ticketGeneration/TicketsGeneration.css" text="Remove Ticket">
+                  <MFXButton fx:id="removeTicketBT" layoutX="10.0" layoutY="10.0" onAction="#removeTicket" prefHeight="0.0" prefWidth="135.0" styleClass="buttonGroup" text="Remove Ticket">
                      <font>
                         <Font name="System Bold" size="15.0" />
                      </font>
@@ -75,12 +75,12 @@
                <children>
                   <VBox alignment="CENTER" prefHeight="131.0" prefWidth="895.0" spacing="10.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <MFXButton fx:id="addTicketBT" onAction="#addTicket" prefHeight="0.0" prefWidth="150.0" styleClass="buttonGroup" stylesheets="@../regularTickets/ticketGeneration/TicketsGeneration.css" text="Add Ticket">
+                        <MFXButton fx:id="addTicketBT" onAction="#addTicket" prefHeight="0.0" prefWidth="150.0" styleClass="buttonGroup" text="Add Ticket">
                            <font>
                               <Font name="System Bold" size="15.0" />
                            </font>
                         </MFXButton>
-                        <MFXButton fx:id="cancelBtn" cancelButton="true" onAction="#clearAction" prefHeight="30.0" prefWidth="100.0" styleClass="cancelBtn" stylesheets="@../regularTickets/ticketGeneration/TicketsGeneration.css" text="Clear">
+                        <MFXButton fx:id="cancelBtn" cancelButton="true" onAction="#clearAction" prefHeight="30.0" prefWidth="100.0" styleClass="cancelBtn" text="Clear">
                            <font>
                               <Font name="System Bold" size="15.0" />
                            </font>
