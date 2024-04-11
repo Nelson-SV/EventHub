@@ -62,7 +62,7 @@ public class EventController implements Initializable {
 
     private void bindViewToModel(EventStatus event) {
         this.eventName.textProperty().bind(event.getEventDTO().nameProperty());
-        this.eventLocation.textProperty().bind(event.getEventDTO().descriptionProperty());
+        this.eventLocation.textProperty().bind(event.getEventDTO().locationProperty());
         this.eventTickets.textProperty().bind(event.getEventDTO().availableTicketsProperty().asString());
         bindDates(event,coordinatorsNumber, eventStart, eventEnd, startTime, endTime);
     }

@@ -117,6 +117,12 @@ public class AdminManagementLogic implements IAdminLogic {
         return eventDAO.deleteEvent(eventId, ticketsToDelete);
     }
 
+
+    @Override
+    public boolean deleteEvent(int eventId) throws EventException {
+        return eventDAO.deleteEvent(eventId);
+    }
+
     @Override
     public List<EventStatus> getSearchedEvents(String eventName, List<EventStatus> events) {
         return events.stream().filter(e -> e.getEventDTO().getName().toLowerCase().contains(eventName.toLowerCase())).toList();

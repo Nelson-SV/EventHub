@@ -383,6 +383,32 @@ public class EventDAO {
         return succeeded;
     }
 
+/**it is used to delete an event form the database, please do not modify*/
+    public boolean deleteEvent(int eventId) throws EventException {
+        boolean succeeded = false;
+        String sql = "DELETE FROM Event WHERE EventId=?";
+        try (Connection conn = connectionManager.getConnection()) {
+            conn.setAutoCommit(false);
+            conn.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
+            try (PreparedStatement psmt = conn.prepareStatement(sql)) {
+                psmt.setInt(1, eventId);
+                psmt.executeUpdate();
+                conn.commit();
+                succeeded = true;
+            } catch (SQLException e) {
+                conn.rollback();
+                throw new EventException(e.getMessage(), e.getCause(), ErrorCode.OPERATION_DB_FAILED);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            ExceptionLogger.getInstance().getLogger().log(Level.SEVERE, e.getMessage(), e);
+        }
+        return succeeded;
+    }
+
+
+
+
     /**get all the events for an user ,with the total amount of tickets*/
     public  ObservableMap<Integer, EventStatus> retrieveEventsForUser(int userId) throws EventException {
         ObservableMap<Integer,EventStatus> userEvents= FXCollections.observableHashMap();

@@ -62,7 +62,7 @@ public class EventDescription implements Initializable {
 
     private void bindViewToModel(Event event) {
         this.eventName.textProperty().bind(event.nameProperty());
-        this.eventLocation.textProperty().bind(event.descriptionProperty());
+        this.eventLocation.textProperty().bind(event.locationProperty());
         this.eventTickets.textProperty().bind(event.availableTicketsProperty().asString());
         bindDates(event, eventStart, eventEnd, startTime, endTime);
     }
