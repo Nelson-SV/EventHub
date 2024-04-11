@@ -11,7 +11,5 @@ public class Main extends Application {
         primaryStage.setTitle("LogIn");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
-        TicketsPrinter ticketsPrinter = new TicketsPrinter();
-        ticketsPrinter.print();
     }
 }
