@@ -44,8 +44,8 @@ public class LogInController implements Initializable {
 
 
     public void signIn(ActionEvent actionEvent) {
-        String enteredUsername = userName.getText();
-        String enteredPassword = password.getText();
+        String enteredUsername = userName.getText().trim();
+        String enteredPassword = password.getText().trim();
 
 
         try {
