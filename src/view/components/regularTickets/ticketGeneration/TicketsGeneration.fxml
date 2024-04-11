@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<FlowPane fx:id="ticketTypeFlowPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="260.0" prefWidth="570.0" style="-fx-background-color: white; -fx-background-radius: 10;" stylesheets="@TicketsGeneration.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<FlowPane fx:id="ticketTypeFlowPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="260.0" prefWidth="570.0" style="-fx-background-color: #DAC0A3;" stylesheets="@TicketsGeneration.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <HBox prefHeight="50.0" prefWidth="570.0">
          <children>
@@ -53,8 +53,8 @@
       </VBox>
       <HBox alignment="CENTER_RIGHT" prefHeight="50.0" prefWidth="570.0" spacing="20.0">
          <children>
-            <MFXButton onAction="#cancelAction" text="Cancel" />
-            <MFXButton onAction="#addTickets" text="Add ticket" />
+            <MFXButton onAction="#cancelAction" styleClass="cancelBtn" stylesheets="@TicketsGeneration.css" text="Cancel" />
+            <MFXButton onAction="#addTickets" styleClass="buttonGroup" stylesheets="@TicketsGeneration.css" text="Add ticket" />
          </children>
          <padding>
             <Insets bottom="10.0" right="20.0" />
