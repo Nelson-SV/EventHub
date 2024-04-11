@@ -4,92 +4,64 @@
 <?import io.github.palexdev.materialfx.controls.MFXComboBox?>
 <?import io.github.palexdev.materialfx.controls.MFXTextField?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.ColorPicker?>
-<?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <!--        fx:controller="view.components.regularTickets.TicketsGenerationControllerGenerationController"-->
 
-<HBox fx:id="hBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1280.0" styleClass="vHBoxGroup" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<VBox fx:id="vBox" maxHeight="718.0" maxWidth="898.0" minHeight="597.0" minWidth="598.0" prefHeight="700.0" prefWidth="613.0" styleClass="vHBoxGroup" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="640.0" style="-fx-background-color: #F8F0E5;">
+      <HBox fx:id="ticketHBox" alignment="CENTER" prefHeight="331.0" prefWidth="613.0" styleClass="vHBoxGroup">
+         <padding>
+            <Insets bottom="30.0" top="30.0" />
+         </padding>
+      </HBox>
+      <HBox prefHeight="20.0" prefWidth="396.0" style="-fx-background-color: brown;">
+         <VBox.margin>
+            <Insets left="20.0" right="20.0" />
+         </VBox.margin>
+      </HBox>
+      <VBox prefHeight="240.0" prefWidth="730.0">
          <children>
-            <HBox alignment="CENTER" prefHeight="175.0" prefWidth="640.0" VBox.vgrow="ALWAYS">
+            <HBox alignment="CENTER" prefHeight="120.0" prefWidth="898.0" spacing="10.0">
                <children>
-                  <MFXComboBox fx:id="eventsCB" allowEdit="true" floatMode="ABOVE" floatingText="Events" prefHeight="32.0" prefWidth="300.0" styleClass="comboGroup" />
-               </children>
-            </HBox>
-            <HBox alignment="CENTER" prefHeight="300.0" prefWidth="640.0" VBox.vgrow="ALWAYS">
-               <children>
-                  <ListView fx:id="ticketsEventList" prefHeight="300.0" prefWidth="300.0" />
+                  <MFXTextField fx:id="ticketTypeTF" floatMode="ABOVE" floatingText="Ticket Type" floatingTextGap="0.0" prefHeight="32.0" prefWidth="148.0" styleClass="textFieldGroup" />
+                  <MFXTextField fx:id="ticketQuantityTF" floatMode="ABOVE" floatingText="Quantity " floatingTextGap="0.0" layoutX="306.0" layoutY="10.0" prefHeight="32.0" prefWidth="148.0" styleClass="textFieldGroup" />
+                  <MFXComboBox fx:id="eventCB" allowEdit="true" floatMode="ABOVE" floatingText="Event(s)" prefWidth="123.0" styleClass="comboGroup" />
                </children>
                <padding>
-                  <Insets bottom="20.0" top="20.0" />
+                  <Insets top="30.0" />
                </padding>
             </HBox>
-            <HBox alignment="CENTER" prefHeight="124.0" prefWidth="640.0" spacing="30.0" VBox.vgrow="ALWAYS">
+            <HBox alignment="CENTER" prefHeight="120.0" prefWidth="898.0" spacing="10.0">
                <children>
-                  <MFXButton fx:id="editTicket" onAction="#editTicket" prefHeight="29.0" prefWidth="135.0" styleClass="buttonGroup" text="Edit Ticket">
-                     <font>
-                        <Font name="System Bold" size="15.0" />
-                     </font>
-                  </MFXButton>
-                  <MFXButton fx:id="removeTicketBT" layoutX="10.0" layoutY="10.0" onAction="#removeTicket" prefHeight="0.0" prefWidth="135.0" styleClass="buttonGroup" text="Remove Ticket">
-                     <font>
-                        <Font name="System Bold" size="15.0" />
-                     </font>
-                  </MFXButton>
+                  <MFXComboBox fx:id="ticketColorCB" allowEdit="true" floatMode="ABOVE" floatingText="Ticket Color" prefWidth="148.0" styleClass="comboGroup" />
+                  <MFXTextField fx:id="ticketPriceTF" floatMode="ABOVE" floatingText="Ticket Price" floatingTextGap="0.0" prefHeight="32.0" prefWidth="148.0" styleClass="textFieldGroup" />
                </children>
+               <padding>
+                  <Insets bottom="20.0" />
+               </padding>
             </HBox>
          </children>
       </VBox>
-      <VBox fx:id="vBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="640.0" style="-fx-background-color: #F8F0E5;">
+      <HBox alignment="CENTER" prefHeight="108.0" prefWidth="613.0" styleClass="vHBoxGroup">
          <children>
-            <VBox fx:id="ticketVBox" alignment="CENTER" prefHeight="260.0" prefWidth="640.0" />
-            <VBox prefHeight="240.0" prefWidth="730.0">
+            <VBox alignment="CENTER" prefHeight="131.0" prefWidth="895.0" spacing="10.0">
                <children>
-                  <HBox alignment="CENTER" prefHeight="120.0" prefWidth="898.0" spacing="10.0" VBox.vgrow="ALWAYS">
-                     <children>
-                        <MFXTextField fx:id="ticketTypeTF" floatMode="ABOVE" floatingText="Ticket Type" floatingTextGap="0.0" prefHeight="32.0" prefWidth="148.0" styleClass="textFieldGroup" />
-                        <MFXTextField fx:id="ticketQuantityTF" floatMode="ABOVE" floatingText="Quantity " floatingTextGap="0.0" layoutX="306.0" layoutY="10.0" prefHeight="32.0" prefWidth="148.0" styleClass="textFieldGroup" />
-                        <ColorPicker fx:id="colorPicker" maxHeight="32.0" maxWidth="148.0" minHeight="32.0" minWidth="148.0" prefHeight="32.0" prefWidth="148.0" />
-                     </children>
-                     <padding>
-                        <Insets top="30.0" />
-                     </padding>
-                  </HBox>
-                  <HBox alignment="CENTER" prefHeight="120.0" prefWidth="898.0" spacing="10.0" VBox.vgrow="ALWAYS">
-                     <children>
-                        <MFXComboBox fx:id="eventToChooseCB" allowEdit="true" floatMode="ABOVE" floatingText="Event" prefHeight="32.0" prefWidth="308.0" styleClass="comboGroup" />
-                        <MFXTextField fx:id="ticketPriceTF" floatMode="ABOVE" floatingText="Ticket Price" floatingTextGap="0.0" prefHeight="32.0" prefWidth="148.0" styleClass="textFieldGroup" />
-                     </children>
-                     <padding>
-                        <Insets bottom="20.0" />
-                     </padding>
-                  </HBox>
+                  <MFXButton fx:id="addTicketBT" onAction="#addTicket" prefHeight="0.0" prefWidth="150.0" styleClass="buttonGroup" text="Add Ticket">
+                     <font>
+                        <Font name="System Bold" size="15.0" />
+                     </font>
+                  </MFXButton>
+                  <MFXButton fx:id="cancelBtn" cancelButton="true" onAction="#cancelAction" prefHeight="30.0" prefWidth="100.0" styleClass="cancelBtn" text="Cancel">
+                     <font>
+                        <Font name="System Bold" size="15.0" />
+                     </font>
+                  </MFXButton>
                </children>
             </VBox>
-            <HBox alignment="CENTER" prefHeight="108.0" prefWidth="613.0" styleClass="vHBoxGroup" VBox.vgrow="ALWAYS">
-               <children>
-                  <VBox alignment="CENTER" prefHeight="131.0" prefWidth="895.0" spacing="10.0" HBox.hgrow="ALWAYS">
-                     <children>
-                        <MFXButton fx:id="addTicketBT" onAction="#addTicket" prefHeight="0.0" prefWidth="150.0" styleClass="buttonGroup" text="Add Ticket">
-                           <font>
-                              <Font name="System Bold" size="15.0" />
-                           </font>
-                        </MFXButton>
-                        <MFXButton fx:id="cancelBtn" cancelButton="true" onAction="#clearAction" prefHeight="30.0" prefWidth="100.0" styleClass="cancelBtn" text="Clear">
-                           <font>
-                              <Font name="System Bold" size="15.0" />
-                           </font>
-                        </MFXButton>
-                     </children>
-                  </VBox>
-               </children>
-            </HBox>
          </children>
-      </VBox>
+      </HBox>
    </children>
-</HBox>
+</VBox>

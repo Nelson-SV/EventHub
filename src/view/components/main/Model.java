@@ -75,6 +75,7 @@ public class Model implements CommonModel {
     private List<Ticket> soldTickets;
     private static Model instance;
 
+
     private Event selectedEventSellName;
 
     private Customer currentCustomer ;
@@ -383,13 +384,11 @@ public class Model implements CommonModel {
 
 
     public void sellTicket(List<Ticket> allSelectedTickets, Customer customer,String eventName) throws EventException {
-       boolean sellOperationPerformed = ticketManager.soldTickets(allSelectedTickets, customer);
+        boolean sellOperationPerformed = ticketManager.soldTickets(allSelectedTickets, customer);
         if(sellOperationPerformed){
             soldTickets=allSelectedTickets;
             currentCustomer=customer;
             selectedEventSellName = getFullObjectEventSell(eventName);
-
-
             System.out.println("soldTickets");
             soldTickets.forEach(System.out::println);
             System.out.println("soldtickets");
@@ -433,5 +432,6 @@ public class Model implements CommonModel {
         System.out.println(logInManager.checkUser(username, password)+ "loggedInManager checker");
         return loggedUser;
     }
+
 
 }

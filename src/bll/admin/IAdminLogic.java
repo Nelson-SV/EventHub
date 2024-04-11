@@ -24,6 +24,8 @@ public interface IAdminLogic {
 
     boolean deleteEvent(int eventId, List<Ticket> ticketToDelete) throws EventException;
 
+    boolean deleteEvent(int eventId) throws EventException;
+
     List<EventStatus> getSearchedEvents(String eventName,List<EventStatus> events);
 
     List<String> getRoles();

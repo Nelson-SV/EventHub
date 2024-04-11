@@ -197,12 +197,13 @@ public class AdminModel implements CommonModel, SortCommander, SortObserver {
     }
 
     private void deleteEvent(int eventId) throws EventException {
-        boolean removed = adminLogic.deleteEvent(eventId, null);
+        boolean removed = adminLogic.deleteEvent(eventId);
         if (removed) {
             this.allEvents.remove(eventId);
             currentDisplayedEvents = sortEventsByStatus(Status.ALL);
             Platform.runLater(() -> this.getEventsDisplayer().displayEvents());
         }
+        System.out.println(removed);
     }
 
     private void deleteUser(int entityId) throws EventException {

@@ -28,7 +28,6 @@ public class ConfirmationWindowController {
     public ConfirmationWindowController(OperationHandler operationHandler, StackPane secondLayout) {
         this.secondLayout = secondLayout;
         this.operationHandler=operationHandler;
-
     }
 
     public Label getConfirmationTitle() {

@@ -78,7 +78,7 @@
                         <VBox prefHeight="91.0" prefWidth="480.0" spacing="5.0">
                             <children>
                                 <Label text="Description" />
-                                <TextArea fx:id="eventDescription" prefHeight="74.0" prefWidth="481.0" />
+                                <TextArea fx:id="eventDescription" prefHeight="74.0" prefWidth="481.0" wrapText="true" />
                             </children>
                         </VBox>
                     </children>
@@ -124,7 +124,7 @@
                         </Button>
                     </children>
                 </HBox>
-                <MFXScrollPane hbarPolicy="NEVER" prefHeight="420.0" prefWidth="450.0" style="-fx-background-color: #EADBC8FF;" vbarPolicy="NEVER" VBox.vgrow="ALWAYS">
+                <MFXScrollPane hbarPolicy="NEVER" prefHeight="420.0" prefWidth="450.0" style="-fx-background-color: #EADBC8FF;" VBox.vgrow="ALWAYS">
                     <content>
                         <VBox fx:id="ticketsVBox" alignment="TOP_CENTER" maxWidth="-Infinity" prefWidth="450.0" spacing="10.0" style="-fx-background-color: #EADBC8FF;">
                      <padding>

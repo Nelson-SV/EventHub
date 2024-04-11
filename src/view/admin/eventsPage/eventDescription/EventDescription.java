@@ -23,7 +23,6 @@ public class EventDescription extends HBox {
             eventContainer=loader.load();
             this.getChildren().add(eventContainer);
         } catch (IOException e) {
-          //  ExceptionLogger.getInstance().getLogger().log(Level.SEVERE,e.getMessage());
             ExceptionHandler.errorAlertMessage(ErrorCode.LOADING_FXML_FAILED.getValue());
         }
     }
