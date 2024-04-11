@@ -10,6 +10,8 @@ import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.logging.Level;
 import java.util.Map;
 
 public class TicketDAO {
@@ -85,8 +87,9 @@ public class TicketDAO {
                     String type = res.getString("Type");
                     int quantity = res.getInt("Quantity");
                     BigDecimal price = res.getBigDecimal("Price");
+                    String color = res.getString("Colour");
 
-                    Ticket ticket = new Ticket(id, type, quantity, price);
+                    Ticket ticket = new Ticket(id, type, quantity, price, color);
                     tickets.put(ticket.getId(), ticket);
                 }
             }
@@ -213,6 +216,53 @@ public class TicketDAO {
     }
 
 
+public Integer addSpecialTicket(Ticket ticket, Event event) throws EventException {
+        Integer ticketId = null;
+        Connection conn = null;
+        try {
+            conn = connectionManager.getConnection();
+            conn.setAutoCommit(false);
+            conn.commit();
+            String sql = "INSERT INTO SpecialTickets (Type, Quantity, Price, Colour) VALUES (?, ?, ?, ?)";
+            PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            statement.setString(1, ticket.getTicketType());
+            statement.setInt(2, ticket.getQuantity());
+            statement.setBigDecimal(3, ticket.getTicketPrice());
+            statement.setString(4, ticket.getColor());
+
+            statement.executeUpdate();
+            try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    ticketId = generatedKeys.getInt(1);
+                } else {
+                    throw new EventException(ErrorCode.OPERATION_DB_FAILED);
+                }
+            }
+
+            if(event != null && !Objects.equals(event.getName(), "Not Related to Events")) {
+                addSpecialTicketToEvent(ticketId, event, conn);
+            }
+
+            conn.commit();
+
+        } catch (EventException | SQLException e) {
+            if (conn != null) {
+                try {
+                    conn.rollback();
+                } catch (SQLException ex) {
+                    throw new EventException(ex.getMessage(), ex.getCause(), ErrorCode.CONNECTION_FAILED);
+                }
+            }
+            throw new EventException(e.getMessage(), e.getCause(), ErrorCode.CONNECTION_FAILED);
+        } finally {
+            try {
+                conn.close();
+            } catch (SQLException e) {
+                throw new EventException(e.getMessage(), e.getCause(), ErrorCode.CONNECTION_FAILED);
+            }
+        }
+        return ticketId;
+    }
 
     public List<Ticket> getTicketsWithUUID(List<Ticket> soldTickets){
         List<Ticket> ticketsWithUUID = new ArrayList<>();
@@ -221,19 +271,84 @@ public class TicketDAO {
         try{
             Connection conn =connectionManager.getConnection();
 
+        }
+    public void addSpecialTicketToEvent(int ticketID, Event event, Connection conn) throws EventException, SQLException{
+          String sql = "INSERT INTO EventSpecialTickets (SpecialTicketID, EventID) VALUES (?, ?)";
+          try (PreparedStatement statement = conn.prepareStatement(sql)) {
+              statement.setInt(1, ticketID);
+              statement.setInt(2, event.getId());
+              statement.executeUpdate();
+          }
+      }
 
 
+public void updateSpecialTicket(Ticket specialTicket) throws EventException {
+
+        String updateTicket = "UPDATE SpecialTickets SET Type=?, Quantity=?, Price=?, Colour=? WHERE ID=?";
+        Connection conn = null;
+        try {
+            conn = connectionManager.getConnection();
+            conn.setAutoCommit(false);
+            conn.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
+            try (PreparedStatement psmt = conn.prepareStatement(updateTicket)) {
+                psmt.setString(1, specialTicket.getTicketType());
+                psmt.setInt(2, specialTicket.getQuantity());
+                psmt.setBigDecimal(3, specialTicket.getTicketPrice());
+                psmt.setString(4, specialTicket.getColor());
+                psmt.setInt(5, specialTicket.getId());
+                psmt.executeUpdate();
+            }
+
+            conn.commit();
+        } catch (SQLException | EventException e) {
+            try {
+                if (conn != null) {
+                    conn.rollback();
+                }
+            } catch (SQLException ex) {
+                ExceptionLogger.getInstance().getLogger().log(Level.SEVERE, ex.getMessage(), ex);
+                throw new EventException(ex.getMessage(), ex.getCause(), ErrorCode.OPERATION_DB_FAILED);
+            }
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    ExceptionLogger.getInstance().getLogger().log(Level.SEVERE, e.getMessage(), e);
+                }
+            }
+        }
+    }
 
         } catch (EventException e) {
             throw new RuntimeException(e);
         }
         return ticketsWithUUID;
     }
+
+
 private Ticket getSpecialTicketUUID(Connection conn){
     String sql = "SELECT UUID FROM SoldTickets WHERE SpecialTicketId= ?";
 
 
-return null;
+public void deleteSpecialTicket(Ticket specialTicket) throws EventException {
+
+        String sql = "DELETE FROM SpecialTickets WHERE ID=?";
+        try (Connection conn = connectionManager.getConnection()) {
+            conn.setAutoCommit(false);
+            conn.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
+            try (PreparedStatement psmt = conn.prepareStatement(sql)) {
+                psmt.setInt(1, specialTicket.getId());
+                psmt.executeUpdate();
+                conn.commit();
+            } catch (SQLException e) {
+                conn.rollback();
+                throw new EventException(e.getMessage(), e.getCause(), ErrorCode.OPERATION_DB_FAILED);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            ExceptionLogger.getInstance().getLogger().log(Level.SEVERE, e.getMessage(), e);
+        }
     }
 
 
