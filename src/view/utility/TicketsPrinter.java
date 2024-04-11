@@ -83,6 +83,8 @@ private Event event = new Event("Christmas party","Mega christmas party", LocalD
                     // For example, to set the scale: ticketTest.getRoot().setScaleX(3); ticketTest.getRoot().setScaleY(3);
 
                     printed[0] = job.printPage(ticketTest.getRoot());
+                    System.console().writer();
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 } finally {
@@ -95,6 +97,59 @@ private Event event = new Event("Christmas party","Mega christmas party", LocalD
             });
         }
     }
+
+/*
+    Yes, if you have multiple tickets to print, you can loop through them in the same `Platform.runLater` block. Here's how you can modify the `printImages` method to print multiple tickets:
+
+            ```java
+    private void printImages() {
+        // Assuming each ticket is a Node and tickets is a Collection<Node> of all tickets to be printed
+        List<Node> tickets = ...; // Your tickets
+
+        PrinterJob job = PrinterJob.createPrinterJob();
+        if (job != null && job.showPrintDialog(null)) {
+            Platform.runLater(() -> {
+                try {
+                    for (Node ticket : tickets) {
+                        // Set the ticket details
+                        TicketComponentDescription ticketTest = new TicketComponentDescription(event);
+                        ticketTest.setQrCode(QrCodeGenerator.generateQRCodeImage(uuid, 50, 50));
+                        ticketTest.getRoot().setStyle("-fx-background-color: #DAC0A3;");
+                        ticketTest.setCustomerName("Ana are mere");
+                        ticketTest.setCustomerEmail("ana@gmail.com");
+
+                        // Print the ticket
+                        boolean success = job.printPage(ticketTest.getRoot());
+                        if (!success) {
+                            System.out.println("Failed to print a ticket.");
+                            break;
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    job.endJob();
+                }
+            });
+        }
+    }
+```
+
+    In this code, `tickets` is a `List<Node>` of all tickets to be printed. It loops through each ticket in the `tickets` list, sets the ticket details, and then prints the ticket. If printing a ticket fails, it prints an error message and breaks out of the loop. After all tickets have been printed (or if printing a ticket fails), it ends the job.
+
+    Please replace `List<Node> tickets = ...;` with the actual list of tickets you want to print.
+
+
+
+   */
+
+
+
+
+
+
+
+
 
     //Todo calculate and print them on a page
 //    // Assuming each ticket is a Node and tickets is a Collection<Node> of all tickets to be printed
