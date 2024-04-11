@@ -4,6 +4,7 @@ import be.*;
 import dal.EventDAO;
 import dal.UsersDAO;
 import exceptions.EventException;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableMap;
 import javafx.concurrent.Task;
 import java.time.LocalDate;
@@ -36,7 +37,7 @@ public class EventManagementLogic implements ILogicManager {
     }
 
     /**
-     * Convert from event objects  to event status objects
+     Convert from event objects  to event status objects
      */
     @Override
     public ObservableMap<Integer, EventStatus> getEventsWithStatus(int userId) throws EventException {
@@ -44,7 +45,6 @@ public class EventManagementLogic implements ILogicManager {
         eventsWithStatus.values().forEach(item -> item.setStatus(computeEventStatus(item)));
         return eventsWithStatus;
     }
-
 
     /**
      * check if edit operations was performed
@@ -57,6 +57,8 @@ public class EventManagementLogic implements ILogicManager {
     public boolean isModifyed(Map<Integer, List<Integer>> assignedCoordinators, Event selectedEvent, Event original) {
         return !assignedCoordinators.get(selectedEvent.getId()).isEmpty() || !selectedEvent.equals(original);
     }
+
+
     /**
      * checks if the start date is valid compared with the local Date
      */
@@ -71,6 +73,7 @@ public class EventManagementLogic implements ILogicManager {
     private boolean isStartTimeValid(LocalTime startTime, LocalTime endTime) {
         return startTime.isBefore(endTime);
     }
+
     /**
      * persist the edit event operation
      *
@@ -78,8 +81,8 @@ public class EventManagementLogic implements ILogicManager {
      * @param assignedCoordinators the coordinates assigned to this event
      */
     @Override
-    public boolean saveEditOperation(Event selectedEvent, Map<Integer, List<Integer>> assignedCoordinators,List<Ticket> tickets) throws EventException {
-        return eventData.saveEditOperation(selectedEvent, assignedCoordinators, tickets);
+    public boolean saveEditOperation(Event selectedEvent, Map<Integer, List<Integer>> assignedCoordinators,List<Ticket> editTickets, List<Ticket> newTickets, List<Ticket> deleteTickets) throws EventException {
+        return eventData.saveEditOperation(selectedEvent, assignedCoordinators, editTickets, newTickets, deleteTickets);
     }
 
     /**
@@ -91,19 +94,52 @@ public class EventManagementLogic implements ILogicManager {
         return EventStatusCalculator.calculateStatus(event);
     }
 
-    private List<EventStatus> sortByStartingDate(List<EventStatus> events) {
+    //sorting the events with status
+
+    public List<EventStatus> getAllSortedEventsByStatus(Collection<EventStatus> events) {
+        List<EventStatus> sortedEvents = new ArrayList<>();
+        //sort ongoing events
+        List<EventStatus> ongoingEvents = sortOngoing(events);
+        //sort upcoming events
+        List<EventStatus> upcomingEvents = sortUpcoming(events);
+        //sort finalized events
+        List<EventStatus> finalizedEvents = sortFinalized(events);
+
+        sortedEvents.addAll(ongoingEvents);
+        sortedEvents.addAll(upcomingEvents);
+        sortedEvents.addAll(finalizedEvents);
+        return sortedEvents;
+    }
+
+    private List<EventStatus> sortOngoing(Collection<EventStatus> events) {
+        List<EventStatus> ongoing = events.stream().filter((item) -> item.getStatus().getValue().equals(Status.ONGOING.getValue())).toList();
+        return sortByStartingDateAndTime(ongoing);
+    }
+
+    private List<EventStatus> sortUpcoming(Collection<EventStatus> events) {
+        List<EventStatus> upcoming = events.stream().filter((item) -> item.getStatus().getValue().equals(Status.UPCOMING.getValue())).toList();
+        return sortByStartingDateAndTime(upcoming);
+    }
+
+    private List<EventStatus> sortFinalized(Collection<EventStatus> events) {
+        List<EventStatus> finalized = events.stream().filter((item) -> item.getStatus().getValue().equals(Status.FINALIZED.getValue())).toList();
+        return sortByStartingDateAndTime(finalized);
+    }
+    private List<EventStatus> sortByStartingDateAndTime(List<EventStatus> events) {
         return events.stream()
-                .sorted(Comparator.comparing(event -> Math.abs(ChronoUnit.DAYS.between(LocalDate.now(), event.getEventDTO().getStartDate()))))
+                .sorted(Comparator.comparing((EventStatus event) -> event.getEventDTO().getStartDate())
+                        .thenComparing(event -> event.getEventDTO().getStartTime()))
                 .collect(Collectors.toList());
     }
+
     /**
      * delete an event from the database
      *
      * @param eventId the id of the event
      */
     @Override
-    public boolean deleteEvent(int eventId) throws EventException {
-        return eventData.deleteEvent(eventId);
+    public boolean deleteEvent(int eventId, List<Ticket> ticketsToDelete) throws EventException {
+        return eventData.deleteEvent(eventId, ticketsToDelete);
     }
 
     public LocalTime convertStringToLocalTime(String value) {
@@ -235,49 +271,4 @@ public class EventManagementLogic implements ILogicManager {
         }
     }
 
-
-
-
-    //sorting the events with status
-
-    public List<EventStatus> getAllSortedEventsByStatus(Collection<EventStatus> events) {
-        List<EventStatus> sortedEvents = new ArrayList<>();
-        //sort ongoing events
-        List<EventStatus> ongoingEvents = sortOngoing(events);
-        //sort upcoming events
-        List<EventStatus> upcomingEvents = sortUpcoming(events);
-        //sort finalized events
-        List<EventStatus> finalizedEvents = sortFinalized(events);
-
-        sortedEvents.addAll(ongoingEvents);
-        sortedEvents.addAll(upcomingEvents);
-        sortedEvents.addAll(finalizedEvents);
-        return sortedEvents;
-    }
-
-    @Override
-    public List<Event> getSortedEventsByStatus(Collection<Event> values) {
-        return null;
-    }
-
-    private List<EventStatus> sortOngoing(Collection<EventStatus> events) {
-        List<EventStatus> ongoing = events.stream().filter((item) -> item.getStatus().getValue().equals(Status.ONGOING.getValue())).toList();
-        return sortByStartingDateAndTime(ongoing);
-    }
-
-    private List<EventStatus> sortUpcoming(Collection<EventStatus> events) {
-        List<EventStatus> upcoming = events.stream().filter((item) -> item.getStatus().getValue().equals(Status.UPCOMING.getValue())).toList();
-        return sortByStartingDateAndTime(upcoming);
-    }
-
-    private List<EventStatus> sortFinalized(Collection<EventStatus> events) {
-        List<EventStatus> finalized = events.stream().filter((item) -> item.getStatus().getValue().equals(Status.FINALIZED.getValue())).toList();
-        return sortByStartingDateAndTime(finalized);
-    }
-    private List<EventStatus> sortByStartingDateAndTime(List<EventStatus> events) {
-        return events.stream()
-                .sorted(Comparator.comparing((EventStatus event) -> event.getEventDTO().getStartDate())
-                        .thenComparing(event -> event.getEventDTO().getStartTime()))
-                .collect(Collectors.toList());
-    }
 }

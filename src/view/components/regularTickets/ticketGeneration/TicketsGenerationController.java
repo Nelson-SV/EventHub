@@ -78,7 +78,8 @@ public class TicketsGenerationController {
         boolean isTicketValid = TicketValidator.isTicketValid(ticketTypeTF, ticketPriceTF, ticketQuantityTF);
 
         if(isTicketValid) {
-            Ticket ticket = new Ticket(ticketTypeTF.getText(), Integer.parseInt(ticketQuantityTF.getText()), new BigDecimal(ticketPriceTF.getText()));
+
+            Ticket ticket = new Ticket(ticketTypeTF.getText(), Integer.parseInt(ticketQuantityTF.getText()), new BigDecimal(ticketPriceTF.getText()), null);
 
             Hyperlink ticketType = new Hyperlink(ticket.getTicketType());
             ticketType.setTextFill(BLACK);

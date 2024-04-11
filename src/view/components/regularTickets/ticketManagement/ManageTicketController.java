@@ -1,5 +1,6 @@
 package view.components.regularTickets.ticketManagement;
 
+import be.Ticket;
 import be.User;
 import exceptions.ErrorCode;
 import exceptions.EventException;
@@ -33,18 +34,23 @@ public class ManageTicketController implements Initializable {
     private Service<List<User>> service;
     @FXML
     private EventManagementController eventManagementController;
+    @FXML
+    private Ticket selectedTicket;
 
-    public ManageTicketController(StackPane editwindow, StackPane thirdLayout, Model model, EventManagementController eventManagementController) {
+
+    public ManageTicketController(StackPane editwindow, StackPane thirdLayout, Model model, EventManagementController eventManagementController, Ticket ticket) {
         this.model = model;
         this.editWindow = editwindow;
         this.thirdLayout= thirdLayout;
         this.eventManagementController = eventManagementController;
+        this.selectedTicket = ticket;
     }
 
     private void openEditWindow(MouseEvent event) {
         this.thirdLayout.setVisible(true);
         this.thirdLayout.setDisable(false);
         TicketsDesignController ticketsDesignController = new TicketsDesignController(editWindow, thirdLayout, eventManagementController, model);
+        ticketsDesignController.getTicketToEdit(selectedTicket);
         thirdLayout.getChildren().clear();
         thirdLayout.getChildren().add(ticketsDesignController.getRoot());
         //initializeOrUpdateService(this.ticketId);

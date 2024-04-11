@@ -1,6 +1,5 @@
 package view.components.eventsPage.eventDescription;
 import be.Event;
-import be.EventStatus;
 import exceptions.ErrorCode;
 import exceptions.ExceptionHandler;
 import javafx.fxml.FXMLLoader;
@@ -13,7 +12,7 @@ public class EventComponent extends HBox {
 
     private HBox eventContainer;
 
-    public EventComponent(EventStatus event, ManageAction manageAction, DeleteButton deleteButton) {
+    public EventComponent(Event event, ManageAction manageAction, DeleteButton deleteButton) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("EventDescription.fxml"));
         loader.setController(new EventDescription(event,manageAction,deleteButton));
         try {

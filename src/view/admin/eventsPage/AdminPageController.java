@@ -124,6 +124,7 @@ public class AdminPageController implements Initializable, Displayable {
         if (eventsContainer.getScene() != null) {
             Platform.runLater(() -> {
                 eventsContainer.getChildren().clear();
+              // eventsContainer.getChildren().add(new UserDescriptionComponent(adminModel,secondaryLayout,thirdLayout,adminFourthLayout));
                 adminModel.sortedEventsList()
                         .forEach(e -> eventsContainer.getChildren()
                                 .add(new EventDescription(e, new AssignButton(adminModel, secondaryLayout, thirdLayout, adminFourthLayout, e.getEventDTO().getId()), new DeleteButton(secondaryLayout, thirdLayout, adminModel, e.getEventDTO().getId(), DeleteOperation.DELETE_EVENT))));

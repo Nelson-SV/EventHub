@@ -5,15 +5,17 @@ import be.Ticket;
 import exceptions.ErrorCode;
 import exceptions.ExceptionHandler;
 import io.github.palexdev.materialfx.controls.MFXButton;
-import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.control.ColorPicker;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import view.components.eventsPage.eventManagement.EventManagementController;
 import view.components.eventsPage.eventManagement.ticketManagement.TicketDescriptionComponent;
 import view.components.main.Model;
@@ -31,7 +33,7 @@ public class TicketsDesignController implements Initializable {
     @FXML
     private MFXButton addTicketBT;
     @FXML
-    private MFXComboBox ticketColorCombo;
+    private ColorPicker colorPicker;
     @FXML
     private MFXTextField ticketTypeTF, ticketPriceTF, ticketQuantityTF;
     @FXML
@@ -49,7 +51,7 @@ public class TicketsDesignController implements Initializable {
     @FXML
     private Model model;
     @FXML
-    private Ticket ticket;
+    private Ticket selectedTicket;
 
     public TicketsDesignController(StackPane secondaryLayout, StackPane thirdLayout, EventManagementController eventManagementController, Model model) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("TicketsDesignWindow.fxml"));
@@ -68,7 +70,6 @@ public class TicketsDesignController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
         updateTicketInformation();
     }
 
@@ -78,6 +79,8 @@ public class TicketsDesignController implements Initializable {
             ticketHBox.getChildren().clear();
             ticketComponentDescription = new TicketComponentDescription(model.getSelectedEvent());
             ticketHBox.getChildren().add(ticketComponentDescription);
+            if (selectedTicket == null)
+                ticketComponentDescription.setTicketColor(Color.WHITE);
         }
     }
 
@@ -85,29 +88,72 @@ public class TicketsDesignController implements Initializable {
         boolean isTicketValid = TicketValidator.isTicketValid(ticketTypeTF, ticketPriceTF, ticketQuantityTF);
 
         if (isTicketValid) {
-            Ticket ticket = new Ticket(ticketTypeTF.getText(), Integer.parseInt(ticketQuantityTF.getText()), new BigDecimal(ticketPriceTF.getText()));
+            String type = ticketTypeTF.getText();
+            int quantity = Integer.parseInt(ticketQuantityTF.getText());
+            BigDecimal price = new BigDecimal(ticketPriceTF.getText());
+            String color = colorPicker.getValue().toString();
+
+            Ticket ticket = new Ticket(type, quantity, price, color);
 
             VBox ticketsVBox = eventManagementController.getTicketsVBox();
 
-            ManageTicket manage = new ManageTicket(secondaryLayout,thirdLayout,model, eventManagementController);
-            DeleteTicket delete = new DeleteTicket(secondaryLayout,thirdLayout,model, DeleteOperation.DELETE_TICKET);
+            ManageTicket manage = new ManageTicket(secondaryLayout,thirdLayout,model, eventManagementController, ticket);
+            DeleteTicket delete = new DeleteTicket(secondaryLayout,thirdLayout,model, DeleteOperation.DELETE_TICKET, ticket, eventManagementController);
             TicketDescriptionComponent ticketDescriptionComponent = new TicketDescriptionComponent(ticket, manage, delete);
             ticketsVBox.getChildren().add(ticketDescriptionComponent);
 
-            /*
-            if (selectedTicket != ticket && selectedTicket != null) {
-                removeTicket(selectedVbox, selectedTicket);
+            // Check if it's a new ticket or to edit one
+            if (selectedTicket == null) {
+                // Add new ticket
+                model.getNewAddedTicket(ticket);
+            } else {
+                // Update existing ticket
+                model.getTicketsToEdit(ticket, selectedTicket.getId());
+                // Remove the existing ticket from the view
+                removeTicket(ticketsVBox, selectedTicket);
             }
-            */
-
-            model.getNewAddedTicket(ticket);
-
             closeWindow();
+            selectedTicket = null;
         }
+    }
+
+    private void removeTicket(VBox ticketsVBox, Ticket selectedTicket) {
+        for (Node node : ticketsVBox.getChildren()) {
+            if (node instanceof TicketDescriptionComponent) {
+                TicketDescriptionComponent ticketDescriptionComponent = (TicketDescriptionComponent) node;
+                if (ticketDescriptionComponent.getTicket().equals(selectedTicket)) {
+                    ticketsVBox.getChildren().remove(node);
+                    break;
+                }
+            }
+        }
+    }
+
+    public Ticket getTicketToEdit(Ticket ticket){
+        selectedTicket = ticket;
+        setTicketInformation();
+        return selectedTicket;
     }
 
     public void cancelAction(){
         closeWindow();
+        selectedTicket = null;
+    }
+
+    public void setTicketInformation() {
+        if (selectedTicket!=null){
+            ticketTypeTF.setText(selectedTicket.getTicketType());
+            ticketPriceTF.setText(selectedTicket.getTicketPrice()+"");
+            ticketQuantityTF.setText(selectedTicket.getQuantity()+"");
+
+            String ticketColor = selectedTicket.getColor();
+
+            if (ticketColor != null && !ticketColor.isEmpty()) {
+                colorPicker.setValue(Color.valueOf(ticketColor));
+            } else{
+                ticketComponentDescription.updateTicketColour(Color.WHITE);
+            }
+        }
     }
 
     public void updateTicketInformation() {
@@ -121,6 +167,10 @@ public class TicketsDesignController implements Initializable {
             ticketComponentDescription.setTicketPrice(newValue);
         });
 
+        colorPicker.valueProperty().addListener((observable, oldColor, newValue) -> {
+            // Update the background color of the FlowPane
+            ticketComponentDescription.updateTicketColour(newValue);
+        });
     }
 
     public FlowPane getRoot() {
