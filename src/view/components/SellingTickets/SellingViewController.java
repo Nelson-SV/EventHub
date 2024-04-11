@@ -1,7 +1,6 @@
 package view.components.SellingTickets;
 
 import be.Customer;
-import be.Event;
 import be.Ticket;
 import exceptions.ErrorCode;
 import exceptions.EventException;
@@ -27,7 +26,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
-import ticketsPrinting.TicketImageSave;
 import view.components.loadingComponent.LoadingActions;
 import view.components.loadingComponent.LoadingComponent;
 import view.components.main.Model;
@@ -50,7 +48,7 @@ public class SellingViewController implements Initializable {
     @FXML
     private TextField name;
     @FXML
-    private TextField lastName;
+    private  TextField lastName;
     @FXML
     private TextField email;
     @FXML
@@ -75,18 +73,16 @@ public class SellingViewController implements Initializable {
     @FXML
     private Label errorText;
 
-    private TicketImageSave ticketImageSave;
     private static final PseudoClass ERROR_PSEUDO_CLASS = PseudoClass.getPseudoClass("error");
 
     public SellingViewController(VBox vbox, Model model, StackPane secondaryLayout) {
-        this.model = model;
+        this.model=model;
         FXMLLoader loader = new FXMLLoader(getClass().getResource("sellingView.fxml"));
         loader.setController(this);
         try {
-            box = loader.load();
+            box=loader.load();
             this.vBox = vbox;
             this.secondaryLayout = secondaryLayout;
-
         } catch (IOException e) {
             ExceptionHandler.errorAlertMessage(ErrorCode.LOADING_FXML_FAILED.getValue());
         }
@@ -102,6 +98,7 @@ public class SellingViewController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         List<String> eventNames = model.getAllEventNames();
         allEvents.setItems(FXCollections.observableArrayList(eventNames));
+
         allEvents.setOnAction(event -> {
             loadTicketsInfo();
             loadSpecialTicketsInfo();
@@ -117,7 +114,7 @@ public class SellingViewController implements Initializable {
             eventTicketsAmount.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, false);
         });
 
-        // Add event handler for specialTicketsAmount text field
+       // Add event handler for specialTicketsAmount text field
         specialTicketsAmount.textProperty().addListener((observable, oldValue, newValue) -> {
             // Clear the error pseudo-class state when user starts typing
             specialTicketsAmount.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, false);
@@ -140,7 +137,7 @@ public class SellingViewController implements Initializable {
         });
     }
 
-    private void loadTicketsInfo() {
+    private void loadTicketsInfo(){
         allEventTickets.clearSelection();
         String selectedEventName = (String) allEvents.getSelectionModel().getSelectedItem();
         int eventId = model.getEventIdByName(selectedEventName);
@@ -150,30 +147,36 @@ public class SellingViewController implements Initializable {
                 List<Ticket> ticketList = new ArrayList<>(ticketsMap.values());
                 allEventTickets.setItems(FXCollections.observableList(ticketList));
                 System.out.println(ticketsMap.values());
-            } catch (EventException e) {
-                // Handle exception
-            }
-        }
-    }
 
-    private void loadSpecialTicketsInfo() {
-        specialTickets.clearSelection();
-        String selectedEventName = (String) allEvents.getSelectionModel().getSelectedItem();
-        int eventId = model.getEventIdByName(selectedEventName);
-        if (eventId != -1) {
-            try {
-                ObservableMap<Integer, Ticket> specialTicketsMap = model.getSpecialTicketsForEventOrNot(eventId);
-                List<Ticket> ticketList = new ArrayList<>(specialTicketsMap.values());
-                specialTickets.setItems(FXCollections.observableList(ticketList));
+
             } catch (EventException e) {
                 // Handle exception
             }
         }
 
+
+    }
+
+    private void loadSpecialTicketsInfo(){
+            specialTickets.clearSelection();
+            String selectedEventName = (String) allEvents.getSelectionModel().getSelectedItem();
+            int eventId = model.getEventIdByName(selectedEventName);
+            if (eventId != -1) {
+                try {
+                    ObservableMap<Integer, Ticket> specialTicketsMap  = model.getSpecialTicketsForEventOrNot(eventId);
+                    List<Ticket> ticketList = new ArrayList<>(specialTicketsMap.values());
+                    specialTickets.setItems(FXCollections.observableList(ticketList));
+                } catch (EventException e) {
+                    // Handle exception
+                }
+            }
+
     }
 
 
-    public void addEventTicket(ActionEvent actionEvent) {
+
+
+    public void addEventTicket(ActionEvent actionEvent){
         Ticket selectedTicketInfo = ((Ticket) allEventTickets.getSelectionModel().getSelectedItem());
         String amountOfEventTickets = eventTicketsAmount.getText();
         if (selectedTicketInfo == null) {
@@ -190,11 +193,13 @@ public class SellingViewController implements Initializable {
                 // Check if selected quantity does not exceed available inventory
                 if (selectedQuantity <= selectedTicketInfo.getQuantity()) {
                     BigDecimal ticketPrice = selectedTicketInfo.getTicketPrice();
+
                     BigDecimal totalPrice = ticketPrice.multiply(BigDecimal.valueOf(selectedQuantity));
                     selectedTicketInfo.setTicketPrice(totalPrice);
                     selectedTicketInfo.setQuantity(selectedQuantity);
                     selectedTicketInfo.setSpecial(false); //since this is a normal ticket
                     allSelectedTickets.getItems().add(selectedTicketInfo);
+
                     allEventTickets.getSelectionModel().clearSelection();
                     eventTicketsAmount.clear();
                 } else {
@@ -222,8 +227,7 @@ public class SellingViewController implements Initializable {
         }
 
     }
-
-    public void addSpecialTickets(ActionEvent actionEvent) {
+    public void addSpecialTickets(ActionEvent actionEvent){
         Ticket selectedSpecialTicketInfo = (Ticket) specialTickets.getSelectionModel().getSelectedItem();
         String amountOfEventTickets = specialTicketsAmount.getText();
         if (selectedSpecialTicketInfo == null) {
@@ -253,7 +257,8 @@ public class SellingViewController implements Initializable {
                     specialTicketsAmount.setText("overMax");
                     specialTicketsAmount.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, true);
                 }
-            } else {
+            }
+            else {
                 Platform.runLater(() -> {
                     errorText.setText("The ticket you are trying to add is already in your list");
                 });
@@ -288,10 +293,11 @@ public class SellingViewController implements Initializable {
             BigDecimal totalPrice = item.getTicketPrice(); // Parse total price to BigDecimal
             total = total.add(totalPrice); // Add total price to running total
         }
+
         totalPrice.setText("Total Price: " + total.toString() + " DKK");
     }
 
-    public void removeTicket(ActionEvent actionEvent) {
+    public void removeTicket(ActionEvent actionEvent){
         if (allSelectedTickets.getSelectionModel().getSelectedItem() != null) {
             // Cast the selected item to String
             Ticket selectedTicket = allSelectedTickets.getSelectionModel().getSelectedItem();
@@ -299,25 +305,30 @@ public class SellingViewController implements Initializable {
         }
     }
 
-    public void sell() throws EventException {
-        boolean isSellingValid = SellingValidator.isSellingValid(name, lastName, email, allSelectedTickets);
-        if (isSellingValid) {
-            initializeLoadingView();
-            initializeService();
-        }
-    }
 
-    private void sellTickets() throws EventException {
-        String customerName = name.getText();
-        String customerLastName = lastName.getText();
-        String customerEmail = email.getText();
-        String currentEventSell = (String) allEvents.getSelectionModel().getSelectedItem();
-        Customer customer = new Customer(customerName, customerLastName, customerEmail);
-        model.sellTicket(allSelectedTickets.getItems(), customer,currentEventSell);
-    }
 
-    public void cancel(ActionEvent actionEvent) {
+   public void sell() throws EventException {
+       boolean isSellingValid = SellingValidator.isSellingValid(name, lastName, email, allSelectedTickets);
+       if (isSellingValid) {
+           initializeLoadingView();
+           initializeService();
+
+       }
+
+   }
+   private void sellTickets() throws EventException {
+
+       String customerName = name.getText();
+       String customerLastName = lastName.getText();
+       String customerEmail = email.getText();
+
+       Customer customer = new Customer(customerName, customerLastName, customerEmail);
+       model.sellTicket(allSelectedTickets.getItems(),customer );
+   }
+
+    public void cancel (ActionEvent actionEvent){
         clearThings();
+
     }
 
     private void initializeService() {
@@ -334,10 +345,7 @@ public class SellingViewController implements Initializable {
             }
         };
         sellingService.setOnSucceeded((e) -> {
-            ticketImageSave = new TicketImageSave(model.getSoldTickets(),model);
-            ticketImageSave.saveSoldTicketsImages();
-            ticketImageSave.saveSoldTicketsImages();
-
+            Platform.runLater(() -> {
                 loadingComponent.setAction(LoadingActions.SUCCES.getActionValue());
                 PauseTransition pauseTransition = new PauseTransition(Duration.millis(500));
                 pauseTransition.setOnFinished((ev) -> {
@@ -345,9 +353,11 @@ public class SellingViewController implements Initializable {
                     clearThings();
                 });
                 pauseTransition.play();
+            });
         });
         sellingService.setOnFailed((e) -> {
-            ExceptionHandler.errorAlertMessage(sellingService.getException().getMessage());
+            Throwable cause = sellingService.getException();
+            ExceptionHandler.errorAlertMessage(cause.getMessage());
             Platform.runLater(() -> {
                 loadingComponent.setAction(LoadingActions.FAIL.getActionValue());
                 PauseTransition pauseTransition = new PauseTransition(Duration.millis(500));
@@ -360,7 +370,6 @@ public class SellingViewController implements Initializable {
         });
         sellingService.restart();
     }
-
     private void closeLoader() {
         CommonMethods.closeWindow(secondaryLayout);
     }
@@ -374,7 +383,7 @@ public class SellingViewController implements Initializable {
         this.secondaryLayout.setDisable(false);
     }
 
-    public void clearThings() {
+    public void clearThings (){
         name.clear();
         lastName.clear();
         email.clear();
@@ -401,6 +410,11 @@ public class SellingViewController implements Initializable {
         allEventTickets.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, false);
         allSelectedTickets.pseudoClassStateChanged(ERROR_PSEUDO_CLASS, false);
     }
+
+
+
+
+
 
 
 }
