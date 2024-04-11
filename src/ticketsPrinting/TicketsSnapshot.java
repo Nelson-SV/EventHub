@@ -29,6 +29,7 @@ import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Semaphore;
 
 public class TicketsSnapshot {
     private Map<TicketType, List<Ticket>> soldTickets;
@@ -37,7 +38,7 @@ public class TicketsSnapshot {
     private  final List<WritableImage> createdTicketsImages;
     private CountDownLatch countDownLatch = new CountDownLatch(2);
     private ExecutorService executorService;
-
+    private Semaphore semaphore = new Semaphore(1);
     public TicketsSnapshot(Map<TicketType, List<Ticket>> soldTickets, Customer customer, Event event) {
         this.customer = customer;
         this.createdTicketsImages = new ArrayList<>();
@@ -57,6 +58,7 @@ public class TicketsSnapshot {
         Platform.runLater(() -> {
             for (Ticket ticket : soldTickets.get(TicketType.NORMAL)) {
                 try {
+                    semaphore.acquire();
                     //createdTicketsImages.add(takeSnapshotNormalTicket(event, ticket, customer));
                     WritableImage writableImage = takeSnapshotNormalTicket(event, ticket, customer);
 ;                        //countDownLatch.await();
@@ -77,9 +79,11 @@ public class TicketsSnapshot {
                                 e.printStackTrace();
                                 throw new EventException(e.getMessage(), e, ErrorCode.FAILED_TO_SAVE_IMAGES);
                             }
-
+                    semaphore.release();
                 } catch (WriterException | EventException e) {
                     e.printStackTrace();
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
                 }
 
             }
