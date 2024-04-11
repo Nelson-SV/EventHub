@@ -3,6 +3,8 @@ import be.Ticket;
 import be.TicketType;
 import javafx.concurrent.Task;
 import view.components.main.Model;
+
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,10 +19,15 @@ public class TicketUUIdLoader extends Task<Map<TicketType, List<Ticket>>> {
 
     @Override
     protected Map<TicketType, List<Ticket>> call() throws Exception {
-
         if (isCancelled()) {
+            System.out.println("task was cancelled");
             return null;
         }
-        return model.getTicketsWithUUId(soldTickets);
+
+        Map<TicketType,List<Ticket>> ticketsWithUuid =model.getTicketsWithUUId(soldTickets);
+        if(ticketsWithUuid== null){
+            return new HashMap<>();
+        }
+        return ticketsWithUuid;
     }
 }
