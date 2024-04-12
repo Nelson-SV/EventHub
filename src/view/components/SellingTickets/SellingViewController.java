@@ -86,6 +86,7 @@ public class SellingViewController implements Initializable {
             box = loader.load();
             this.vBox = vbox;
             this.secondaryLayout = secondaryLayout;
+            ticketImageSave = new TicketImageSave(model);
 
         } catch (IOException e) {
             ExceptionHandler.errorAlertMessage(ErrorCode.LOADING_FXML_FAILED.getValue());
@@ -334,8 +335,8 @@ public class SellingViewController implements Initializable {
             }
         };
         sellingService.setOnSucceeded((e) -> {
-            ticketImageSave = new TicketImageSave(model);
-            ticketImageSave.saveSoldTicketsImages();
+
+            ticketImageSave.testNewApproach();
                 loadingComponent.setAction(LoadingActions.SUCCES.getActionValue());
                 PauseTransition pauseTransition = new PauseTransition(Duration.millis(500));
                 pauseTransition.setOnFinished((ev) -> {

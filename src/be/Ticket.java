@@ -13,10 +13,7 @@ public class Ticket {
     private String customerEmail;
     private String UUID;
     private String color;
-
     private Boolean special;
-
-
     public Ticket(int id, String eventName, String ticketType, BigDecimal ticketPrice,  String startDate, String customerName, String customerEmail, String UUID, int quantity) {
         this.id = id;
         this.eventName = eventName;
@@ -58,13 +55,15 @@ public class Ticket {
         this.color = color;
     }
 
-    // Copy constructor
+    // Copy constructor onlly with the id,ticketType,price and UUID
     public Ticket(Ticket other) {
-        this.id = other.id;
-        this.ticketType = other.ticketType;
-        this.purchaseQuantity = other.quantity;
-        this.ticketPrice = other.ticketPrice;
+        this.id = other.getId();
+        this.ticketType = other.getTicketType();
+        this.ticketPrice = other.getTicketPrice();
+        this.color = other.getColor();
+        this.UUID = other.UUID;
     }
+
 
     public int getId() {
         return id;

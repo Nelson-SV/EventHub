@@ -18,8 +18,13 @@ public class TicketUUIdLoader extends Task<Map<TicketType, List<Ticket>>> {
     @Override
     protected Map<TicketType, List<Ticket>> call() throws Exception {
         if (isCancelled()) {
+            System.out.println("Task was cancelled");
             return null;
         }
-        return model.getTicketsWithUUId(model.getSoldTickets());
+        List<Ticket> soldTickets = model.getSoldTickets();
+        System.out.println("Sold tickets: " + soldTickets);
+        Map<TicketType, List<Ticket>> ticketsWithUUId = model.getTicketsWithUUId(soldTickets);
+        System.out.println("Tickets with UUID: " + ticketsWithUUId);
+        return ticketsWithUUId;
     }
 }

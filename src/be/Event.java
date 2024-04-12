@@ -1,14 +1,9 @@
 package be;
-
-import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
-
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Date;
-import java.util.List;
 import java.util.Objects;
 
 public class Event {
@@ -18,9 +13,7 @@ public class Event {
     private SimpleObjectProperty<LocalDate> startDate;
     private SimpleObjectProperty<LocalDate> endDate;
     private SimpleObjectProperty<LocalTime> startTime;
-
     private SimpleObjectProperty<LocalTime> endTime;
-
     private SimpleStringProperty location;
     private SimpleIntegerProperty availableTickets;
 

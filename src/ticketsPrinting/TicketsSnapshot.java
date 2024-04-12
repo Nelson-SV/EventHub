@@ -7,6 +7,7 @@ import com.google.zxing.WriterException;
 import exceptions.ErrorCode;
 import exceptions.EventException;
 import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -31,106 +32,50 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Semaphore;
 
-public class TicketsSnapshot {
-    private Map<TicketType, List<Ticket>> soldTickets;
+public class TicketsSnapshot extends Task<List<WritableImage>>  {
+    private Map<TicketType, List<TicketWithQrCode>> soldTickets;
     private Customer customer;
     private Event event;
     private  final List<WritableImage> createdTicketsImages;
-    private CountDownLatch countDownLatch = new CountDownLatch(2);
-    private ExecutorService executorService;
+    private CountDownLatch countDownLatch = new CountDownLatch(1);
+    //private ExecutorService executorService;
     private Semaphore semaphore = new Semaphore(1);
-    public TicketsSnapshot(Map<TicketType, List<Ticket>> soldTickets, Customer customer, Event event) {
+    public TicketsSnapshot(Map<TicketType, List<TicketWithQrCode>> soldTickets, Customer customer, Event event) {
         this.customer = customer;
         this.createdTicketsImages = new ArrayList<>();
         this.event = event;
         setSoldTickets(soldTickets);
     }
-    public synchronized void setSoldTickets(Map<TicketType, List<Ticket>> soldTickets) {
+    public synchronized void setSoldTickets(Map<TicketType, List<TicketWithQrCode>> soldTickets) {
         this.soldTickets = soldTickets;
     }
 
-    public synchronized Map<TicketType, List<Ticket>> getSoldTickets() {
+    public synchronized Map<TicketType, List<TicketWithQrCode>> getSoldTickets() {
         return this.soldTickets;
     }
 
-    private  synchronized void createTicketImages(Map<TicketType,List<Ticket>> soldTickets, Customer customer, Event event) throws EventException {
+    private  synchronized void createTicketImages(Map<TicketType,List<TicketWithQrCode>> soldTickets, Customer customer, Event event){
+        Platform.runLater(()->{
 
-        Platform.runLater(() -> {
-            for (Ticket ticket : soldTickets.get(TicketType.NORMAL)) {
+            for(TicketWithQrCode ticketWithQrCode:soldTickets.get(TicketType.NORMAL)){
                 try {
-                    semaphore.acquire();
-                    //createdTicketsImages.add(takeSnapshotNormalTicket(event, ticket, customer));
-                    WritableImage writableImage = takeSnapshotNormalTicket(event, ticket, customer);
-;                        //countDownLatch.await();
-                        //int index = 0;
-                            BufferedImage bufferedImage = SwingFXUtils.fromFXImage(writableImage, null);
-                            File dir = new File("./uploadImages/userUploadedImages");
-                            if (!dir.exists()) {
-                                dir.mkdirs();
-                            }
-                            String ticketType = ticket.getTicketType();
-                            String uuid= ticket.getUUID();
-                            String fileName = uuid+customer.getName() + "_" + event.getName() + "_" + ticketType + ".png";
-                            System.out.println(fileName);
-                            File outputFile = new File(dir, fileName);
-                            try {
-                                ImageIO.write(bufferedImage, "png", outputFile);
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                                throw new EventException(e.getMessage(), e, ErrorCode.FAILED_TO_SAVE_IMAGES);
-                            }
-                    semaphore.release();
-                } catch (WriterException | EventException e) {
+                    WritableImage image =takeSnapshotNormalTicket(event,ticketWithQrCode,customer);
+                    createdTicketsImages.add(image);
+                } catch (WriterException e) {
                     e.printStackTrace();
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
+                    //
                 }
-
             }
-           // countDownLatch.countDown();
+            countDownLatch.countDown();
         });
-
-
-       // executorService = Executors.newSingleThreadExecutor();
-        //executorService.execute(() -> {
-//            try {
-//                countDownLatch.await();
-//                int index = 0;
-//                for (WritableImage image : createdTicketsImages) {
-//                    BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image, null);
-//                    File dir = new File("./uploadImages/userUploadedImages");
-//                    if (!dir.exists()) {
-//                        dir.mkdirs();
-//                    }
-//                    String ticketType = soldTickets.get(TicketType.NORMAL).get(index).getTicketType();
-//                    String uuid= soldTickets.get(TicketType.NORMAL).get(index).getUUID();
-//                    String fileName = uuid+customer.getName() + "_" + event.getName() + "_" + ticketType + ".png";
-//                    System.out.println(fileName);
-//                    File outputFile = new File(dir, fileName);
-//                    try {
-//                        ImageIO.write(bufferedImage, "png", outputFile);
-//                        index++;
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
-//                        throw new EventException(e.getMessage(), e, ErrorCode.FAILED_TO_SAVE_IMAGES);
-//                    }
-//                }
-//            } catch (InterruptedException | EventException e) {
-//                e.printStackTrace();
-//                Thread.currentThread().interrupt();
-//            }
-        //});
-        //executorService.shutdown();
     }
 
-
-    private WritableImage takeSnapshotNormalTicket(Event event, Ticket objectTicket, Customer customer) throws WriterException {
+    private WritableImage takeSnapshotNormalTicket(Event event, TicketWithQrCode ticketWithQrCode, Customer customer) throws WriterException {
         TicketComponentDescription ticketComponent = new TicketComponentDescription(event);
         int width = (int) ticketComponent.getBarCode().getFitWidth();
         int height = (int) ticketComponent.getBarCode().getFitHeight();
-        Image qrCode = QrCodeGenerator.generateQRCodeImage(objectTicket.getUUID(), width, height);
-        ticketComponent.getBarCode().setImage(qrCode);
-        String colorName = objectTicket.getColor();
+        ticketComponent.getBarCode().setImage(ticketWithQrCode.getQrcode());
+        String colorName = ticketWithQrCode.getTicket().getColor();
         Color color = Color.web("#" + colorName.substring(2));
         BackgroundFill backgroundFill = new BackgroundFill(color, CornerRadii.EMPTY, Insets.EMPTY);
         Background background = new Background(backgroundFill);
@@ -140,15 +85,24 @@ public class TicketsSnapshot {
         ticketComponent.setEventName(event.getName());
         ticketComponent.setDateAndTime(event.getStartDate() + " " + event.getStartTime());
         ticketComponent.setLocation(event.getLocation());
-        ticketComponent.setPrice(objectTicket.getTicketPrice() + "");
-        ticketComponent.setType(objectTicket.getTicketType());
+        ticketComponent.setPrice(ticketWithQrCode.getTicket().getTicketPrice()+ "");
+        ticketComponent.setType(ticketWithQrCode.getTicket().getTicketType());
         Scene scene = new Scene(ticketComponent);
         SnapshotParameters params = new SnapshotParameters();
         double scaleFactor = 2;
         params.setTransform(Transform.scale(scaleFactor, scaleFactor));
         return scene.getRoot().snapshot(params, null);
     }
+
     public synchronized void createTicketWritableImages() throws EventException {
         createTicketImages(getSoldTickets(),customer, event);
+    }
+
+    @Override
+    protected List<WritableImage> call() throws Exception {
+        createTicketWritableImages();
+        countDownLatch.await();
+        System.out.println(this.createdTicketsImages.size() +"snapshot insideeeeeee");
+        return this.createdTicketsImages;
     }
 }
