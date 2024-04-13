@@ -1,7 +1,6 @@
 package view.components.SellingTickets;
 
 import be.Customer;
-import be.Event;
 import be.Ticket;
 import exceptions.ErrorCode;
 import exceptions.EventException;
@@ -27,19 +26,17 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
-import ticketsPrinting.TicketImageSave;
+import ticketsPrinting.TicketImageSaveFacade;
 import view.components.loadingComponent.LoadingActions;
 import view.components.loadingComponent.LoadingComponent;
 import view.components.main.Model;
 import view.utility.CommonMethods;
 import view.utility.SellingValidator;
-import view.utility.TicketValidator;
 
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.util.*;
-import java.util.logging.Handler;
 
 public class SellingViewController implements Initializable {
 
@@ -75,7 +72,7 @@ public class SellingViewController implements Initializable {
     @FXML
     private Label errorText;
 
-    private TicketImageSave ticketImageSave;
+    private TicketImageSaveFacade ticketImageSave;
     private static final PseudoClass ERROR_PSEUDO_CLASS = PseudoClass.getPseudoClass("error");
 
     public SellingViewController(VBox vbox, Model model, StackPane secondaryLayout) {
@@ -86,7 +83,7 @@ public class SellingViewController implements Initializable {
             box = loader.load();
             this.vBox = vbox;
             this.secondaryLayout = secondaryLayout;
-            ticketImageSave = new TicketImageSave(model);
+            ticketImageSave = new TicketImageSaveFacade(model);
 
         } catch (IOException e) {
             ExceptionHandler.errorAlertMessage(ErrorCode.LOADING_FXML_FAILED.getValue());
@@ -336,7 +333,7 @@ public class SellingViewController implements Initializable {
         };
         sellingService.setOnSucceeded((e) -> {
 
-            ticketImageSave.testNewApproach();
+            ticketImageSave.saveTicketImage();
                 loadingComponent.setAction(LoadingActions.SUCCES.getActionValue());
                 PauseTransition pauseTransition = new PauseTransition(Duration.millis(500));
                 pauseTransition.setOnFinished((ev) -> {

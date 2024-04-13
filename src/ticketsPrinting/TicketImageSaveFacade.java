@@ -3,25 +3,24 @@ import be.Ticket;
 import be.TicketType;
 import exceptions.ExceptionHandler;
 import view.components.main.Model;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.*;
 
-public class TicketImageSave {
+public class TicketImageSaveFacade {
     private TicketUUIdLoader uuIdLoader;
     private Model model;
     private ExecutorService executorService = Executors.newSingleThreadExecutor();
     private ExecutorService consumerExecutor = Executors.newSingleThreadExecutor();
     private BlockingQueue<Map<TicketType, List<Ticket>>> queue = new LinkedBlockingQueue<>(10);
 
-    public TicketImageSave(Model model) {
+    public TicketImageSaveFacade(Model model) {
         this.model = model;
     }
 
 
-    public void testNewApproach(){
+    public void saveTicketImage(){
         CompletableFuture.supplyAsync(() -> {
             System.out.println("Starting Task 1");
             TicketUUIdLoader  ticketUUIdLoader = new TicketUUIdLoader(model);
@@ -60,7 +59,6 @@ public class TicketImageSave {
                 throw new RuntimeException(e);
             }
         }).exceptionally(ex -> {
-            // Handle exception
             System.out.println("Exception occurred: " + ex.getMessage());
             ex.printStackTrace();
             return null;
