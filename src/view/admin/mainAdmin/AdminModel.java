@@ -47,6 +47,8 @@ public class AdminModel implements CommonModel, SortCommander, SortObserver {
      * Users sorted by role
      */
     private ObservableList<User> sortedUsersByLastName;
+
+
     /**
      * the current displayed users on the view
      */
@@ -102,6 +104,8 @@ public class AdminModel implements CommonModel, SortCommander, SortObserver {
      * holds all the coordinators in the system ,without the current selected event ones,without the password ,and image fields
      */
     private final ObservableList<User> allCoordinators;
+
+    private final ObservableList<User>  unasignedCoordinatorsDisplayed;
     /**
      * holds all the selected coordinator that will be assigned to the selected event,without the password and the image fields
      */
@@ -123,10 +127,17 @@ public class AdminModel implements CommonModel, SortCommander, SortObserver {
         this.usersInTheSystem = FXCollections.observableHashMap();
         this.sortedUsersByLastName = FXCollections.observableArrayList();
         this.displayedUsers = FXCollections.observableArrayList();
+        this.unasignedCoordinatorsDisplayed = FXCollections.observableArrayList();
     }
 
     public ObservableList<User> getAllCoordinators() {
         return allCoordinators;
+    }
+
+
+    /**Collection used for the assign coordinators view*/
+    public ObservableList<User> getUnasignedCoordinatorsDisplayed() {
+        return unasignedCoordinatorsDisplayed;
     }
 
     /**
@@ -142,6 +153,7 @@ public class AdminModel implements CommonModel, SortCommander, SortObserver {
      */
     public void initializeEventCoordinators(int eventId) throws EventException {
         eventAssignedCoordinators.setAll(adminLogic.getEventCoordinators(eventId));
+        unasignedCoordinatorsDisplayed.setAll(eventAssignedCoordinators);
         System.out.println(eventAssignedCoordinators.size() + " executed");
     }
 

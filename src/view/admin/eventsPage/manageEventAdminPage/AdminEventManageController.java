@@ -94,7 +94,7 @@ public class AdminEventManageController implements Initializable {
 
     public void displayAllCoordinators() {
         if (managePageContainer.getScene() != null) {
-            adminModel.getAllCoordinators().forEach((elem) -> {
+            adminModel.getUnasignedCoordinatorsDisplayed().forEach((elem) -> {
                 AssignCoordinatorComponent assignCoordinatorComponent = new AssignCoordinatorComponent(elem.getUserId(), elem.getFirstName(), elem.getLastName());
                 allCoordinatorsContainer.getChildren().add(assignCoordinatorComponent);
             });
