@@ -1,13 +1,11 @@
 package view.admin.searchComponent;
-
 import exceptions.ErrorCode;
 import exceptions.ExceptionHandler;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.PopupControl;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import view.components.listeners.DataHandler;
-
-import javax.xml.crypto.Data;
 import java.io.IOException;
 
 public class SearchComponent<T> {
@@ -23,5 +21,21 @@ public class SearchComponent<T> {
         } catch (IOException e) {
             ExceptionHandler.errorAlertMessage(ErrorCode.LOADING_FXML_FAILED.getValue());
         }
+    }
+
+    public HBox getSearchRoot() {
+        return searchRoot;
+    }
+
+    public TextField getSearchWindow() {
+        return this.searchController.getSearchWindow();
+    }
+
+    public PopupControl getPopupWindow(){
+        return this.searchController.getPopupWindow();
+    }
+
+    public void setSearchWindowWidth(int width){
+        this.searchController.setSearchWindowWidth(width);
     }
 }

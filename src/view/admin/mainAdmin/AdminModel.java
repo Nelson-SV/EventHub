@@ -105,10 +105,19 @@ public class AdminModel implements CommonModel, SortCommander, SortObserver {
      */
     private final ObservableList<User> allCoordinators;
 
-    private final ObservableList<User>  unasignedCoordinatorsDisplayed;
+
+    //TODO delete if not used , also the methods , supose to be used for the user selection search results;
+    private final ObservableList<User> unasignedCoordinatorsDisplayed;
     /**
      * holds all the selected coordinator that will be assigned to the selected event,without the password and the image fields
      */
+
+
+
+
+
+
+
     private ObservableList<Integer> selectedUsers;
 
     //TODO delete if not used
@@ -135,7 +144,9 @@ public class AdminModel implements CommonModel, SortCommander, SortObserver {
     }
 
 
-    /**Collection used for the assign coordinators view*/
+    /**
+     * Collection used for the assign coordinators view
+     */
     public ObservableList<User> getUnasignedCoordinatorsDisplayed() {
         return unasignedCoordinatorsDisplayed;
     }
@@ -154,7 +165,6 @@ public class AdminModel implements CommonModel, SortCommander, SortObserver {
     public void initializeEventCoordinators(int eventId) throws EventException {
         eventAssignedCoordinators.setAll(adminLogic.getEventCoordinators(eventId));
         unasignedCoordinatorsDisplayed.setAll(eventAssignedCoordinators);
-        System.out.println(eventAssignedCoordinators.size() + " executed");
     }
 
     /**
@@ -221,7 +231,8 @@ public class AdminModel implements CommonModel, SortCommander, SortObserver {
     private void deleteUser(int entityId) throws EventException {
         if (adminLogic.unassignUser(entityId, selectedEvent.getEventDTO().getId())) {
             System.out.println("delete operation successfully");
-            Platform.runLater(() -> this.selectedEvent.setCoordinatorCount(selectedEvent.getCoordinatorCount() - 1));
+          //  Platform.runLater(() -> this.selectedEvent.setCoordinatorCount(selectedEvent.getCoordinatorCount() - 1));
+            decreaseEventCoordinators();
             List<User> removedUser = eventAssignedCoordinators.stream().filter(e -> e.getUserId() != entityId).toList();
             this.eventAssignedCoordinators.setAll(removedUser);
             refreshEventCoordinators();
@@ -478,5 +489,24 @@ public class AdminModel implements CommonModel, SortCommander, SortObserver {
 
     public void setUsersDisplayer(UsersDisplayer usersDisplayer) {
         this.usersDisplayer = usersDisplayer;
+    }
+
+
+    /**perform the search operation for the users in the system*/
+    public ObservableList<User> getUserSearchResultData(String filter) {
+        ObservableList searchResults = FXCollections.observableArrayList();
+        searchResults.setAll(adminLogic.performSearchOperation(usersInTheSystem.values(), filter));
+        return searchResults;
+    }
+
+    public void performSelectUserSearchOperation(int entityId) {
+        displayedUsers.setAll(usersInTheSystem.get(entityId));
+        usersDisplayer.displayUsers();
+    }
+
+    public void performUserSearchUndoOperation() {
+        sortDisplayedUsersByLastName();
+        this.displayedUsers = sortedUsersByLastName;
+        usersDisplayer.displayUsers();
     }
 }

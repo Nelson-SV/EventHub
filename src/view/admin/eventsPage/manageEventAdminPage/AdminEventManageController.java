@@ -1,6 +1,7 @@
 package view.admin.eventsPage.manageEventAdminPage;
 
 import be.DeleteOperation;
+import be.User;
 import exceptions.EventException;
 import exceptions.ExceptionHandler;
 import io.github.palexdev.materialfx.controls.MFXButton;
@@ -12,13 +13,17 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 import view.admin.eventsPage.assignCoordinatorView.AssignCoordinatorComponent;
 import view.admin.eventsPage.assignedCoordinatorView.AssignedCoordinatorComponent;
 import view.admin.mainAdmin.AdminModel;
+import view.admin.searchComponent.SearchComponent;
+import view.admin.usersPage.SearchDataHandler.SearchUserHandler;
 import view.components.deleteEvent.DeleteButton;
 import view.components.loadingComponent.LoadingActions;
 import view.components.loadingComponent.LoadingComponent;
@@ -42,6 +47,7 @@ public class AdminEventManageController implements Initializable {
     private StackPane secondaryLayout, thirdLayout, fourthLayout;
     private AdminModel adminModel;
     private Service<Void> performAssignOperation;
+
 
     public AdminEventManageController(StackPane secondaryLayout, StackPane thirdLayout, StackPane fourthLayout, AdminModel model) {
         this.secondaryLayout = secondaryLayout;

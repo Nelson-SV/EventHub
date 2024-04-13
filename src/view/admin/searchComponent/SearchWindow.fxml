@@ -5,14 +5,13 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.shape.SVGPath?>
 
-
-<HBox  alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="180.0" style="-fx-background-radius: 10;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<HBox fx:id="searchWindowContainer" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="180.0" style="-fx-background-radius: 10;" stylesheets="@SearchWindow.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Button fx:id="undoButton" minHeight="30.0" mnemonicParsing="false" style="-fx-background-radius: 10 0 0 10;">
+      <Button fx:id="undoButton" disable="true" minHeight="30.0" mnemonicParsing="false" styleClass="undo">
          <graphic>
             <SVGPath content="  M8 3a5 5 0 1 1-4.546 2.914.5.5 0 0 0-.908-.417A6 6 0 1 0 8 2z  M8 4.466V.534a.25.25 0 0 0-.41-.192L5.23 2.308a.25.25 0 0 0 0 .384l2.36 1.966A.25.25 0 0 0 8 4.466" />
          </graphic>
       </Button>
-      <TextField fx:id="searchWindow" minHeight="30.0" promptText="Search" style="-fx-background-radius: 0 10 10 0;" />
+      <TextField fx:id="searchWindow" minHeight="30.0" promptText="Search" styleClass="searchWindow" HBox.hgrow="ALWAYS" />
    </children>
 </HBox>

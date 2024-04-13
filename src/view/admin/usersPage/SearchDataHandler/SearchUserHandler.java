@@ -1,6 +1,7 @@
 package view.admin.usersPage.SearchDataHandler;
 
 import be.User;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import view.admin.mainAdmin.AdminModel;
 import view.components.listeners.DataHandler;
@@ -8,23 +9,22 @@ import view.components.listeners.DataHandler;
 public class SearchUserHandler implements DataHandler<User> {
 
     private AdminModel model;
+
     public SearchUserHandler(AdminModel model) {
         this.model = model;
     }
 
     @Override
-    public ObservableList<User> getResultData() {
-        model.getUserSearchResultData();
-        return null;
+    public ObservableList<User> getResultData(String filter) {
+        return model.getUserSearchResultData(filter);
     }
 
-    @Override
-    public void performSearchOperation() {
-        model.performUnassignedUsersSearchOperation();
+   public  void performSelectSearchOperation(int entityId){
+        model.performSelectUserSearchOperation(entityId);
     }
 
     @Override
     public void undoSearchOperation() {
-        model.performUnassignedUsersUndoOperation();
+         model.performUserSearchUndoOperation();
     }
 }

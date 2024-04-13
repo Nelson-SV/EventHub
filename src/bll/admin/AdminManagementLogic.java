@@ -206,9 +206,15 @@ public class AdminManagementLogic implements IAdminLogic {
         return usersDAO.deleteUserFromTheSystem(userId);
     }
 
-
-
-
+    @Override
+    public List<User> performSearchOperation (Collection<User> users, String filter) {
+        String filterToLowerCase = filter.toLowerCase();
+        return users.stream().filter((user)->{
+            String firstName = user.getFirstName().toLowerCase();
+        String lastName = user.getLastName().toLowerCase();
+        return firstName.contains(filterToLowerCase) || lastName.contains(filterToLowerCase);
+        }).toList();
+    }
 
 
 }

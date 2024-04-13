@@ -22,6 +22,7 @@ public class AdminEventManagePage implements AdminCoordinatorsDisplayer {
         loader.setController(adminEventManageController);
         try {
             managePageContainer = loader.load();
+            System.out.println(managePageContainer.getId());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

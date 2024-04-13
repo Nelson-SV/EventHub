@@ -22,8 +22,8 @@
 }
 .coordinatorsView > .scroll-bar:vertical {
     -fx-background-color: #102c57;
-    -fx-background-radius: 0 0 10 0;
-    -fx-border-radius: 0 0 10 0;
+    -fx-background-radius: 0 10 10 0;
+    -fx-border-radius: 0 10 10 0;
 }
 
 .coordinatorsView > .scroll-bar:vertical > .thumb {
@@ -39,6 +39,6 @@
 .coordinatorsView {
     -fx-background-color: #F8F0E5;
     -fx-border-color: #102c57;
-    -fx-background-radius: 0 0 10 10;
-    -fx-border-radius: 0 0 10 10;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
 }

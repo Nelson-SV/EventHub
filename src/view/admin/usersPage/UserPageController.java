@@ -1,4 +1,5 @@
 package view.admin.usersPage;
+import be.User;
 import exceptions.ErrorCode;
 import exceptions.ExceptionHandler;
 import javafx.application.Platform;
@@ -11,11 +12,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import view.admin.listeners.UsersDisplayer;
 import view.admin.mainAdmin.AdminModel;
+import view.admin.searchComponent.SearchComponent;
+import view.admin.usersPage.SearchDataHandler.SearchUserHandler;
 import view.admin.usersPage.createUser.Create.CreateUserComponent;
 import view.admin.usersPage.usersDescription.UserDescriptionComponent;
 import view.utility.CommonMethods;
@@ -38,10 +42,16 @@ public class UserPageController implements Initializable, UsersDisplayer {
     private VBox usersContainer;
     @FXML
     private VBox userPageContainer;
+    @FXML
+    private GridPane usersOperationsContainer;
 
     private StackPane secondaryLayout, thirdLayout, fourthLayout;
     private AdminModel adminModel;
     private Service<Void> loadUsersFromDb;
+
+    private SearchComponent<User> searchWindow;
+    private SearchUserHandler userSearchDataHandler;
+
     public UserPageController(StackPane secondaryLayout, StackPane thirdLayout, StackPane fourthLayout, AdminModel model) {
         this.secondaryLayout = secondaryLayout;
         this.thirdLayout = thirdLayout;
@@ -53,6 +63,10 @@ public class UserPageController implements Initializable, UsersDisplayer {
     public void initialize(URL location, ResourceBundle resources) {
         addOnActionCreateUser(createUser);
         initializeUsersLoadingService();
+        userSearchDataHandler = new SearchUserHandler(adminModel);
+        searchWindow= new SearchComponent<>(userSearchDataHandler);
+        searchWindow.setSearchWindowWidth(250);
+        usersOperationsContainer.add(searchWindow.getSearchRoot(),0,0);
     }
 
     private void addOnActionCreateUser(Button createUser) {
@@ -72,7 +86,7 @@ public class UserPageController implements Initializable, UsersDisplayer {
     public void displayUsers() {
         if (userPageContainer.getScene() != null) {
             Platform.runLater(() -> {
-                usersContainer.getChildren().clear(); // Clear existing content
+                usersContainer.getChildren().clear();
                 List<HBox> allUsersDescription = adminModel.getUsersToDisplay().stream()
                         .map(item -> new UserDescriptionComponent(item, adminModel, secondaryLayout, thirdLayout, fourthLayout).getRoot())
                         .toList();

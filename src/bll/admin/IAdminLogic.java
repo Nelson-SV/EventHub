@@ -42,4 +42,6 @@ public interface IAdminLogic {
 
     User editUserOperation(User selectedUserToEdit, File uploadedImage,User unEditedUser) throws EventException;
     boolean deleteUserFromSystem(int userId)throws EventException;
+
+    List<User> performSearchOperation(Collection<User> users,String filter);
 }
