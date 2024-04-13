@@ -164,7 +164,7 @@ public class AdminModel implements CommonModel, SortCommander, SortObserver {
      */
     public void initializeEventCoordinators(int eventId) throws EventException {
         eventAssignedCoordinators.setAll(adminLogic.getEventCoordinators(eventId));
-        unasignedCoordinatorsDisplayed.setAll(eventAssignedCoordinators);
+
     }
 
     /**
@@ -172,6 +172,7 @@ public class AdminModel implements CommonModel, SortCommander, SortObserver {
      */
     public void initialiazeAllCoordinators(int entityId) throws EventException {
         allCoordinators.setAll(adminLogic.getAllCoordinators(entityId));
+        unasignedCoordinatorsDisplayed.setAll(allCoordinators);
     }
 
     /**
@@ -231,7 +232,6 @@ public class AdminModel implements CommonModel, SortCommander, SortObserver {
     private void deleteUser(int entityId) throws EventException {
         if (adminLogic.unassignUser(entityId, selectedEvent.getEventDTO().getId())) {
             System.out.println("delete operation successfully");
-          //  Platform.runLater(() -> this.selectedEvent.setCoordinatorCount(selectedEvent.getCoordinatorCount() - 1));
             decreaseEventCoordinators();
             List<User> removedUser = eventAssignedCoordinators.stream().filter(e -> e.getUserId() != entityId).toList();
             this.eventAssignedCoordinators.setAll(removedUser);

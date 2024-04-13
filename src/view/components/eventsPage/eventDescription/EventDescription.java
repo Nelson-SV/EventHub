@@ -6,8 +6,10 @@ import bll.EventStatusCalculator;
 import javafx.beans.binding.StringBinding;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import view.components.deleteEvent.DeleteButton;
 import view.components.eventsPage.manageButton.ManageAction;
 

@@ -69,7 +69,7 @@
       </VBox>
         <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="60.0" minWidth="106.0" prefHeight="120.0" prefWidth="212.0" HBox.hgrow="ALWAYS">
             <children>
-                <HBox fx:id="eventActions" alignment="CENTER" fillHeight="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="60.0" minWidth="106.0" prefHeight="60.0" prefWidth="212.0" styleClass="componentBackgroundColor,eventAction" stylesheets="@EventDescription.css" VBox.vgrow="ALWAYS">
+                <HBox fx:id="eventActions" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="60.0" minWidth="106.0" prefHeight="60.0" prefWidth="212.0" styleClass="componentBackgroundColor,eventAction" stylesheets="@EventDescription.css" VBox.vgrow="NEVER">
                     <VBox.margin>
                         <Insets />
                     </VBox.margin>
