@@ -22,18 +22,14 @@ public class TicketImageSaveFacade {
 
     public void saveTicketImage(){
         CompletableFuture.supplyAsync(() -> {
-            System.out.println("Starting Task 1");
             TicketUUIdLoader  ticketUUIdLoader = new TicketUUIdLoader(model);
             try {
                 Map<TicketType, List<Ticket>> result = ticketUUIdLoader.call();
-                System.out.println("Result of Task 1: " + result);
                 return result;
             } catch (Exception e) {
-                System.out.println("Exception in Task 1: " + e.getMessage());
                 throw new RuntimeException(e);
             }
         }).thenApply(soldTicketsWithUUID -> {
-            System.out.println("Starting Task 2");
             Map<TicketType,List<TicketWithQrCode>> ticketswithqrCode =  new HashMap<>();
             TiketsQrCodeAtacher tiketsQrCodeAtacher= new TiketsQrCodeAtacher(soldTicketsWithUUID.get(TicketType.NORMAL));
             try {
@@ -43,7 +39,6 @@ public class TicketImageSaveFacade {
                 throw new RuntimeException(e);
             }
         }).thenApply(createdTicketsWithQRCode -> {
-            System.out.println("Starting Task 3");
             TicketsSnapshot ticketsSnapshot = new TicketsSnapshot(createdTicketsWithQRCode,model.getTheCurrentCustomer(),model.getCurrentEventSell());
             try {
                 return ticketsSnapshot.call();
@@ -51,7 +46,6 @@ public class TicketImageSaveFacade {
                 throw new RuntimeException(e);
             }
         }).thenAccept((ticketSnapshots)->{
-            System.out.println("Starting Task 4");
             TicketImageSaver ticketSaver = new TicketImageSaver(ticketSnapshots);
             try {
                 ticketSaver.call();
@@ -59,8 +53,6 @@ public class TicketImageSaveFacade {
                 throw new RuntimeException(e);
             }
         }).exceptionally(ex -> {
-            System.out.println("Exception occurred: " + ex.getMessage());
-            ex.printStackTrace();
             return null;
         });
 

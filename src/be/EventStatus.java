@@ -8,6 +8,12 @@ public class EventStatus {
     private final Event eventDTO;
     private final  SimpleObjectProperty<Status> status;
     private final SimpleIntegerProperty coordinatorCount;
+
+    @Override
+    public String toString() {
+        return  eventDTO.getName();
+    }
+
     public EventStatus(Event eventDTO) {
         this.eventDTO = eventDTO;
         this.status = new SimpleObjectProperty<>();

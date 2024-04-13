@@ -100,7 +100,6 @@ public class LogInController implements Initializable {
 
     // Other method
     private void loadAdminPage(Stage stage){
-
         String resource = "/view/admin/mainAdmin/AdminMain.fxml";
         String title = "EventHub/admin";
         loadPage(stage,resource,title);

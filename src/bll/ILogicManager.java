@@ -38,4 +38,5 @@ public interface ILogicManager {
     EventInvalidResponse areEditedDatesValid(Event editedEvent,Event originalEvent);
 
 
+   List<EventStatus> performSearchFilterOperation(Collection<EventStatus> events,String filter);
 }

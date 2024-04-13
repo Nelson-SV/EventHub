@@ -116,10 +116,8 @@ public class UserPageController implements Initializable, UsersDisplayer {
 
         loadUsersFromDb.setOnSucceeded((event)->displayUsers());
         loadUsersFromDb.setOnFailed((event)->{
-            loadUsersFromDb.getException().printStackTrace();
             ExceptionHandler.errorAlertMessage(ErrorCode.FAILED_LOAD_USERS.getValue());
         });
         loadUsersFromDb.restart();
     }
-
 }

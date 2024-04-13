@@ -1,4 +1,5 @@
 package view.admin.searchComponent;
+import be.EventStatus;
 import be.User;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
@@ -31,9 +32,7 @@ public class SearchController<T> implements Initializable {
     @FXML
     private Label noResultLabel;
 
-    //TODO display info meesage if no data is returned by the search
-
-    public SearchController(DataHandler dataHandler) {
+    public SearchController(DataHandler<T> dataHandler) {
         this.dataHandler = dataHandler;
     }
 
@@ -87,15 +86,14 @@ public class SearchController<T> implements Initializable {
     private void configurePopUpWindow() {
         Bounds boundsInScreen = searchWindow.localToScreen(searchWindow.getBoundsInLocal());
         searchResponseHolder.setPrefWidth(searchWindow.getWidth());
-        searchResponseHolder.setPrefHeight(300);
         searchResponseHolder.setMaxWidth(searchWindow.getWidth());
-        searchResponseHolder.setMaxWidth(300);
+        searchResponseHolder.setMaxHeight(250);
         popupWindow.getScene().getStylesheets().add("view/admin/searchComponent/SearchWindow.css");
         ((Parent) popupWindow.getScene().getRoot()).getStyleClass().add("popupView");
         searchResponseHolder.getStylesheets().add("view/admin/searchComponent/SearchWindow.css");
         popupWindow.setPrefWidth(searchWindow.getWidth());
         popupWindow.setMaxWidth(searchWindow.getWidth());
-        popupWindow.setMaxHeight(300);
+        popupWindow.setMaxHeight(250);
         popupWindow.show(searchWindow, boundsInScreen.getMinX(), boundsInScreen.getMaxY());
     }
 
@@ -112,7 +110,12 @@ public class SearchController<T> implements Initializable {
     private void addSelectionListener(ListView<T> searchResponseHolder) {
         searchResponseHolder.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
-                dataHandler.performSelectSearchOperation(((User) newValue).getUserId());
+                if (newValue instanceof User) {
+                    dataHandler.performSelectSearchOperation(((User) newValue).getUserId());
+                } else if (newValue instanceof EventStatus) {
+                    dataHandler.performSelectSearchOperation(((EventStatus) newValue).getEventDTO().getId());
+                }
+
                 Platform.runLater(() -> {
                     if (!searchResponseHolder.getItems().isEmpty()) {
                         searchResponseHolder.getSelectionModel().clearSelection();
@@ -156,14 +159,6 @@ public class SearchController<T> implements Initializable {
         });
     }
 
-
-    public PopupControl getPopupWindow() {
-        return popupWindow;
-    }
-    public void setSearchWindowWidth(int width) {
-        this.searchWindowContainer.setMaxWidth(width);
-        this.searchWindowContainer.setPrefWidth(width);
-    }
     private void initializeEmptyResponse() {
         noResultPopup = new PopupControl();
         noResultLabel = new Label("No result");
@@ -174,6 +169,23 @@ public class SearchController<T> implements Initializable {
         noResultPopup.setMaxWidth(searchWindow.getWidth());
         noResultPopup.setMaxHeight(300);
         noResultPopup.show(searchWindow, boundsInScreen.getMinX(), boundsInScreen.getMaxY());
+    }
+    protected PopupControl getPopupWindow() {
+        return popupWindow;
+    }
+    protected void setSearchWindowWidth(int width) {
+        this.searchWindowContainer.setMaxWidth(width);
+        this.searchWindowContainer.setPrefWidth(width);
+    }
+
+    protected void setSearchResponseHolderHeight(int height){
+        searchResponseHolder.setMaxHeight(height);
+        searchResponseHolder.setPrefHeight(height);
+    }
+
+    protected void closePopWindow(){
+        searchWindow.setText("");
+        popupWindow.hide();
     }
 
 }

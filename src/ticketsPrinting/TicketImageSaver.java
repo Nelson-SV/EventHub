@@ -31,22 +31,11 @@ public class TicketImageSaver extends Task<Void> {
             if (!dir.exists()) {
                 dir.mkdirs();
             }
-
-            System.out.println(createdTicketsImages.size() +" from created images after snapshot");
-//                    String ticketType = soldTickets.get(TicketType.NORMAL).get(index).getTicketType();
-//                    String uuid= soldTickets.get(TicketType.NORMAL).get(index).getUUID();
-//                    String fileName = uuid+customer.getName() + "_" + event.getName() + "_" + ticketType + ".png";
-//                    System.out.println(fileName);
-
-
-// ...
-
             String fileName = LocalDateTime.now().toString().replace(":", "-") + "_" + UUID.randomUUID().toString();
             File outputFile = new File(dir, fileName+".png");
             try {
                 ImageIO.write(bufferedImage, "png", outputFile);
             } catch (IOException e) {
-                e.printStackTrace();
                 throw new EventException(e.getMessage(), e, ErrorCode.FAILED_TO_SAVE_IMAGES);
             }
         }

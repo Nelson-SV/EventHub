@@ -219,6 +219,8 @@ public class EventManagementLogic implements ILogicManager {
         return eventInvalid;
     }
 
+
+
     /**
      * check if start date is valid, before current date or after the end date
      */
@@ -269,6 +271,17 @@ public class EventManagementLogic implements ILogicManager {
             }
             return true;
         }
+    }
+
+
+/**applies the filter and returns the resulted collection
+ * @param events events that needs to be sorted
+ * @param filter the filter that needs to be applied*/
+    @Override
+    public List<EventStatus> performSearchFilterOperation(Collection<EventStatus> events, String filter) {
+        String filterToApply  = filter.toLowerCase();
+
+        return events.stream().filter((eventStatus -> eventStatus.getEventDTO().getName().toLowerCase().contains(filterToApply))).toList() ;
     }
 
 }

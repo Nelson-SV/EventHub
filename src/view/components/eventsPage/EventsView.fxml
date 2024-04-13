@@ -4,16 +4,12 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-
-
-
 
 <VBox fx:id="eventsPageView" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1280.0" styleClass="eventParent" stylesheets="@Events.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
@@ -44,7 +40,7 @@
             <Insets bottom="10.0" />
          </VBox.margin>
       </GridPane>
-      <GridPane maxHeight="30.0" maxWidth="1072.0" prefHeight="30.0" prefWidth="1072.0">
+      <GridPane fx:id="eventActions" maxHeight="30.0" maxWidth="1072.0" prefHeight="30.0" prefWidth="1072.0">
          <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -52,9 +48,6 @@
          <rowConstraints>
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
          </rowConstraints>
-         <children>
-            <TextField fx:id="searchEventButton" maxHeight="30.0" maxWidth="312.0" onAction="#searchEvent" prefHeight="30.0" prefWidth="312.0" promptText="Search events..." styleClass="searchBox" />
-         </children>
          <VBox.margin>
             <Insets bottom="10.0" />
          </VBox.margin>

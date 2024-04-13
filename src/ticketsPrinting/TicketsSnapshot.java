@@ -38,7 +38,6 @@ public class TicketsSnapshot extends Task<List<WritableImage>>  {
     private Event event;
     private  final List<WritableImage> createdTicketsImages;
     private CountDownLatch countDownLatch = new CountDownLatch(1);
-    //private ExecutorService executorService;
     private Semaphore semaphore = new Semaphore(1);
     public TicketsSnapshot(Map<TicketType, List<TicketWithQrCode>> soldTickets, Customer customer, Event event) {
         this.customer = customer;
@@ -56,14 +55,12 @@ public class TicketsSnapshot extends Task<List<WritableImage>>  {
 
     private  synchronized void createTicketImages(Map<TicketType,List<TicketWithQrCode>> soldTickets, Customer customer, Event event){
         Platform.runLater(()->{
-
             for(TicketWithQrCode ticketWithQrCode:soldTickets.get(TicketType.NORMAL)){
                 try {
                     WritableImage image =takeSnapshotNormalTicket(event,ticketWithQrCode,customer);
                     createdTicketsImages.add(image);
                 } catch (WriterException e) {
-                    e.printStackTrace();
-                    //
+                    System.out.println(e.getMessage());
                 }
             }
             countDownLatch.countDown();
@@ -102,7 +99,6 @@ public class TicketsSnapshot extends Task<List<WritableImage>>  {
     protected List<WritableImage> call() throws Exception {
         createTicketWritableImages();
         countDownLatch.await();
-        System.out.println(this.createdTicketsImages.size() +"snapshot insideeeeeee");
         return this.createdTicketsImages;
     }
 }

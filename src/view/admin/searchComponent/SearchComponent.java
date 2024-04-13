@@ -38,4 +38,11 @@ public class SearchComponent<T> {
     public void setSearchWindowWidth(int width){
         this.searchController.setSearchWindowWidth(width);
     }
+
+    public void setSearchResponseHolderHeight(int height){
+        this.searchController.setSearchResponseHolderHeight(height);
+    }
+    public void closeWindow(){
+        this.searchController.closePopWindow();
+    }
 }

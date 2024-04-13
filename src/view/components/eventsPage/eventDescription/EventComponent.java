@@ -19,7 +19,6 @@ public class EventComponent extends HBox {
            eventContainer= loader.load();
            this.getChildren().add(eventContainer);
         } catch (IOException e) {
-            e.printStackTrace();
             ExceptionHandler.errorAlertMessage(ErrorCode.LOADING_FXML_FAILED.getValue());
         }
     }

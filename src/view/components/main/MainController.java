@@ -103,7 +103,7 @@ public class MainController implements Initializable, InitializationErrorListene
     private void navigateEventsPage(ActionEvent actionEvent) {
         if (!pageDisplayer.getChildren().contains(eventsPageController)) {
             model.sortedEventsList();
-            eventsPageController = new EventsPageController(secondaryLayout, thirdLayout);
+            eventsPageController = new EventsPageController(secondaryLayout, thirdLayout,model);
             pageDisplayer.getChildren().clear();
             pageDisplayer.getChildren().add(eventsPageController);
             sellingDisplayed = false;
@@ -112,7 +112,7 @@ public class MainController implements Initializable, InitializationErrorListene
     }
 
     private void initializeMainPageEvents() {
-        eventsPageController = new EventsPageController(secondaryLayout, thirdLayout);
+        eventsPageController = new EventsPageController(secondaryLayout, thirdLayout,model);
         pageDisplayer.getChildren().clear();
         pageDisplayer.getChildren().add(eventsPageController);
     }

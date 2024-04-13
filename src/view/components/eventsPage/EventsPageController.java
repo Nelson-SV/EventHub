@@ -1,8 +1,7 @@
 package view.components.eventsPage;
-
 import be.DeleteOperation;
+import be.EventStatus;
 import exceptions.ErrorCode;
-import exceptions.EventException;
 import exceptions.ExceptionHandler;
 import javafx.application.Platform;
 import javafx.concurrent.Service;
@@ -12,21 +11,24 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import view.admin.searchComponent.SearchComponent;
 import view.components.deleteEvent.DeleteButton;
 import view.components.eventsPage.eventDescription.EventComponent;
 import view.components.eventsPage.eventManagement.eventCreation.CreateEventController;
+import view.components.eventsPage.searchDataHandler.EventSearchHandler;
 import view.components.listeners.Displayable;
 import view.components.main.Model;
 import view.components.eventsPage.manageButton.ManageAction;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.scene.input.MouseEvent;
 
 
-//TODO if is time add the loading animation for when loading events
+
 public class EventsPageController extends VBox implements Displayable, Initializable {
     @FXML
     private VBox eventsPageView;
@@ -35,15 +37,20 @@ public class EventsPageController extends VBox implements Displayable, Initializ
     private StackPane secondaryLayout, thirdLayout;
     private Model model;
     private Service<Void> getEvents;
+    @FXML
+    private GridPane eventActions;
+    private SearchComponent<EventStatus> searchComponent;
 
-    public EventsPageController(StackPane secondaryLayout, StackPane thirdLayout) {
+    public EventsPageController(StackPane secondaryLayout, StackPane thirdLayout,Model model) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("EventsView.fxml"));
         loader.setController(this);
         try {
+            this.model=model;
             eventsPageView = loader.load();
             this.getChildren().add(eventsPageView);
             this.secondaryLayout = secondaryLayout;
             this.thirdLayout = thirdLayout;
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -81,21 +88,12 @@ public class EventsPageController extends VBox implements Displayable, Initializ
         StackPane.setAlignment(createEventController.getRoot(), Pos.CENTER);
     }
 
-    @FXML
-    private void searchEvent(ActionEvent event) {
-
-    }
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        try {
-            model = Model.getInstance();
             model.setEventsDisplayer(this);
             initializeEvents();
-        } catch (EventException e) {
-
-            ExceptionHandler.errorAlertMessage(e.getMessage());
-        }
+            initializeSearchWindow();
+            closeSearchPopUpWindowListener();
     }
 
     private void initializeEvents() {
@@ -114,5 +112,19 @@ public class EventsPageController extends VBox implements Displayable, Initializ
         getEvents.setOnSucceeded(event -> displayEvents());
         getEvents.setOnFailed(event -> ExceptionHandler.errorAlertMessage(ErrorCode.FAILED_TO_LOAD_EVENTS.getValue()));
         getEvents.restart();
+    }
+
+    private void initializeSearchWindow(){
+        EventSearchHandler eventSearchHandler = new EventSearchHandler(model);
+        searchComponent= new SearchComponent<>(eventSearchHandler);
+        searchComponent.setSearchWindowWidth(250);
+        searchComponent.setSearchResponseHolderHeight(250);
+        searchComponent.getPopupWindow().setMaxHeight(250);
+        eventActions.add(searchComponent.getSearchRoot(),0,0);
+    }
+    private void closeSearchPopUpWindowListener(){
+        eventsPageView.addEventHandler(MouseEvent.MOUSE_CLICKED,event->{
+            this.searchComponent.closeWindow();
+        });
     }
 }

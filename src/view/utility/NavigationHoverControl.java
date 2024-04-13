@@ -53,10 +53,8 @@ public class NavigationHoverControl {
         if (ticketsLine != null) {
             ticketsLine.fillProperty().bind(ticketingColor);
         }
-
         addOnHoverListener(eventsNavButton, eventColor);
         addOnExitListener(eventsNavButton, eventColor);
-
         addOnHoverListener(sellingNavButton, sellingColor);
         addOnExitListener(sellingNavButton, sellingColor);
         if (ticketingNavButton != null) {
@@ -81,5 +79,7 @@ public class NavigationHoverControl {
             pauseTransition.playFromStart();
         });
     }
+
+
 
 }

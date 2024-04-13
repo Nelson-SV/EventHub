@@ -1,7 +1,5 @@
 package view.admin.usersPage.SearchDataHandler;
-
 import be.User;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import view.admin.mainAdmin.AdminModel;
 import view.components.listeners.DataHandler;
