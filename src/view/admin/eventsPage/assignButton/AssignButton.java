@@ -2,6 +2,7 @@ package view.admin.eventsPage.assignButton;
 import exceptions.ErrorCode;
 import exceptions.ExceptionHandler;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import view.admin.mainAdmin.AdminModel;
@@ -15,9 +16,8 @@ public class AssignButton  extends  VBox{
         try {
             assignContainer=loader.load();
             this.getChildren().add(assignContainer);
+            this.setAlignment(Pos.CENTER);
         } catch (IOException e) {
-            e.printStackTrace();
-           // ExceptionLogger.getInstance().getLogger().log(Level.SEVERE,e.getMessage());
             ExceptionHandler.errorAlertMessage(ErrorCode.LOADING_FXML_FAILED.getValue());
         }
     }

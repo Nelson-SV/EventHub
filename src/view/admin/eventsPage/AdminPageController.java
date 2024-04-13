@@ -13,6 +13,8 @@ import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
@@ -26,7 +28,10 @@ import view.admin.mainAdmin.AdminModel;
 import view.admin.usersPage.usersDescription.UserDescriptionComponent;
 import view.components.deleteEvent.DeleteButton;
 import view.components.listeners.Displayable;
+
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 
@@ -69,7 +74,7 @@ public class AdminPageController implements Initializable, Displayable {
         initializeEvents();
         initializeShortcutButtons(shortcutContainer);
         addSearchTextValueListener(searchEventButton);
-        addRevertAction(resetFilterButton,searchEventButton);
+        addRevertAction(resetFilterButton, searchEventButton);
         addSearchAction(searchEventButton);
     }
 
@@ -92,13 +97,13 @@ public class AdminPageController implements Initializable, Displayable {
         });
     }
 
-    private void addSearchAction(TextField textField){
+    private void addSearchAction(TextField textField) {
         PauseTransition pauseTransition = new PauseTransition(Duration.millis(500));
-        pauseTransition.setOnFinished((event)->{
-            if(!textField.getText().isEmpty()){
+        pauseTransition.setOnFinished((event) -> {
+            if (!textField.getText().isEmpty()) {
                 adminModel.searchForEvent(textField.getText());
                 adminModel.setFilterActive(true);
-            }else{
+            } else {
                 adminModel.cancelSearchEventFilter();
                 adminModel.setFilterActive(false);
             }
@@ -109,14 +114,13 @@ public class AdminPageController implements Initializable, Displayable {
         });
     }
 
-    private void addRevertAction(VBox revertButton,TextField searchEventButton){
-     revertButton.addEventHandler(MouseEvent.MOUSE_CLICKED,event->{
-         adminModel.cancelSearchEventFilter();
-         adminModel.setFilterActive(false);
-         searchEventButton.setText("");
+    private void addRevertAction(VBox revertButton, TextField searchEventButton) {
+        revertButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            adminModel.cancelSearchEventFilter();
+            adminModel.setFilterActive(false);
+            searchEventButton.setText("");
         });
     }
-
 
 
     @Override
@@ -124,9 +128,17 @@ public class AdminPageController implements Initializable, Displayable {
         if (eventsContainer.getScene() != null) {
             Platform.runLater(() -> {
                 eventsContainer.getChildren().clear();
-                adminModel.sortedEventsList()
-                        .forEach(e -> eventsContainer.getChildren()
-                                .add(new EventDescription(e, new AssignButton(adminModel, secondaryLayout, thirdLayout, adminFourthLayout, e.getEventDTO().getId()), new DeleteButton(secondaryLayout, thirdLayout, adminModel, e.getEventDTO().getId(), DeleteOperation.DELETE_EVENT))));
+                List<EventDescription> descriptions = new ArrayList<>();
+                adminModel.sortedEventsList().forEach(e -> {
+                    AssignButton assignButton = new AssignButton(adminModel, secondaryLayout, thirdLayout, adminFourthLayout, e.getEventDTO().getId());
+                    assignButton.setAlignment(Pos.CENTER);
+                    DeleteButton deleteButton = new DeleteButton(secondaryLayout, thirdLayout, adminModel, e.getEventDTO().getId(), DeleteOperation.DELETE_EVENT);
+                    deleteButton.setAlignment(Pos.CENTER);
+                    EventDescription eventDescription = new EventDescription(e, assignButton, deleteButton);
+                    eventDescription.setAlignment(Pos.CENTER);
+                    descriptions.add(eventDescription);
+                });
+                eventsContainer.getChildren().setAll(descriptions);
             });
         }
     }
