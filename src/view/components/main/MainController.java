@@ -61,6 +61,8 @@ public class MainController implements Initializable, InitializationErrorListene
     public void initialize(URL location, ResourceBundle resources) {
         try {
             model = Model.getInstance();
+            model.initializeEventsObservable();
+            model.initializeEventDateObservable();
             NavigationHoverControl navigationHoverControl = new NavigationHoverControl(eventsLine, sellingLine, ticketingLine, eventsNavButton, sellingNavButton, specialTicketNavButton);
             navigationHoverControl.initializeNavButtons();
             initializeMainPageEvents();

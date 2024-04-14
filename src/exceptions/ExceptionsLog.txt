@@ -538,3 +538,34 @@ INFO: Logger initialized
 .......................................
 Apr 12, 2024 12:43:00 AM view.components.eventsObservers.EventsObservable lambda$startService$2
 SEVERE: The TCP/IP connection to the host EASV-DB4, port 1433 has failed. Error: "EASV-DB4. Verify the connection properties. Make sure that an instance of SQL Server is running on the host and accepting TCP/IP connections at the port. Make sure that TCP connections to the port are not blocked by a firewall.".
+Apr 14, 2024 9:50:02 PM exceptions.ExceptionLogger <init>
+INFO: Logger initialized 
+.......................................
+Apr 14, 2024 9:50:02 PM view.components.eventsObservers.DateObservable lambda$startService$2
+SEVERE: Cannot invoke "javafx.collections.ObservableMap.values()" because "this.loggedCoordinatorEvents" is null
+Apr 14, 2024 10:04:31 PM exceptions.ExceptionLogger <init>
+INFO: Logger initialized 
+.......................................
+Apr 14, 2024 10:04:31 PM view.components.eventsObservers.DateObservable lambda$startService$2
+SEVERE: Cannot invoke "javafx.collections.ObservableMap.values()" because "this.loggedCoordinatorEvents" is null
+Apr 14, 2024 10:05:00 PM view.components.eventsObservers.EventsObservable lambda$startService$2
+SEVERE: The TCP/IP connection to the host EASV-DB4, port 1433 has failed. Error: "EASV-DB4. Verify the connection properties. Make sure that an instance of SQL Server is running on the host and accepting TCP/IP connections at the port. Make sure that TCP connections to the port are not blocked by a firewall.".
+Apr 14, 2024 10:06:12 PM view.components.eventsObservers.DateObservable lambda$startService$2
+SEVERE: Cannot invoke "javafx.collections.ObservableMap.values()" because "this.loggedCoordinatorEvents" is null
+Apr 14, 2024 10:08:18 PM view.components.eventsObservers.DateObservable lambda$startService$2
+SEVERE: Cannot invoke "javafx.collections.ObservableMap.values()" because "this.loggedCoordinatorEvents" is null
+Apr 14, 2024 10:10:41 PM view.components.eventsObservers.DateObservable lambda$startService$2
+SEVERE: Cannot invoke "javafx.collections.ObservableMap.values()" because "this.loggedCoordinatorEvents" is null
+Apr 14, 2024 10:13:18 PM view.components.eventsObservers.DateObservable lambda$startService$2
+SEVERE: Cannot invoke "javafx.collections.ObservableMap.values()" because "this.loggedCoordinatorEvents" is null
+Apr 14, 2024 10:13:28 PM view.components.eventsObservers.EventsObservable lambda$startService$2
+SEVERE: The TCP/IP connection to the host EASV-DB4, port 1433 has failed. Error: "EASV-DB4. Verify the connection properties. Make sure that an instance of SQL Server is running on the host and accepting TCP/IP connections at the port. Make sure that TCP connections to the port are not blocked by a firewall.".
+Apr 14, 2024 10:16:05 PM view.components.eventsObservers.DateObservable lambda$startService$2
+SEVERE: Cannot invoke "javafx.collections.ObservableMap.values()" because "this.loggedCoordinatorEvents" is null
+Apr 14, 2024 10:19:02 PM view.components.eventsObservers.DateObservable lambda$startService$2
+SEVERE: Cannot invoke "javafx.collections.ObservableMap.values()" because "this.loggedCoordinatorEvents" is null
+Apr 14, 2024 10:23:03 PM exceptions.ExceptionLogger <init>
+INFO: Logger initialized 
+.......................................
+Apr 14, 2024 10:23:03 PM view.components.eventsObservers.DateObservable lambda$startService$2
+SEVERE: Cannot invoke "javafx.collections.ObservableMap.values()" because "this.loggedCoordinatorEvents" is null

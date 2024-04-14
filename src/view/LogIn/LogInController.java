@@ -17,6 +17,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.chart.ScatterChart;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
@@ -41,31 +42,22 @@ public class LogInController implements Initializable {
     @FXML
     private Label invalidError;
     private static final PseudoClass ERROR_PSEUDO_CLASS = PseudoClass.getPseudoClass("error");
-
+    private boolean initializationError = false;
 
     public void signIn(ActionEvent actionEvent) {
         String enteredUsername = userName.getText();
         String enteredPassword = password.getText();
-
-
         try {
             if(!userName.getText().isEmpty() && !password.getText().isEmpty()) {
-                System.out.println(enteredPassword + enteredUsername);
                 User user = model.checkUser(enteredUsername, enteredPassword);
-                System.out.println(user == null);
-
-
                 if (user != null) {
-                    // User authenticated successfully, load corresponding page
                     Stage stage = (Stage) userName.getScene().getWindow();
                     stage.close();
-
                     if (Role.ADMIN.getValue().equals(user.getRole())) {
                         loadAdminPage(new Stage());
                     } else if (Role.EVENT_COORDINATOR.getValue().equals(user.getRole())) {
                         loadCoordinatorPage(new Stage());
                     }
-
                 } else {
                     userName.clear();
                     password.clear();
@@ -105,8 +97,7 @@ public class LogInController implements Initializable {
         loadPage(stage,resource,title);
     }
 
-    private void loadCoordinatorPage(Stage stage ){
-
+    private void loadCoordinatorPage(Stage stage){
         String resource="/view/components/main/MainView.fxml";
         String title = "EventHub/coordinator";
         loadPage(stage,resource,title);
@@ -114,7 +105,6 @@ public class LogInController implements Initializable {
 
     private void loadPage(Stage window ,String resource,String title)  {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(resource));
-
         try {
             Parent root = loader.load();
             InitializationErrorListener errorListener = loader.getController();
@@ -138,16 +128,24 @@ public class LogInController implements Initializable {
         stage.close();
     }
 
+    public boolean isInitializationError() {
+        return initializationError;
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        try {
-            model = Model.getInstance();
+        try{
+            model= Model.getInstance();
         } catch (EventException e) {
-            throw new RuntimeException(e);
+           initializationError=true;
         }
 
-
+//        try {
+//            model = Model.getInstance();
+//        } catch (EventException e) {
+//            throw new RuntimeException(e);
+//        }
 
         password.textProperty().addListener((observable, oldValue, newValue) -> {
             // Clear the error pseudo-class state when user starts typing

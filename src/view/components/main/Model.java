@@ -95,8 +95,6 @@ public class Model implements CommonModel {
 
 
     private Model() throws EventException {
-        initializeEventsObservable();
-        initializeEventDateObservable();
         eventManager = new EventManager();
         ticketManager = new TicketManager();
         logInManager = new LogInManager();
@@ -111,12 +109,12 @@ public class Model implements CommonModel {
         eventsDisplayedOnTheScreen = FXCollections.observableArrayList();
     }
 
-    private void initializeEventsObservable() throws EventException {
+    public void initializeEventsObservable() throws EventException {
         eventsObservable = new EventsObservable(this);
         eventsObservable.startService();
     }
 
-    private void initializeEventDateObservable() {
+    public void initializeEventDateObservable() {
         dateObservable = new DateObservable(this);
         dateObservable.startService();
     }
