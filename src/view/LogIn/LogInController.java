@@ -17,20 +17,18 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.chart.ScatterChart;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import view.components.listeners.InitializationErrorListener;
+import view.components.main.MainController;
 import view.components.main.Model;
-import view.utility.EditEventValidator;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import static java.awt.SystemColor.window;
 
 public class LogInController implements Initializable {
     @FXML
@@ -48,7 +46,7 @@ public class LogInController implements Initializable {
         String enteredUsername = userName.getText();
         String enteredPassword = password.getText();
         try {
-            if(!userName.getText().isEmpty() && !password.getText().isEmpty()) {
+            if (!userName.getText().isEmpty() && !password.getText().isEmpty()) {
                 User user = model.checkUser(enteredUsername, enteredPassword);
                 if (user != null) {
                     Stage stage = (Stage) userName.getScene().getWindow();
@@ -91,33 +89,47 @@ public class LogInController implements Initializable {
     }
 
     // Other method
-    private void loadAdminPage(Stage stage){
+    private void loadAdminPage(Stage stage) {
         String resource = "/view/admin/mainAdmin/AdminMain.fxml";
         String title = "EventHub/admin";
-        loadPage(stage,resource,title);
+        loadPage(stage, resource, title);
     }
 
-    private void loadCoordinatorPage(Stage stage){
-        String resource="/view/components/main/MainView.fxml";
+    private void loadCoordinatorPage(Stage stage) {
+        String resource = "/view/components/main/MainView.fxml";
         String title = "EventHub/coordinator";
-        loadPage(stage,resource,title);
+        loadPage(stage, resource, title);
     }
 
-    private void loadPage(Stage window ,String resource,String title)  {
+    private void loadPage(Stage window, String resource, String title) {
+        boolean loadEventManagementController = false;
         FXMLLoader loader = new FXMLLoader(getClass().getResource(resource));
+        if (resource.contains("MainView.fxml")) {
+            MainController mainController = new MainController(model);
+            loader.setController(mainController);
+            mainController.setModel(model);
+            loadEventManagementController = true;
+        }
         try {
+
             Parent root = loader.load();
+            if (loadEventManagementController) {
+                window.setTitle(title);
+                window.setScene(new Scene(root));
+                window.show();
+                return;
+            }
+
             InitializationErrorListener errorListener = loader.getController();
-            if(errorListener.isInitializationError()){
+            if (errorListener.isInitializationError()) {
                 showError(window, ErrorCode.OPERATION_DB_FAILED.getValue());
-            }else{
+            } else {
                 window.setTitle(title);
                 window.setScene(new Scene(root));
                 window.show();
             }
         } catch (IOException e) {
-            e.printStackTrace();
-            showError(window,ErrorCode.LOADING_FXML_FAILED.getValue());
+            showError(window, ErrorCode.LOADING_FXML_FAILED.getValue());
         }
     }
 
@@ -135,17 +147,11 @@ public class LogInController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        try{
-            model= Model.getInstance();
+        try {
+            model = Model.getInstance();
         } catch (EventException e) {
-           initializationError=true;
+            initializationError = true;
         }
-
-//        try {
-//            model = Model.getInstance();
-//        } catch (EventException e) {
-//            throw new RuntimeException(e);
-//        }
 
         password.textProperty().addListener((observable, oldValue, newValue) -> {
             // Clear the error pseudo-class state when user starts typing

@@ -20,7 +20,11 @@ public class TicketImageSaveFacade {
     }
 
 
-    public void saveTicketImage(){
+    public void sellTicket(){
+        saveSoldTicketsImages();
+    }
+
+    private void saveTicketImage(){
         CompletableFuture.supplyAsync(() -> {
             TicketUUIdLoader  ticketUUIdLoader = new TicketUUIdLoader(model);
             try {

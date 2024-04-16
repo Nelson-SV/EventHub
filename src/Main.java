@@ -9,16 +9,16 @@ import view.LogIn.LogInController;
 import view.components.main.MainController;
 
 public class Main extends Application {
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) throws Exception {
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/LogIn/LogInView.fxml"));
         Parent root = loader.load();
-       LogInController loginController = loader.getController();
+        LogInController loginController = loader.getController();
 
-        if(loginController.isInitializationError()){
+        if (loginController.isInitializationError()) {
             ExceptionHandler.errorAlertMessage(ErrorCode.OPERATION_DB_FAILED.getValue());
             primaryStage.close();
-        }else{
+        } else {
             primaryStage.setTitle("LogIn");
             primaryStage.setScene(new Scene(root));
             primaryStage.show();

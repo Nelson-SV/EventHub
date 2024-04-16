@@ -1,6 +1,8 @@
 package view.components.main;
 
+import exceptions.ErrorCode;
 import exceptions.EventException;
+import exceptions.ExceptionHandler;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -24,8 +26,7 @@ import view.utility.NavigationHoverControl;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class MainController implements Initializable, InitializationErrorListener {
-    private boolean initializationError = false;
+public class MainController implements Initializable {
     private Model model;
     @FXML
     private MFXButton eventsNavButton;
@@ -57,10 +58,15 @@ public class MainController implements Initializable, InitializationErrorListene
     private StackPane secondaryLayout, thirdLayout;
     private ImageLoader imageLoader;
 
+
+    public MainController(Model model) {
+        this.model = model;
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
-            model = Model.getInstance();
+        //    model = Model.getInstance();
             model.initializeEventsObservable();
             model.initializeEventDateObservable();
             NavigationHoverControl navigationHoverControl = new NavigationHoverControl(eventsLine, sellingLine, ticketingLine, eventsNavButton, sellingNavButton, specialTicketNavButton);
@@ -69,7 +75,7 @@ public class MainController implements Initializable, InitializationErrorListene
             imageLoader = new ImageLoader();
             setTheImageLoader(userImage,navigation);
         } catch (EventException e) {
-            initializationError = true;
+            ExceptionHandler.errorAlertMessage(ErrorCode.FAILED_UPDATE_EVENTS.getValue());
         }
 
     }
@@ -81,11 +87,6 @@ public class MainController implements Initializable, InitializationErrorListene
             pageDisplayer.getChildren().add(specialTicketsController.getRoot());
         }
         sellingDisplayed = false;
-
-    }
-
-    public boolean isInitializationError() {
-        return initializationError;
     }
 
     @FXML
@@ -135,6 +136,11 @@ public class MainController implements Initializable, InitializationErrorListene
             HBox.setMargin(placeholder, new Insets(0, 10, 0, 0));
         });
         imageLoader.getServiceLoader().restart();
+    }
+
+
+    public void setModel(Model model) {
+        this.model = model;
     }
 
 }
