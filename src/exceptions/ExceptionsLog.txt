@@ -569,3 +569,8 @@ INFO: Logger initialized
 .......................................
 Apr 14, 2024 10:23:03 PM view.components.eventsObservers.DateObservable lambda$startService$2
 SEVERE: Cannot invoke "javafx.collections.ObservableMap.values()" because "this.loggedCoordinatorEvents" is null
+Apr 17, 2024 5:22:14 PM exceptions.ExceptionLogger <init>
+INFO: Logger initialized 
+.......................................
+Apr 17, 2024 5:22:14 PM view.components.deleteEvent.DeleteButtonController lambda$initializeDeleteService$2
+SEVERE: [dal.ConnectionManager.getConnection(ConnectionManager.java:37), dal.EventDAO.deleteEvent(EventDAO.java:364), bll.EventManagementLogic.deleteEvent(EventManagementLogic.java:142), view.components.main.Model.deleteEvent(Model.java:310), view.components.main.Model.performDeleteOperation(Model.java:285), view.components.deleteEvent.DeleteButtonController$1$1.call(DeleteButtonController.java:89), view.components.deleteEvent.DeleteButtonController$1$1.call(DeleteButtonController.java:86), javafx.graphics/javafx.concurrent.Task$TaskCallable.call(Task.java:1399), java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317), javafx.graphics/javafx.concurrent.Service.lambda$executeTask$6(Service.java:724), java.base/java.security.AccessController.doPrivileged(AccessController.java:400), javafx.graphics/javafx.concurrent.Service.lambda$executeTask$7(Service.java:723), java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144), java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642), java.base/java.lang.Thread.run(Thread.java:1583)]

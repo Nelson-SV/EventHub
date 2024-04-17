@@ -16,13 +16,7 @@ import view.components.listeners.DataHandler;
 import java.net.URL;
 import java.util.ResourceBundle;
 public class SearchController<T> implements Initializable {
-    @FXML
-    private Button undoButton;
-    @FXML
-    private TextField searchWindow;
     private DataHandler<T> dataHandler;
-    @FXML
-    private PopupControl popupWindow;
     @FXML
     private ListView<T> searchResponseHolder;
     @FXML
@@ -31,6 +25,12 @@ public class SearchController<T> implements Initializable {
     private PopupControl noResultPopup;
     @FXML
     private Label noResultLabel;
+    @FXML
+    private PopupControl popupWindow;
+    @FXML
+    private Button undoButton;
+    @FXML
+    private TextField searchWindow;
 
     public SearchController(DataHandler<T> dataHandler) {
         this.dataHandler = dataHandler;

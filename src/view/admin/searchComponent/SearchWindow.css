@@ -1,6 +1,6 @@
 
 .list-view {
-    -fx-background-color: #E5EDF8;
+    -fx-background-color: #F8F0E5;
     -fx-background-radius: 0 0 5 5;
     -fx-border-radius: 0 0 5 5;
 }
@@ -11,7 +11,7 @@
 
 .list-view .list-cell {
     -fx-text-fill: #102c57;
-    -fx-background-color: #e8ebf3;
+    -fx-background-color: #F8F0E5;
     -fx-border-radius: 5;
     -fx-background-radius: 5;
 }

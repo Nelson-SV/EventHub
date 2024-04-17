@@ -179,14 +179,12 @@ public class EventManagementLogic implements ILogicManager {
     public EventInvalidResponse areEditedDatesValid(Event editedEvent, Event originalEvent) {
         boolean isEditValid = true;
         EventInvalidResponse eventInvalid = new EventInvalidResponse();
-
         if (!Objects.equals(editedEvent.getStartDate(), originalEvent.getStartDate())) {
             if (!isStartDateValidCompleteCheck(editedEvent.getStartDate(), originalEvent.getEndDate())) {
                 isEditValid = false;
                 eventInvalid.setStartDateInvalid(editedEvent.getStartDate().toString() + ": Start date is not valid!");
             }
         }
-
         if (!Objects.equals(editedEvent.getStartTime(), originalEvent.getStartTime())) {
             boolean isStartTimeValid = isStartTimeValid(editedEvent.getStartTime(), editedEvent.getEndTime(), editedEvent.getStartDate(), editedEvent.getEndDate());
             System.out.println(isStartTimeValid + "start time validity");
@@ -195,7 +193,6 @@ public class EventManagementLogic implements ILogicManager {
                 eventInvalid.setStartTimeInvalid(editedEvent.getStartTime().toString() + isStartTimeValid + ": Start time is not valid!");
             }
         }
-
         if (!Objects.equals(editedEvent.getEndDate(), originalEvent.getEndDate())) {
             boolean endDateValid = isEndDateValid(editedEvent.getStartDate(), editedEvent.getEndDate());
             if (!endDateValid) {
@@ -203,7 +200,6 @@ public class EventManagementLogic implements ILogicManager {
                 eventInvalid.setEndDateInvalid(editedEvent.getEndDate().toString() + ": End date is not valid!");
             }
         }
-
         if (!Objects.equals(editedEvent.getEndTime(), originalEvent.getEndTime())) {
             boolean endTimeValid = isEndTimeValidCompleteCheck(editedEvent.getStartTime(), editedEvent.getEndTime(), editedEvent.getStartDate(), editedEvent.getEndDate());
             if (!endTimeValid){
@@ -211,8 +207,6 @@ public class EventManagementLogic implements ILogicManager {
                 eventInvalid.setEndTimeInvalid(editedEvent.getEndTime() + " : End time is not valid!");
             }
         }
-
-
         if (isEditValid) {
             return null;
         }

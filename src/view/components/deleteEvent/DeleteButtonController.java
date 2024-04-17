@@ -33,11 +33,12 @@ public class DeleteButtonController implements OperationHandler, Initializable {
     private VBox deleteOperation;
     private StackPane secondaryLayout;
     private StackPane thirdLayout;
-    private CommonModel model;
+
     private int eventId;
     private Service<Void> deleteEventService;
     private LoadingComponent loadingComponent;
     private ConfirmationWindow confirmationWindow;
+    private CommonModel model;
     private DeleteOperation performedDeleteOperation;
 
     public DeleteButtonController(StackPane secondaryLayout, StackPane thirdLayout, CommonModel model, int eventId, DeleteOperation deleteOperation) {

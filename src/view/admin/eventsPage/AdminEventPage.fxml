@@ -54,6 +54,9 @@
             </StackPane>
             <HBox fx:id="shortcutContainer" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="5.0" GridPane.columnIndex="1" />
          </children>
+         <VBox.margin>
+            <Insets bottom="5.0" />
+         </VBox.margin>
       </GridPane>
       <HBox fillHeight="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="30.0" minWidth="536.0" prefHeight="30.0" prefWidth="1076.0" styleClass="eventsHeader">
          <children>
