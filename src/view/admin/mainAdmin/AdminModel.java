@@ -105,24 +105,15 @@ public class AdminModel implements CommonModel, SortCommander, SortObserver {
      */
     private final ObservableList<User> allCoordinators;
 
-
-    //TODO delete if not used , also the methods , supose to be used for the user selection search results;
     private final ObservableList<User> unasignedCoordinatorsDisplayed;
     /**
      * holds all the selected coordinator that will be assigned to the selected event,without the password and the image fields
      */
-
-
-
-
-
-
-
     private ObservableList<Integer> selectedUsers;
 
-    //TODO delete if not used
     /*** holds the coordinators for all the events*/
     private ObservableMap<Integer, List<User>> eventCoordinators;
+
 
     public AdminModel() throws EventException {
         this.adminLogic = new AdminManagementLogic();
@@ -406,10 +397,6 @@ public class AdminModel implements CommonModel, SortCommander, SortObserver {
         this.uploadedImage = uploadedImage;
     }
 
-    public boolean isUnique(File file) {
-        return adminLogic.fileExists(file);
-    }
-
     public void saveUser(String firstName, String lastName, String userRole, String password) throws EventException {
         if (uploadedImage != null) {
             User user = new User(firstName, lastName, userRole, password);
@@ -454,12 +441,6 @@ public class AdminModel implements CommonModel, SortCommander, SortObserver {
 
     public User getSelectedUserToEdit() {
         return this.selectedUserToEdit;
-    }
-
-
-    //TODO to be implemented
-    private void getSortedUserByRole() {
-        this.sortedUsersByLastName = adminLogic.sortUserByRole(usersInTheSystem.values());
     }
 
 

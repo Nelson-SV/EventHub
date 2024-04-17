@@ -29,7 +29,6 @@ public interface IAdminLogic {
     List<EventStatus> getSearchedEvents(String eventName,List<EventStatus> events);
 
     List<String> getRoles();
-    boolean fileExists(File file);
 
     User saveUserWithImage(User user,File uploadedImage) throws EventException;
 
@@ -37,7 +36,6 @@ public interface IAdminLogic {
 
     ObservableMap<Integer,User> getAllUsersWithFullData() throws EventException;
 
-    ObservableList<User> sortUserByRole(Collection<User> values);
     List<User> sortedUsersByLastName(Collection<User> values);
 
     User editUserOperation(User selectedUserToEdit, File uploadedImage,User unEditedUser) throws EventException;

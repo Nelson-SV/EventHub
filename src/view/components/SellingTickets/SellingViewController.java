@@ -333,7 +333,7 @@ public class SellingViewController implements Initializable {
         };
         sellingService.setOnSucceeded((e) -> {
 
-            ticketImageSave.sellTicket();
+            ticketImageSave.printTicket();
                 loadingComponent.setAction(LoadingActions.SUCCES.getActionValue());
                 PauseTransition pauseTransition = new PauseTransition(Duration.millis(500));
                 pauseTransition.setOnFinished((ev) -> {

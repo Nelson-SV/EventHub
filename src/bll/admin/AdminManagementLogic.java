@@ -127,6 +127,7 @@ public class AdminManagementLogic implements IAdminLogic {
         return eventDAO.deleteEvent(eventId);
     }
 
+
     @Override
     public List<EventStatus> getSearchedEvents(String eventName, List<EventStatus> events) {
         return events.stream().filter(e -> e.getEventDTO().getName().toLowerCase().contains(eventName.toLowerCase())).toList();
@@ -147,12 +148,6 @@ public class AdminManagementLogic implements IAdminLogic {
         return sortByStartingDateAndTime(finalized);
     }
 
-//    private List<EventStatus> sortByStartingDate(List<EventStatus> events) {
-//        return events.stream()
-//                .sorted(Comparator.comparing(event -> Math.abs(ChronoUnit.DAYS.between(LocalDate.now(), event.getEventDTO().getStartDate()))))
-//                .collect(Collectors.toList());
-//    }
-
     private List<EventStatus> sortByStartingDateAndTime(List<EventStatus> events) {
         return events.stream()
                 .sorted(Comparator.comparing((EventStatus event) -> event.getEventDTO().getStartDate())
@@ -160,12 +155,6 @@ public class AdminManagementLogic implements IAdminLogic {
                 .collect(Collectors.toList());
     }
 
-    //user management actions
-    public boolean fileExists(File file) {
-        Path uploadedImagesPath = Paths.get(System.getProperty("user.dir"), "uploadImages", "userUploadedImages");
-        Path targetFilePath = uploadedImagesPath.resolve(file.getName());
-        return Files.exists(targetFilePath);
-    }
 
     @Override
     public User saveUserWithImage(User user,File uploadedImage) throws EventException {
@@ -181,11 +170,6 @@ public class AdminManagementLogic implements IAdminLogic {
     public ObservableMap<Integer, User> getAllUsersWithFullData() throws EventException {
         return usersDAO.getFullUserInfo();
     }
-
-    @Override
-    public ObservableList<User> sortUserByRole(Collection<User> values) {
-        return null;
-    };
 
     /**sort users by LastName alphabetically */
     public List<User> sortedUsersByLastName(Collection<User> values){
