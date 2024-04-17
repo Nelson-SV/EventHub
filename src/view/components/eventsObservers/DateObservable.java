@@ -24,7 +24,6 @@ public class DateObservable  implements DateObserver{
         this.model = model;
     }
 
-
     public void addDisplayable(Displayable displayer) {
         this.eventDisplayer.add(displayer);
     }
@@ -57,7 +56,6 @@ public class DateObservable  implements DateObserver{
         eventStatusService.setPeriod(Duration.seconds(executionInterval));
         eventStatusService.setOnSucceeded((event) -> {
             if(eventStatusService.getValue()) {
-                System.out.println("executed");
                 callDisplayable();
             }
         });

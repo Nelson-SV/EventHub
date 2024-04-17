@@ -1,7 +1,6 @@
 package view.admin.mainAdmin;
 import exceptions.EventException;
 import io.github.palexdev.materialfx.controls.MFXButton;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.input.MouseEvent;
@@ -10,11 +9,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import view.admin.eventsPage.AdminEventPage;
 import view.admin.usersPage.UserPageComponent;
-import view.admin.usersPage.UserPageController;
-import view.components.eventsPage.EventsPageController;
 import view.components.listeners.InitializationErrorListener;
 import view.utility.NavigationHoverControl;
-
 import java.net.URL;
 import java.util.ResourceBundle;
 public class AdminController implements Initializable, InitializationErrorListener {

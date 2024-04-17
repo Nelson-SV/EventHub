@@ -1,15 +1,12 @@
 package view.LogIn;
-
 import be.Role;
 import be.User;
-import com.sun.tools.javac.Main;
 import exceptions.ErrorCode;
 import exceptions.EventException;
 import io.github.palexdev.materialfx.controls.MFXPasswordField;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
-import javafx.collections.FXCollections;
 import javafx.css.PseudoClass;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -24,7 +21,6 @@ import javafx.util.Duration;
 import view.components.listeners.InitializationErrorListener;
 import view.components.main.MainController;
 import view.components.main.Model;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;

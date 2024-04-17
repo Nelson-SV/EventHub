@@ -10,7 +10,6 @@ import view.components.main.MainController;
 
 public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
-
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/LogIn/LogInView.fxml"));
         Parent root = loader.load();
         LogInController loginController = loader.getController();

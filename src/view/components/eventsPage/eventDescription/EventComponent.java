@@ -9,9 +9,7 @@ import view.components.eventsPage.manageButton.ManageAction;
 import java.io.IOException;
 
 public class EventComponent extends HBox {
-
     private HBox eventContainer;
-
     public EventComponent(Event event, ManageAction manageAction, DeleteButton deleteButton) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("EventDescription.fxml"));
         loader.setController(new EventDescription(event,manageAction,deleteButton));

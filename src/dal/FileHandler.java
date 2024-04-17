@@ -45,28 +45,4 @@ public class FileHandler {
         return settings;
     }
 
-
-    public Path copyFileToResources(File sourceFile) throws EventException {
-        if (!Files.exists(uploadedImagesPath)) {
-            try {
-                Files.createDirectories(uploadedImagesPath);
-            } catch (IOException e) {
-                throw new EventException("Failed to create directory " + e.getMessage(), e, ErrorCode.COPY_FAILED);
-            }
-        }
-        Path targetFilePath = uploadedImagesPath.resolve(sourceFile.getName());
-        if (Files.exists(targetFilePath)) {
-            throw new EventException("File already exists: " + targetFilePath, null, ErrorCode.FILE_ALREADY_EXISTS);
-        }
-
-        try {
-            Files.copy(sourceFile.toPath(), targetFilePath, StandardCopyOption.COPY_ATTRIBUTES);
-        } catch (IOException e) {
-            throw new EventException("Failed to copy the file " + e.getMessage(), e, ErrorCode.COPY_FAILED);
-        }
-        System.out.println("File copied to: " + targetFilePath);
-        return targetFilePath; // Return the path of the copied file
-    }
-
-
 }
