@@ -135,12 +135,12 @@ public class TicketComponentDescription extends FlowPane implements Initializabl
     }
 
     public void setCustomerName(String customerName) {
-        String text = "Customer Name :"  + customerName;
+        String text = "Customer Name: "  + customerName;
         this.custNameLB.setText(text);
     }
 
     public void setCustomerEmail(String customerEmail) {
-        String text = "Customer Email :"  + customerEmail;
+        String text = "Customer Email: "  + customerEmail;
         this.custEmailLB.setText(text);
     }
 

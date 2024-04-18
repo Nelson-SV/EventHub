@@ -76,10 +76,9 @@ public class TicketsGenerationController {
     @FXML
     private void addTickets(ActionEvent actionEvent) throws EventException {
         boolean isTicketValid = TicketValidator.isTicketValid(ticketTypeTF, ticketPriceTF, ticketQuantityTF);
-
         if(isTicketValid) {
-
-            Ticket ticket = new Ticket(ticketTypeTF.getText(), Integer.parseInt(ticketQuantityTF.getText()), new BigDecimal(ticketPriceTF.getText()), null);
+            Ticket ticket = new Ticket(ticketTypeTF.getText(), Integer.parseInt(ticketQuantityTF.getText()),
+                    new BigDecimal(ticketPriceTF.getText()), null);
 
             Hyperlink ticketType = new Hyperlink(ticket.getTicketType());
             ticketType.setTextFill(BLACK);
@@ -107,7 +106,6 @@ public class TicketsGenerationController {
             remove.setOnAction(event -> {
                 removeTicket(vBox, ticket);
             });
-
 
             closeWindow();
         }
